@@ -80,18 +80,18 @@ class NotificationTileType4 extends StatelessWidget {
               fit: BoxFit.cover,
               imageUrl: notification.post!.gallery.first.thumbnail)
               .round(20),
-        if (notification.type == NotificationType.follow)
-          if (notification.actionBy?.isFollowing == false)
-            SizedBox(
-              width: 120,
-              height: 40,
-              child: AppThemeButton(
-                  cornerRadius: 15,
-                  text: followBackString,
-                  onPress: () {
-                    followBack();
-                  }),
-            )
+        // if (notification.type == NotificationType.follow)
+        //   if (notification.actionBy?.isFollowing == false)
+        //     SizedBox(
+        //       width: 120,
+        //       height: 40,
+        //       child: AppThemeButton(
+        //           cornerRadius: 15,
+        //           text: followBackString,
+        //           onPress: () {
+        //             followBack();
+        //           }),
+        //     )
       ],
     ).hP8;
   }

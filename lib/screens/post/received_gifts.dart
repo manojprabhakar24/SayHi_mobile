@@ -4,7 +4,7 @@ import 'package:foap/helper/extension.dart';
 import 'package:foap/util/app_config_constants.dart';
 import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
-import '../../components/reply_chat_cells/post_gift_controller.dart';
+import '../../controllers/post/post_gift_controller.dart';
 import '../../components/user_card.dart';
 import '../../helper/localization_strings.dart';
 

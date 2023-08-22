@@ -15,7 +15,7 @@ class ClubApi {
       {required Function(List<CategoryModel>) resultCallback}) async {
     var url = NetworkConstantsUtil.getClubCategories;
 
-    await  await ApiWrapper().getApi(url: url).then((result) {
+    await ApiWrapper().getApi(url: url).then((result) {
       if (result?.success == true) {
         var items = result!.data['category'];
 

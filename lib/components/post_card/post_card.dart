@@ -7,7 +7,7 @@ import 'package:foap/components/post_card/reshare_post.dart';
 import 'package:foap/components/post_card/reshared_post_card.dart';
 import 'package:foap/components/post_card_controller.dart';
 import 'package:foap/components/post_card/post_text_widget.dart';
-import 'package:foap/components/reply_chat_cells/post_gift_controller.dart';
+import 'package:foap/controllers/post/post_gift_controller.dart';
 import 'package:foap/components/video_widget.dart';
 import 'package:foap/controllers/profile/profile_controller.dart';
 import 'package:foap/helper/imports/common_import.dart';

@@ -84,7 +84,6 @@ class _TVShowDetailState extends State<TVShowDetail> {
                     backNavigationBar(
                       title: widget.showModel.name!,
                     ),
-
                   ],
                 ),
               Obx(() {

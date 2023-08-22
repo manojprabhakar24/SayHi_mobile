@@ -102,8 +102,7 @@ class PodcastStreamingController extends GetxController {
 
   getPodcastCategories() {
     PodcastApi.getPodcastCategories(resultCallback: (result) {
-      categories.value =
-          result.where((element) => element.podcasts.isNotEmpty).toList();
+      categories.value = result;
       categories.refresh();
       update();
     });

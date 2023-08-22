@@ -1,4 +1,4 @@
-import 'package:foap/components/reply_chat_cells/post_gift_controller.dart';
+import 'package:foap/controllers/post/post_gift_controller.dart';
 import 'package:foap/helper/imports/common_import.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import '../../model/post_gift_model.dart';

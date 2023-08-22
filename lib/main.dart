@@ -18,7 +18,7 @@ import 'package:foap/screens/settings_menu/mercadopago_payment_controller.dart';
 
 // import 'package:giphy_get/l10n.dart';
 import 'components/giphy/src/l10n/l10n.dart';
-import 'components/reply_chat_cells/post_gift_controller.dart';
+import 'controllers/post/post_gift_controller.dart';
 import 'controllers/clubs/clubs_controller.dart';
 import 'controllers/coupons/near_by_offers.dart';
 import 'controllers/misc/faq_controller.dart';
@@ -79,7 +79,6 @@ Future<void> main() async {
   HttpOverrides.global = MyHttpOverrides();
 
   await Firebase.initializeApp();
-
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
   String? token = await FlutterCallkitIncoming.getDevicePushTokenVoIP();
@@ -145,7 +144,6 @@ Future<void> main() async {
   await settingsController.getSettings();
 
   NotificationManager().initialize();
-  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
   await getIt<DBManager>().createDatabase();
 

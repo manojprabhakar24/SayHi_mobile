@@ -11,7 +11,7 @@ class ChatApi {
     var url = NetworkConstantsUtil.createChatRoom;
     dynamic param = {"receiver_id": opponentId.toString(), "type": '1'};
 
-    await  await ApiWrapper().postApi(url: url, param: param).then((result) {
+    await ApiWrapper().postApi(url: url, param: param).then((result) {
       if (result?.success == true) {
         resultCallback(result!.data['room_id']);
       }
@@ -32,7 +32,7 @@ class ChatApi {
       'description': description ?? ''
     };
 
-    await  await ApiWrapper().postApi(url: url, param: param).then((result) {
+    await ApiWrapper().postApi(url: url, param: param).then((result) {
       resultCallback(result!.data['room_id']);
     });
   }
@@ -61,20 +61,20 @@ class ChatApi {
   static deleteChatRoom(int roomId) async {
     var url = NetworkConstantsUtil.deleteChatRoom + roomId.toString();
 
-    await  await ApiWrapper().getApi(url: url).then((result) {});
+    await ApiWrapper().getApi(url: url).then((result) {});
   }
 
   static deleteChatRoomMessages(int roomId) async {
     var url = NetworkConstantsUtil.deleteChatRoomMessages + roomId.toString();
 
-    await  await ApiWrapper().postApi(
+    await ApiWrapper().postApi(
         url: url, param: {'room_id': roomId.toString()}).then((result) {});
   }
 
   static getChatRooms(
       {required Function(List<ChatRoomModel>) resultCallback}) async {
     var url = NetworkConstantsUtil.getChatRooms;
-    await  await ApiWrapper().getApi(url: url).then((result) {
+    await ApiWrapper().getApi(url: url).then((result) {
       if (result?.success == true) {
         var room = result!.data['room'] as List<dynamic>?;
         if (room != null && room.isNotEmpty) {
@@ -94,7 +94,7 @@ class ChatApi {
     var url = NetworkConstantsUtil.getChatRoomDetail;
     url = url.replaceAll('{room_id}', roomId.toString());
 
-    await  await ApiWrapper().getApi(url: url).then((result) {
+    await ApiWrapper().getApi(url: url).then((result) {
       if (result?.success == true) {
         var room = result!.data['room'] as Map<String, dynamic>?;
         if (room != null) {
@@ -113,7 +113,7 @@ class ChatApi {
         .replaceAll('{{room_id}}', roomId.toString())
         .replaceAll('{{last_message_id}}', lastMessageId.toString());
 
-    await  await ApiWrapper().getApi(url: url).then((result) {
+    await ApiWrapper().getApi(url: url).then((result) {
       if (result?.success == true) {
         var items = result!.data['chatMessage']['items'];
         resultCallback(List<ChatMessageModel>.from(
@@ -128,7 +128,7 @@ class ChatApi {
           resultCallback}) async {
     var url = '${NetworkConstantsUtil.callHistory}&page=$page';
 
-    await  await ApiWrapper().getApi(url: url).then((result) {
+    await ApiWrapper().getApi(url: url).then((result) {
       if (result?.success == true) {
         var callHistory = result!.data['callHistory'];
         var items = callHistory['items'];
@@ -148,7 +148,7 @@ class ChatApi {
       url = '$url${profileCategoryType.toString()}';
     }
 
-    await  await ApiWrapper().getApi(url: url).then((result) {
+    await ApiWrapper().getApi(url: url).then((result) {
       if (result?.success == true) {
         List items = result!.data['user'];
 

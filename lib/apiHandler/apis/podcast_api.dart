@@ -28,8 +28,9 @@ class PodcastApi {
 
     await ApiWrapper().getApi(url: url).then((result) {
       if (result?.success == true) {}
-      var items = result!.data['category'];
+      var items = result!.data['category'] as List;
 
+      print('podcast categories = ${items.length}');
       resultCallback(List<PodcastCategoryModel>.from(
           items.map((x) => PodcastCategoryModel.fromJson(x))));
     });
@@ -37,8 +38,8 @@ class PodcastApi {
 
   static getHostsList(
       {required int page,
-      required HostSearchModel searchModel,
-      required Function(List<HostModel>, APIMetaData) resultCallback}) async {
+        required HostSearchModel searchModel,
+        required Function(List<HostModel>, APIMetaData) resultCallback}) async {
     var url = NetworkConstantsUtil.getHosts;
 
     // if (searchModel.categoryId != null) {
@@ -63,21 +64,22 @@ class PodcastApi {
 
   static getPodcasts(
       {required int page,
-      required PodcastSearchModel searchModel,
-      required Function(List<PodcastModel>, APIMetaData)
-          resultCallback}) async {
+        required PodcastSearchModel searchModel,
+        required Function(List<PodcastModel>, APIMetaData)
+        resultCallback}) async {
     var url = NetworkConstantsUtil.getPodcasts;
 
     if (searchModel.hostId != null) {
       url = '$url&podcast_channel_id=${searchModel.hostId}';
     }
     if (searchModel.categoryId != null) {
-      url = '$url&category_id=${searchModel.hostId}';
+      url = '$url&category_id=${searchModel.categoryId}';
     }
     if (searchModel.name != null) {
       url = '$url&name=${searchModel.name}';
     }
     url = '$url&page=$page';
+
 
     await ApiWrapper().getApi(url: url).then((result) {
       if (result?.success == true) {
@@ -92,10 +94,10 @@ class PodcastApi {
 
   static getPodcastEpisode(
       {required int page,
-      int? podcastId,
-      String? name,
-      required Function(List<PodcastEpisodeModel>, APIMetaData)
-          resultCallback}) async {
+        int? podcastId,
+        String? name,
+        required Function(List<PodcastEpisodeModel>, APIMetaData)
+        resultCallback}) async {
     var url = NetworkConstantsUtil.getPodcastEpisode;
 
     if (podcastId != null) {
@@ -135,7 +137,7 @@ class PodcastApi {
 
   static getPodcastHostById(
       {required int hostId,
-      required Function(HostModel) resultCallback}) async {
+        required Function(HostModel) resultCallback}) async {
     var url = NetworkConstantsUtil.getPodcastHostDetail
         .replaceAll('{{host_id}}', hostId.toString());
 

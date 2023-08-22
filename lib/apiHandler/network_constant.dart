@@ -141,7 +141,7 @@ class NetworkConstantsUtil {
   static String getTVCategories =
       'categories/live-tv?expand=liveTv,liveTv.currentViewer';
   static String getTVShows = 'live-tvs/tv-shows?expand=tvShowEpisode,rating';
-  static String getTVShowById = 'tv-shows/tv-show-details?expand=tvShowEpisode';
+  static String getTVShowById = 'tv-shows/tv-show-details?expand=tvShowEpisode,rating';
   static String getTVShowEpisodes = 'tv-shows/tv-show-episodes?';
   static String tvBanners = 'tv-banners';
   static String liveTvs = 'live-tvs?expand=currentViewer';
@@ -161,7 +161,7 @@ class NetworkConstantsUtil {
 
   //***********Podcast***********//
   static String getPodcastCategories =
-      'categories/podcast?expand=podcastList,podcastList.currentViewer';
+      'categories/podcast-show?expand=totalPodcastShow';
   static String getHostShowById =
       'podcast-shows/podcast-show-details?expand=podcastShowEpisode';
 
