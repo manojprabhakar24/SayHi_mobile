@@ -1175,3 +1175,80 @@ String addressString = 'Address';
 String openTimeString = 'Open time';
 String closeTimeString = 'Close time';
 String expiringOnString = 'Expiring on';
+
+//Promote Post
+String viewInsight = 'View Insights';
+String boostPost = 'Boost Post';
+
+String goal = 'Goal';
+String selectGoal = 'Select a goal';
+String goalInfo = 'What results would you like from this ad?';
+String moreProfileVisits = 'More profile visits';
+String moreWebsiteVisits = 'More website visits';
+String moreMessages = 'More messages';
+String promptSelectGoal = 'Please select a goal';
+String website = 'Website';
+String buttonAction = 'Action button';
+String postPromotionString = 'Post promotion';
+
+String postPromotedString = 'Your post is promoted';
+String promoteMorePostsString = 'Promote more posts';
+String errorInPromotionString = 'Error in promoting...';
+
+String audience = 'Audience';
+String defineAudience = 'Define your audience';
+String specialRequirement = 'Special requirements';
+String subSpecialRequirement =
+    'For ads about credit, employment, housing, social issues, elections or politics.';
+String automatic = 'Automatic';
+String subAutomatic = 'Targets people similar to your followers';
+String createOwn = 'Create your own';
+String subCreateOwn = 'Manually enter your targeting options';
+
+String createAudience = 'Create audience';
+String editAudience = 'Edit audience';
+String estimatedAudienceSize = 'Estimated audience size';
+String great = 'Great';
+String audienceName = 'Audience name';
+String ageGender = 'Age and gender';
+String regional = 'Regional';
+String selectedRegion = 'Selected regions';
+String searchedRegions = 'Searched regions';
+
+String local = 'Local';
+String yourCurrentLocation = 'Your current location';
+String radius = 'Radius';
+String addLocations =
+    'We suggest adding a broad range of locations to cover the largest surrounding areas, including countries, countries/regions, and towns/cities.';
+String addInterests =
+    'We suggest adding a broad range of interests to cover the largest audience.';
+String profilePreference = 'Profile Preferences';
+
+String budgetDuration = 'Budget and duration';
+String totalSpend = 'Total spend';
+String budget = 'Budget';
+
+String review = "Review";
+String reviewAd = 'Review your ad';
+String reach = 'Your estimated reach is';
+String adGoal = 'Ad goal';
+String costSummary = 'Cost summary';
+String adBudget = 'Ad budget';
+String gst = 'GST';
+String makePayment = 'Make payment';
+
+String learnMore = 'Learn More';
+String showNow = 'Shop Now';
+String watchMore = 'Watch More';
+String contactUs = 'Contact Us';
+String bookNow = 'Book Now';
+
+String enterAudienceName = 'Please enter an audience name';
+String locationAndTarget = 'Please enter the location of the target audience';
+String audienceInterest = 'Please enter the audience\'s interests';
+String selectGenderAge = 'Please select gender and age';
+
+String sendMessage = 'Send message';
+String viewProfile = 'View profile';
+String flutterWaveString = 'FlutterWave';
+String thanks = 'Thanks';

@@ -95,7 +95,8 @@ enum PaymentGateway {
   wallet,
   stripe,
   googlePay,
-  inAppPurchase
+  inAppPurchase,
+  flutterWave
 }
 
 enum BookingStatus { confirmed, cancelled }
@@ -125,3 +126,4 @@ enum CommentType { text, image, video, gif }
 enum LiveBattleResultType { winner, draw }
 enum BattleStatus { none, accepted, started, completed }
 enum OfferSource { normal, fav }
+enum GoalType { profile, website, message }

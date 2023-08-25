@@ -166,17 +166,19 @@ class EventDetailState extends State<EventDetail> {
             const SizedBox(
               width: 20,
             ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                BodyLargeText(locationString.tr, weight: TextWeight.medium),
-                const SizedBox(
-                  height: 5,
-                ),
-                BodySmallText(
-                    '${widget.event.placeName} ${widget.event.completeAddress}',
-                    weight: TextWeight.regular)
-              ],
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  BodyLargeText(locationString.tr, weight: TextWeight.medium),
+                  const SizedBox(
+                    height: 5,
+                  ),
+                  BodySmallText(
+                      '${widget.event.placeName} ${widget.event.completeAddress}',
+                      weight: TextWeight.regular)
+                ],
+              ),
             )
           ],
         ),

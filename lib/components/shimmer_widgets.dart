@@ -1,6 +1,5 @@
 import 'package:foap/helper/imports/common_import.dart';
 import 'package:foap/screens/add_on/ui/dating/dating_card.dart';
-import 'package:get/get.dart';
 
 class HomeScreenShimmer extends StatelessWidget {
   const HomeScreenShimmer({Key? key}) : super(key: key);

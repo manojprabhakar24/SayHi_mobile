@@ -58,12 +58,13 @@ class AppThemeButton extends StatelessWidget {
         children: [
           leading != null ? leading!.hP8 : Container(),
           Center(
-            child: Text(
+            child: BodyMediumText(
               text!,
-              style: TextStyle(
-                  fontSize: FontSizes.b2,
-                  fontWeight: TextWeight.medium,
-                  color: Colors.white),
+              color: Colors.white,
+              // style: TextStyle(
+              //     fontSize: FontSizes.b3,
+              //     fontWeight: TextWeight.medium,
+              //     color: Colors.white),
             ).hP8,
           ),
           trailing != null ? trailing!.hP4 : Container()

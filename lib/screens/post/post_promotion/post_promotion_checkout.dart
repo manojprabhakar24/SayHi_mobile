@@ -1,25 +1,26 @@
+// import 'dart:io';
 // import 'package:flutter_stripe/flutter_stripe.dart';
 // import 'package:foap/components/payment_method_tile.dart';
-// import 'package:foap/controllers/profile/profile_controller.dart';
 // import 'package:foap/helper/imports/common_import.dart';
+// import 'package:foap/model/post_promotion_model.dart';
 // import 'package:foap/screens/settings_menu/settings_controller.dart';
-// import 'package:foap/helper/imports/event_imports.dart';
 // import 'package:lottie/lottie.dart';
-// import '../../controllers/fund_raising/fund_raising_checkout_controller.dart';
-// import '../../model/fund_raising_campaign.dart';
 //
-// class DonationCheckout extends StatefulWidget {
-//   final FundraisingDonationRequest order;
+// import '../../../controllers/profile/profile_controller.dart';
+// import '../../add_on/controller/event/checkout_controller.dart';
 //
-//   const DonationCheckout({Key? key, required this.order}) : super(key: key);
+// class PostPromotionCheckout extends StatefulWidget {
+//   final PostPromotionOrderRequest order;
+//
+//   const PostPromotionCheckout({Key? key, required this.order})
+//       : super(key: key);
 //
 //   @override
-//   State<DonationCheckout> createState() => _DonationCheckoutState();
+//   State<PostPromotionCheckout> createState() => _PostPromotionCheckoutState();
 // }
 //
-// class _DonationCheckoutState extends State<DonationCheckout> {
-//   final FundRaisingCheckoutController _checkoutController =
-//       FundRaisingCheckoutController();
+// class _PostPromotionCheckoutState extends State<PostPromotionCheckout> {
+//   final CheckoutController _checkoutController = CheckoutController();
 //   final ProfileController _profileController = Get.find();
 //   final SettingsController _settingsController = Get.find();
 //   final UserProfileManager _userProfileManager = Get.find();
@@ -31,7 +32,6 @@
 //     _profileController.getMyProfile();
 //     _settingsController.loadSettings();
 //
-//     _checkoutController.checkIfGooglePaySupported();
 //     WidgetsBinding.instance.addPostFrameCallback((_) {
 //       _checkoutController.useWalletSwitchChange(false, widget.order);
 //     });
@@ -49,7 +49,7 @@
 //               height: Get.height,
 //               child: Column(
 //                 children: [
-//                   backNavigationBar(title: makePaymentString.tr),
+//                   backNavigationBar(title: buyTicketString.tr),
 //                   divider().tP8,
 //                   Expanded(
 //                     child: Stack(
@@ -63,19 +63,15 @@
 //                                     BodyLargeText(payableAmountString.tr,
 //                                         weight: TextWeight.bold),
 //                                     BodyLargeText(
-//                                       ' (\$${widget.order.totalAmount!})',
+//                                       ' (\$${widget.order.grandTotalAmount})',
 //                                       weight: TextWeight.bold,
 //                                       color: AppColorConstants.themeColor,
 //                                     ),
 //                                   ],
-//                                 ).setPadding(
-//                                     top: 16,
-//                                     left: DesignConstants.horizontalPadding,
-//                                     right: DesignConstants.horizontalPadding),
+//                                 ).setPadding(top: 16, left: 16, right: 16),
 //                                 // divider().vP16,
-//                                 walletView(),
-//                                 paymentGateways()
-//                                     .hp(DesignConstants.horizontalPadding),
+//                                 // walletView(),
+//                                 paymentGateways().hP16,
 //                                 const SizedBox(
 //                                   height: 25,
 //                                 ),
@@ -134,7 +130,7 @@
 //                                 BodyLargeText(useBalanceString.tr,
 //                                     weight: TextWeight.medium),
 //                                 BodyLargeText(
-//                                   ' (\$${widget.order.totalAmount! > double.parse(_userProfileManager.user.value!.balance) ? _userProfileManager.user.value!.balance : widget.order.totalAmount!})',
+//                                   ' (\$${widget.order.grandTotalAmount > double.parse(_userProfileManager.user.value!.balance) ? _userProfileManager.user.value!.balance : widget.order.grandTotalAmount})',
 //                                   weight: TextWeight.medium,
 //                                   color: AppColorConstants.themeColor,
 //                                 ),
@@ -150,7 +146,7 @@
 //                           ],
 //                         )
 //                       ],
-//                     ).hp(DesignConstants.horizontalPadding),
+//                     ).hP16,
 //                   ],
 //                 ),
 //               const SizedBox(
@@ -185,135 +181,16 @@
 //                                 ),
 //                               ],
 //                             ),
-//                             redeemBtn()
+//                             // redeemBtn()
 //                           ],
 //                         )
 //                       ],
-//                     ).hp(DesignConstants.horizontalPadding),
+//                     ).hP16,
 //                     divider().vP25,
 //                   ],
 //                 ),
 //             ],
 //           ));
-//   }
-//
-//   redeemBtn() {
-//     return InkWell(
-//       onTap: () {
-//         if (_userProfileManager.user.value!.coins <
-//             _settingsController.setting.value!.minCoinsWithdrawLimit) {
-//           AppUtil.showToast(
-//               message: minCoinsRedeemLimitString.tr.replaceAll(
-//                   '{{coins}}',
-//                   _settingsController.setting.value!.minCoinsWithdrawLimit
-//                       .toString()),
-//               isSuccess: false);
-//         } else {
-//           askNumberOfCoinToRedeem();
-//         }
-//       },
-//       child: Center(
-//         child: Container(
-//             height: 35.0,
-//             width: 100,
-//             color: AppColorConstants.themeColor,
-//             child: Center(
-//               child: BodyLargeText(redeemString.tr, weight: TextWeight.medium),
-//             )).round(5).backgroundCard(),
-//       ),
-//     );
-//   }
-//
-//   Future<void> askNumberOfCoinToRedeem() async {
-//     BuildContext dialogContext;
-//
-//     return showDialog(
-//         context: context,
-//         builder: (context) {
-//           dialogContext = context;
-//
-//           return AlertDialog(
-//             title: Text(
-//               enterNumberOfCoinsString.tr,
-//             ),
-//             content: Container(
-//               color: AppColorConstants.backgroundColor,
-//               child: Row(
-//                 children: [
-//                   Expanded(
-//                     child: SizedBox(
-//                       height: 50,
-//                       child: TextField(
-//                         keyboardType: TextInputType.number,
-//                         decoration: const InputDecoration(
-//                           border: InputBorder.none,
-//                         ),
-//                         style: TextStyle(fontSize: FontSizes.b2),
-//                         onChanged: (value) {
-//                           if (textController.text.isNotEmpty) {
-//                             _settingsController
-//                                 .redeemCoinValueChange(int.parse(value));
-//                           } else {
-//                             _settingsController.redeemCoinValueChange(0);
-//                           }
-//                         },
-//                         controller: textController,
-//                       ).lP8,
-//                     ),
-//                   ),
-//                   Obx(() => Container(
-//                         height: 50,
-//                         color: AppColorConstants.themeColor,
-//                         child: Center(
-//                           child: BodyMediumText(
-//                                   '= \$${(_settingsController.redeemCoins * _settingsController.setting.value!.coinsValue).toStringAsFixed(2)}',
-//                                   weight: TextWeight.medium)
-//                               .hP8,
-//                         ),
-//                       ).rightRounded(10)),
-//                 ],
-//               ),
-//             ).round(10),
-//             actions: <Widget>[
-//               AppThemeButton(
-//                 text: redeemString.tr,
-//                 onPress: () {
-//                   if (textController.text.isNotEmpty) {
-//                     int coins = int.parse(textController.text);
-//                     if (coins >=
-//                         _settingsController
-//                             .setting.value!.minCoinsWithdrawLimit) {
-//                       if (coins >= _userProfileManager.user.value!.coins) {
-//                         AppUtil.showToast(
-//                             message: enterValidAmountOfCoinsString.tr
-//                                 .replaceAll(
-//                                     '{{coins}}',
-//                                     _settingsController
-//                                         .setting.value!.minCoinsWithdrawLimit
-//                                         .toString()),
-//                             isSuccess: false);
-//                         return;
-//                       }
-//                       _profileController.redeemRequest(coins, () {
-//                         _checkoutController.update();
-//                       });
-//                       textController.text = '';
-//                       Navigator.pop(dialogContext);
-//                     } else {
-//                       AppUtil.showToast(
-//                           message: minCoinsRedeemLimitString.tr.replaceAll(
-//                               '{{coins}}',
-//                               _settingsController
-//                                   .setting.value!.minCoinsWithdrawLimit
-//                                   .toString()),
-//                           isSuccess: false);
-//                     }
-//                   }
-//                 },
-//               ),
-//             ],
-//           );
-//         });
 //   }
 //
 //   Widget paymentGateways() {
@@ -322,28 +199,28 @@
 //         ? Column(
 //             crossAxisAlignment: CrossAxisAlignment.start,
 //             children: [
-//               const SizedBox(
-//                 height: 20,
-//               ),
-//               Row(
-//                 children: [
-//                   Heading6Text(
-//                     payUsingString.tr,
-//                     weight: TextWeight.bold,
-//                   ),
-//                   const SizedBox(
-//                     width: 10,
-//                   ),
-//                   Container(
-//                     color: AppColorConstants.cardColor,
-//                     child: Heading6Text(
-//                       '\$${_checkoutController.balanceToPay.value}',
-//                       weight: TextWeight.medium,
-//                       color: AppColorConstants.themeColor,
-//                     ).p4,
-//                   ).round(5)
-//                 ],
-//               ),
+//               // const SizedBox(
+//               //   height: 20,
+//               // ),
+//               // Row(
+//               //   children: [
+//               //     Heading6Text(
+//               //       payUsingString.tr,
+//               //       weight: TextWeight.bold,
+//               //     ),
+//               //     const SizedBox(
+//               //       width: 10,
+//               //     ),
+//               //     Container(
+//               //       color: AppColorConstants.cardColor,
+//               //       child: Heading6Text(
+//               //         '\$${_checkoutController.balanceToPay.value}',
+//               //         weight: TextWeight.medium,
+//               //         color: AppColorConstants.themeColor,
+//               //       ).p4,
+//               //     ).round(5)
+//               //   ],
+//               // ),
 //               const SizedBox(
 //                 height: 20,
 //               ),
@@ -359,7 +236,8 @@
 //               //     // Get.to(() => NewCreditCardPayment(booking: booking));
 //               //   },
 //               // ),
-//               if (Stripe.instance.isApplePaySupported.value)
+//               if (Stripe.instance.isPlatformPaySupportedListenable.value &&
+//                   Platform.isIOS)
 //                 PaymentMethodTile(
 //                   text: applePayString.tr,
 //                   icon: _settingsController.darkMode.value
@@ -377,22 +255,36 @@
 //                   },
 //                 ),
 //
-//               Obx(() => _checkoutController.googlePaySupported.value == true
-//                   ? PaymentMethodTile(
-//                       text: googlePayString.tr,
-//                       icon: "assets/google-pay.png",
-//                       price: '\$${_checkoutController.balanceToPay.value}',
-//                       isSelected:
-//                           _checkoutController.selectedPaymentGateway.value ==
-//                               PaymentGateway.googlePay,
-//                       press: () {
-//                         // _checkoutController.applePay();
-//                         _checkoutController
-//                             .selectPaymentGateway(PaymentGateway.googlePay);
-//                         checkout();
-//                       },
-//                     )
-//                   : Container()),
+//               PaymentMethodTile(
+//                 text: flutterWaveString.tr,
+//                 icon: "assets/flutterwave.png",
+//                 price: '\$${_checkoutController.balanceToPay.value}',
+//                 isSelected: _checkoutController.selectedPaymentGateway.value ==
+//                     PaymentGateway.applePay,
+//                 press: () {
+//                   // _checkoutController.applePay();
+//                   _checkoutController
+//                       .selectPaymentGateway(PaymentGateway.flutterWave);
+//                   checkout();
+//                 },
+//               ),
+//
+//               if (Stripe.instance.isPlatformPaySupportedListenable.value &&
+//                   Platform.isAndroid)
+//                 PaymentMethodTile(
+//                   text: googlePayString.tr,
+//                   icon: "assets/google-pay.png",
+//                   price: '\$${_checkoutController.balanceToPay.value}',
+//                   isSelected:
+//                       _checkoutController.selectedPaymentGateway.value ==
+//                           PaymentGateway.googlePay,
+//                   press: () {
+//                     // _checkoutController.applePay();
+//                     _checkoutController
+//                         .selectPaymentGateway(PaymentGateway.googlePay);
+//                     checkout();
+//                   },
+//                 ),
 //               // PaymentMethodTile(
 //               //   text: paypal,
 //               //   icon: "assets/paypal.png",
@@ -418,18 +310,18 @@
 //                   checkout();
 //                 },
 //               ),
-//               PaymentMethodTile(
-//                 text: razorPayString.tr,
-//                 icon: "assets/razorpay.png",
-//                 price: '\$${_checkoutController.balanceToPay.value}',
-//                 isSelected: _checkoutController.selectedPaymentGateway.value ==
-//                     PaymentGateway.razorpay,
-//                 press: () {
-//                   _checkoutController
-//                       .selectPaymentGateway(PaymentGateway.razorpay);
-//                   checkout();
-//                 },
-//               ),
+//               // PaymentMethodTile(
+//               //   text: razorPayString.tr,
+//               //   icon: "assets/razorpay.png",
+//               //   price: '\$${_checkoutController.balanceToPay.value}',
+//               //   isSelected: _checkoutController.selectedPaymentGateway.value ==
+//               //       PaymentGateway.razorpay,
+//               //   press: () {
+//               //     _checkoutController
+//               //         .selectPaymentGateway(PaymentGateway.razorpay);
+//               //     checkout();
+//               //   },
+//               // ),
 //               // PaymentMethodTile(
 //               //   text: inAppPurchase,
 //               //   icon: "assets/in_app_purchases.png",
@@ -474,21 +366,24 @@
 //   }
 //
 //   checkout() {
-//     if (_checkoutController.useWallet.value) {
-//       if (widget.order.totalAmount! <
-//           double.parse(_userProfileManager.user.value!.balance)) {
-//         _checkoutController.payAndBuy(
-//             order: widget.order, paymentGateway: PaymentGateway.wallet);
-//       } else {
-//         _checkoutController.payAndBuy(
-//             order: widget.order,
-//             paymentGateway: _checkoutController.selectedPaymentGateway.value);
-//       }
-//     } else {
-//       _checkoutController.payAndBuy(
-//           order: widget.order,
-//           paymentGateway: _checkoutController.selectedPaymentGateway.value);
-//     }
+//     // if (_checkoutController.useWallet.value) {
+//     //   if (widget.order.amountToBePaid! <
+//     //       double.parse(_userProfileManager.user.value!.balance)) {
+//     //     _checkoutController.payAndBuy(
+//     //         ticketOrder: widget.ticketOrder,
+//     //         paymentGateway: PaymentGateway.wallet);
+//     //   } else {
+//     //     _checkoutController.payAndBuy(
+//     //         ticketOrder: widget.ticketOrder,
+//     //         paymentGateway: _checkoutController.selectedPaymentGateway.value);
+//     //   }
+//     // } else {
+//     _checkoutController.payAndBuy(
+//         itemName: postPromotionString.tr,
+//         totalAmount: widget.order.grandTotalAmount,
+//         paymentGateway: _checkoutController.selectedPaymentGateway.value,
+//         transactionHandler: (paymentTransactions) {});
+//     // }
 //   }
 //
 //   Widget processingView() {
@@ -517,7 +412,7 @@
 //             textAlign: TextAlign.center,
 //           ),
 //         ],
-//       ).hp(DesignConstants.horizontalPadding),
+//       ).hP16,
 //     );
 //   }
 //
@@ -534,7 +429,7 @@
 //             height: 40,
 //           ),
 //           Heading3Text(
-//             donationConfirmedString.tr,
+//             postPromotedString.tr,
 //             weight: TextWeight.semiBold,
 //             textAlign: TextAlign.center,
 //           ),
@@ -545,12 +440,12 @@
 //               width: 200,
 //               height: 50,
 //               child: AppThemeBorderButton(
-//                   text: donateMoreString.tr,
+//                   text: promoteMorePostsString.tr,
 //                   onPress: () {
-//                     Get.close(3);
+//                     Get.close(2);
 //                   }))
 //         ],
-//       ).hp(DesignConstants.horizontalPadding),
+//       ).hP16,
 //     );
 //   }
 //
@@ -567,7 +462,7 @@
 //             height: 40,
 //           ),
 //           Heading3Text(
-//             errorInPaymentString.tr,
+//             errorInPromotionString.tr,
 //             weight: TextWeight.semiBold,
 //             textAlign: TextAlign.center,
 //           ),
@@ -591,7 +486,7 @@
 //                     Get.back();
 //                   }))
 //         ],
-//       ).hp(DesignConstants.horizontalPadding),
+//       ).hP16,
 //     );
 //   }
 // }

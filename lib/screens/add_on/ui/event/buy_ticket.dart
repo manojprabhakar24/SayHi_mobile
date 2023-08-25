@@ -2,6 +2,8 @@ import 'package:foap/helper/imports/common_import.dart';
 import 'package:foap/screens/settings_menu/settings_controller.dart';
 import 'package:foap/helper/imports/event_imports.dart';
 
+import '../../../checkout/checkout.dart';
+
 class BuyTicket extends StatefulWidget {
   final EventModel event;
   final UserModel? giftToUser;
@@ -56,7 +58,8 @@ class _BuyTicketState extends State<BuyTicket> {
                                       null
                                   ? Column(
                                       children: [
-                                        eventDetail().hp(DesignConstants.horizontalPadding),
+                                        eventDetail().hp(
+                                            DesignConstants.horizontalPadding),
                                         const SizedBox(
                                           height: 25,
                                         ),
@@ -68,7 +71,8 @@ class _BuyTicketState extends State<BuyTicket> {
                                         const SizedBox(
                                           height: 25,
                                         ),
-                                        orderSummary().hp(DesignConstants.horizontalPadding),
+                                        orderSummary().hp(
+                                            DesignConstants.horizontalPadding),
                                         const SizedBox(
                                           height: 150,
                                         ),
@@ -205,7 +209,8 @@ class _BuyTicketState extends State<BuyTicket> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        BodyLargeText(ticketTypeString.tr, weight: TextWeight.semiBold).hp(DesignConstants.horizontalPadding),
+        BodyLargeText(ticketTypeString.tr, weight: TextWeight.semiBold)
+            .hp(DesignConstants.horizontalPadding),
         const SizedBox(
           height: 25,
         ),
@@ -492,8 +497,16 @@ class _BuyTicketState extends State<BuyTicket> {
     return AppThemeButton(
         text: checkoutString.tr,
         onPress: () {
-          Get.to(() => EventCheckout(
-                ticketOrder: _buyTicketController.ticketOrder,
+          EventTicketOrderRequest order = _buyTicketController.ticketOrder;
+
+          Get.to(() => Checkout(
+                itemName: order.itemName!,
+                amountToPay: order.amountToBePaid!,
+                transactionCallbackHandler: (paymentTransactions) {
+                  order.payments = paymentTransactions;
+
+                  _eventDetailController.buyEventTicket(order);
+                },
               ));
         });
   }

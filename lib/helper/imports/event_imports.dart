@@ -4,7 +4,7 @@ export 'package:foap/screens/add_on/ui/event/event_members.dart';
 export 'package:foap/screens/add_on/ui/event/explore_events.dart';
 export 'package:foap/screens/add_on/ui/event/search_events.dart';
 export 'package:foap/screens/add_on/ui/event/buy_ticket.dart';
-export 'package:foap/screens/add_on/ui/event/event_checkout.dart';
+export 'package:foap/screens/checkout/checkout.dart';
 export 'package:foap/screens/add_on/ui/event/event_bookings.dart';
 export 'package:foap/screens/add_on/ui/event/events_dashboard.dart';
 export 'package:foap/screens/add_on/ui/event/event_booking_detail.dart';

@@ -2,25 +2,29 @@ import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:foap/components/payment_method_tile.dart';
 import 'package:foap/controllers/profile/profile_controller.dart';
 import 'package:foap/helper/imports/common_import.dart';
-import 'package:foap/screens/add_on/controller/event/checkout_controller.dart';
+import 'package:foap/model/post_promotion_model.dart';
 import 'package:foap/screens/settings_menu/settings_controller.dart';
-import 'package:get/get.dart';
 import 'package:foap/helper/imports/event_imports.dart';
 import 'package:lottie/lottie.dart';
 
-class EventCheckout extends StatefulWidget {
-  final EventTicketOrderRequest ticketOrder;
-  final UserModel? giftToUser;
+class Checkout extends StatefulWidget {
+  final String itemName;
+  final double amountToPay;
+  final Function(List<Payment>) transactionCallbackHandler;
 
-  const EventCheckout({Key? key, required this.ticketOrder, this.giftToUser})
+  const Checkout(
+      {Key? key,
+      required this.itemName,
+      required this.amountToPay,
+      required this.transactionCallbackHandler})
       : super(key: key);
 
   @override
-  State<EventCheckout> createState() => _EventCheckoutState();
+  State<Checkout> createState() => _CheckoutState();
 }
 
-class _EventCheckoutState extends State<EventCheckout> {
-  final CheckoutController _checkoutController = CheckoutController();
+class _CheckoutState extends State<Checkout> {
+  final CheckoutController _checkoutController = Get.find();
   final ProfileController _profileController = Get.find();
   final SettingsController _settingsController = Get.find();
   final UserProfileManager _userProfileManager = Get.find();
@@ -34,11 +38,16 @@ class _EventCheckoutState extends State<EventCheckout> {
 
     _checkoutController.checkIfGooglePaySupported();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      _checkoutController.useWalletSwitchChange(
-          false, widget.ticketOrder, context);
+      _checkoutController.useWalletSwitchChange(false, widget.amountToPay);
     });
 
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _checkoutController.clear();
+    super.dispose();
   }
 
   @override
@@ -64,15 +73,19 @@ class _EventCheckoutState extends State<EventCheckout> {
                                     BodyLargeText(payableAmountString.tr,
                                         weight: TextWeight.bold),
                                     BodyLargeText(
-                                      ' (\$${widget.ticketOrder.amountToBePaid!})',
+                                      ' (\$${widget.amountToPay})',
                                       weight: TextWeight.bold,
                                       color: AppColorConstants.themeColor,
                                     ),
                                   ],
-                                ).setPadding(top: 16, left: DesignConstants.horizontalPadding, right: DesignConstants.horizontalPadding),
+                                ).setPadding(
+                                    top: 16,
+                                    left: DesignConstants.horizontalPadding,
+                                    right: DesignConstants.horizontalPadding),
                                 // divider().vP16,
                                 walletView(),
-                                paymentGateways().hp(DesignConstants.horizontalPadding),
+                                paymentGateways()
+                                    .hp(DesignConstants.horizontalPadding),
                                 const SizedBox(
                                   height: 25,
                                 ),
@@ -131,7 +144,7 @@ class _EventCheckoutState extends State<EventCheckout> {
                                 BodyLargeText(useBalanceString.tr,
                                     weight: TextWeight.medium),
                                 BodyLargeText(
-                                  ' (\$${widget.ticketOrder.amountToBePaid! > double.parse(_userProfileManager.user.value!.balance) ? _userProfileManager.user.value!.balance : widget.ticketOrder.amountToBePaid!})',
+                                  ' (\$${widget.amountToPay > double.parse(_userProfileManager.user.value!.balance) ? _userProfileManager.user.value!.balance : widget.amountToPay})',
                                   weight: TextWeight.medium,
                                   color: AppColorConstants.themeColor,
                                 ),
@@ -142,7 +155,7 @@ class _EventCheckoutState extends State<EventCheckout> {
                                 value: _checkoutController.useWallet.value,
                                 onChanged: (value) {
                                   _checkoutController.useWalletSwitchChange(
-                                      value, widget.ticketOrder, context);
+                                      value, widget.amountToPay);
                                 }))
                           ],
                         )
@@ -472,20 +485,32 @@ class _EventCheckoutState extends State<EventCheckout> {
 
   checkout() {
     if (_checkoutController.useWallet.value) {
-      if (widget.ticketOrder.amountToBePaid! <
+      if (widget.amountToPay <
           double.parse(_userProfileManager.user.value!.balance)) {
         _checkoutController.payAndBuy(
-            ticketOrder: widget.ticketOrder,
-            paymentGateway: PaymentGateway.wallet);
+            itemName: widget.itemName,
+            totalAmount: widget.amountToPay,
+            paymentGateway: PaymentGateway.wallet,
+            transactionHandler: (paymentTransactions) {
+              widget.transactionCallbackHandler(paymentTransactions);
+            });
       } else {
         _checkoutController.payAndBuy(
-            ticketOrder: widget.ticketOrder,
-            paymentGateway: _checkoutController.selectedPaymentGateway.value);
+            itemName: widget.itemName,
+            totalAmount: widget.amountToPay,
+            paymentGateway: _checkoutController.selectedPaymentGateway.value,
+            transactionHandler: (paymentTransactions) {
+              widget.transactionCallbackHandler(paymentTransactions);
+            });
       }
     } else {
       _checkoutController.payAndBuy(
-          ticketOrder: widget.ticketOrder,
-          paymentGateway: _checkoutController.selectedPaymentGateway.value);
+          itemName: widget.itemName,
+          totalAmount: widget.amountToPay,
+          paymentGateway: _checkoutController.selectedPaymentGateway.value,
+          transactionHandler: (paymentTransactions) {
+            widget.transactionCallbackHandler(paymentTransactions);
+          });
     }
   }
 
@@ -543,9 +568,9 @@ class _EventCheckoutState extends State<EventCheckout> {
               width: 200,
               height: 50,
               child: AppThemeBorderButton(
-                  text: bookMoreTicketsString.tr,
+                  text: thanks.tr,
                   onPress: () {
-                    Get.close(3);
+                    Get.close(2);
                   }))
         ],
       ).hp(DesignConstants.horizontalPadding),

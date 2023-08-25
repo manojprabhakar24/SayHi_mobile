@@ -273,3 +273,35 @@ Widget titleNavigationBar({
       top: 8,
       bottom: 16);
 }
+
+
+Widget customNavigationBar(
+    {required String title, VoidCallback? action, Widget? trailing}) {
+  return Container(
+    height: 100,
+    color: AppColorConstants.themeColor.withOpacity(0.1),
+    child: Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      crossAxisAlignment: CrossAxisAlignment.end,
+      children: [
+        ThemeIconWidget(
+          ThemeIcon.backArrow,
+          size: 18,
+          color: AppColorConstants.iconColor,
+        ).ripple(() {
+          if (action != null) {
+            action();
+          } else {
+            Get.back();
+          }
+        }),
+        Heading4Text(title, weight: TextWeight.bold),
+        trailing ?? const SizedBox(width: 20),
+      ],
+    ).setPadding(
+        left: DesignConstants.horizontalPadding,
+        right: DesignConstants.horizontalPadding,
+        top: 8,
+        bottom: 16),
+  );
+}

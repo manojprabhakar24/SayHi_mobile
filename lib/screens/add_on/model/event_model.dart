@@ -1,4 +1,5 @@
 import 'package:foap/helper/enum.dart';
+import 'package:foap/model/post_promotion_model.dart';
 import 'package:foap/model/user_model.dart';
 import 'package:intl/intl.dart';
 
@@ -286,11 +287,10 @@ class EventTicketOrderRequest {
   String? coupon;
   double? discount;
   double? ticketAmount;
-  double? paidAmount;
   double? amountToBePaid;
   String? itemName;
 
-  List<Map<String, dynamic>> payments;
+  List<Payment> payments;
   UserModel? gifToUser;
 
   EventTicketOrderRequest({
@@ -300,7 +300,6 @@ class EventTicketOrderRequest {
     this.coupon,
     this.discount,
     this.ticketAmount,
-    this.paidAmount,
     this.itemName,
     this.gifToUser,
     required this.payments,
@@ -313,8 +312,18 @@ class EventTicketOrderRequest {
         "coupon": coupon,
         "coupon_discount_value":
             discount == null || discount == 0 ? 0 : discount,
-        "ticket_amount": ticketAmount.toString(),
-        "paid_amount": paidAmount.toString(),
-        "payments": payments,
+        "ticket_amount": ticketAmount,
+        "paid_amount": paidAmount,
+        "payments": payments.map((e) => e.toJson()).toList(),
       };
+
+  double get paidAmount {
+    return payments.fold(0, (total, payment) {
+      if (payment.amount != null) {
+        return (total ?? 0) + (double.tryParse(payment.amount!) ?? 0);
+      } else {
+        return total;
+      }
+    });
+  }
 }

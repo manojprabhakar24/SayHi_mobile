@@ -17,6 +17,7 @@ import '../../controllers/chat_and_call/chat_detail_controller.dart';
 import '../../controllers/chat_and_call/select_user_for_chat_controller.dart';
 import '../../controllers/home/home_controller.dart';
 import '../../controllers/post/comments_controller.dart';
+import '../../controllers/post/promotion_controller.dart';
 import '../../model/post_gallery.dart';
 import '../../model/post_model.dart';
 import '../../screens/chat/select_users.dart';
@@ -24,6 +25,7 @@ import '../../screens/club/club_detail.dart';
 import '../../screens/home_feed/comments_screen.dart';
 import '../../screens/home_feed/post_media_full_screen.dart';
 import '../../screens/live/gifts_list.dart';
+import '../../screens/post/post_promotion/post_promotion.dart';
 import '../../screens/post/received_gifts.dart';
 import '../../screens/post/view_post_insight.dart';
 import '../../screens/profile/my_profile.dart';
@@ -139,6 +141,7 @@ class PostContent extends StatelessWidget {
   final PostModel model;
   final PostCardController postCardController = Get.find();
   final ProfileController _profileController = Get.find();
+
   final FlareControls flareControls = FlareControls();
   final VoidCallback removePostHandler;
   final VoidCallback blockUserHandler;
@@ -398,6 +401,7 @@ class PostCardState extends State<PostCard> {
   final SelectUserForChatController selectUserForChatController =
       SelectUserForChatController();
   final PostGiftController _postGiftController = Get.find();
+  final PromotionController _promotionController = Get.find();
 
   TextEditingController commentInputField = TextEditingController();
   final CommentsController _commentsController = CommentsController();
@@ -420,16 +424,27 @@ class PostCardState extends State<PostCard> {
           color: AppColorConstants.cardColor.darken(),
           height: 50,
           width: double.infinity,
-          child: Align(
-            alignment: Alignment.centerLeft,
-            child: BodyLargeText(
-              viewInsightsString.tr,
-              weight: TextWeight.semiBold,
-            ).lp(DesignConstants.horizontalPadding),
-          ),
-        ).ripple(() {
-          Get.to(() => ViewPostInsights(post: widget.model));
-        }),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              BodyLargeText(
+                viewInsightsString.tr,
+                weight: TextWeight.semiBold,
+              ).ripple(() {
+                Get.to(() => ViewPostInsights(post: widget.model));
+              }),
+              AppThemeButton(
+                  text: boostPost.tr,
+                  cornerRadius: 8,
+                  height: 36,
+                  // width: 80,
+                  onPress: () {
+                    _promotionController.setPromotingPost(widget.model);
+                    Get.to(() => PostPromotionScreen());
+                  })
+            ],
+          ).hP16,
+        ),
       const SizedBox(
         height: 20,
       ),

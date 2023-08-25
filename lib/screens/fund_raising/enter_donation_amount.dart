@@ -1,6 +1,9 @@
+import 'package:foap/helper/imports/event_imports.dart';
+
 import '../../controllers/fund_raising/fund_raising_controller.dart';
 import '../../helper/imports/common_import.dart';
-import 'donation_checkout.dart';
+import '../../model/fund_raising_campaign.dart';
+import '../checkout/checkout.dart';
 
 class EnterDonationAmount extends StatelessWidget {
   final FundRaisingController fundRaisingController = Get.find();
@@ -84,8 +87,19 @@ class EnterDonationAmount extends StatelessWidget {
                     onPress: () {
                       if (fundRaisingController
                           .donationAmountTE.text.isNotEmpty) {
-                        Get.to(() => DonationCheckout(
-                            order: fundRaisingController.order));
+                        Get.put(CheckoutController());
+                        FundraisingDonationRequest orderToPlace =
+                            fundRaisingController.order;
+                        Get.to(() => Checkout(
+                              amountToPay: orderToPlace.totalAmount!,
+                              itemName:
+                                  '${donationsString.tr} : ${orderToPlace.itemName}',
+                              transactionCallbackHandler: (payments) {
+                                orderToPlace.payments = payments;
+                                fundRaisingController
+                                    .makeDonation(orderToPlace);
+                              },
+                            ));
                       } else {
                         AppUtil.showToast(
                             message: pleaseEnterDonationAmountString,

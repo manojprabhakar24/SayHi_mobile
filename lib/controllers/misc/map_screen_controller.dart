@@ -1,15 +1,11 @@
 import 'dart:async';
 import 'dart:ui' as ui;
-
 import 'package:flutter/services.dart';
-import 'package:foap/apiHandler/apis/users_api.dart';
 import 'package:foap/helper/imports/common_import.dart';
-import 'package:foap/helper/imports/models.dart';
-import 'package:foap/manager/location_manager.dart';
 import 'package:foap/screens/profile/other_user_profile.dart';
-import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart' as google_map;
-// import 'package:location/location.dart';
+import '../../manager/location_manager.dart';
+import '../../model/location.dart';
 
 class MapScreenController extends GetxController {
   RxList<UserModel> users = <UserModel>[].obs;
@@ -22,25 +18,25 @@ class MapScreenController extends GetxController {
     markers.clear();
   }
 
-  getLocation() {
-    _locationManager.getLocation(locationCallback: (locationData){
-      currentLocation.value = locationData;
-      update();
-      queryFollowers();
+  getLocation(Function(LocationModel) locationHandler) {
+    _locationManager.getLocation(locationCallback: (locationData) {
+      locationHandler(locationData);
+      // update();
+      // queryFollowers();
     });
     // Location().getLocation().then((locationData) {
     //
     // }).catchError((error) {});
   }
 
-  Future<List<UserModel>> queryFollowers() async {
-    await UsersApi.getFollowingUsers(resultCallback: (result, metadata) {
-      users.value = result;
-      createMarkers();
-    });
-
-    return users;
-  }
+  // Future<List<UserModel>> queryFollowers() async {
+  //   await UsersApi.getFollowingUsers(resultCallback: (result, metadata) {
+  //     users.value = result;
+  //     createMarkers();
+  //   });
+  //
+  //   return users;
+  // }
 
   createMarkers() async {
     for (UserModel userModel in users) {
@@ -53,23 +49,23 @@ class MapScreenController extends GetxController {
               .buffer
               .asUint8List();
           convertImageFileToCustomBitmapDescriptor(bytes,
-                  title: userModel.userName,
-                  size: 170,
-                  borderSize: 20,
-                  addBorder: true,
-                  borderColor: Colors.white)
+              title: userModel.userName,
+              size: 170,
+              borderSize: 20,
+              addBorder: true,
+              borderColor: Colors.white)
               .then((value) {
             getMarkers(userModel, value);
           });
         } else {
           final ByteData bytesData =
-              (await rootBundle.load('assets/account_selected.png'));
+          (await rootBundle.load('assets/account_selected.png'));
           bytes = bytesData.buffer.asUint8List();
 
           // bytes = await Image.asset(name)
           google_map.BitmapDescriptor.fromAssetImage(
-                  const ImageConfiguration(size: Size(12, 12)),
-                  'assets/account_selected.png')
+              const ImageConfiguration(size: Size(12, 12)),
+              'assets/account_selected.png')
               .then((icon) {
             getMarkers(userModel, icon);
           });
@@ -95,14 +91,14 @@ class MapScreenController extends GetxController {
   }
 
   static Future<google_map.BitmapDescriptor>
-      convertImageFileToCustomBitmapDescriptor(Uint8List imageUint8List,
-          {int size = 150,
-          bool addBorder = false,
-          Color borderColor = Colors.white,
-          double borderSize = 10,
-          String? title,
-          Color titleColor = Colors.white,
-          Color titleBackgroundColor = Colors.black}) async {
+  convertImageFileToCustomBitmapDescriptor(Uint8List imageUint8List,
+      {int size = 150,
+        bool addBorder = false,
+        Color borderColor = Colors.white,
+        double borderSize = 10,
+        String? title,
+        Color titleColor = Colors.white,
+        Color titleBackgroundColor = Colors.black}) async {
     final ui.PictureRecorder pictureRecorder = ui.PictureRecorder();
     final Canvas canvas = Canvas(pictureRecorder);
     final Paint paint = Paint()..color;

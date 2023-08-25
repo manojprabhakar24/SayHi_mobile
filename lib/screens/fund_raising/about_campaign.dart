@@ -118,8 +118,7 @@ class AboutCampaign extends StatelessWidget {
           AppThemeButton(
               text: donateNowString,
               onPress: () {
-                Get.to(
-                    () => EnterDonationAmount());
+                Get.to(() => EnterDonationAmount());
               }),
           divider(height: 0.5).vP16,
           createdBy(),
@@ -157,17 +156,22 @@ class AboutCampaign extends StatelessWidget {
         ),
         Row(
           children: [
-            UserAvatarView(user: campaign.createdBy!),
+            AvatarView(
+              url: campaign.createdBy!.coverImage,
+              name: campaign.createdBy!.name,
+            ),
             const SizedBox(
               width: 20,
             ),
-            Column(
-              children: [
-                BodyLargeText(
-                  campaign.createdBy!.name!,
-                  weight: TextWeight.semiBold,
-                ),
-              ],
+            Expanded(
+              child: Column(
+                children: [
+                  BodyLargeText(
+                    campaign.createdBy!.name!,
+                    weight: TextWeight.semiBold,
+                  ),
+                ],
+              ),
             )
           ],
         )
@@ -189,17 +193,22 @@ class AboutCampaign extends StatelessWidget {
         ),
         Row(
           children: [
-            UserAvatarView(user: campaign.createdFor!),
+            AvatarView(
+              url: campaign.createdFor!.picture,
+              name: campaign.createdFor!.name,
+            ),
             const SizedBox(
               width: 20,
             ),
-            Column(
-              children: [
-                BodyLargeText(
-                  campaign.createdFor!.name!,
-                  weight: TextWeight.semiBold,
-                ),
-              ],
+            Expanded(
+              child: Column(
+                children: [
+                  BodyLargeText(
+                    campaign.createdFor!.name!,
+                    weight: TextWeight.semiBold,
+                  ),
+                ],
+              ),
             )
           ],
         )

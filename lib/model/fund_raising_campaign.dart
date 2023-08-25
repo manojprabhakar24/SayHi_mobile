@@ -1,3 +1,4 @@
+import 'package:foap/model/post_promotion_model.dart';
 import 'package:foap/model/user_model.dart';
 
 import 'category_model.dart';
@@ -38,7 +39,6 @@ class FundRaisingCampaign {
     required this.totalDonors,
     required this.donors,
     required this.category,
-
   });
 
   factory FundRaisingCampaign.fromJson(dynamic json) {
@@ -91,13 +91,12 @@ class FundRaisingCampaignSearchModel {
   FundRaisingCampaignSearchModel();
 }
 
-
 class FundraisingDonationRequest {
   int? id;
   double? totalAmount;
   String? itemName;
 
-  List<Map<String, dynamic>> payments;
+  List<Payment> payments;
 
   FundraisingDonationRequest({
     this.id,
@@ -106,8 +105,8 @@ class FundraisingDonationRequest {
   });
 
   Map<String, dynamic> toJson() => {
-    "id": id.toString(),
-    "payments": payments,
-    "amount": totalAmount.toString(),
-  };
+        "id": id.toString(),
+        "payments": payments.map((e) => e.toJson()).toList(),
+        "amount": totalAmount.toString(),
+      };
 }

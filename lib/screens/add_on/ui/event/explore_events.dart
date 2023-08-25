@@ -181,6 +181,8 @@ class ExploreEventsState extends State<ExploreEvents> {
                                                   joinBtnClicked: () {},
                                                   leaveBtnClicked: () {},
                                                   previewBtnClicked: () {
+                                                    Get.put(CheckoutController());
+
                                                     Get.to(() => EventDetail(
                                                         event: event,
                                                         needRefreshCallback:

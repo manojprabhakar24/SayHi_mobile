@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:foap/helper/imports/event_imports.dart';
 
 class EventDetailController extends GetxController {
+  final CheckoutController _checkoutController = Get.find();
   Rx<EventModel?> event = Rx<EventModel?>(null);
   RxList<EventCoupon> coupons = <EventCoupon>[].obs;
   double? minTicketPrice;
@@ -56,5 +57,28 @@ class EventDetailController extends GetxController {
     event.value!.isJoined = false;
     event.refresh();
     EventApi.leaveEvent(eventId: event.value!.id);
+  }
+
+  buyEventTicket(EventTicketOrderRequest ticketOrder) {
+    EventApi.buyTicket(
+        orderRequest: ticketOrder,
+        resultCallback: (bookingId) {
+          if (ticketOrder.gifToUser != null && bookingId != null) {
+            EventApi.giftEventTicket(
+                ticketId: bookingId,
+                toUserId: ticketOrder.gifToUser!.id,
+                resultCallback: (status) {
+                  if (status) {
+                    _checkoutController.orderPlaced();
+                  } else {
+                    _checkoutController.orderFailed();
+                  }
+                });
+          } else if (bookingId != null) {
+            _checkoutController.orderPlaced();
+          } else if (bookingId == null) {
+            _checkoutController.orderFailed();
+          }
+        });
   }
 }

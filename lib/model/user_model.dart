@@ -356,13 +356,21 @@ class GiftSummary {
 class InterestModel {
   int id = 0;
   String name = "";
+  bool isSelected = false;
 
   InterestModel();
 
   factory InterestModel.fromJson(dynamic json) {
     InterestModel model = InterestModel();
     model.id = json['id'] ?? json['interest_id'];
-    model.name = json['name'];
+    model.name = json['name'] ?? json['interest'];
+    return model;
+  }
+
+  factory InterestModel.fromAudienceJson(dynamic json) {
+    InterestModel model = InterestModel();
+    model.id = json['interest_id'];
+    model.name = json['interest'];
     return model;
   }
 }

@@ -318,7 +318,7 @@ class NetworkConstantsUtil {
   static String donorsList =
       'campaigns/donors-list?expand=userDetail,campaignDetails&user_id=&transaction_type=&campaign_id=';
 
-//*********** Coupons ***********//
+  //*********** Coupons ***********//
   static String businessCategories = 'categories/business-category?expand=business,coupon';
   static String searchBusiness = 'businesses?expand=coupon';
   static String offersList = 'coupons?expand=business';
@@ -331,4 +331,15 @@ class NetworkConstantsUtil {
 
   static String favOffer = 'coupons/add-favorite';
   static String unFavOffer = 'coupons/remove-favorite';
+
+  //*********** Promotion ***********//
+  static String searchLocation = 'countries/search-location?name=';
+  static String createAudiences = 'audiences';
+  static String getAudiences =
+      'audiences?expand=interestDetails,locationDetails';
+
+  static String createPromotions = 'post-promotions';
+  static String getPromotedPosts =
+      'posts/post-promotion-ad?expand=user,postPromotionData';
+
 }

@@ -46,6 +46,7 @@ import 'controllers/chat_and_call/chat_room_detail_controller.dart';
 import 'controllers/chat_and_call/select_user_group_chat_controller.dart';
 import 'controllers/home/home_controller.dart';
 import 'controllers/live/live_history_controller.dart';
+import 'controllers/post/promotion_controller.dart';
 import 'controllers/tv/live_tv_streaming_controller.dart';
 import 'controllers/auth/login_controller.dart';
 import 'controllers/misc/map_screen_controller.dart';
@@ -133,11 +134,11 @@ Future<void> main() async {
   Get.put(SelectUserForGroupChatController());
   Get.put(FundRaisingController());
   Get.put(NearByOffersController());
+  Get.put(PromotionController());
 
   setupServiceLocator();
 
   final UserProfileManager userProfileManager = Get.find();
-
   await userProfileManager.refreshProfile();
 
   final SettingsController settingsController = Get.find();
