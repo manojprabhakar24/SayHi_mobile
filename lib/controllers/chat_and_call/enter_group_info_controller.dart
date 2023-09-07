@@ -2,6 +2,7 @@ import 'package:foap/apiHandler/apis/chat_api.dart';
 import 'package:foap/helper/imports/common_import.dart';
 import 'package:foap/helper/imports/chat_imports.dart';
 import '../../apiHandler/apis/misc_api.dart';
+import '../../manager/db_manager_realm.dart';
 import '../../manager/socket_manager.dart';
 
 class EnterGroupInfoController extends GetxController {
@@ -20,16 +21,15 @@ class EnterGroupInfoController extends GetxController {
       required String? description,
       required String image,
       required List<UserModel> users}) {
-    EasyLoading.show(
-        status: loadingString.tr,
-        maskType: EasyLoadingMaskType.black);
+    Loader.show(status: loadingString.tr);
 
     if (image.isEmpty) {
       publishGroup(name: name, description: description, users: users);
     } else {
-      // EasyLoading.show(status: loadingString.tr);
-      MiscApi.uploadFile(image, type: UploadMediaType.chat,
-          resultCallback: (filename, filepath) {
+      // Loader.show(status: loadingString.tr);
+      MiscApi.uploadFile(image,
+          mediaType: GalleryMediaType.photo,
+          type: UploadMediaType.chat, resultCallback: (filename, filepath) {
         publishGroup(
             name: name,
             image: filename,
@@ -39,21 +39,20 @@ class EnterGroupInfoController extends GetxController {
     }
   }
 
-  updateGroup(
-      {required ChatRoomModel group,
-      required String name,
-      required String? description,
-      required String image,
-     }) {
-    EasyLoading.show(
-        status: loadingString.tr,
-        maskType: EasyLoadingMaskType.black);
+  updateGroup({
+    required ChatRoomModel group,
+    required String name,
+    required String? description,
+    required String image,
+  }) {
+    Loader.show(status: loadingString.tr);
 
     if (image.isEmpty) {
       publishUpdatedGroup(group: group, name: name, description: description);
     } else {
-      MiscApi.uploadFile(image, type: UploadMediaType.chat,
-          resultCallback: (filename, filepath) {
+      MiscApi.uploadFile(image,
+          mediaType: GalleryMediaType.photo,
+          type: UploadMediaType.chat, resultCallback: (filename, filepath) {
         publishUpdatedGroup(
           group: group,
           name: name,
@@ -96,7 +95,7 @@ class EnterGroupInfoController extends GetxController {
             Get.to(() => ChatDetail(chatRoom: result));
 
             // save group in local storage
-            await getIt<DBManager>().saveRooms([result]);
+            await getIt<RealmDBManager>().saveRooms([result]);
 
             _chatHistoryController.getChatRooms();
           });

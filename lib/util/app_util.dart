@@ -163,10 +163,10 @@ class AppUtil {
                   children: [
                     BodyLargeText(
                       okString,
-                      color: AppColorConstants.grayscale100,
+                      color: Colors.white,
                     )
                         .makeChip(
-                            backGroundColor: AppColorConstants.grayscale900)
+                            backGroundColor: AppColorConstants.themeColor)
                         .ripple(() {
                       Get.back(closeOverlays: true);
                       okHandler();
@@ -186,7 +186,7 @@ class AppUtil {
             )
           ],
         ).hp(DesignConstants.horizontalPadding),
-      ).round(20),
+      ).topRounded(20),
     );
   }
 

@@ -250,10 +250,10 @@ class ClubDetailState extends State<ClubDetail> {
                   ).hP8)
               .round(5)
               .ripple(() {
-            EasyLoading.show(status: loadingString.tr);
+            Loader.show(status: loadingString.tr);
             _chatDetailController.getRoomDetail(
                 _clubDetailController.club.value!.chatRoomId!, (room) {
-              EasyLoading.dismiss();
+              Loader.dismiss();
               Get.to(() => ChatDetail(chatRoom: room));
             });
           }).rP8,

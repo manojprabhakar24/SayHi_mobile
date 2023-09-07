@@ -21,6 +21,8 @@ import 'package:foap/manager/socket_manager.dart';
 import 'package:foap/screens/dashboard/dashboard_screen.dart';
 import 'package:foap/util/constant_util.dart';
 import 'package:socket_io_client/socket_io_client.dart' as io;
+
+import 'db_manager_realm.dart';
 export 'package:foap/helper/socket_constants.dart';
 
 class CachedRequest {
@@ -229,12 +231,12 @@ class SocketManager {
 
       // ChatMessageModel message = ChatMessageModel.fromJson(response);
 
-      await getIt<DBManager>().newMessageReceived(message);
+      await getIt<RealmDBManager>().newMessageReceived(message);
       // await _chatDetailController.newMessageReceived(message);
       // _chatController.newMessageReceived(message);
 
       int roomsWithUnreadMessageCount =
-          await getIt<DBManager>().roomsWithUnreadMessages();
+          await getIt<RealmDBManager>().roomsWithUnreadMessages();
 
       _dashboardController
           .updateUnreadMessageCount(roomsWithUnreadMessageCount);
@@ -300,7 +302,7 @@ class SocketManager {
 
       ChatMessageModel message = ChatMessageModel.fromJson(chatMessage);
 
-      getIt<DBManager>().newMessageReceived(message);
+      getIt<RealmDBManager>().newMessageReceived(message);
     }
   }
 
@@ -319,7 +321,7 @@ class SocketManager {
 
     ChatMessageModel message = ChatMessageModel.fromJson(chatMessage);
 
-    getIt<DBManager>().newMessageReceived(message);
+    getIt<RealmDBManager>().newMessageReceived(message);
   }
 
   removeUserAdmin(dynamic response) {
@@ -337,7 +339,7 @@ class SocketManager {
     ChatMessageModel message = ChatMessageModel.fromJson(chatMessage);
     // _chatController.newMessageReceived(message);
     // _chatDetailController.newMessageReceived(message);
-    getIt<DBManager>().newMessageReceived(message);
+    getIt<RealmDBManager>().newMessageReceived(message);
   }
 
   removeUserFromGroupChat(dynamic response) {
@@ -355,7 +357,7 @@ class SocketManager {
     ChatMessageModel message = ChatMessageModel.fromJson(chatMessage);
     // _chatController.newMessageReceived(message);
     // _chatDetailController.newMessageReceived(message);
-    getIt<DBManager>().newMessageReceived(message);
+    getIt<RealmDBManager>().newMessageReceived(message);
   }
 
   makeUserAdmin(dynamic response) {
@@ -373,7 +375,7 @@ class SocketManager {
     ChatMessageModel message = ChatMessageModel.fromJson(chatMessage);
     // _chatController.newMessageReceived(message);
     // _chatDetailController.newMessageReceived(message);
-    getIt<DBManager>().newMessageReceived(message);
+    getIt<RealmDBManager>().newMessageReceived(message);
   }
 
   updateChatAccessGroup(dynamic response) {

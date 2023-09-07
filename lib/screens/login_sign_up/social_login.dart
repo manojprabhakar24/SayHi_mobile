@@ -158,14 +158,14 @@ class _SocialLoginState extends State<SocialLogin> {
 
         AppUtil.checkInternet().then((value) {
           if (value) {
-            // EasyLoading.show(status: loadingString.tr);
+            // Loader.show(status: loadingString.tr);
 
             socialLogin('fb', socialId, name, email!);
 
             // ApiController()
             //     .socialLogin(name, 'fb', socialId, email!)
             //     .then((response) async {
-            //   EasyLoading.dismiss();
+            //   Loader.dismiss();
             //   if (response.success) {
             //     SharedPrefs().setUserLoggedIn(true);
             //     _userProfileManager.refreshProfile();
@@ -200,7 +200,7 @@ class _SocialLoginState extends State<SocialLogin> {
   }
 
   void socialLogin(String type, String userId, String name, String email) {
-    EasyLoading.show(status: loadingString.tr);
+    Loader.show(status: loadingString.tr);
 
     AuthApi.socialLogin(
         name: name,
@@ -208,7 +208,7 @@ class _SocialLoginState extends State<SocialLogin> {
         socialId: userId,
         email: email,
         successCallback: (authKey) async {
-          EasyLoading.dismiss();
+          Loader.dismiss();
           SharedPrefs().setUserLoggedIn(true);
           await SharedPrefs().setAuthorizationKey(authKey);
           await _userProfileManager.refreshProfile();
@@ -230,7 +230,7 @@ class _SocialLoginState extends State<SocialLogin> {
   }
 
   Future<void> _handleAppleSignIn() async {
-    EasyLoading.show(status: 'loading...');
+    Loader.show(status: 'loading...');
 
     final rawNonce = generateNonce();
     final nonce = sha256ofString(rawNonce);

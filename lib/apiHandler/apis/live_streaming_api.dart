@@ -2,7 +2,6 @@ import '../../helper/imports/common_import.dart';
 import '../../model/api_meta_data.dart';
 import '../../model/live_model.dart';
 import '../api_wrapper.dart';
-import 'package:get/get.dart';
 
 class LiveStreamingApi {
   static getAllLiveUsers(
@@ -13,9 +12,9 @@ class LiveStreamingApi {
     var url =
         '${NetworkConstantsUtil.liveUsers}?expand=userdetails&name=&profile_category_type=&is_following=';
 
-    EasyLoading.show(status: loadingString.tr);
+    Loader.show(status: loadingString.tr);
     await ApiWrapper().getApi(url: url).then((result) {
-      EasyLoading.dismiss();
+      Loader.dismiss();
       if (result?.success == true) {
         final liverStreamUser = result!.data['liveStreamUser']['items'];
         // model.totalLiveUsers = int.parse(data['total_live_users'] ?? '0');

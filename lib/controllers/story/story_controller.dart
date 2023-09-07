@@ -1,11 +1,9 @@
-import 'package:ffmpeg_kit_flutter/media_information.dart';
 import 'package:foap/apiHandler/apis/misc_api.dart';
 import 'package:foap/apiHandler/apis/story_api.dart';
 import 'package:foap/helper/imports/common_import.dart';
 import 'package:flutter/services.dart';
 import 'dart:io';
 import 'dart:async';
-import 'package:foap/manager/db_manager.dart';
 import 'package:foap/components/custom_gallery_picker.dart';
 import 'package:foap/model/story_model.dart';
 import 'package:foap/screens/dashboard/dashboard_screen.dart';
@@ -14,13 +12,24 @@ import 'package:path_provider/path_provider.dart';
 import 'package:video_compress_ds/video_compress_ds.dart';
 import 'package:flutter_video_info/flutter_video_info.dart';
 
+import '../../manager/db_manager_realm.dart';
+import '../../model/data_wrapper.dart';
+
 class AppStoryController extends GetxController {
   RxList<Media> mediaList = <Media>[].obs;
+  RxList<StoryViewerModel> storyViewers = <StoryViewerModel>[].obs;
+  DataWrapper storyViewerDataWrapper = DataWrapper();
+
   RxBool allowMultipleSelection = false.obs;
   RxInt numberOfItems = 0.obs;
 
-  Rx<StoryMediaModel?> storyMediaModel = Rx<StoryMediaModel?>(null);
+  Rx<StoryMediaModel?> currentStoryMediaModel = Rx<StoryMediaModel?>(null);
   bool isLoading = false;
+
+  clearStoryViewers() {
+    storyViewers.clear();
+    storyViewerDataWrapper = DataWrapper();
+  }
 
   mediaSelected(List<Media> media) {
     mediaList.value = media;
@@ -32,13 +41,40 @@ class AppStoryController extends GetxController {
   }
 
   deleteStory(VoidCallback callback) {
-    StoryApi.deleteStory(id: storyMediaModel.value!.id, callback: callback);
+    StoryApi.deleteStory(
+        id: currentStoryMediaModel.value!.id, callback: callback);
   }
 
   setCurrentStoryMedia(StoryMediaModel storyMedia) {
-    storyMediaModel.value = storyMedia;
-    getIt<DBManager>().storyViewed(storyMedia);
+    UserProfileManager userProfileManager = Get.find();
+
+    clearStoryViewers();
+    currentStoryMediaModel.value = storyMedia;
+    getIt<RealmDBManager>().storyViewed(storyMedia);
+    if (storyMedia.userId == userProfileManager.user.value!.id) {
+      loadStoryViewer();
+    } else {
+      StoryApi.viewStory(storyId: storyMedia.id);
+    }
     update();
+  }
+
+  loadStoryViewer() {
+    if (storyViewerDataWrapper.haveMoreData.value) {
+      storyViewerDataWrapper.isLoading.value = true;
+      StoryApi.getStoryViewers(
+          storyId: currentStoryMediaModel.value!.id,
+          page: storyViewerDataWrapper.page,
+          resultCallback: (result, metadata) {
+            storyViewerDataWrapper.isLoading.value = false;
+
+            storyViewers.addAll(result);
+
+            storyViewerDataWrapper.haveMoreData.value =
+                result.length >= metadata.perPage;
+            storyViewerDataWrapper.page += 1;
+          });
+    }
   }
 
   void uploadAllMedia({required List<Media> items}) async {
@@ -66,7 +102,7 @@ class AppStoryController extends GetxController {
               .create();
       mainFile.writeAsBytesSync(mainFileData);
     } else {
-      EasyLoading.show(status: loadingString.tr);
+      Loader.show(status: loadingString.tr);
 
       MediaInfo? mediaInfo = await VideoCompress.compressVideo(
         media.file!.path,
@@ -86,6 +122,7 @@ class AppStoryController extends GetxController {
       videoThumbnail.writeAsBytesSync(media.thumbnail!);
 
       await MiscApi.uploadFile(videoThumbnail.path,
+          mediaType: GalleryMediaType.photo,
           type: UploadMediaType.storyOrHighlights,
           resultCallback: (fileName, filePath) async {
         videoThumbnailPath = fileName;
@@ -93,10 +130,10 @@ class AppStoryController extends GetxController {
       });
     }
 
-    EasyLoading.show(status: loadingString.tr);
+    Loader.show(status: loadingString.tr);
 
     await MiscApi.uploadFile(mainFile.path,
-        type: UploadMediaType.storyOrHighlights,
+        mediaType: media.mediaType!, type: UploadMediaType.storyOrHighlights,
         resultCallback: (fileName, filePath) async {
       String mainFileUploadedPath = fileName;
       await mainFile.delete();

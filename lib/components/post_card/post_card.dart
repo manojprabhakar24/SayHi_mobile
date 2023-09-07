@@ -7,19 +7,24 @@ import 'package:foap/components/post_card/reshare_post.dart';
 import 'package:foap/components/post_card/reshared_post_card.dart';
 import 'package:foap/components/post_card_controller.dart';
 import 'package:foap/components/post_card/post_text_widget.dart';
+import 'package:foap/screens/post/edit_post.dart';
 import 'package:foap/controllers/post/post_gift_controller.dart';
 import 'package:foap/components/video_widget.dart';
 import 'package:foap/controllers/profile/profile_controller.dart';
 import 'package:foap/helper/imports/common_import.dart';
+import 'package:foap/helper/imports/post_imports.dart';
 import 'package:profanity_filter/profanity_filter.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 import '../../controllers/chat_and_call/chat_detail_controller.dart';
 import '../../controllers/chat_and_call/select_user_for_chat_controller.dart';
 import '../../controllers/home/home_controller.dart';
 import '../../controllers/post/comments_controller.dart';
+import '../../screens/post/liked_by_users.dart';
 import '../../controllers/post/promotion_controller.dart';
 import '../../model/post_gallery.dart';
 import '../../model/post_model.dart';
+import '../../screens/chat/chat_detail.dart';
 import '../../screens/chat/select_users.dart';
 import '../../screens/club/club_detail.dart';
 import '../../screens/home_feed/comments_screen.dart';
@@ -145,10 +150,12 @@ class PostContent extends StatelessWidget {
   final FlareControls flareControls = FlareControls();
   final VoidCallback removePostHandler;
   final VoidCallback blockUserHandler;
+  final bool isSponsored;
 
   PostContent(
       {Key? key,
       required this.model,
+      required this.isSponsored,
       required this.removePostHandler,
       required this.blockUserHandler})
       : super(key: key);
@@ -160,16 +167,40 @@ class PostContent extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Expanded(child: PostUserInfo(post: model)),
+            Expanded(
+                child: PostUserInfo(
+              post: model,
+              isSponsored: isSponsored,
+            )),
+            SizedBox(
+              height: 20,
+              width: 20,
+              child: Obx(() => ThemeIconWidget(
+                    postCardController.savedPosts.contains(model) ||
+                            model.isSaved
+                        ? ThemeIcon.bookMarked
+                        : ThemeIcon.bookMark,
+                    color: model.isSaved ||
+                            postCardController.savedPosts.contains(model)
+                        ? AppColorConstants.themeColor
+                        : AppColorConstants.iconColor,
+                    size: 25,
+                  )),
+            ).ripple(() {
+              postCardController.saveUnSavePost(post: model);
+            }),
+            const SizedBox(
+              width: 20,
+            ),
             SizedBox(
               height: 20,
               width: 20,
               child: ThemeIconWidget(
                 ThemeIcon.more,
                 color: AppColorConstants.iconColor,
-                size: 15,
+                size: 25,
               ),
-            ).borderWithRadius(value: 1, radius: 15).ripple(() {
+            ).ripple(() {
               openActionPopup();
             })
           ],
@@ -254,8 +285,19 @@ class PostContent extends StatelessWidget {
                 ListTile(
                     title: Center(
                         child: Heading6Text(
+                      editPostString.tr,
+                      weight: TextWeight.semiBold,
+                    )),
+                    onTap: () async {
+                      Get.back();
+                      Get.to(() => EditPostScreen(post: model));
+                    }),
+                divider(),
+                ListTile(
+                    title: Center(
+                        child: Heading6Text(
                       deletePostString.tr,
-                      weight: TextWeight.bold,
+                      weight: TextWeight.semiBold,
                     )),
                     onTap: () async {
                       Get.back();
@@ -270,7 +312,7 @@ class PostContent extends StatelessWidget {
                     title: Center(
                         child: Heading6Text(
                       shareString.tr,
-                      weight: TextWeight.bold,
+                      weight: TextWeight.semiBold,
                     )),
                     onTap: () async {
                       Get.back();
@@ -280,11 +322,13 @@ class PostContent extends StatelessWidget {
                     }),
                 divider(),
                 ListTile(
-                    title: Center(child: BodyLargeText(cancelString.tr)),
+                    title: Center(
+                        child: BodyLargeText(
+                      cancelString.tr,
+                      weight: TextWeight.semiBold,
+                      color: AppColorConstants.red,
+                    )),
                     onTap: () => Get.back()),
-                const SizedBox(
-                  height: 25,
-                )
               ],
             )
           : Wrap(
@@ -328,19 +372,20 @@ class PostContent extends StatelessWidget {
                           });
                     }),
                 divider(),
-                ListTile(
-                    title: Center(
-                        child: Heading6Text(
-                      shareString.tr,
-                      weight: TextWeight.bold,
-                    )),
-                    onTap: () async {
-                      Get.back();
-                      postCardController.sharePost(
-                        post: model,
-                      );
-                    }),
-                divider(),
+                if (!model.isSharePost)
+                  ListTile(
+                      title: Center(
+                          child: Heading6Text(
+                        shareString.tr,
+                        weight: TextWeight.bold,
+                      )),
+                      onTap: () async {
+                        Get.back();
+                        postCardController.sharePost(
+                          post: model,
+                        );
+                      }),
+                if (!model.isSharePost) divider(),
                 ListTile(
                     title: Center(
                       child: Heading6Text(
@@ -365,7 +410,10 @@ class PostContent extends StatelessWidget {
           ));
     } else {
       _profileController.otherUserProfileView(refId: model.id, sourceType: 1);
-      Get.to(() => OtherUserProfile(userId: model.user.id));
+      Get.to(() => OtherUserProfile(
+            userId: model.user.id,
+            user: model.user,
+          ));
     }
   }
 
@@ -382,12 +430,14 @@ class PostCard extends StatefulWidget {
 
   final VoidCallback removePostHandler;
   final VoidCallback blockUserHandler;
+  final bool? isSponsored;
 
   const PostCard({
     Key? key,
     required this.model,
     required this.removePostHandler,
     required this.blockUserHandler,
+    this.isSponsored,
   }) : super(key: key);
 
   @override
@@ -402,6 +452,7 @@ class PostCardState extends State<PostCard> {
       SelectUserForChatController();
   final PostGiftController _postGiftController = Get.find();
   final PromotionController _promotionController = Get.find();
+  final ChatDetailController _chatDetailController = Get.find();
 
   TextEditingController commentInputField = TextEditingController();
   final CommentsController _commentsController = CommentsController();
@@ -416,6 +467,7 @@ class PostCardState extends State<PostCard> {
     return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
       PostContent(
         model: widget.model,
+        isSponsored: widget.isSponsored == true,
         removePostHandler: widget.removePostHandler,
         blockUserHandler: widget.blockUserHandler,
       ),
@@ -448,10 +500,49 @@ class PostCardState extends State<PostCard> {
       const SizedBox(
         height: 20,
       ),
+      if (widget.isSponsored == true) sponsoredPostView(),
       commentsCountWidget().hp(DesignConstants.horizontalPadding),
       divider(height: 0.8).vP16,
       commentAndLikeWidget().hp(DesignConstants.horizontalPadding),
-    ]).vP16;
+    ]);
+  }
+
+  Widget sponsoredPostView() {
+    return Container(
+      color: AppColorConstants.themeColor,
+      child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+        BodyLargeText(
+          widget.model.postPromotionData?.type == GoalType.website
+              ? widget.model.postPromotionData?.urlText ?? ''
+              : widget.model.postPromotionData?.type == GoalType.message
+                  ? sendMessage.tr
+                  : viewProfile.tr,
+          color: Colors.white,
+          weight: TextWeight.semiBold,
+        ),
+        const ThemeIconWidget(ThemeIcon.nextArrow,
+            size: 25, color: Colors.white)
+      ]).p8.ripple(() {
+        widget.model.postPromotionData?.type == GoalType.website
+            ? launchUrl(Uri.parse(widget.model.postPromotionData?.url ?? ''))
+            : widget.model.postPromotionData?.type == GoalType.message
+                ? openChatRoom()
+                : Get.to(() => OtherUserProfile(
+                    userId: widget.model.user.id, user: widget.model.user));
+      }),
+    );
+  }
+
+  openChatRoom() {
+    Loader.show(status: loadingString.tr);
+    _chatDetailController.getChatRoomWithUser(
+        userId: widget.model.user.id,
+        callback: (room) {
+          Loader.dismiss();
+          Get.to(() => ChatDetail(
+                chatRoom: room,
+              ));
+        });
   }
 
   Widget viewGifts() {
@@ -498,13 +589,18 @@ class PostCardState extends State<PostCard> {
             '$totalLikes $likesString',
             // weight: TextWeight.semiBold,
             color: AppColorConstants.grayscale700,
-          );
+          ).ripple(() {
+            Get.to(() => LikedByUsers(
+                  postId: widget.model.id,
+                ));
+          });
         }),
-        BodyMediumText(
-          '${widget.model.totalComment} $commentsString',
-          // weight: TextWeight.semiBold,
-          color: AppColorConstants.grayscale700,
-        ),
+        if (widget.model.commentsEnabled)
+          BodyMediumText(
+            '${widget.model.totalComment} $commentsString',
+            // weight: TextWeight.semiBold,
+            color: AppColorConstants.grayscale700,
+          ),
         BodyMediumText(
           '${widget.model.totalView} $viewsString',
           // weight: TextWeight.semiBold,
@@ -545,20 +641,21 @@ class PostCardState extends State<PostCard> {
         );
       }),
 
-      Row(
-        children: [
-          const ThemeIconWidget(
-            ThemeIcon.message,
-            size: 15,
-          ),
-          const SizedBox(
-            width: 10,
-          ),
-          BodyMediumText(commentString)
-        ],
-      ).ripple(() {
-        openComments();
-      }),
+      if (widget.model.commentsEnabled)
+        Row(
+          children: [
+            const ThemeIconWidget(
+              ThemeIcon.message,
+              size: 15,
+            ),
+            const SizedBox(
+              width: 10,
+            ),
+            BodyMediumText(commentString)
+          ],
+        ).ripple(() {
+          openComments();
+        }),
 
       Row(
         children: [
@@ -613,6 +710,40 @@ class PostCardState extends State<PostCard> {
     ]);
   }
 
+  Widget sharePost() {
+    return Container(
+      color: AppColorConstants.cardColor,
+      child: Column(
+        children: [
+          BodyLargeText(
+            shareToFeed.tr,
+            weight: TextWeight.semiBold,
+          ),
+          const SizedBox(
+            height: 20,
+          ),
+          ReSharePost(
+            post: widget.model,
+          ),
+          divider(height: 0.5).vP16,
+          BodyLargeText(
+            sendSeparatelyToFriends.tr,
+            weight: TextWeight.semiBold,
+          ),
+          const SizedBox(
+            height: 20,
+          ),
+          Expanded(child: SelectFollowingUserForMessageSending(
+              // post: widget.model,
+              sendToUserCallback: (user) {
+            selectUserForChatController.sendMessage(
+                toUser: user, post: widget.model);
+          }))
+        ],
+      ).p(DesignConstants.horizontalPadding),
+    ).topRounded(40);
+  }
+
   void addNewMessage() {
     if (commentInputField.text.trim().isNotEmpty) {
       final filter = ProfanityFilter();
@@ -652,37 +783,16 @@ class PostCardState extends State<PostCard> {
             ).round(40)));
   }
 
-  Widget sharePost() {
-    return Container(
-      color: AppColorConstants.cardColor,
-      child: Column(
-        children: [
-          BodyLargeText(
-            shareToFeed.tr,
-            weight: TextWeight.semiBold,
-          ),
-          const SizedBox(
-            height: 20,
-          ),
-          ReSharePost(
-            post: widget.model,
-          ),
-          divider(height: 0.5).vP16,
-          BodyLargeText(
-            sendSeparatelyToFriends.tr,
-            weight: TextWeight.semiBold,
-          ),
-          const SizedBox(
-            height: 20,
-          ),
-          Expanded(child: SelectFollowingUserForMessageSending(
-              // post: widget.model,
-              sendToUserCallback: (user) {
-            selectUserForChatController.sendMessage(
-                toUser: user, post: widget.model);
-          }))
-        ],
-      ).p(DesignConstants.horizontalPadding),
-    ).topRounded(40);
+  void openProfile() async {
+    if (widget.model.user.isMe) {
+      Get.to(() => const MyProfile(
+            showBack: true,
+          ));
+    } else {
+      // postCardController.profileViewed(
+      //     sourceType: InsightSource.post, refId: widget.model.id);
+      Get.to(() => OtherUserProfile(
+          userId: widget.model.user.id, user: widget.model.user));
+    }
   }
 }

@@ -134,12 +134,6 @@ extension PaddingHelper on Widget {
           child: this);
 }
 
-extension Extented on Widget {
-  Expanded get extended => Expanded(
-        child: this,
-      );
-}
-
 extension CornerRadius on Widget {
   ClipRRect get circular => ClipRRect(
         borderRadius: const BorderRadius.all(Radius.circular(1000)),

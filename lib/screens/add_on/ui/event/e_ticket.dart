@@ -271,10 +271,10 @@ class _ETicketState extends State<ETicket> {
   }
 
   saveTicket() {
-    EasyLoading.show(status: loadingString.tr);
+    Loader.show(status: loadingString.tr);
     controller.capture().then((bytes) {
       _eventBookingDetailController.saveETicket(bytes!, context);
-      EasyLoading.dismiss();
+      Loader.dismiss();
     });
   }
 }

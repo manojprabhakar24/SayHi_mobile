@@ -22,7 +22,8 @@ class StoryUpdatesBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
-      padding: EdgeInsets.only(left: DesignConstants.horizontalPadding,right: DesignConstants.horizontalPadding),
+      padding: EdgeInsets.only(
+          left: DesignConstants.horizontalPadding,right: DesignConstants.horizontalPadding),
       scrollDirection: Axis.horizontal,
       itemCount: stories.length + liveUsers.length,
       itemBuilder: (BuildContext ctx, int index) {

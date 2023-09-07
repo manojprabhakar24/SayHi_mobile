@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:foap/components/loader.dart';
+
 import 'package:get/get.dart';
 import '../../helper/localization_strings.dart';
 import '../../util/app_util.dart';
@@ -16,16 +19,16 @@ class AuthApi {
     dynamic param = {
       "email": email,
       "password": password,
-      "device_type": '3',
+      "device_type": Platform.isAndroid ? '1' : '2',
       "device_token": fcmToken ?? '',
       "device_token_voip_ios": voipToken ?? ''
     };
-    EasyLoading.show(status: loadingString.tr);
+    Loader.show(status: loadingString.tr);
 
     await ApiWrapper()
         .postApiWithoutToken(url: NetworkConstantsUtil.login, param: param)
         .then((response) {
-      EasyLoading.dismiss();
+      Loader.dismiss();
 
       if (response?.success == true) {
         String authKey = response!.data!['auth_key'];
@@ -39,11 +42,11 @@ class AuthApi {
   }
 
   static logout() async {
-    EasyLoading.show(status: loadingString.tr);
+    Loader.show(status: loadingString.tr);
 
     await ApiWrapper()
         .postApi(url: NetworkConstantsUtil.logout, param: {}).then((response) {
-      EasyLoading.dismiss();
+      Loader.dismiss();
 
       if (response?.success == true) {
       } else {
@@ -68,13 +71,13 @@ class AuthApi {
       "device_token": fcmToken ?? '',
       "device_token_voip_ios": voipToken ?? ''
     };
-    EasyLoading.show(status: loadingString.tr);
+    Loader.show(status: loadingString.tr);
 
     await ApiWrapper()
         .postApiWithoutToken(
             url: NetworkConstantsUtil.loginWithPhone, param: param)
         .then((response) {
-      EasyLoading.dismiss();
+      Loader.dismiss();
 
       if (response?.success == true) {
         String token = response!.data!['verify_token'];
@@ -96,7 +99,7 @@ class AuthApi {
       required Function(String) successCallback}) async {
     String? fcmToken = await SharedPrefs().getFCMToken();
     String? voipToken = await SharedPrefs().getVoipToken();
-    EasyLoading.show(status: loadingString.tr);
+    Loader.show(status: loadingString.tr);
 
     await ApiWrapper()
         .postApiWithoutToken(url: NetworkConstantsUtil.socialLogin, param: {
@@ -109,7 +112,7 @@ class AuthApi {
       "device_token": fcmToken ?? '',
       "device_token_voip_ios": voipToken ?? ''
     }).then((response) {
-      EasyLoading.dismiss();
+      Loader.dismiss();
 
       if (response?.success == true) {
         String authKey = response!.data!['auth_key'];
@@ -130,7 +133,7 @@ class AuthApi {
       required Function(String) successCallback}) async {
     String? fcmToken = await SharedPrefs().getFCMToken();
     String? voipToken = await SharedPrefs().getVoipToken();
-    EasyLoading.show(status: loadingString.tr);
+    Loader.show(status: loadingString.tr);
     await ApiWrapper()
         .postApiWithoutToken(url: NetworkConstantsUtil.register, param: {
       "username": name,
@@ -141,7 +144,7 @@ class AuthApi {
       "device_token": fcmToken ?? '',
       "device_token_voip_ios": voipToken ?? ''
     }).then((response) {
-      EasyLoading.dismiss();
+      Loader.dismiss();
       if (response?.success == true) {
         String token = response!.data!['token'];
 
@@ -155,12 +158,12 @@ class AuthApi {
   }
 
   static deleteAccount({required VoidCallback successCallback}) async {
-    EasyLoading.show(status: loadingString.tr);
+    Loader.show(status: loadingString.tr);
 
     await ApiWrapper()
         .postApi(url: NetworkConstantsUtil.deleteAccount, param: null)
         .then((response) {
-      EasyLoading.dismiss();
+      Loader.dismiss();
 
       if (response?.success == true) {
         successCallback();
@@ -177,7 +180,7 @@ class AuthApi {
     String? voipToken = await SharedPrefs().getVoipToken();
 
     await ApiWrapper().postApi(url: NetworkConstantsUtil.updatedDeviceToken, param: {
-      "device_type": '3',
+      "device_type": Platform.isAndroid ? '1' : '2',
       "device_token": fcmToken ?? '',
       "device_token_voip_ios": voipToken ?? ''
     }).then((response) {
@@ -196,13 +199,13 @@ class AuthApi {
       {required String username,
       required VoidCallback successCallback,
       required VoidCallback failureCallback}) async {
-    // EasyLoading.show(status: loadingString.tr);
+    // Loader.show(status: loadingString.tr);
 
     await ApiWrapper()
         .postApiWithoutToken(url: NetworkConstantsUtil.checkUserName, param: {
       "username": username,
     }).then((response) {
-      // EasyLoading.dismiss();
+      // Loader.dismiss();
 
       if (response?.success == true) {
         successCallback();
@@ -221,12 +224,12 @@ class AuthApi {
       "country_code": '',
       "phone": ''
     };
-    EasyLoading.show(status: loadingString.tr);
+    Loader.show(status: loadingString.tr);
     await ApiWrapper()
         .postApiWithoutToken(
             url: NetworkConstantsUtil.forgotPassword, param: param)
         .then((response) {
-      EasyLoading.dismiss();
+      Loader.dismiss();
       if (response?.success == true) {
         String token = response!.data!['token'];
 
@@ -247,13 +250,13 @@ class AuthApi {
       "token": token,
       "password": newPassword,
     };
-    EasyLoading.show(status: loadingString.tr);
+    Loader.show(status: loadingString.tr);
 
     await ApiWrapper()
         .postApiWithoutToken(
             url: NetworkConstantsUtil.resetPassword, param: param)
         .then((response) {
-      EasyLoading.dismiss();
+      Loader.dismiss();
       if (response?.success == true) {
         successCallback();
       } else {
@@ -266,13 +269,13 @@ class AuthApi {
 
   static resendOTP(
       {required String token, required VoidCallback successCallback}) async {
-    EasyLoading.show(status: loadingString.tr);
+    Loader.show(status: loadingString.tr);
 
     await ApiWrapper()
         .postApiWithoutToken(url: NetworkConstantsUtil.resendOTP, param: {
       "token": token,
     }).then((response) {
-      EasyLoading.dismiss();
+      Loader.dismiss();
 
       if (response?.success == true) {
         successCallback();
@@ -288,7 +291,7 @@ class AuthApi {
       {required String otp,
       required String token,
       required Function(String) successCallback}) async {
-    EasyLoading.show(status: loadingString.tr);
+    Loader.show(status: loadingString.tr);
 
     await ApiWrapper().postApiWithoutToken(
         url: NetworkConstantsUtil.verifyRegistrationOTP,
@@ -296,7 +299,7 @@ class AuthApi {
           "otp": otp,
           "token": token,
         }).then((response) {
-      EasyLoading.dismiss();
+      Loader.dismiss();
 
       if (response?.success == true) {
         String authKey = response!.data!['auth_key'];
@@ -314,14 +317,14 @@ class AuthApi {
       {required String otp,
       required String token,
       required Function(String) successCallback}) async {
-    EasyLoading.show(status: loadingString.tr);
+    Loader.show(status: loadingString.tr);
 
     await ApiWrapper()
         .postApiWithoutToken(url: NetworkConstantsUtil.verifyFwdPWDOTP, param: {
       "otp": otp,
       "token": token,
     }).then((response) {
-      EasyLoading.dismiss();
+      Loader.dismiss();
 
       if (response?.success == true) {
         String token = response!.data!['verify_token'];
@@ -339,14 +342,14 @@ class AuthApi {
       {required String otp,
       required String token,
       required VoidCallback successCallback}) async {
-    EasyLoading.show(status: loadingString.tr);
+    Loader.show(status: loadingString.tr);
 
     await ApiWrapper()
         .postApi(url: NetworkConstantsUtil.verifyChangePhoneOTP, param: {
       "otp": otp,
       "verify_token": token,
     }).then((response) {
-      EasyLoading.dismiss();
+      Loader.dismiss();
 
       if (response?.success == true) {
         successCallback();

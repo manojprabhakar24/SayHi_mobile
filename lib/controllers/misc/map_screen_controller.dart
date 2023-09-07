@@ -82,7 +82,7 @@ class MapScreenController extends GetxController {
           double.parse(userModel.longitude!)),
       icon: icon,
       onTap: () {
-        Get.to(() => OtherUserProfile(userId: userModel.id));
+        Get.to(() => OtherUserProfile(userId: userModel.id,user: userModel,));
         // QuickActions.showUserProfile(context, userModel)
       },
     ));

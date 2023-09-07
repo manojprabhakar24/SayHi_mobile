@@ -6,9 +6,6 @@ import 'package:foap/helper/extension.dart';
 import 'package:foap/helper/imports/reel_imports.dart';
 import 'package:foap/helper/localization_strings.dart';
 import 'package:foap/helper/number_extension.dart';
-import 'package:foap/screens/add_on/controller/reel/reels_controller.dart';
-import 'package:foap/screens/add_on/model/reel_music_model.dart';
-import 'package:foap/screens/add_on/ui/reel/reels_list.dart';
 import 'package:foap/util/app_config_constants.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
@@ -78,7 +75,7 @@ class _ReelAudioDetailState extends State<ReelAudioDetail> {
                   init: _reelsController,
                   builder: (ctx) {
                     return GridView.builder(
-                        itemCount: _reelsController.filteredMoments.length,
+                        itemCount: _reelsController.filteredReels.length,
                         padding: const EdgeInsets.only(top: 20, bottom: 50),
                         gridDelegate:
                         const SliverGridDelegateWithFixedCrossAxisCount(
@@ -88,7 +85,7 @@ class _ReelAudioDetailState extends State<ReelAudioDetail> {
                             childAspectRatio: 0.7),
                         itemBuilder: (ctx, index) {
                           PostModel reel =
-                          _reelsController.filteredMoments[index];
+                          _reelsController.filteredReels[index];
                           return CachedNetworkImage(
                               fit: BoxFit.cover,
                               imageUrl: reel.gallery.first.thumbnail)

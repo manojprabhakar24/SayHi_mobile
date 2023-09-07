@@ -7,9 +7,11 @@ import '../post_card_controller.dart';
 
 class PostUserInfo extends StatelessWidget {
   final PostModel post;
+  final bool isSponsored;
   final PostCardController postCardController = Get.find();
 
-  PostUserInfo({Key? key, required this.post}) : super(key: key);
+  PostUserInfo({Key? key, required this.post, required this.isSponsored})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -62,15 +64,17 @@ class PostUserInfo extends StatelessWidget {
             const SizedBox(
               height: 2,
             ),
-            Row(
-              children: [
-                const ThemeIconWidget(ThemeIcon.clock, size: 12),
-                const SizedBox(
-                  width: 5,
-                ),
-                BodyExtraSmallText(post.postTime.tr),
-              ],
-            )
+            isSponsored == true
+                ? BodyExtraSmallText(sponsoredString.tr)
+                : Row(
+                    children: [
+                      const ThemeIconWidget(ThemeIcon.clock, size: 12),
+                      const SizedBox(
+                        width: 5,
+                      ),
+                      BodyExtraSmallText(post.postTime.tr),
+                    ],
+                  ),
           ],
         )),
       ],
@@ -85,7 +89,7 @@ class PostUserInfo extends StatelessWidget {
     } else {
       // postCardController.profileViewed(
       //     sourceType: InsightSource.post, refId: widget.model.id);
-      Get.to(() => OtherUserProfile(userId: post.user.id));
+      Get.to(() => OtherUserProfile(userId: post.user.id,user: post.user));
     }
   }
 

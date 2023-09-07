@@ -81,22 +81,22 @@ class _ReelsListState extends State<ReelsList> {
                             allowImplicitScrolling: true,
                             onPageChanged: (index) {
                               _reelsController.currentPageChanged(index,
-                                  _reelsController.filteredMoments[index]);
+                                  _reelsController.filteredReels[index]);
                               if (index ==
-                                  _reelsController.filteredMoments.length - 2) {
+                                  _reelsController.filteredReels.length - 2) {
                                 _reelsController.getReels();
                               }
                             },
                             children: [
                               for (int i = 0;
-                                  i < _reelsController.filteredMoments.length;
+                                  i < _reelsController.filteredReels.length;
                                   i++)
                                 SizedBox(
                                   height: Get.height,
                                   width: Get.width,
                                   // color: Colors.brown,
                                   child: ReelVideoPlayer(
-                                    reel: _reelsController.filteredMoments[i],
+                                    reel: _reelsController.filteredReels[i],
                                     // play: false,
                                   ),
                                 )

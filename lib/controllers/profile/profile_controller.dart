@@ -83,8 +83,6 @@ class ProfileController extends GetxController {
   }
 
   getMyProfile() async {
-    // user.value = _userProfileManager.user.value!;
-    // update();
     await _userProfileManager.refreshProfile();
     user.value = _userProfileManager.user.value!;
     update();
@@ -110,13 +108,13 @@ class ProfileController extends GetxController {
     } else if (FormValidator().isTextEmpty(city)) {
       AppUtil.showToast(message: pleaseEnterCityString.tr, isSuccess: false);
     } else {
-      EasyLoading.show(status: loadingString.tr);
+      Loader.show(status: loadingString.tr);
 
       ProfileApi.updateCountryCity(
           country: country,
           city: city,
           resultCallback: () {
-            EasyLoading.dismiss();
+            Loader.dismiss();
             AppUtil.showToast(
                 message: profileUpdatedString.tr, isSuccess: true);
             _userProfileManager.refreshProfile();
@@ -147,13 +145,13 @@ class ProfileController extends GetxController {
       AppUtil.showToast(
           message: passwordsDoesNotMatchedString.tr, isSuccess: false);
     } else {
-      EasyLoading.show(status: loadingString.tr);
+      Loader.show(status: loadingString.tr);
 
       ProfileApi.changePassword(
           oldPassword: oldPassword,
           newPassword: newPassword,
           resultCallback: () {
-            EasyLoading.dismiss();
+            Loader.dismiss();
             _userProfileManager.refreshProfile();
             Future.delayed(const Duration(milliseconds: 500), () {
               Get.to(() => const LoginScreen());
@@ -188,13 +186,13 @@ class ProfileController extends GetxController {
     if (FormValidator().isTextEmpty(phoneNumber)) {
       AppUtil.showToast(message: enterPhoneNumberString.tr, isSuccess: false);
     } else {
-      EasyLoading.show(status: loadingString.tr);
+      Loader.show(status: loadingString.tr);
 
       ProfileApi.updatePhone(
           countryCode: countryCode,
           phone: phoneNumber,
           resultCallback: (token) {
-            EasyLoading.dismiss();
+            Loader.dismiss();
             _userProfileManager.refreshProfile();
             Get.to(() => VerifyOTPPhoneNumberChange(
                   token: token,
@@ -216,11 +214,11 @@ class ProfileController extends GetxController {
     } else {
       AppUtil.checkInternet().then((value) {
         if (value) {
-          EasyLoading.show(status: loadingString.tr);
+          Loader.show(status: loadingString.tr);
           ProfileApi.updateUserName(
               userName: userName,
               resultCallback: () {
-                EasyLoading.dismiss();
+                Loader.dismiss();
                 AppUtil.showToast(
                     message: userNameIsUpdatedString.tr, isSuccess: true);
                 getMyProfile();
@@ -243,12 +241,12 @@ class ProfileController extends GetxController {
     required int profileCategoryType,
     required isSigningUp,
   }) {
-    EasyLoading.show(status: loadingString.tr);
+    Loader.show(status: loadingString.tr);
 
     ProfileApi.updateProfileCategoryType(
         categoryType: profileCategoryType,
         resultCallback: () {
-          EasyLoading.dismiss();
+          Loader.dismiss();
           AppUtil.showToast(
               message: categoryTypeUpdatedString.tr, isSuccess: true);
           getMyProfile();
@@ -297,13 +295,13 @@ class ProfileController extends GetxController {
   updateBioMetricSetting(bool value) {
     user.value!.isBioMetricLoginEnabled = value == true ? 1 : 0;
     SharedPrefs().setBioMetricAuthStatus(value);
-    EasyLoading.show(status: loadingString.tr);
+    Loader.show(status: loadingString.tr);
 
     ProfileApi.updateBiometricSetting(
         setting: user.value!.isBioMetricLoginEnabled ?? 0,
         resultCallback: () {
           _userProfileManager.refreshProfile();
-          EasyLoading.dismiss();
+          Loader.dismiss();
           AppUtil.showToast(message: profileUpdatedString.tr, isSuccess: true);
         });
   }

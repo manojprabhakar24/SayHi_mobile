@@ -17,7 +17,7 @@ class AppConfigConstants {
   static const razorpayKey = 'rzp_test_jDl2SjSKYlghAD';
 
   static const restApiBaseUrl =
-      'https://product.fwdtechnology.co/social_media_plus/api/web/v1/';
+      'https://development.fwdtechnology.co/social_media_plus/api/web/v1/';
 
   // Socket api url
   static const socketApiBaseUrl = "https://product.fwdtechnology.co:3000/";
@@ -72,8 +72,8 @@ class AppColorConstants {
       ? Colors.white.withOpacity(0.2)
       : Colors.black.withOpacity(0.2);
 
-  static Color get inputFieldBackgroundColor =>
-      isDarkMode ? const Color(0xFF212121) : const Color(0xFFf5f6fa);
+  // static Color get inputFieldBackgroundColor =>
+  //     isDarkMode ? const Color(0xFF212121) : const Color(0xFF212121);
 
   static Color get iconColor =>
       isDarkMode ? Colors.white : const Color(0xFF212121);
@@ -81,8 +81,9 @@ class AppColorConstants {
   static Color get inputFieldTextColor =>
       isDarkMode ? const Color(0xFFFAFAFA) : const Color(0xFF212121);
 
-  static Color get inputFieldPlaceholderTextColor =>
-      isDarkMode ? const Color(0xFF3F434E) : const Color(0xFF9E9E9E);
+  static Color get inputFieldPlaceholderTextColor => isDarkMode
+      ? const Color(0xFFFAFAFA).lighten()
+      : const Color(0xFF212121).darken();
 
   static Color get red => isDarkMode ? Colors.red : Colors.red;
 

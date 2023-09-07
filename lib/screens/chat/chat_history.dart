@@ -179,7 +179,7 @@ class _ChatHistoryState extends State<ChatHistory> {
                 _chatDetailController.getChatRoomWithUser(
                     userId: user.id,
                     callback: (room) {
-                      EasyLoading.dismiss();
+                      Loader.dismiss();
 
                       Get.close(1);
                       Get.to(() => ChatDetail(

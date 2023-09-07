@@ -3,7 +3,6 @@ import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import '../../components/post_card/post_card.dart';
 import '../../controllers/post/post_controller.dart';
 import '../../model/post_model.dart';
-import '../post/view_post_insight.dart';
 import '../settings_menu/notifications.dart';
 
 class Mentions extends StatefulWidget {
@@ -117,7 +116,7 @@ class _MentionsState extends State<Mentions> {
     scrollController.addListener(() {
       if (scrollController.position.maxScrollExtent ==
           scrollController.position.pixels) {
-        if (!_postController.mentionsPostsIsLoading) {
+        if (!_postController.mentionsDataWrapper.isLoading.value) {
           _postController.getMyMentions();
         }
       }
@@ -128,7 +127,7 @@ class _MentionsState extends State<Mentions> {
         builder: (ctx) {
           List<PostModel> posts = _postController.mentions;
 
-          return _postController.isLoadingPosts
+          return _postController.postDataWrapper.isLoading.value
               ? const HomeScreenShimmer()
               : posts.isEmpty
                   ? Center(child: BodyLargeText(noDataString.tr))

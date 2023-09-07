@@ -1,7 +1,7 @@
 import 'package:foap/apiHandler/apis/club_api.dart';
 import 'package:foap/helper/imports/common_import.dart';
 import '../../apiHandler/apis/post_api.dart';
-import '../../manager/db_manager.dart';
+import '../../manager/db_manager_realm.dart';
 import '../../model/club_join_request.dart';
 import '../../model/club_model.dart';
 import '../../model/post_model.dart';
@@ -156,7 +156,7 @@ class ClubDetailController extends GetxController {
             if (club.value!.enableChat == 1) {
               _chatDetailController.getRoomDetail(club.value!.chatRoomId!,
                   (chatRoom) {
-                getIt<DBManager>().saveRooms([chatRoom]);
+                getIt<RealmDBManager>().saveRooms([chatRoom]);
               });
             }
           });

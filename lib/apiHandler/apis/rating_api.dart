@@ -32,9 +32,9 @@ class RatingApi {
     url = url.replaceAll('reference_id', refId.toString());
     url = '$url&page=$page';
 
-    EasyLoading.show(status: loadingString.tr);
+    Loader.show(status: loadingString.tr);
     await ApiWrapper().getApi(url: url).then((result) {
-      EasyLoading.dismiss();
+      Loader.dismiss();
       if (result?.success == true) {
         var items = result!.data['rating']['items'];
         resultCallback(

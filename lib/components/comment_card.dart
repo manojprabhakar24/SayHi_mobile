@@ -46,7 +46,8 @@ class CommentTileState extends State<CommentTile> {
                     : model.user!.userName,
                 size: 35,
               ).ripple(() {
-                Get.to(() => OtherUserProfile(userId: model.userId));
+                Get.to(() =>
+                    OtherUserProfile(userId: model.userId, user: model.user));
               }),
               const SizedBox(width: 10),
               Flexible(
@@ -58,7 +59,8 @@ class CommentTileState extends State<CommentTile> {
                     model.userName,
                     weight: TextWeight.medium,
                   ).ripple(() {
-                    Get.to(() => OtherUserProfile(userId: model.userId));
+                    Get.to(() => OtherUserProfile(
+                        userId: model.userId, user: model.user));
                   }),
                   model.type == CommentType.text
                       ? showCommentText()
@@ -134,7 +136,8 @@ class CommentTileState extends State<CommentTile> {
           page: 1,
           resultCallback: (result, metadata) {
             if (result.isNotEmpty) {
-              Get.to(() => OtherUserProfile(userId: result.first.id));
+              Get.to(() => OtherUserProfile(
+                  userId: result.first.id, user: result.first));
             }
           });
     }

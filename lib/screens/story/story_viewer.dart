@@ -1,5 +1,6 @@
 import 'package:foap/helper/imports/common_import.dart';
 import 'package:foap/helper/imports/story_imports.dart';
+import 'package:foap/screens/story/story_view_users.dart';
 import 'package:story_view/utils.dart';
 
 import '../profile/my_profile.dart';
@@ -19,7 +20,7 @@ class StoryViewer extends StatefulWidget {
 
 class _StoryViewerState extends State<StoryViewer> {
   final controller = StoryController();
-  final AppStoryController storyController = AppStoryController();
+  final AppStoryController storyController = Get.find();
   final SettingsController settingsController = Get.find();
   final UserProfileManager _userProfileManager = Get.find();
 
@@ -81,6 +82,11 @@ class _StoryViewerState extends State<StoryViewer> {
             // Preferrably for inline story view.
             ),
         Positioned(top: 70, left: 20, right: 0, child: userProfileView()),
+        Obx(() => (storyController.currentStoryMediaModel.value?.userId ==
+                _userProfileManager.user.value!.id)
+            ? Positioned(
+                bottom: 20, left: 0, right: 0, child: storyViewCounter())
+            : Container()),
         // Positioned(bottom: 0, left: 0, right: 0, child: replyView()),
       ],
     );
@@ -129,9 +135,9 @@ class _StoryViewerState extends State<StoryViewer> {
               children: [
                 BodyMediumText(widget.story.userName,
                     weight: TextWeight.medium, color: Colors.white),
-                Obx(() => storyController.storyMediaModel.value != null
+                Obx(() => storyController.currentStoryMediaModel.value != null
                     ? BodyMediumText(
-                        storyController.storyMediaModel.value!.createdAt,
+                        storyController.currentStoryMediaModel.value!.createdAt,
                         color: AppColorConstants.grayscale100,
                       )
                     : Container())
@@ -196,6 +202,31 @@ class _StoryViewerState extends State<StoryViewer> {
             )).then((value) {
       controller.play();
     });
+  }
+
+  Widget storyViewCounter() {
+    return Obx(() => storyController.currentStoryMediaModel.value != null
+        ? Column(
+            children: [
+              const ThemeIconWidget(
+                ThemeIcon.arrowUp,
+                color: Colors.white,
+              ),
+              const SizedBox(
+                height: 5,
+              ),
+              BodyLargeText(
+                '${storyController.currentStoryMediaModel.value!.totalView}',
+                color: Colors.white,
+              ),
+            ],
+          ).ripple(() {
+            controller.pause();
+            Get.bottomSheet(StoryViewUsers()).then((value) {
+              controller.play();
+            });
+          })
+        : Container());
   }
 
 // Widget replyView() {

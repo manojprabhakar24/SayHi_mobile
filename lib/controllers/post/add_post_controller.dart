@@ -29,6 +29,8 @@ class AddPostController extends GetxController {
   RxBool isPosting = false.obs;
   RxBool isErrorInPosting = false.obs;
 
+  RxBool enableComments = true.obs;
+
   List<Media> postingMedia = [];
   late String postingTitle;
 
@@ -38,8 +40,6 @@ class AddPostController extends GetxController {
 
   int currentUpdateAbleStartOffset = 0;
   int currentUpdateAbleEndOffset = 0;
-  RxBool allowComments = true.obs;
-
   RxString searchText = ''.obs;
   RxInt position = 0.obs;
 
@@ -64,15 +64,11 @@ class AddPostController extends GetxController {
     isPosting.value = false;
     isErrorInPosting.value = false;
 
-    // postingMedia = [];
-    // postingTitle = '';
-
     hashTags.clear();
     // searchedUsers.clear();
 
     currentUpdateAbleStartOffset = 0;
     currentUpdateAbleEndOffset = 0;
-    allowComments.value = true;
 
     searchText.value = '';
     position.value = 0;
@@ -83,9 +79,7 @@ class AddPostController extends GetxController {
     canLoadMoreHashtags = true;
     hashtagsIsLoading = false;
 
-    // accountsPage = 1;
-    // canLoadMoreAccounts = true;
-    // accountsIsLoading = false;
+    enableComments.value = true;
 
     update();
   }
@@ -97,6 +91,11 @@ class AddPostController extends GetxController {
 
   togglePreviewMode() {
     isPreviewMode.value = !isPreviewMode.value;
+    update();
+  }
+
+  toggleEnableComments() {
+    enableComments.value = !enableComments.value;
     update();
   }
 
@@ -165,31 +164,6 @@ class AddPostController extends GetxController {
 
   searchUsers({required String text, VoidCallback? callBackHandler}) {
     _usersController.setSearchTextFilter(text.replaceAll('@', ''));
-    // if (canLoadMoreAccounts) {
-    //   accountsIsLoading = true;
-    //
-    //   UsersApi.searchUsers(
-    //       page: accountsPage,
-    //       isExactMatch: 0,
-    //       searchText: text.replaceAll('@', ''),
-    //       resultCallback: (result, metadata) {
-    //         searchedUsers.addAll(result);
-    //         searchedUsers.unique((e) => e.id);
-    //
-    //         accountsIsLoading = false;
-    //         canLoadMoreAccounts = result.length >= metadata.perPage;
-    //         accountsPage += 1;
-    //         update();
-    //
-    //         if (callBackHandler != null) {
-    //           callBackHandler();
-    //         }
-    //       });
-    // } else {
-    //   if (callBackHandler != null) {
-    //     callBackHandler();
-    //   }
-    // }
   }
 
   textChanged(String text, int position) {
@@ -218,7 +192,6 @@ class AddPostController extends GetxController {
       }
 
       _usersController.clear();
-      // searchedUsers.clear();
 
       if (lastPart.length > 1) {
         searchUsers(text: lastPart);
@@ -241,10 +214,6 @@ class AddPostController extends GetxController {
     this.position.value = position;
   }
 
-  toggleAllowCommentsSetting() {
-    allowComments.value = !allowComments.value;
-  }
-
   discardFailedPost() {
     postingMedia = [];
     postingTitle = '';
@@ -255,13 +224,17 @@ class AddPostController extends GetxController {
 
   retryPublish() {
     uploadAllPostFiles(
-        items: postingMedia, title: postingTitle, postType: currentPostType!);
+        items: postingMedia,
+        title: postingTitle,
+        postType: currentPostType!,
+        allowComments: true);
   }
 
   void uploadAllPostFiles(
       {required PostType postType,
       required List<Media> items,
       required String title,
+      required bool allowComments,
       int? competitionId,
       int? clubId,
       bool isReel = false,
@@ -276,7 +249,7 @@ class AddPostController extends GetxController {
     if (competitionId == null && clubId == null) {
       Get.offAll(() => const DashboardScreen());
     } else {
-      EasyLoading.show(status: loadingString.tr);
+      Loader.show(status: loadingString.tr);
     }
 
     var responses = await Future.wait([
@@ -287,16 +260,17 @@ class AddPostController extends GetxController {
         )
     ]).whenComplete(() {});
 
-    if(items.isEmpty){
-      print('no media found');
-      return;
-    }
+    // if (items.isEmpty) {
+    //   print('no media found');
+    //   return;
+    // }
     publishAction(
       postType: postType,
       galleryItems: responses,
       title: title,
       tags: title.getHashtags(),
       mentions: title.getMentions(),
+      allowComments: allowComments,
       competitionId: competitionId,
       clubId: clubId,
       isReel: isReel,
@@ -332,7 +306,7 @@ class AddPostController extends GetxController {
       };
       completer.complete(gallery);
     } else if (media.mediaType == GalleryMediaType.video) {
-      EasyLoading.show(status: loadingString.tr);
+      Loader.show(status: loadingString.tr);
       MediaInfo? mediaInfo = await VideoCompress.compressVideo(
         media.file!.path,
         quality: VideoQuality.DefaultQuality,
@@ -391,6 +365,7 @@ class AddPostController extends GetxController {
     required String title,
     required List<String> tags,
     required List<String> mentions,
+    required bool allowComments,
     int? competitionId,
     int? clubId,
     bool isReel = false,
@@ -402,6 +377,7 @@ class AddPostController extends GetxController {
         postType: postType,
         title: title,
         gallery: galleryItems,
+        allowComments: allowComments,
         hashTag: tags.join(','),
         mentions: mentions.join(','),
         competitionId: competitionId,
@@ -412,7 +388,7 @@ class AddPostController extends GetxController {
         resultCallback: (postId) {
           if (postId != null) {
             if (competitionId != null || clubId != null) {
-              EasyLoading.dismiss();
+              Loader.dismiss();
               Get.offAll(() => const DashboardScreen());
             }
 
@@ -433,123 +409,16 @@ class AddPostController extends GetxController {
         });
   }
 
-// loadMedia(
-//     {required BuildContext context,
-//     required PostMediaType mediaType,
-//     required bool canSelectMultiple}) async {
-//   mediaList.clear();
-//   numberOfItems.value = 0;
-//   // _channel
-//   //     .invokeMethod<int>(
-//   //         "getItemCount",
-//   //         mediaType == PostMediaType.photo
-//   //             ? 1
-//   //             : mediaType == PostMediaType.video
-//   //                 ? 2
-//   //                 : 3)
-//   //     .then((count) {
-//   //   numberOfItems.value = count ?? 0;
-//   // });
-//
-//   getIt<GalleryLoader>().loadGalleryData(
-//       mediaType: mediaType,
-//
-//       completion: (data) {
-//         mediaList.value = data;
-//         numberOfItems.value = mediaList.length;
-//         if (mediaList.isNotEmpty) {
-//           selectItem(index: 0, canSelectMultiple: canSelectMultiple);
-//         }
-//       });
-// }
-
-// Future<GalleryMedia> getItem(
-//     {required int index, required PostMediaType mediaType}) async {
-//   if (itemCache[index] != null) {
-//     return await getCachedItem(index);
-//   } else {
-//     var channelResponse = await _channel.invokeMethod("getItem", {
-//       'index': index,
-//       'mediaType': mediaType == PostMediaType.photo
-//           ? 1
-//           : mediaType == PostMediaType.video
-//               ? 2
-//               : 3
-//     });
-//     var item = Map<String, dynamic>.from(channelResponse);
-//     var galleryImage = GalleryMedia(
-//       bytes: item['data'],
-//       id: item['id'],
-//       dateCreated: item['created'],
-//       mediaType: item['mediaType'] ?? 1,
-//       path: item['path'] ?? '',
-//     );
-//
-//     itemCache[index] = galleryImage;
-//     return galleryImage;
-//   }
-// }
-
-// Future<GalleryMedia> getOriginalItem(String id) async {
-//   if (originalItemCache[id] != null) {
-//     return await getCachedOriginalItem(id);
-//   } else {
-//     var channelResponse =
-//         await _channel.invokeMethod("originalForGalleryItem", id);
-//     var item = Map<String, dynamic>.from(channelResponse);
-//
-//     var galleryImage = GalleryMedia(
-//       bytes: item['data'],
-//       id: item['id'],
-//       dateCreated: item['created'],
-//       mediaType: item['mediaType'],
-//       path: item['path'],
-//     );
-//
-//     originalItemCache[id] = galleryImage;
-//
-//     // update();
-//
-//     return galleryImage;
-//   }
-// }
-
-// getCachedItem(int index) {
-//   return itemCache[index];
-// }
-
-// getCachedOriginalItem(String id) {
-//   return originalItemCache[id];
-// }
-
-// isSelected(String id) {
-//   return selectedItems.where((item) => item.id == id).isNotEmpty;
-// }
-//
-// selectItem({required int index, required bool canSelectMultiple}) async {
-//   if (mediaList.isNotEmpty) {
-//     var galleryImage = mediaList[index];
-//     // var galleryImage = await getOriginalItem(previewAsset.id);
-//
-//     if (canSelectMultiple) {
-//       if (isSelected(galleryImage.id)) {
-//         selectedItems.removeWhere((anItem) => anItem.id == galleryImage.id);
-//         if (selectedItems.isEmpty) {
-//           selectedItems.add(galleryImage);
-//         }
-//       } else {
-//         if (selectedItems.length < 10) {
-//           selectedItems.add(galleryImage);
-//         }
-//       }
-//     } else {
-//       selectedItems.clear();
-//       selectedItems.add(galleryImage);
-//     }
-//     if (currentIndex.value >= selectedItems.length) {
-//       currentIndex.value = selectedItems.length - 1;
-//     }
-//     update();
-//   }
-// }
+  void updatePost({
+    required int postId,
+    required String title,
+    required bool allowComments,
+  }) {
+    PostApi.updatePost(
+      postId: postId,
+      title: title,
+      allowComments: allowComments,
+    );
+    Get.back();
+  }
 }

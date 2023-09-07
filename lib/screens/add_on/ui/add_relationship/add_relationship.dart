@@ -5,7 +5,6 @@ import 'package:foap/screens/add_on/controller/relationship/relationship_control
 import 'package:foap/screens/add_on/ui/add_relationship/search_relation_profile.dart';
 import 'package:foap/screens/profile/my_profile.dart';
 import 'package:foap/screens/profile/other_user_profile.dart';
-import 'package:get/get.dart';
 
 class AddRelationship extends StatefulWidget {
   const AddRelationship({Key? key}) : super(key: key);
@@ -51,7 +50,6 @@ class _AddRelationshipState extends State<AddRelationship> {
             height: 50,
           ),
           Obx(() => backNavigationBarWithIconBadge(
-              
               icon: ThemeIcon.notification,
               title: myFamilyString.tr,
               badgeCount: _relationshipController.myInvitations.isNotEmpty
@@ -90,8 +88,9 @@ class _AddRelationshipState extends State<AddRelationship> {
                               });
                             } else {
                               Get.to(() => OtherUserProfile(
-                                      userId: _relationshipController
-                                          .relationships[index].userId!))!
+                                        userId: _relationshipController
+                                            .relationships[index].userId!,
+                                      ))!
                                   .then((value) {
                                 loadData();
                               });
@@ -159,7 +158,6 @@ class _AddRelationshipState extends State<AddRelationship> {
   showSettingDialog() {
     showDialog(
         context: context,
-
         builder: (BuildContext context) {
           return AlertDialog(content: StatefulBuilder(
               builder: (BuildContext context, StateSetter setState) {

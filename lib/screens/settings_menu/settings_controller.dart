@@ -1,4 +1,5 @@
 import 'package:flutter/services.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:foap/apiHandler/apis/auth_api.dart';
 import 'package:foap/apiHandler/apis/misc_api.dart';
 import 'package:foap/helper/imports/common_import.dart';
@@ -25,6 +26,7 @@ class SettingsController extends GetxController {
 
   var localAuth = LocalAuthentication();
   RxInt bioMetricType = 0.obs;
+
   // RateMyApp rateMyApp = RateMyApp(
   //   preferencesPrefix: 'rateMyApp_',
   //   minDays: 0, // Show rate popup on first day of install.
@@ -99,13 +101,20 @@ class SettingsController extends GetxController {
     String? authKey = await SharedPrefs().getAuthorizationKey();
 
     if (authKey != null) {
-      await MiscApi.getSettings(resultCallback: (result) {
+      await MiscApi.getSettings(resultCallback: (result) async {
         setting.value = result;
 
         if (setting.value?.latestVersion! !=
             AppConfigConstants.currentVersion) {
           forceUpdate.value = true;
           forceUpdate.value = false;
+        }
+
+        if (setting.value!.stripePublishableKey?.isNotEmpty == true) {
+          Stripe.publishableKey = setting.value!.stripePublishableKey!;
+          Stripe.merchantIdentifier = 'merchant.com.socialified';
+          Stripe.urlScheme = 'socialifiedstripe';
+          await Stripe.instance.applySettings();
         }
 
         update();
@@ -152,8 +161,7 @@ class SettingsController extends GetxController {
   deleteAccount() {
     AuthApi.deleteAccount(successCallback: () {
       _userProfileManager.logout();
-      AppUtil.showToast(
-          message: accountIsDeletedString.tr, isSuccess: true);
+      AppUtil.showToast(message: accountIsDeletedString.tr, isSuccess: true);
     });
   }
 

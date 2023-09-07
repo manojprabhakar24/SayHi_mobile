@@ -1,6 +1,8 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
+
+import 'package:foap/components/loader.dart';
+import 'package:foap/helper/imports/common_import.dart';
 import 'package:get/get.dart';
 
 import '../../helper/enum.dart';
@@ -18,6 +20,7 @@ class PostApi {
       {required PostType postType,
       required String title,
       required List<Map<String, String>> gallery,
+      required bool allowComments,
       String? hashTag,
       String? mentions,
       int? competitionId,
@@ -45,7 +48,8 @@ class PostApi {
       'audio_id': audioId,
       'audio_start_time': audioStartTime,
       'audio_end_time': audioEndTime,
-      'is_add_to_post': addToPost == true ? 1 : 0
+      'is_add_to_post': addToPost == true ? 1 : 0,
+      'is_comment_enable': allowComments == true ? 1 : 0
     };
 
     await ApiWrapper().postApi(url: url, param: parameters).then((result) {
@@ -57,12 +61,27 @@ class PostApi {
     });
   }
 
+  static updatePost(
+      {required int postId,
+      required String title,
+      required bool allowComments}) async {
+    var url = '${NetworkConstantsUtil.editPost}$postId';
+
+    var parameters = {
+      "title": title,
+      'is_comment_enable': allowComments == true ? 1 : 0
+    };
+
+    await ApiWrapper().putApi(url: url, param: parameters).then((result) {});
+  }
+
   static getPosts(
       {int? userId,
       int? isPopular,
       int? isFollowing,
       int? clubId,
       int? isSold,
+      int? isSaved,
       int? isReel,
       int? audioId,
       int? isMine,
@@ -106,22 +125,43 @@ class PostApi {
     if (audioId != null) {
       url = '$url&audio_id=$audioId';
     }
+    if (isSaved != null) {
+      url = '$url&is_favorite=1';
+    }
     url = '$url&page=$page';
-    EasyLoading.show(status: loadingString.tr);
-
-    print('get post url $url');
     await ApiWrapper().getApi(url: url).then((response) {
-      EasyLoading.dismiss();
-
       if (response?.data != null) {
         List<PostModel> posts = [];
         var items = response!.data['post']['items'];
         posts = List<PostModel>.from(items.map((x) => PostModel.fromJson(x)))
-            // .where((element) => element.gallery.isNotEmpty)
             .toList();
 
         APIMetaData metaData =
             APIMetaData.fromJson(response.data['post']['_meta']);
+
+        resultCallback(posts, metaData);
+      }
+    });
+  }
+
+  static getPromotionalPosts(
+      {int page = 0,
+      required Function(List<PostModel>, APIMetaData) resultCallback}) async {
+    var url = NetworkConstantsUtil.getPromotedPosts;
+
+    Loader.show(status: loadingString.tr);
+
+    await ApiWrapper().getApi(url: url).then((response) {
+      Loader.dismiss();
+
+      if (response?.data != null) {
+        List<PostModel> posts = [];
+        var items = response!.data['postPromotionList']['items'];
+        posts = List<PostModel>.from(items.map((x) => PostModel.fromJson(x)))
+            .toList();
+
+        APIMetaData metaData =
+            APIMetaData.fromJson(response.data['postPromotionList']['_meta']);
 
         resultCallback(posts, metaData);
       }
@@ -133,11 +173,10 @@ class PostApi {
       int page = 0,
       required Function(List<PostModel>, APIMetaData) resultCallback}) async {
     var url = '${NetworkConstantsUtil.mentionedPosts}$userId&page=$page';
-
-    EasyLoading.show(status: loadingString.tr);
+    Loader.show();
 
     await ApiWrapper().getApi(url: url).then((response) {
-      EasyLoading.dismiss();
+      Loader.dismiss();
 
       if (response?.data != null) {
         List<PostModel> posts = [];
@@ -242,7 +281,7 @@ class PostApi {
     });
   }
 
-  static likeUnlikePost({required bool like, required int postId}) async{
+  static likeUnlikePost({required bool like, required int postId}) async {
     var url = (like
         ? NetworkConstantsUtil.likePost
         : NetworkConstantsUtil.unlikePost);
@@ -251,9 +290,40 @@ class PostApi {
         url: url, param: {"post_id": postId.toString()}).then((value) {});
   }
 
+  static Future<void> postLikedByUsers(
+      {required int postId,
+      required int page,
+      required Function(List<UserModel>, APIMetaData) resultCallback}) async {
+    var url = NetworkConstantsUtil.postLikedByUsers
+        .replaceAll('{{post_id}}', postId.toString());
+
+    url = '$url&page=$page';
+
+    await ApiWrapper().getApi(url: url).then((response) {
+      if (response?.success == true) {
+        var items = response!.data['results']['items'];
+        resultCallback(
+            List<UserModel>.from(
+                items.map((x) => UserModel.fromJson(x['user']))),
+            APIMetaData.fromJson(response.data['results']['_meta']));
+      }
+    });
+  }
+
+  static saveUnSavePost({required bool save, required int postId}) async {
+    var url = (save
+        ? NetworkConstantsUtil.savePost
+        : NetworkConstantsUtil.removeSavedPost);
+
+    await ApiWrapper().postApi(url: url, param: {
+      "reference_id": postId.toString(),
+      'type': '3'
+    }).then((value) {});
+  }
+
   static Future uploadFile(String filePath,
       {required Function(String, String) resultCallback}) async {
-    EasyLoading.show(status: loadingString.tr);
+    Loader.show(status: loadingString.tr);
 
     await ApiWrapper()
         .uploadPostFile(
@@ -261,7 +331,7 @@ class PostApi {
       file: filePath,
     )
         .then((result) {
-      EasyLoading.dismiss();
+      Loader.dismiss();
       if (result?.success == true) {
         resultCallback(result!.data['filename'], result.data['fileUrl']);
       }

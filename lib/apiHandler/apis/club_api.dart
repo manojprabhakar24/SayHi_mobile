@@ -1,6 +1,7 @@
 import 'dart:ui';
 import 'package:foap/apiHandler/api_wrapper.dart';
 import 'package:get/get.dart';
+import 'package:foap/components/loader.dart';
 
 import '../../helper/imports/common_import.dart';
 import '../../model/api_meta_data.dart';
@@ -73,10 +74,10 @@ class ClubApi {
 
   static deleteClub(int clubId) async {
     var url = NetworkConstantsUtil.deleteClub + clubId.toString();
-    EasyLoading.show(status: loadingString.tr);
+    Loader.show(status: loadingString.tr);
 
     await ApiWrapper().deleteApi(url: url).then((result) {
-      EasyLoading.dismiss();
+      Loader.dismiss();
       if (result?.success == true) {}
     });
   }

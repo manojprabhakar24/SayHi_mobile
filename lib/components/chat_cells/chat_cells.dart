@@ -1,6 +1,5 @@
 import 'package:foap/helper/imports/chat_imports.dart';
 import 'package:foap/helper/imports/common_import.dart';
-import 'package:get/get.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 
 class ChatMessageTile extends StatelessWidget {
@@ -203,7 +202,7 @@ class MessageDeliveryStatusView extends StatelessWidget {
           var visiblePercentage = visibilityInfo.visibleFraction * 100;
 
           if (!message.isMineMessage && visiblePercentage > 90) {
-            if (message.messageStatusType != MessageStatus.read &&
+            if (message.isMessageReadyByMe == false &&
                 message.messageContentType != MessageContentType.groupAction &&
                 !message.isDateSeparator) {
               chatDetailController.sendMessageAsRead(message);

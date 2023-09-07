@@ -38,6 +38,7 @@ class _ViewPostInsightsState extends State<ViewPostInsights> {
                     model: widget.post,
                     removePostHandler: () {},
                     blockUserHandler: () {},
+                    isSponsored: false,
                   ),
                 ),
                 divider(height: 1).vP25,

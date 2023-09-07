@@ -32,10 +32,11 @@ class CreateClubController extends GetxController {
 
   createClub(
       ClubModel club, BuildContext context, VoidCallback callback) async {
-    EasyLoading.show(status: loadingString.tr);
+    Loader.show(status: loadingString.tr);
 
-    await MiscApi.uploadFile(imageFile.value!.path, type: UploadMediaType.club,
-        resultCallback: (filename, filepath) {
+    await MiscApi.uploadFile(imageFile.value!.path,
+        mediaType: GalleryMediaType.photo,
+        type: UploadMediaType.club, resultCallback: (filename, filepath) {
       ClubApi.createClub(
           categoryId: club.categoryId!,
           isOnRequestType: privacyType.value == 3 ? 1 : 0,
@@ -45,7 +46,7 @@ class CreateClubController extends GetxController {
           image: filename,
           description: club.desc!,
           resultCallback: (clubId) {
-            EasyLoading.dismiss();
+            Loader.dismiss();
             _clubsController.refreshClubs();
             Get.close(3);
             clear();
@@ -55,7 +56,9 @@ class CreateClubController extends GetxController {
     });
 
     await MiscApi.uploadFile(imageFile.value!.path,
-        type: UploadMediaType.club, resultCallback: (fileName, filePath) {});
+        mediaType: GalleryMediaType.photo,
+        type: UploadMediaType.club,
+        resultCallback: (fileName, filePath) {});
   }
 
   void editClubImageAction(XFile pickedFile, BuildContext context) async {
@@ -65,10 +68,11 @@ class CreateClubController extends GetxController {
 
   updateClubImage(ClubModel club, BuildContext context,
       Function(ClubModel) callback) async {
-    EasyLoading.show(status: loadingString.tr);
+    Loader.show(status: loadingString.tr);
 
-    await MiscApi.uploadFile(imageFile.value!.path, type: UploadMediaType.club,
-        resultCallback: (fileName, filePath) {
+    await MiscApi.uploadFile(imageFile.value!.path,
+        mediaType: GalleryMediaType.photo,
+        type: UploadMediaType.club, resultCallback: (fileName, filePath) {
       club.imageName = fileName;
       club.image = filePath;
 
@@ -81,7 +85,7 @@ class CreateClubController extends GetxController {
   }
 
   updateClubInfo({required ClubModel club, required VoidCallback callback}) {
-    EasyLoading.show(status: loadingString.tr);
+    Loader.show(status: loadingString.tr);
 
     ClubApi.updateClub(
         clubId: club.id!,
@@ -90,7 +94,7 @@ class CreateClubController extends GetxController {
         name: club.name!,
         image: club.imageName!,
         description: club.desc!);
-    EasyLoading.dismiss();
+    Loader.dismiss();
     Get.back();
     callback();
   }

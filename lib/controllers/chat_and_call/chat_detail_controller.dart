@@ -8,12 +8,12 @@ import 'package:foap/apiHandler/apis/users_api.dart';
 import 'package:foap/helper/imports/common_import.dart';
 import 'package:foap/helper/imports/chat_imports.dart';
 import 'package:foap/helper/string_extension.dart';
-import 'package:get/get.dart';
 import 'package:google_mlkit_smart_reply/google_mlkit_smart_reply.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:profanity_filter/profanity_filter.dart';
 import '../../components/notification_banner.dart';
 import '../../helper/permission_utils.dart';
+import '../../manager/db_manager_realm.dart';
 import '../../manager/socket_manager.dart';
 import '../../model/call_model.dart';
 import '../../model/gallery_media.dart';
@@ -112,7 +112,7 @@ class ChatDetailController extends GetxController {
       chatRoom.refresh();
 
       // update room in local storage
-      await getIt<DBManager>().updateRoom(chatRoom.value!);
+      await getIt<RealmDBManager>().startUpdateRoom(chatRoom.value!, false);
       callback();
     });
   }
@@ -121,7 +121,7 @@ class ChatDetailController extends GetxController {
       {required int userId, required Function(ChatRoomModel) callback}) {
     createChatRoom(userId, (roomId) async {
       ChatApi.getChatRoomDetail(roomId, resultCallback: (result) async {
-        await getIt<DBManager>().saveRooms([result]);
+        await getIt<RealmDBManager>().saveRooms([result]);
         callback(result);
       });
     });
@@ -144,8 +144,9 @@ class ChatDetailController extends GetxController {
       this.chatRoom.refresh();
     }
 
-    List<ChatMessageModel> msgList = await getIt<DBManager>().getAllMessages(
-        roomId: chatRoom.id, limit: 20, offset: messages.length);
+    List<ChatMessageModel> msgList = await getIt<RealmDBManager>()
+        .getAllMessages(
+            roomId: chatRoom.id, limit: 20, offset: messages.length);
     messages.insertAll(0, msgList);
 
     if (chatRoom.isGroupChat == false) {
@@ -181,7 +182,8 @@ class ChatDetailController extends GetxController {
           lastMessageId: lastFetchedMessageId,
           resultCallback: (result) async {
             if (result.isNotEmpty) {
-              await getIt<DBManager>().saveMessage(chatMessages: result);
+              await getIt<RealmDBManager>().prepareSaveMessage(
+                  chatMessages: result, alreadyWritingInDB: false);
 
               if (chatRoom.id == this.chatRoom.value?.id) {
                 loadChat(chatRoom, () {});
@@ -195,7 +197,7 @@ class ChatDetailController extends GetxController {
   }
 
   getRoomDetail(int roomId, Function(ChatRoomModel) callback) async {
-    ChatRoomModel? chatRoom = await getIt<DBManager>().getRoomById(roomId);
+    ChatRoomModel? chatRoom = await getIt<RealmDBManager>().getRoomById(roomId);
 
     if (chatRoom == null) {
       await ChatApi.getChatRoomDetail(roomId, resultCallback: (result) {
@@ -228,20 +230,18 @@ class ChatDetailController extends GetxController {
   starMessage(ChatMessageModel message) {
     message.isStar = 1;
     selectedMessages.refresh();
-    getIt<DBManager>().starUnStarMessage(
-        roomId: message.roomId,
-        localMessageId: message.localMessageId,
-        isStar: 1);
+    getIt<RealmDBManager>()
+        .starUnStarMessage(localMessageId: message.localMessageId, isStar: 1);
+
     update();
   }
 
   unStarMessage(ChatMessageModel message) {
     message.isStar = 0;
     selectedMessages.refresh();
-    getIt<DBManager>().starUnStarMessage(
-        roomId: message.roomId,
-        localMessageId: message.localMessageId,
-        isStar: 0);
+    getIt<RealmDBManager>()
+        .starUnStarMessage(localMessageId: message.localMessageId, isStar: 0);
+
     update();
   }
 
@@ -290,27 +290,28 @@ class ChatDetailController extends GetxController {
     getIt<SocketManager>()
         .emit(SocketConstants.typing, {'room': chatRoom.value!.id});
     messageTf.refresh();
-    // update();
   }
 
   sendMessageAsRead(ChatMessageModel message) {
     messages.value = messages.map((element) {
-      element.status = 3;
+      if (element.id == message.id) {
+        ChatMessageUser currentUser = element.myUserDataInMessage;
+        currentUser.status = 3;
+      }
       return element;
     }).toList();
 
     getIt<SocketManager>().emit(SocketConstants.readMessage,
         {'id': message.id, 'room': message.roomId});
-    // messages.refresh();
-    // update();
-    getIt<DBManager>().updateMessageStatus(
+
+    getIt<RealmDBManager>().updateMessageStatus(
         roomId: message.roomId,
-        localMessageId: message.localMessageId,
-        id: message.id,
-        status: 3);
+        // localMessageId: message.localMessageId,
+        messageId: message.id,
+        status: 3,
+        userId: _userProfileManager.user.value!.id);
   }
 
-  /// Todo : instead of opponent send chatroom id
   Future<bool> sendPostAsMessage(
       {required PostModel post, required ChatRoomModel room}) async {
     bool status = true;
@@ -355,7 +356,8 @@ class ChatDetailController extends GetxController {
 
     addNewMessage(message: currentMessageModel, roomId: room.id);
     // save message to database
-    getIt<DBManager>().saveMessage(chatMessages: [currentMessageModel]);
+    getIt<RealmDBManager>().prepareSaveMessage(
+        chatMessages: [currentMessageModel], alreadyWritingInDB: false);
     // send message to socket server
 
     status = getIt<SocketManager>().emit(SocketConstants.sendMessage, message);
@@ -374,8 +376,7 @@ class ChatDetailController extends GetxController {
     final filter = ProfanityFilter();
     bool hasProfanity = filter.hasProfanity(messageText);
     if (hasProfanity) {
-      AppUtil.showToast(
-          message: notAllowedMessageString.tr, isSuccess: true);
+      AppUtil.showToast(message: notAllowedMessageString.tr, isSuccess: true);
       return false;
     }
 
@@ -433,7 +434,8 @@ class ChatDetailController extends GetxController {
 
       addNewMessage(message: currentMessageModel, roomId: room.id);
       // save message to database
-      getIt<DBManager>().saveMessage(chatMessages: [currentMessageModel]);
+      getIt<RealmDBManager>().prepareSaveMessage(
+          chatMessages: [currentMessageModel], alreadyWritingInDB: false);
 
       setReplyMessage(message: null);
       messageTf.value.text = '';
@@ -500,7 +502,8 @@ class ChatDetailController extends GetxController {
 
     addNewMessage(message: currentMessageModel, roomId: room.id);
     // save message to database
-    getIt<DBManager>().saveMessage(chatMessages: [currentMessageModel]);
+    getIt<RealmDBManager>().prepareSaveMessage(
+        chatMessages: [currentMessageModel], alreadyWritingInDB: false);
 
     setReplyMessage(message: null);
     update();
@@ -564,7 +567,8 @@ class ChatDetailController extends GetxController {
 
     addNewMessage(message: currentMessageModel, roomId: room.id);
     // save message to database
-    getIt<DBManager>().saveMessage(chatMessages: [currentMessageModel]);
+    getIt<RealmDBManager>().prepareSaveMessage(
+        chatMessages: [currentMessageModel], alreadyWritingInDB: false);
     // send message to socket server
 
     status = getIt<SocketManager>().emit(SocketConstants.sendMessage, message);
@@ -637,7 +641,8 @@ class ChatDetailController extends GetxController {
     addNewMessage(message: currentMessageModel, roomId: room.id);
     // save message to database
 
-    getIt<DBManager>().saveMessage(chatMessages: [currentMessageModel]);
+    getIt<RealmDBManager>().prepareSaveMessage(
+        chatMessages: [currentMessageModel], alreadyWritingInDB: false);
 
     setReplyMessage(message: null);
     update();
@@ -684,7 +689,8 @@ class ChatDetailController extends GetxController {
 
     status = getIt<SocketManager>().emit(SocketConstants.sendMessage, message);
 
-    getIt<DBManager>().saveMessage(chatMessages: [currentMessageModel]);
+    getIt<RealmDBManager>().prepareSaveMessage(
+        chatMessages: [currentMessageModel], alreadyWritingInDB: false);
     // setReplyMessage(message: null);
     return status;
   }
@@ -729,7 +735,8 @@ class ChatDetailController extends GetxController {
     currentMessageModel.repliedOnMessageContent = repliedOnMessage;
 
     addNewMessage(message: currentMessageModel, roomId: room.id);
-    getIt<DBManager>().saveMessage(chatMessages: [currentMessageModel]);
+    getIt<RealmDBManager>().prepareSaveMessage(
+        chatMessages: [currentMessageModel], alreadyWritingInDB: false);
 
     update();
 
@@ -768,8 +775,7 @@ class ChatDetailController extends GetxController {
 
           currentMessageModel.messageContent = json.encode(content).encrypted();
           // update message in local database
-          getIt<DBManager>().updateMessageContent(
-              roomId: room.id,
+          getIt<RealmDBManager>().updateMessageContent(
               localMessageId: currentMessageModel.localMessageId.toString(),
               content: json.encode(content).encrypted());
         });
@@ -820,7 +826,8 @@ class ChatDetailController extends GetxController {
 
     addNewMessage(message: currentMessageModel, roomId: room.id);
 
-    getIt<DBManager>().saveMessage(chatMessages: [currentMessageModel]);
+    getIt<RealmDBManager>().prepareSaveMessage(
+        chatMessages: [currentMessageModel], alreadyWritingInDB: false);
 
     update();
 
@@ -862,8 +869,7 @@ class ChatDetailController extends GetxController {
           update();
 
           // update message in local database
-          getIt<DBManager>().updateMessageContent(
-              roomId: room.id,
+          getIt<RealmDBManager>().updateMessageContent(
               localMessageId: currentMessageModel.localMessageId.toString(),
               content: json.encode(content).encrypted());
         });
@@ -913,7 +919,8 @@ class ChatDetailController extends GetxController {
 
     addNewMessage(message: currentMessageModel, roomId: room.id);
 
-    getIt<DBManager>().saveMessage(chatMessages: [currentMessageModel]);
+    getIt<RealmDBManager>().prepareSaveMessage(
+        chatMessages: [currentMessageModel], alreadyWritingInDB: false);
     update();
 
     // upload audio and send message
@@ -952,8 +959,7 @@ class ChatDetailController extends GetxController {
           currentMessageModel.messageContent = json.encode(content).encrypted();
 
           // update message in local database
-          getIt<DBManager>().updateMessageContent(
-              roomId: room.id,
+          getIt<RealmDBManager>().updateMessageContent(
               localMessageId: currentMessageModel.localMessageId.toString(),
               content: json.encode(content).encrypted());
         });
@@ -1022,7 +1028,9 @@ class ChatDetailController extends GetxController {
 
     // save message to database
 
-    getIt<DBManager>().saveMessage(chatMessages: [currentMessageModel]);
+    getIt<RealmDBManager>().prepareSaveMessage(
+        chatMessages: [currentMessageModel], alreadyWritingInDB: false);
+
     setReplyMessage(message: null);
     return status;
   }
@@ -1044,44 +1052,6 @@ class ChatDetailController extends GetxController {
 
     ChatMessageModel currentMessageModel = ChatMessageModel();
 
-    // if (mode == ChatMessageActionMode.reply) {
-    //   currentMessageModel.localMessageId = localMessageId;
-    //   currentMessageModel.isEncrypted = AppConfigConstants.enableEncryption;
-    //   currentMessageModel.chatVersion = AppConfigConstants.chatVersion;
-    //   currentMessageModel.sender = _userProfileManager.user.value!;
-    //
-    //   currentMessageModel.roomId = room.id;
-    //   // currentMessageModel.messageTime = justNow;
-    //   currentMessageModel.userName = you;
-    //   currentMessageModel.senderId = _userProfileManager.user.value!.id;
-    //   currentMessageModel.messageType = messageTypeId(MessageContentType.reply);
-    //   currentMessageModel.repliedOnMessageContent = repliedOnMessage;
-    //
-    //   // reply content start
-    //   ChatMessageModel replyMessage = ChatMessageModel();
-    //   replyMessage.isEncrypted = AppConfigConstants.enableEncryption;
-    //   replyMessage.chatVersion = AppConfigConstants.chatVersion;
-    //
-    //   replyMessage.id = 0;
-    //   replyMessage.roomId = room.id;
-    //   replyMessage.localMessageId = localMessageId;
-    //   replyMessage.senderId = _userProfileManager.user.value!.id;
-    //   replyMessage.messageType = messageTypeId(MessageContentType.file);
-    //   replyMessage.media = media;
-    //   replyMessage.messageContent = ''.encrypted();
-    //   replyMessage.createdAt =
-    //       (DateTime.now().millisecondsSinceEpoch / 1000).round();
-    //
-    //   currentMessageModel.cachedReplyMessage = replyMessage;
-    //   // reply content end
-    //
-    //   currentMessageModel.createdAt =
-    //       (DateTime.now().millisecondsSinceEpoch / 1000).round();
-    //   currentMessageModel.messageContent = ''.encrypted();
-    //
-    //   addNewMessage(message: currentMessageModel, roomId: room.id);
-    //   getIt<DBManager>().saveMessage(room, [currentMessageModel]);
-    // } else {
     currentMessageModel.localMessageId = localMessageId;
     currentMessageModel.roomId = room.id;
     currentMessageModel.isEncrypted = AppConfigConstants.enableEncryption;
@@ -1102,8 +1072,8 @@ class ChatDetailController extends GetxController {
     currentMessageModel.repliedOnMessageContent = repliedOnMessage;
 
     addNewMessage(message: currentMessageModel, roomId: room.id);
-    getIt<DBManager>().saveMessage(chatMessages: [currentMessageModel]);
-    // }
+    getIt<RealmDBManager>().prepareSaveMessage(
+        chatMessages: [currentMessageModel], alreadyWritingInDB: false);
 
     update();
 
@@ -1149,8 +1119,7 @@ class ChatDetailController extends GetxController {
 
           currentMessageModel.messageContent = json.encode(content).encrypted();
           // update message in local database
-          getIt<DBManager>().updateMessageContent(
-              roomId: room.id,
+          getIt<RealmDBManager>().updateMessageContent(
               localMessageId: currentMessageModel.localMessageId.toString(),
               content: json.encode(content).encrypted());
         });
@@ -1226,6 +1195,7 @@ class ChatDetailController extends GetxController {
         if (media.mediaType == GalleryMediaType.photo) {
         } else if (media.mediaType == GalleryMediaType.video) {
           await MiscApi.uploadFile(thumbnailFile!.path,
+              mediaType: GalleryMediaType.photo,
               type: UploadMediaType.chat, resultCallback: (filename, filepath) {
             videoThumbnailPath = filepath;
           });
@@ -1261,8 +1231,9 @@ class ChatDetailController extends GetxController {
           //     media, messageId, false, chatRoom.value!.id);
         }
 
-        await MiscApi.uploadFile(mainFile.path, type: UploadMediaType.chat,
-            resultCallback: (filename, filepath) {
+        await MiscApi.uploadFile(mainFile.path,
+            mediaType: media.mediaType!,
+            type: UploadMediaType.chat, resultCallback: (filename, filepath) {
           String mainFileUploadedPath = filepath;
 
           // await mainFile.delete();
@@ -1288,8 +1259,7 @@ class ChatDetailController extends GetxController {
           callback(uploadedGalleryMedia);
         });
       } else {
-        AppUtil.showToast(
-            message: noInternetString.tr, isSuccess: false);
+        AppUtil.showToast(message: noInternetString.tr, isSuccess: false);
       }
     });
     return gallery;
@@ -1297,7 +1267,7 @@ class ChatDetailController extends GetxController {
 
   deleteMessage({required int deleteScope}) async {
     // remove message in local database
-    await getIt<DBManager>()
+    await getIt<RealmDBManager>()
         .softDeleteMessages(messagesToDelete: selectedMessages);
 
     // remove saved media
@@ -1359,14 +1329,14 @@ class ChatDetailController extends GetxController {
     }
 
     // delete media messages
-    List<ChatMessageModel> messagesList = await getIt<DBManager>()
+    List<ChatMessageModel> messagesList = await getIt<RealmDBManager>()
         .getMessagesById(messageId: messageId, roomId: roomId);
 
     // remove saved media
     getIt<FileManager>().multipleDeleteMessageMedia(messagesList);
 
     // delete message in local database
-    getIt<DBManager>().softDeleteMessages(messagesToDelete: messagesList);
+    getIt<RealmDBManager>().softDeleteMessages(messagesToDelete: messagesList);
   }
 
   newMessageReceived(ChatMessageModel message) async {
@@ -1396,7 +1366,7 @@ class ChatDetailController extends GetxController {
     int roomId = updatedData['room'];
     int status = updatedData['current_status'];
     int messageId = updatedData['id'];
-    // int createdAt = updatedData['created_at'];
+    int userId = updatedData['userId'];
     if (localMessageId != null) {
       if (chatRoom.value?.id == roomId) {
         var message =
@@ -1413,16 +1383,13 @@ class ChatDetailController extends GetxController {
         update();
       }
 
-      await getIt<DBManager>().updateMessageStatus(
-          roomId: roomId,
-          localMessageId: localMessageId,
-          id: messageId,
-          status: status);
+      await getIt<RealmDBManager>().updateMessageStatus(
+          roomId: roomId, messageId: messageId, status: status, userId: userId);
     }
     if (status == 1) {
       // add chat message user to message for first time, as here we received the message id
       List<ChatRoomMember> usersInRoom =
-          await getIt<DBManager>().getAllMembersInRoom(roomId);
+          await getIt<RealmDBManager>().getAllMembersInRoom(roomId);
       List<ChatMessageUser> chatMessageUsers = usersInRoom.map((e) {
         ChatMessageUser user = ChatMessageUser();
         user.id = 1;
@@ -1431,7 +1398,7 @@ class ChatDetailController extends GetxController {
         user.status = 1;
         return user;
       }).toList();
-      getIt<DBManager>().insertChatMessageUsers(users: chatMessageUsers);
+      getIt<RealmDBManager>().insertChatMessageUsers(users: chatMessageUsers);
     }
   }
 
@@ -1508,8 +1475,8 @@ class ChatDetailController extends GetxController {
 // call
   void initiateVideoCall() {
     PermissionUtils.requestPermission(
-        [Permission.camera, Permission.microphone],
-        isOpenSettings: false, permissionGrant: () async {
+        [Permission.camera, Permission.microphone], isOpenSettings: false,
+        permissionGrant: () async {
       Call call = Call(
           uuid: '',
           callId: 0,

@@ -16,14 +16,13 @@ enum ThemeIcon {
   // cameraFront,
   // cameraRear,
   cameraSwitch,
-
   videoCameraOff,
   videoCamera,
-
   emptyCheckbox,
   selectedCheckbox,
   search,
   downArrow,
+  arrowUp,
   star,
   filledStar,
   checkMark,
@@ -60,6 +59,7 @@ enum ThemeIcon {
   add,
   selectedRadio,
   more,
+  moreVertical,
   wallet,
   dashboard,
   nextArrow,
@@ -95,10 +95,8 @@ enum ThemeIcon {
   location,
   drawing,
   fullScreen,
-
   play,
   stop,
-
   videoPost,
   delete,
   message,
@@ -106,7 +104,6 @@ enum ThemeIcon {
   chatBordered,
   randomChat,
   closeCircle,
-
   bed,
   map,
   news,
@@ -117,11 +114,9 @@ enum ThemeIcon {
   fwd,
   reply,
   bookMark,
+  bookMarked,
   lock,
-
   selectionType,
-
-
   report,
   hide,
   addCircle,
@@ -370,6 +365,12 @@ class ThemeIconWidget extends StatelessWidget {
           size: size ?? 20,
           color: color ?? AppColorConstants.iconColor,
         );
+      case ThemeIcon.moreVertical:
+        return Icon(
+          Icons.more_vert,
+          size: size ?? 20,
+          color: color ?? AppColorConstants.iconColor,
+        );
       case ThemeIcon.wallet:
         return Icon(
           Icons.account_balance_wallet,
@@ -603,6 +604,12 @@ class ThemeIconWidget extends StatelessWidget {
       case ThemeIcon.bookMark:
         return Icon(
           Icons.bookmark_border_outlined,
+          size: size ?? 20,
+          color: color ?? AppColorConstants.iconColor,
+        );
+      case ThemeIcon.bookMarked:
+        return Icon(
+          Icons.bookmark,
           size: size ?? 20,
           color: color ?? AppColorConstants.iconColor,
         );
@@ -893,6 +900,12 @@ class ThemeIconWidget extends StatelessWidget {
       case ThemeIcon.declineCall:
         return SvgPicture.asset(
           'assets/svg/bold/Close Square.svg',
+          height: size ?? 20,
+          color: color ?? AppColorConstants.iconColor,
+        );
+      case ThemeIcon.arrowUp:
+        return SvgPicture.asset(
+          'assets/svg/outline/Arrow - Up 2.svg',
           height: size ?? 20,
           color: color ?? AppColorConstants.iconColor,
         );

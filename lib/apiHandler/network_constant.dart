@@ -83,6 +83,11 @@ class NetworkConstantsUtil {
   static String myCurrentActiveStories =
       'stories/my-active-story?expand=userStory';
   static String deleteStory = 'stories/';
+  static String viewStory = 'stories/view-counter';
+  static String storyViewedByUsers =
+      'stories/story-view-user?id={{story_id}}&expand=user';
+  static String storyDetail = 'stories/';
+
   static String highlights =
       'highlights?expand=highlightStory,highlightStory.story.user&user_id=';
   static String addStoryToHighlight = 'highlights/add-story';
@@ -93,17 +98,26 @@ class NetworkConstantsUtil {
 
   //********************* Post ***********//
   static String addPost = 'posts';
+  static String editPost = 'posts/';
+
   static String uploadPostImage = 'posts/upload-gallary';
   static String uploadFileImage = 'file-uploads/upload-file';
   static String addCompetitionPost = 'posts/competition-image';
   static String searchPost =
-      'posts/search-post?expand=user,user.userLiveDetail,clubDetail.createdByUser,clubDetail.totalJoinedUser,originPost.user';
+      'posts/search-post?expand=user,user.userLiveDetail,clubDetail.createdByUser,clubDetail.totalJoinedUser,originPost.user,isFavorite,originPost,pollDetails,pollDetails.pollOptions';
+  static String searchVideoPost = 'posts/post-video-list';
+
   static String postDetail =
       'posts/{id}?expand=user,user.userLiveDetail,clubDetail,giftSummary';
   static String mentionedPosts =
       'posts/my-post-mention-user?expand=user&user_id=';
   static String likePost = 'posts/like';
   static String unlikePost = 'posts/unlike';
+  static String postLikedByUsers =
+      'posts/post-like-user-list?post_id={{post_id}}&expand=user';
+
+  static String savePost = 'favorites/add-favorite';
+  static String removeSavedPost = 'favorites/remove-favorite';
 
   static String getComments = 'posts/comment-list';
   static String addComment = 'posts/add-comment';
@@ -141,7 +155,8 @@ class NetworkConstantsUtil {
   static String getTVCategories =
       'categories/live-tv?expand=liveTv,liveTv.currentViewer';
   static String getTVShows = 'live-tvs/tv-shows?expand=tvShowEpisode,rating';
-  static String getTVShowById = 'tv-shows/tv-show-details?expand=tvShowEpisode,rating';
+  static String getTVShowById =
+      'tv-shows/tv-show-details?expand=tvShowEpisode,rating';
   static String getTVShowEpisodes = 'tv-shows/tv-show-episodes?';
   static String tvBanners = 'tv-banners';
   static String liveTvs = 'live-tvs?expand=currentViewer';
@@ -319,7 +334,8 @@ class NetworkConstantsUtil {
       'campaigns/donors-list?expand=userDetail,campaignDetails&user_id=&transaction_type=&campaign_id=';
 
   //*********** Coupons ***********//
-  static String businessCategories = 'categories/business-category?expand=business,coupon';
+  static String businessCategories =
+      'categories/business-category?expand=business,coupon';
   static String searchBusiness = 'businesses?expand=coupon';
   static String offersList = 'coupons?expand=business';
 
@@ -341,5 +357,4 @@ class NetworkConstantsUtil {
   static String createPromotions = 'post-promotions';
   static String getPromotedPosts =
       'posts/post-promotion-ad?expand=user,postPromotionData';
-
 }

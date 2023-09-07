@@ -403,18 +403,19 @@ class _CheckoutState extends State<Checkout> {
                       },
                     )
                   : Container()),
-              // PaymentMethodTile(
-              //   text: paypal,
-              //   icon: "assets/paypal.png",
-              //   price: '\$${_checkoutController.balanceToPay.value}',
-              //   isSelected: _checkoutController.selectedPaymentGateway.value ==
-              //       PaymentGateway.paypal,
-              //   press: () {
-              //     // _checkoutController.launchBrainTree();
-              //     _checkoutController
-              //         .selectPaymentGateway(PaymentGateway.paypal);
-              //   },
-              // ),
+              PaymentMethodTile(
+                text: paypalString.tr,
+                icon: "assets/paypal.png",
+                price: '\$${_checkoutController.balanceToPay.value}',
+                isSelected: _checkoutController.selectedPaymentGateway.value ==
+                    PaymentGateway.paypal,
+                press: () {
+                  // _checkoutController.launchBrainTree();
+                  _checkoutController
+                      .selectPaymentGateway(PaymentGateway.paypal);
+                  checkout();
+                },
+              ),
               PaymentMethodTile(
                 text: stripeString.tr,
                 icon: "assets/stripe.png",

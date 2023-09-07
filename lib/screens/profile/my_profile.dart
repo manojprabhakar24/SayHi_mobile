@@ -307,7 +307,7 @@ class MyProfileState extends State<MyProfile>
                         height: 10,
                       ),
                       BodyLargeText(
-                        _postController.totalPosts.value.formatNumber,
+                        _userProfileManager.user.value!.totalPost.formatNumber,
                         weight: TextWeight.bold,
                       ),
                     ],
@@ -343,7 +343,7 @@ class MyProfileState extends State<MyProfile>
                         height: 10,
                       ),
                       BodyLargeText(
-                        _postController.totalReels.value.formatNumber,
+                        _userProfileManager.user.value!.totalReels.formatNumber,
                         weight: TextWeight.bold,
                       ),
                     ],
@@ -387,7 +387,7 @@ class MyProfileState extends State<MyProfile>
                         height: 10,
                       ),
                       BodyLargeText(
-                        _postController.totalMentionedPosts.value.formatNumber,
+                        _userProfileManager.user.value!.totalMentions.formatNumber,
                         weight: TextWeight.bold,
                       ),
                     ],
@@ -421,7 +421,7 @@ class MyProfileState extends State<MyProfile>
                         height: 10,
                       ),
                       BodyLargeText(
-                        _postController.totalMentionedPosts.value.formatNumber,
+                        _userProfileManager.user.value!.totalClubs.formatNumber,
                         weight: TextWeight.bold,
                       ),
                     ],

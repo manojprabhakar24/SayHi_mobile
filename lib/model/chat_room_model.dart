@@ -21,9 +21,9 @@ class ChatRoomMember {
   factory ChatRoomMember.fromJson(Map<String, dynamic> jsonData) =>
       ChatRoomMember(
           id: jsonData["id"],
-          roomId: jsonData["room_id"],
-          userId: jsonData["user_id"],
-          isAdmin: jsonData["is_admin"],
+          roomId: jsonData["room_id"] ?? jsonData["roomId"],
+          userId: jsonData["user_id"] ?? jsonData["userId"],
+          isAdmin: jsonData["is_admin"] ?? jsonData["isAdmin"],
           userDetail: UserModel.fromJson(jsonData['user'] is String
               ? json.decode(jsonData['user'])
               : jsonData['user']));

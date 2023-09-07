@@ -55,7 +55,6 @@ class FollowerFollowingState extends State<FollowerFollowingList> {
                 title: widget.isFollowersList
                     ? followersString.tr
                     : followingString.tr),
-
             Expanded(
               child: GetBuilder<UserNetworkController>(
                   init: _userNetworkController,
@@ -81,7 +80,8 @@ class FollowerFollowingState extends State<FollowerFollowingList> {
                         ? _userNetworkController.followers
                         : _userNetworkController.following;
                     return _userNetworkController.isLoading.value
-                        ? const ShimmerUsers().hp(DesignConstants.horizontalPadding)
+                        ? const ShimmerUsers()
+                            .hp(DesignConstants.horizontalPadding)
                         : Column(
                             children: [
                               usersList.isEmpty
@@ -97,8 +97,10 @@ class FollowerFollowingState extends State<FollowerFollowingList> {
                                             profile: usersList[index],
                                             viewCallback: () {
                                               Get.to(() => OtherUserProfile(
-                                                      userId:
-                                                          usersList[index].id))!
+                                                        userId:
+                                                            usersList[index].id,
+                                                        user: usersList[index],
+                                                      ))!
                                                   .then(
                                                       (value) => {loadData()});
                                             },

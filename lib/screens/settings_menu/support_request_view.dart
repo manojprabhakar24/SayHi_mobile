@@ -59,7 +59,7 @@ class _SupportRequestViewState extends State<SupportRequestView> {
                     weight: TextWeight.regular,
                   )
                 ],
-              ).extended,
+              ),
             ),
           ).p25
         ],

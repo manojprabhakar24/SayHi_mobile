@@ -1,6 +1,7 @@
 import 'package:foap/helper/date_extension.dart';
 import 'package:foap/helper/imports/common_import.dart';
 import 'package:foap/model/post_gallery.dart';
+import 'package:foap/model/post_promotion_model.dart';
 import 'package:foap/screens/add_on/model/reel_music_model.dart';
 import 'club_model.dart';
 
@@ -17,6 +18,9 @@ class PostModel {
   int totalShare = 0;
   int isWinning = 0;
   bool isLike = false;
+  bool isSaved = false;
+  bool commentsEnabled = true;
+
   bool isReported = false;
   bool isSharePost = false;
 
@@ -30,6 +34,7 @@ class PostModel {
   String postTime = '';
   DateTime? createDate;
   PostModel? sharedPost;
+  PostPromotionModel? postPromotionData;
 
   PostModel();
 
@@ -54,6 +59,8 @@ class PostModel {
     model.isLike = json['is_like'] == 1;
     model.isReported = json['is_reported'] == 1;
     model.isSharePost = json['is_share_post'] == 1;
+    model.isSaved = json['isFavorite'] == 1;
+    model.commentsEnabled = json['is_comment_enable'] == 1;
 
     // model.imageUrl = json['imageUrl'];
     model.tags = [];
@@ -88,6 +95,10 @@ class PostModel {
     model.sharedPost = json['originPost'] == null
         ? null
         : PostModel.fromJson(json['originPost']);
+    if (json['postPromotionData'] != null) {
+      model.postPromotionData =
+          PostPromotionModel.fromJson(json['postPromotionData']);
+    }
     // final days = model.createDate!.difference(DateTime.now()).inDays;
     // if (days == 0) {
     //   model.postTime = ApplicationLocalizations.of(

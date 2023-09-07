@@ -14,6 +14,13 @@ class PostCardController extends GetxController {
   RxInt currentIndex = 0.obs;
   int currentPostId = 0;
   RxList<PostModel> likedPosts = <PostModel>[].obs;
+  RxList<PostModel> savedPosts = <PostModel>[].obs;
+  RxBool enableComments = true.obs;
+
+  toggleEnableComments() {
+    enableComments.value = !enableComments.value;
+    update();
+  }
 
   updateGallerySlider(int index, int postId) {
     postScrollIndexMapping[postId] = index;
@@ -52,8 +59,22 @@ class PostCardController extends GetxController {
     PostApi.likeUnlikePost(like: post.isLike, postId: post.id);
   }
 
+  void saveUnSavePost({
+    required PostModel post,
+  }) {
+    post.isSaved = !post.isSaved;
+    if (post.isSaved) {
+      savedPosts.add(post);
+    } else {
+      savedPosts.remove(post);
+    }
+    savedPosts.refresh();
+
+    PostApi.saveUnSavePost(save: post.isSaved, postId: post.id);
+  }
+
   downloadAndShareMedia(PostModel post) async {
-    EasyLoading.show(status: loadingString.tr);
+    Loader.show(status: loadingString.tr);
 
     if (post.gallery.isNotEmpty) {
       final response = await http.get(Uri.parse(post.gallery.first.filePath));
@@ -64,24 +85,27 @@ class PostCardController extends GetxController {
       final file = File('${directory.path}/$fileName');
       await file.writeAsBytes(response.bodyBytes);
 
-      EasyLoading.dismiss();
+      Loader.dismiss();
       Share.shareXFiles([XFile(file.path)], text: post.title);
     } else {
       Share.share(post.title);
     }
   }
 
-  reSharePost(int postId, String comment) {
-    EasyLoading.show(status: loadingString.tr);
+  reSharePost(
+      {required int postId,
+      required String comment,
+      required bool enableComments}) {
+    Loader.show(status: loadingString.tr);
     PostApi.addPost(
         sharingPostId: postId,
+        allowComments: enableComments,
         postType: PostType.reshare,
         gallery: [],
         title: comment,
         resultCallback: (value) {
-          EasyLoading.dismiss();
+          Loader.dismiss();
           update();
         });
   }
-
 }

@@ -66,7 +66,7 @@ class LoginController extends GetxController {
       //     ApiController().login(email, password).then((response) async {
       //       if (response.success) {
       //       } else {
-      //         EasyLoading.dismiss();
+      //         Loader.dismiss();
       //         if (response.token != null) {
       //           Get.to(() => VerifyOTPScreen(
       //                 isVerifyingEmail: true,
@@ -74,7 +74,7 @@ class LoginController extends GetxController {
       //                 token: response.token!,
       //               ));
       //         } else {
-      //           EasyLoading.dismiss();
+      //           Loader.dismiss();
       //           showErrorMessage(
       //             response.message,
       //           );
@@ -110,27 +110,28 @@ class LoginController extends GetxController {
 
     if (password.isEmpty) {
       passwordStrength.value = 0;
-      passwordStrengthText.value = 'Please enter you password';
+      passwordStrengthText.value = pleaseEnterYourPassword.tr;
     } else if (password.length < 6) {
       passwordStrength.value = 1 / 4;
-      passwordStrengthText.value = 'Your password is too short';
+      passwordStrengthText.value = passwordIsToShort.tr;
     } else if (password.length < 8) {
       passwordStrength.value = 2 / 4;
-      passwordStrengthText.value = 'Your password is acceptable but not strong';
+      passwordStrengthText.value = passwordIsShortButAcceptable.tr;
     } else {
       if (!letterReg.hasMatch(password) || !numReg.hasMatch(password)) {
         // Password length >= 8
         // But doesn't contain both letter and digit characters
         passwordStrength.value = 3 / 4;
-        passwordStrengthText.value =
-            'Your password must contain letter and number';
+        passwordStrengthText.value = passwordMustByAlphanumeric.tr;
       } else {
         // Password length >= 8
         // Password contains both letter and digit characters
         passwordStrength.value = 1;
-        passwordStrengthText.value = 'Your password is great';
+        passwordStrengthText.value = passwordIsGreat.tr;
       }
     }
+
+    update();
   }
 
   void register(
@@ -205,6 +206,7 @@ class LoginController extends GetxController {
   void verifyUsername(String userName) {
     if (userName.contains(' ')) {
       userNameCheckStatus = 0;
+      update();
       return;
     }
 
@@ -212,9 +214,11 @@ class LoginController extends GetxController {
         username: userName,
         successCallback: () {
           userNameCheckStatus = 1;
+          update();
         },
         failureCallback: () {
           userNameCheckStatus = 0;
+          update();
         });
   }
 
@@ -237,11 +241,11 @@ class LoginController extends GetxController {
   }
 
   void resendOTP({required String token}) {
-    EasyLoading.show(status: loadingString.tr);
+    Loader.show(status: loadingString.tr);
     AuthApi.resendOTP(
         token: token,
         successCallback: () {
-          EasyLoading.dismiss();
+          Loader.dismiss();
           canResendOTP.value = false;
           update();
         });
@@ -253,14 +257,14 @@ class LoginController extends GetxController {
     required String otp,
     required String token,
   }) {
-    EasyLoading.show(status: loadingString.tr);
+    Loader.show(status: loadingString.tr);
 
     if (isVerifyingEmail == true || isVerifyingPhone == true) {
       AuthApi.verifyRegistrationOTP(
           otp: otp,
           token: token,
           successCallback: (authKey) {
-            EasyLoading.dismiss();
+            Loader.dismiss();
 
             Future.delayed(const Duration(milliseconds: 500), () async {
               SharedPrefs().setUserLoggedIn(true);
@@ -286,7 +290,7 @@ class LoginController extends GetxController {
           otp: otp,
           token: token,
           successCallback: (token) {
-            EasyLoading.dismiss();
+            Loader.dismiss();
 
             Future.delayed(const Duration(milliseconds: 500), () async {
               Get.to(() => ResetPasswordScreen(token: token));
@@ -299,13 +303,13 @@ class LoginController extends GetxController {
     required String otp,
     required String token,
   }) {
-    EasyLoading.show(status: loadingString.tr);
+    Loader.show(status: loadingString.tr);
 
     AuthApi.verifyRegistrationOTP(
         otp: otp,
         token: token,
         successCallback: (authKey) {
-          EasyLoading.dismiss();
+          Loader.dismiss();
           Future.delayed(const Duration(milliseconds: 500), () async {
             SharedPrefs().setUserLoggedIn(true);
             await SharedPrefs().setAuthorizationKey(authKey);

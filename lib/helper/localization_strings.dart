@@ -219,6 +219,13 @@ String enterConfirmPasswordString = 'Enter confirm password';
 String enterOldPasswordString = 'Enter old password';
 String pleaseEnterCategoryNameString = 'Please enter category name';
 String pleaseEnterSliderNameString = 'Please enter slider name';
+String pleaseEnterYourPassword = 'Please enter you password';
+String passwordIsToShort = 'Your password is too short';
+String passwordIsShortButAcceptable =
+    'Your password is acceptable but not strong';
+String passwordMustByAlphanumeric =
+    'Your password must contain letter and number';
+String passwordIsGreat = 'Your password is great';
 
 String pleaseEnterColorNameString = 'Please enter color name';
 String pleaseSelectColorString = 'Please select color';
@@ -368,7 +375,7 @@ String transactionString = 'Transactions';
 String phoneNumberString = 'Phone number';
 String changePhoneNumberString = 'Change Phone number';
 
-String updateStrString = 'Update';
+String updateString = 'Update';
 String goPremiumString = 'Go Premium';
 String restorePurchaseString = 'Restore in app purchases';
 String aboutUsString = 'About us';
@@ -430,6 +437,7 @@ String newFollowerString = 'New Follower';
 
 String followingString = 'Following';
 String followersString = 'Followers';
+
 String postsString = 'Posts';
 String postString = 'Post';
 String sentAPostString = 'Sent a Post';
@@ -509,6 +517,7 @@ String reConnectingString = "Reconnecting...";
 String typingString = "typing...";
 
 String postDeletedString = "Post deleted";
+String deletedString = "Deleted";
 
 String noPostFoundString = "No post updates found";
 String followFriendsToSeeUpdatesString =
@@ -658,7 +667,9 @@ String pleaseAuthenticateToUseBiometricString =
 String pleaseAuthenticateToRemoveBiometricString =
     'Please authenticate to remove biometric login into app';
 
+String editPostString = 'Edit Post';
 String deletePostString = 'Delete Post';
+
 String postDeletedSuccessfullyString = 'Post is deleted successfully';
 
 // new keys version 3
@@ -1252,3 +1263,5 @@ String sendMessage = 'Send message';
 String viewProfile = 'View profile';
 String flutterWaveString = 'FlutterWave';
 String thanks = 'Thanks';
+String sponsoredString = 'Sponsored';
+String noViewString = 'No view';

@@ -27,17 +27,17 @@ class DatingController extends GetxController {
   }
 
   setPreferencesApi(AddPreferenceModel selectedPreferences) async {
-    EasyLoading.show(status: loadingString.tr);
+    Loader.show(status: loadingString.tr);
     await DatingApi.addUserPreference(selectedPreferences);
 
-    EasyLoading.dismiss();
+    Loader.dismiss();
     update();
   }
 
   updateDatingProfile(AddDatingDataModel dataModel, VoidCallback handler) {
-    EasyLoading.show(status: loadingString.tr);
+    Loader.show(status: loadingString.tr);
     DatingApi.updateDatingProfile(dataModel: dataModel, handler: (){
-      EasyLoading.dismiss();
+      Loader.dismiss();
 
       handler();
     });

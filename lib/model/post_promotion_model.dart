@@ -34,7 +34,7 @@ class PostPromotionOrderRequest {
 
   String? url;
   double? urlText;
-  int? isAutomaticAudience;
+  int isAutomaticAudience = 1;
   AudienceModel? audience;
   double dailyBudget = 200;
 
@@ -56,7 +56,7 @@ class PostPromotionOrderRequest {
                 : '1',
         "url": url ?? '',
         "url_text": urlText ?? '',
-        "is_audience_automatic": isAutomaticAudience ?? 0,
+        "is_audience_automatic": audience?.id == null ? 1 : 0,
         "audience_id": audience?.id == null ? '' : audience?.id.toString(),
         "amount": dailyBudget.toString(),
         "duration": duration.toString(),

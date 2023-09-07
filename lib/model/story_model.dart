@@ -54,6 +54,7 @@ class StoryMediaModel {
   String createdAt;
   int type;
   UserModel? user;
+  int totalView;
 
   StoryMediaModel({
     required this.id,
@@ -67,6 +68,7 @@ class StoryMediaModel {
     required this.createdAt,
     required this.type,
     required this.user,
+    required this.totalView,
     this.videoDuration
   });
 
@@ -85,6 +87,7 @@ class StoryMediaModel {
             DateTime.fromMillisecondsSinceEpoch(json['created_at'] * 1000)
                 .toUtc()),
         type: json['type'],
+        totalView: json['totalView'],
         user: json['user'] == null ? null : UserModel.fromJson(json['user']));
 
     return model;
@@ -97,5 +100,21 @@ class StoryMediaModel {
   // String thumbnail() {
   //   return isVideoPost() == true ? videoThumbnail! : filePath;
   // }
+}
+
+class StoryViewerModel {
+  String viewedAt = '';
+  UserModel? user;
+
+  StoryViewerModel();
+
+  factory StoryViewerModel.fromJson(dynamic json) {
+    StoryViewerModel model = StoryViewerModel();
+    model.user = UserModel.fromJson(json['user']);
+    model.viewedAt = TimeAgo.timeAgoSinceDate(
+        DateTime.fromMillisecondsSinceEpoch(json['created_at'] * 1000).toUtc());
+
+    return model;
+  }
 }
 

@@ -11,6 +11,7 @@ class PaymentGatewayApi {
       'currency': 'USD',
     }).then((result) {
       if (result?.success == true) {
+        print('result!.data ${result!.data}');
         resultCallback(result!.data['client_secret']);
       }
     });

@@ -51,7 +51,9 @@ class EventBookingCard extends StatelessWidget {
                           ],
                         ).tP8.ripple(() {
                           Get.to(() => OtherUserProfile(
-                              userId: bookingModel.giftedByUser!.id));
+                                userId: bookingModel.giftedByUser!.id,
+                                user: bookingModel.giftedByUser!,
+                              ));
                         })
                       : Container(),
                   bookingModel.giftedByUser != null &&
@@ -83,7 +85,9 @@ class EventBookingCard extends StatelessWidget {
                           ],
                         ).tP8.ripple(() {
                           Get.to(() => OtherUserProfile(
-                              userId: bookingModel.giftedByUser!.id));
+                                userId: bookingModel.giftedByUser!.id,
+                                user: bookingModel.giftedByUser!,
+                              ));
                         })
                       : Container(),
                 ],
@@ -151,7 +155,11 @@ class EventBookingCard extends StatelessWidget {
               color: AppColorConstants.backgroundColor,
               child: BodyMediumText(
                 bookingModel.ticketType.name,
-              ).setPadding(left: DesignConstants.horizontalPadding, right: DesignConstants.horizontalPadding, top: 8, bottom: 8),
+              ).setPadding(
+                  left: DesignConstants.horizontalPadding,
+                  right: DesignConstants.horizontalPadding,
+                  top: 8,
+                  bottom: 8),
             ).round(10)
           ],
         ).p16

@@ -89,65 +89,61 @@ class CompetitionDetailState extends State<CompetitionDetailScreen> {
             height: 10,
           ),
           divider().tP8,
-          GetBuilder<CompetitionController>(
-              init: competitionController,
-              builder: (ctx) {
-                return competitionController.competition.value != null
-                    ? Expanded(
-                        child: Stack(children: [
-                          SingleChildScrollView(
-                              child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                Stack(
-                                  children: [
-                                    CachedNetworkImage(
-                                      imageUrl: competitionController
-                                          .competition.value!.photo,
-                                      fit: BoxFit.cover,
-                                      width: MediaQuery.of(context).size.width,
-                                      height: 270,
-                                      placeholder: (context, url) =>
-                                          AppUtil.addProgressIndicator(
-                                              size: 100),
-                                      errorWidget: (context, url, error) =>
-                                          const Icon(Icons.error),
-                                    ),
-                                    applyShader(),
-                                    CompetitionHighlightBar(
-                                        model: competitionController
-                                            .competition.value!)
-                                  ],
-                                ),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Heading5Text(
-                                      competitionController
-                                          .competition.value!.title,
-                                      weight: TextWeight.bold,
-                                      color: AppColorConstants.themeColor,
-                                    ).bP8,
-                                    Heading5Text(
-                                      competitionController
-                                          .competition.value!.description,
-                                    ),
-                                  ],
-                                ).p16,
-                                const SizedBox(
-                                  height: 40,
-                                ),
-                                competitionController.competition.value!
-                                            .competitionMediaType ==
-                                        1
-                                    ? addPhotoGrid().hp(DesignConstants.horizontalPadding)
-                                    : addVideoGrid().hp(DesignConstants.horizontalPadding),
-                              ])),
-                          addBottomActionButton()
-                        ]),
-                      )
-                    : Container();
-              }),
+          Obx(() => competitionController.competition.value != null
+              ? Expanded(
+            child: Stack(children: [
+              SingleChildScrollView(
+                  child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Stack(
+                          children: [
+                            CachedNetworkImage(
+                              imageUrl: competitionController
+                                  .competition.value!.photo,
+                              fit: BoxFit.cover,
+                              width: Get.width,
+                              height: 270,
+                              placeholder: (context, url) =>
+                                  AppUtil.addProgressIndicator(size: 100),
+                              errorWidget: (context, url, error) =>
+                              const Icon(Icons.error),
+                            ),
+                            applyShader(),
+                            CompetitionHighlightBar(
+                                model:
+                                competitionController.competition.value!)
+                          ],
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Heading5Text(
+                              competitionController.competition.value!.title,
+                              weight: TextWeight.bold,
+                              color: AppColorConstants.themeColor,
+                            ).bP8,
+                            Heading5Text(
+                              competitionController
+                                  .competition.value!.description,
+                            ),
+                          ],
+                        ).p16,
+                        const SizedBox(
+                          height: 40,
+                        ),
+                        competitionController.competition.value!
+                            .competitionMediaType ==
+                            1
+                            ? addPhotoGrid()
+                            .hp(DesignConstants.horizontalPadding)
+                            : addVideoGrid()
+                            .hp(DesignConstants.horizontalPadding),
+                      ])),
+              addBottomActionButton()
+            ]),
+          )
+              : Container()),
         ],
       ),
     );

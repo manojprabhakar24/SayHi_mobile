@@ -3,8 +3,8 @@ import 'package:foap/helper/imports/common_import.dart';
 import 'package:foap/helper/imports/reel_imports.dart';
 import 'package:foap/helper/number_extension.dart';
 import 'package:foap/screens/home_feed/comments_screen.dart';
-import 'package:get/get.dart';
 import 'package:video_player/video_player.dart';
+import 'package:visibility_detector/visibility_detector.dart';
 
 class ReelVideoPlayer extends StatefulWidget {
   final PostModel reel;
@@ -27,8 +27,6 @@ class _ReelVideoPlayerState extends State<ReelVideoPlayer> {
   @override
   void initState() {
     super.initState();
-    // playVideo = widget.play;
-    print('widget.reel ${widget.reel.id}');
     prepareVideo(url: widget.reel.gallery.first.filePath);
   }
 
@@ -58,29 +56,40 @@ class _ReelVideoPlayerState extends State<ReelVideoPlayer> {
           future: initializeVideoPlayerFuture,
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.done) {
-              return SizedBox(
-                key: PageStorageKey(widget.reel.gallery.first.filePath),
-                child: Chewie(
+              return VisibilityDetector(
+                key: Key(widget.reel.gallery.first.filePath),
+                onVisibilityChanged: (VisibilityInfo info) {
+                  if (info.visibleFraction == 1.0) {
+                    play();
+                  } else if (info.visibleFraction < 0.4) {
+                    pause();
+                  }
+                },
+                child: SizedBox(
                   key: PageStorageKey(widget.reel.gallery.first.filePath),
-                  controller: ChewieController(
-                    allowFullScreen: false,
-                    videoPlayerController: videoPlayerController!,
-                    aspectRatio: videoPlayerController!.value.aspectRatio,
-                    showOptions: false,
-                    showControls: false,
-                    autoInitialize: true,
-                    looping: true,
-                    autoPlay: true,
+                  child: Chewie(
+                    key: PageStorageKey(widget.reel.gallery.first.filePath),
+                    controller: ChewieController(
+                      allowFullScreen: false,
+                      videoPlayerController: videoPlayerController!,
+                      aspectRatio: videoPlayerController!.value.aspectRatio,
 
-                    // allowMuting: true,
-                    errorBuilder: (context, errorMessage) {
-                      return Center(
-                        child: Text(
-                          errorMessage,
-                          style: const TextStyle(color: Colors.white),
-                        ),
-                      );
-                    },
+                      showOptions: false,
+                      showControls: false,
+                      autoInitialize: true,
+                      looping: true,
+                      autoPlay: false,
+
+                      // allowMuting: true,
+                      errorBuilder: (context, errorMessage) {
+                        return Center(
+                          child: Text(
+                            errorMessage,
+                            style: const TextStyle(color: Colors.white),
+                          ),
+                        );
+                      },
+                    ),
                   ),
                 ),
               );
@@ -177,8 +186,8 @@ class _ReelVideoPlayerState extends State<ReelVideoPlayer> {
                     ).ripple(() {
                       if (widget.reel.audio != null) {
                         Get.to(() => ReelAudioDetail(
-                              audio: widget.reel.audio!,
-                            ));
+                          audio: widget.reel.audio!,
+                        ));
                       }
                     }))
               ],
@@ -190,33 +199,34 @@ class _ReelVideoPlayerState extends State<ReelVideoPlayer> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Obx(() => Column(
-                      children: [
-                        InkWell(
-                            onTap: () {
-                              _reelsController.likeUnlikeReel(
-                                  post: widget.reel);
-                              // widget.likeTapHandler();
-                            },
-                            child: ThemeIconWidget(
-                              _reelsController.likedReels
-                                          .contains(widget.reel) ||
-                                      widget.reel.isLike
-                                  ? ThemeIcon.favFilled
-                                  : ThemeIcon.fav,
-                              color: _reelsController.likedReels
-                                          .contains(widget.reel) ||
-                                      widget.reel.isLike
-                                  ? AppColorConstants.red
-                                  : Colors.white,
-                            )),
-                        const SizedBox(
-                          height: 5,
-                        ),
-                        BodyMediumText('${_reelsController.currentViewingReel.value?.totalLike}',
-                            color: Colors.white)
-                        // }),
-                      ],
-                    )),
+                  children: [
+                    InkWell(
+                        onTap: () {
+                          _reelsController.likeUnlikeReel(
+                              post: widget.reel);
+                          // widget.likeTapHandler();
+                        },
+                        child: ThemeIconWidget(
+                          _reelsController.likedReels
+                              .contains(widget.reel) ||
+                              widget.reel.isLike
+                              ? ThemeIcon.favFilled
+                              : ThemeIcon.fav,
+                          color: _reelsController.likedReels
+                              .contains(widget.reel) ||
+                              widget.reel.isLike
+                              ? AppColorConstants.red
+                              : Colors.white,
+                        )),
+                    const SizedBox(
+                      height: 5,
+                    ),
+                    BodyMediumText(
+                        '${_reelsController.currentViewingReel.value?.totalLike}',
+                        color: Colors.white)
+                    // }),
+                  ],
+                )),
                 const SizedBox(
                   height: 20,
                 ),
@@ -250,15 +260,25 @@ class _ReelVideoPlayerState extends State<ReelVideoPlayer> {
                 // ),
                 if (widget.reel.audio != null)
                   CachedNetworkImage(
-                          height: 25,
-                          width: 25,
-                          imageUrl: widget.reel.audio!.thumbnail)
+                      height: 25,
+                      width: 25,
+                      imageUrl: widget.reel.audio!.thumbnail)
                       .borderWithRadius(value: 1, radius: 5)
                       .ripple(() {
                     if (widget.reel.audio != null) {
                       Get.to(() => ReelAudioDetail(audio: widget.reel.audio!));
                     }
-                  })
+                  }),
+                const SizedBox(
+                  height: 20,
+                ),
+                const ThemeIconWidget(
+                  ThemeIcon.moreVertical,
+                  size: 25,
+                  color: Colors.white,
+                ).ripple(() {
+                  openActionPopup();
+                })
               ],
             ))
       ],
@@ -270,7 +290,7 @@ class _ReelVideoPlayerState extends State<ReelVideoPlayer> {
       videoPlayerController!.pause();
     }
 
-    videoPlayerController = VideoPlayerController.network(url);
+    videoPlayerController = VideoPlayerController.networkUrl(Uri.parse(url));
 
     initializeVideoPlayerFuture = videoPlayerController!.initialize().then((_) {
       setState(() {});
@@ -287,8 +307,8 @@ class _ReelVideoPlayerState extends State<ReelVideoPlayer> {
 
   play() {
     videoPlayerController!.play().then((value) => {
-          // videoPlayerController!.addListener(checkVideoProgress)
-        });
+      // videoPlayerController!.addListener(checkVideoProgress)
+    });
   }
 
   openComments() {
@@ -316,5 +336,92 @@ class _ReelVideoPlayerState extends State<ReelVideoPlayer> {
     videoPlayerController!.pause();
     videoPlayerController!.dispose();
     // videoPlayerController!.removeListener(checkVideoProgress);
+  }
+
+  void openActionPopup() {
+    Get.bottomSheet(Container(
+      color: AppColorConstants.cardColor.darken(),
+      child: widget.reel.user.isMe
+          ? Wrap(
+        children: [
+          // ListTile(
+          //     title: Center(
+          //         child: Heading6Text(
+          //           editPostString.tr,
+          //           weight: TextWeight.semiBold,
+          //         )),
+          //     onTap: () async {
+          //       Get.back();
+          //       Get.to(() => EditPostScreen(post: widget.reel));
+          //     }),
+          // divider(),
+          ListTile(
+              title: Center(
+                  child: Heading6Text(
+                    deleteString.tr,
+                    weight: TextWeight.semiBold,
+                  )),
+              onTap: () async {
+                Get.back();
+                _reelsController.deletePost(
+                  post: widget.reel,
+                );
+              }),
+          divider(),
+          ListTile(
+              title: Center(
+                  child: Heading6Text(
+                    shareString.tr,
+                    weight: TextWeight.semiBold,
+                  )),
+              onTap: () async {
+                Get.back();
+                _reelsController.sharePost(
+                  post: widget.reel,
+                );
+              }),
+          divider(),
+          ListTile(
+              title: Center(
+                  child: BodyLargeText(
+                    cancelString.tr,
+                    weight: TextWeight.semiBold,
+                    color: AppColorConstants.red,
+                  )),
+              onTap: () => Get.back()),
+        ],
+      )
+          : Wrap(
+        children: [
+          ListTile(
+              title: Center(
+                  child: Heading6Text(blockUserString.tr,
+                      weight: TextWeight.bold)),
+              onTap: () async {
+                Get.back();
+                AppUtil.showConfirmationAlert(
+                    title: blockString.tr,
+                    subTitle: areYouSureToBlockUserString.tr,
+                    okHandler: () {
+                      _reelsController.blockUser(
+                          userId: widget.reel.user.id, callback: () {});
+                    });
+              }),
+          divider(),
+          ListTile(
+              title: Center(
+                child: Heading6Text(
+                  cancelString.tr,
+                  weight: TextWeight.regular,
+                  color: AppColorConstants.red,
+                ),
+              ),
+              onTap: () => Get.back()),
+          const SizedBox(
+            height: 25,
+          )
+        ],
+      ),
+    ).round(40));
   }
 }

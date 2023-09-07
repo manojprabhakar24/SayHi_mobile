@@ -66,15 +66,17 @@ class ChatMessageModel {
     model.roomId =
         jsonMap['room'] ?? jsonMap['room_id'] ?? jsonMap['liveCallId'] ?? 0;
     model.liveTvId = jsonMap['liveTvId'] ?? '';
-    model.isEncrypted = jsonMap['is_encrypted'] ?? 0;
+    model.isEncrypted = jsonMap['is_encrypted'] ?? jsonMap['isEncrypted'] ?? 0;
     model.chatVersion =
         jsonMap['chat_version'] is String? ? 0 : jsonMap['chat_version'];
     model.messageContent = jsonMap['message'].replaceAll('\\', '');
-    model.repliedOnMessageContent = jsonMap['replied_on_message'];
+    model.repliedOnMessageContent =
+        jsonMap['replied_on_message'] ?? jsonMap['repliedOnMessage'];
+
     model.messageType = jsonMap['messageType'] ?? jsonMap['type'];
-    model.senderId = jsonMap['created_by'];
-    model.createdAt = jsonMap['created_at'];
-    model.viewedAt = jsonMap['viewed_at'];
+    model.senderId = jsonMap['created_by'] ?? jsonMap['createdBy'];
+    model.createdAt = jsonMap['created_at'] ?? jsonMap['createdAt'];
+    model.viewedAt = jsonMap['viewed_at'] ?? jsonMap['viewedAt'];
     model.deleteAfter =
         jsonMap['deleteAfter'] ?? userProfileManager.user.value!.chatDeleteTime;
     model.isDeleted = jsonMap['isDeleted'] == 1;
@@ -129,8 +131,6 @@ class ChatMessageModel {
   }
 
   ChatPost get postContent {
-    // ChatMessageModel message =
-    // ChatMessageModel.fromJson(json.decode(messageContent.decrypted()));
     return ChatPost.fromJson(json.decode(messageContent.decrypted()));
   }
 
@@ -147,15 +147,50 @@ class ChatMessageModel {
     return messageContent;
   }
 
+  ChatMessageUser get myUserDataInMessage {
+    UserProfileManager userProfileManager = Get.find();
+    return chatMessageUser
+        .where((element) => element.userId == userProfileManager.user.value!.id)
+        .first;
+  }
+
+  List<ChatMessageUser> get usersInMessageWithPendingRead {
+    UserProfileManager userProfileManager = Get.find();
+
+    return chatMessageUser
+        .where((element) =>
+            element.status != 3 &&
+            element.userId != userProfileManager.user.value!.id)
+        .toList();
+  }
+
+  List<ChatMessageUser> get usersInMessageWithPendingDelivery {
+    UserProfileManager userProfileManager = Get.find();
+
+    return chatMessageUser
+        .where((element) =>
+            element.status != 2 &&
+            element.userId != userProfileManager.user.value!.id)
+        .toList();
+  }
+
   MessageStatus get messageStatusType {
-    if (status == 1) {
-      return MessageStatus.sent;
-    } else if (status == 2) {
-      return MessageStatus.delivered;
-    } else if (status == 3) {
+    if (chatMessageUser.isEmpty) {
+      return MessageStatus.sending;
+    }
+
+    if (usersInMessageWithPendingRead.isEmpty) {
       return MessageStatus.read;
+    } else if (usersInMessageWithPendingDelivery.isEmpty) {
+      return MessageStatus.delivered;
+    } else if (myUserDataInMessage.status == 1) {
+      return MessageStatus.sent;
     }
     return MessageStatus.sending;
+  }
+
+  bool get isMessageReadyByMe {
+    return myUserDataInMessage.status == 3;
   }
 
   bool get isReply {
@@ -576,8 +611,8 @@ class ChatMessageUser {
   factory ChatMessageUser.fromJson(dynamic json) {
     ChatMessageUser model = ChatMessageUser();
     model.id = json['id'] ?? 0;
-    model.messageId = json['chat_message_id'] ?? 0;
-    model.userId = json['user_id'] ?? 0;
+    model.messageId = json['chat_message_id'] ?? json['chatMessageId'] ?? 0;
+    model.userId = json['user_id'] ?? json['userId'] ?? 0;
     model.status = json['status'] ?? 0;
 
     return model;

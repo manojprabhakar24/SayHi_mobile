@@ -4,13 +4,13 @@ import 'package:foap/apiHandler/apis/post_api.dart';
 import 'package:foap/apiHandler/apis/story_api.dart';
 import 'package:foap/helper/imports/common_import.dart';
 import '../../apiHandler/apis/misc_api.dart';
+import '../../manager/db_manager_realm.dart';
 import '../../model/gift_model.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import '../../screens/add_on/model/polls_model.dart';
 import '../../model/post_model.dart';
 import '../../screens/settings_menu/settings_controller.dart';
 import 'dart:async';
-import 'package:foap/manager/db_manager.dart';
 import 'package:foap/model/story_model.dart';
 import 'package:foap/model/post_gallery.dart';
 import 'package:foap/model/post_search_query.dart';
@@ -28,6 +28,8 @@ class HomeController extends GetxController {
   RxList<StoryModel> stories = <StoryModel>[].obs;
   RxList<UserModel> liveUsers = <UserModel>[].obs;
   RxList<GiftModel> timelineGift = <GiftModel>[].obs;
+  RxList<int> positions = <int>[].obs;
+  RxList<PostModel> sponsoredPosts = <PostModel>[].obs;
 
   RxList<BannerAd> bannerAds = <BannerAd>[].obs;
 
@@ -55,6 +57,7 @@ class HomeController extends GetxController {
   clearPosts() {
     _postsCurrentPage = 1;
     _canLoadMorePosts = true;
+    sponsoredPosts.clear();
     posts.clear();
   }
 
@@ -259,13 +262,43 @@ class HomeController extends GetxController {
             }
             _postsCurrentPage += 1;
 
-            print('callback');
             callback();
             update();
           });
     } else {
       callback();
     }
+  }
+
+  void getPromotionalPosts() async {
+    // if (_canLoadMorePosts == true) {
+    //   postSearchQuery.isRecent = 1;
+
+    // if (_postsCurrentPage == 1) {
+    //   isRefreshingPosts.value = true;
+    // }
+
+    PostApi.getPromotionalPosts(
+        page: 0,
+        resultCallback: (result, metadata) {
+          sponsoredPosts.addAll(result);
+          sponsoredPosts.unique((e) => e.id);
+
+          // isRefreshingPosts.value = false;
+          //
+          // if (_postsCurrentPage >= metadata.pageCount) {
+          //   _canLoadMorePosts = false;
+          // } else {
+          //   _canLoadMorePosts = true;
+          // }
+          // _postsCurrentPage += 1;
+
+          // callback();
+          update();
+        });
+    // } else {
+    //   callback();
+    // }
   }
 
   setCurrentVisibleVideo(
@@ -395,7 +428,7 @@ class HomeController extends GetxController {
     List<StoryModel> viewedAllStories = [];
     List<StoryModel> notViewedStories = [];
 
-    List<int> viewedStoryIds = await getIt<DBManager>().getAllViewedStories();
+    List<int> viewedStoryIds = await getIt<RealmDBManager>().getAllViewedStories();
 
     await StoryApi.getStories(resultCallback: (result) {
       for (var story in result) {

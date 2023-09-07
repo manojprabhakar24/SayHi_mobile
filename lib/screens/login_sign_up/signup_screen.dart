@@ -1,5 +1,6 @@
 import 'package:foap/helper/imports/common_import.dart';
 import 'package:foap/helper/imports/login_signup_imports.dart';
+import 'package:lottie/lottie.dart';
 import '../settings_menu/settings_controller.dart';
 
 class SignUpScreen extends StatefulWidget {
@@ -27,139 +28,152 @@ class SignUpScreenState extends State<SignUpScreen> {
           onTap: () {
             FocusScope.of(context).requestFocus(FocusNode());
           },
-          child: Column(
-              // mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.1,
-                ),
-                const Align(
-                  alignment: Alignment.centerLeft,
-                  child: AppThemeBackButton(),
-                ),
-                SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.05,
-                ),
-                Heading3Text(createAnAccountString.tr, weight: TextWeight.bold)
-                    .rp(100),
-                SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.05,
-                ),
-                GetBuilder<LoginController>(
-                    init: loginController,
-                    builder: (ctx) {
-                      return Stack(children: [
-                        AppTextField(
-                          controller: name,
-                          icon: ThemeIcon.account,
-                          hintText: userNameString.tr,
-                          onChanged: (value) {
-                            if (value.length > 3) {
-                              loginController.verifyUsername(value);
-                            }
-                          },
-                        ),
-                        Positioned(
-                            right: 10,
-                            bottom: 15,
-                            child: loginController.userNameCheckStatus != -1
-                                ? loginController.userNameCheckStatus == 1
-                                    ? ThemeIconWidget(
-                                        ThemeIcon.checkMark,
-                                        color: AppColorConstants.themeColor,
-                                      )
-                                    : ThemeIconWidget(
-                                        ThemeIcon.close,
-                                        color: AppColorConstants.red,
-                                      )
-                                : Container()),
-                        const SizedBox(
-                          width: 20,
-                        )
-                      ]);
-                    }),
-                SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.015,
-                ),
-                AppTextField(
-                  icon: ThemeIcon.email,
-                  controller: email,
-                  hintText: emailString,
-                ),
-                SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.015,
-                ),
-                AppPasswordTextField(
-                  controller: password,
-                  hintText: passwordString.tr,
-                  icon: ThemeIcon.lock,
-                ),
-                Obx(() {
-                  return loginController.passwordStrength.value < 0.8 &&
-                          password.text.isNotEmpty
-                      ? Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const SizedBox(
-                              height: 5,
-                            ),
-                            LinearProgressIndicator(
-                              value: loginController.passwordStrength.value,
-                              backgroundColor: Colors.grey[300],
-                              color: loginController.passwordStrength.value <=
-                                      1 / 4
-                                  ? Colors.red
-                                  : loginController.passwordStrength.value ==
-                                          2 / 4
-                                      ? Colors.yellow
-                                      : loginController
-                                                  .passwordStrength.value ==
-                                              3 / 4
-                                          ? Colors.blue
-                                          : Colors.green,
-                              minHeight: 5,
-                            ),
-                            const SizedBox(
-                              height: 5,
-                            ),
-                            BodySmallText(
-                              loginController.passwordStrengthText.value,
-                            ),
-                          ],
-                        )
-                      : Container();
-                }),
-                SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.015,
-                ),
-                addSignUpBtn(),
-                SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.02,
-                ),
-                Wrap(
-                  spacing: 2,
+          child:
+              Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
+            SizedBox(
+              height: Get.height * 0.1,
+            ),
+            const Align(
+              alignment: Alignment.centerLeft,
+              child: AppThemeBackButton(),
+            ),
+            SizedBox(
+              height: Get.height * 0.05,
+            ),
+            SizedBox(
+                height: Get.height * 0.12,
+                child: Stack(
+                  alignment: Alignment.center,
                   children: [
-                    BodySmallText(alreadyHaveAccString),
-                    BodySmallText(
-                      signInString,
-                      weight: TextWeight.bold,
-                    ),
+                    Heading3Text(createAnAccountString.tr,
+                            weight: TextWeight.bold)
+                        .rp(100),
+                    Positioned(
+                        right: 0,
+                        top: 0,
+                        bottom: 0,
+                        child: Lottie.asset(
+                          'assets/lottie/syahi.json',
+                        ))
                   ],
-                ).ripple(() {
-                  Get.to(() => const LoginScreen());
+                )),
+            SizedBox(
+              height: Get.height * 0.05,
+            ),
+            GetBuilder<LoginController>(
+                init: loginController,
+                builder: (ctx) {
+                  return Stack(children: [
+                    AppTextField(
+                      controller: name,
+                      icon: ThemeIcon.account,
+                      hintText: userNameString.tr,
+                      onChanged: (value) {
+                        if (value.length > 3) {
+                          loginController.verifyUsername(value);
+                        }
+                      },
+                    ),
+                    Positioned(
+                        right: 10,
+                        bottom: 15,
+                        child: loginController.userNameCheckStatus != -1
+                            ? loginController.userNameCheckStatus == 1
+                                ? ThemeIconWidget(
+                                    ThemeIcon.checkMark,
+                                    color: AppColorConstants.themeColor,
+                                  )
+                                : ThemeIconWidget(
+                                    ThemeIcon.close,
+                                    color: AppColorConstants.red,
+                                  )
+                            : Container()),
+                    const SizedBox(
+                      width: 20,
+                    )
+                  ]);
                 }),
-                divider(height: 1).vp(40),
-                BodyMediumText(continueWithAccountsString),
-                SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.04,
+            SizedBox(
+              height: Get.height * 0.015,
+            ),
+            AppTextField(
+              icon: ThemeIcon.email,
+              controller: email,
+              hintText: emailString,
+            ),
+            SizedBox(
+              height: Get.height * 0.015,
+            ),
+            AppPasswordTextField(
+              controller: password,
+              hintText: passwordString.tr,
+              icon: ThemeIcon.lock,
+              onChanged: (value) {
+                loginController.checkPassword(value);
+              },
+            ),
+            Obx(() {
+              return loginController.passwordStrength.value < 0.8 &&
+                      password.text.isNotEmpty
+                  ? Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const SizedBox(
+                          height: 5,
+                        ),
+                        LinearProgressIndicator(
+                          value: loginController.passwordStrength.value,
+                          backgroundColor: Colors.grey[300],
+                          color: loginController.passwordStrength.value <= 1 / 4
+                              ? Colors.red
+                              : loginController.passwordStrength.value == 2 / 4
+                                  ? Colors.yellow
+                                  : loginController.passwordStrength.value ==
+                                          3 / 4
+                                      ? Colors.blue
+                                      : Colors.green,
+                          minHeight: 5,
+                        ),
+                        const SizedBox(
+                          height: 5,
+                        ),
+                        BodySmallText(
+                          loginController.passwordStrengthText.value,
+                        ),
+                      ],
+                    )
+                  : Container();
+            }),
+            SizedBox(
+              height: Get.height * 0.015,
+            ),
+            addSignUpBtn(),
+            SizedBox(
+              height: Get.height * 0.02,
+            ),
+            Wrap(
+              spacing: 2,
+              children: [
+                BodySmallText(alreadyHaveAccString),
+                BodySmallText(
+                  signInString,
+                  weight: TextWeight.bold,
                 ),
-                const SocialLogin(hidePhoneLogin: false)
-                    .setPadding(left: 45, right: 45),
-                SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.2,
-                ),
-              ]),
+              ],
+            ).ripple(() {
+              Get.to(() => const LoginScreen());
+            }),
+            divider(height: 1).vp(40),
+            BodyMediumText(continueWithAccountsString),
+            SizedBox(
+              height: Get.height * 0.04,
+            ),
+            const SocialLogin(hidePhoneLogin: false)
+                .setPadding(left: 45, right: 45),
+            SizedBox(
+              height: Get.height * 0.2,
+            ),
+          ]),
         ).setPadding(left: 25, right: 25),
       ),
     );
@@ -172,7 +186,7 @@ class SignUpScreenState extends State<SignUpScreen> {
         AppUtil.showTermsAndConditionConfirmationAlert(
             title: confirmString,
             subTitle:
-                '${signingInTermsString.tr} ${termsOfServiceString.tr.tr} ${andString.tr.tr} ${privacyPolicyString.tr.tr}',
+                '${signingInTermsString.tr} ${termsOfServiceString.tr} ${andString.tr} ${privacyPolicyString.tr}',
             termsHandler: () {
               loginController.launchUrlInBrowser(
                   settingsController.setting.value!.termsOfServiceUrl!);

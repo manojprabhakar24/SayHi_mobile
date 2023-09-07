@@ -1,5 +1,4 @@
 import 'package:chewie/chewie.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:foap/components/custom_texts.dart';
 import 'package:foap/helper/enum.dart';
 import 'package:foap/helper/extension.dart';
@@ -16,6 +15,7 @@ import 'package:video_thumbnail/video_thumbnail.dart';
 import 'dart:io';
 import 'package:flutter/material.dart';
 
+import '../../../../components/loader.dart';
 import '../../../../controllers/post/select_post_media_controller.dart';
 
 class PreviewReelsScreen extends StatefulWidget {
@@ -130,7 +130,7 @@ class _PreviewReelsState extends State<PreviewReelsScreen> {
   }
 
   submitReel() async {
-    EasyLoading.show(status: loadingString.tr);
+    Loader.show(status: loadingString.tr);
     final thumbnail = await VideoThumbnail.thumbnailData(
       video: widget.reel.path,
       imageFormat: ImageFormat.JPEG,
@@ -145,7 +145,7 @@ class _PreviewReelsState extends State<PreviewReelsScreen> {
       deleteOrigin: false, // It's false by default
     );
 
-    EasyLoading.dismiss();
+    Loader.dismiss();
     Media media = Media();
     media.id = randomId();
     media.file = File(mediaInfo!.path!);
@@ -166,6 +166,7 @@ class _PreviewReelsState extends State<PreviewReelsScreen> {
           audioStartTime: widget.audioStartTime,
           audioEndTime: widget.audioEndTime,
           postType: PostType.reel,
+          // postType: PostType.reel,
         ));
   }
 }

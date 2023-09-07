@@ -15,8 +15,6 @@ import 'package:foap/screens/add_on/controller/relationship/relationship_search_
 import 'package:foap/controllers/live/live_users_controller.dart';
 import 'package:foap/screens/settings_menu/help_support_contorller.dart';
 import 'package:foap/screens/settings_menu/mercadopago_payment_controller.dart';
-
-// import 'package:giphy_get/l10n.dart';
 import 'components/giphy/src/l10n/l10n.dart';
 import 'controllers/post/post_gift_controller.dart';
 import 'controllers/clubs/clubs_controller.dart';
@@ -47,6 +45,7 @@ import 'controllers/chat_and_call/select_user_group_chat_controller.dart';
 import 'controllers/home/home_controller.dart';
 import 'controllers/live/live_history_controller.dart';
 import 'controllers/post/promotion_controller.dart';
+import 'controllers/story/story_controller.dart';
 import 'controllers/tv/live_tv_streaming_controller.dart';
 import 'controllers/auth/login_controller.dart';
 import 'controllers/misc/map_screen_controller.dart';
@@ -56,7 +55,7 @@ import 'controllers/profile/profile_controller.dart';
 import 'controllers/misc/request_verification_controller.dart';
 import 'controllers/misc/subscription_packages_controller.dart';
 import 'helper/languages.dart';
-import 'manager/db_manager.dart';
+import 'manager/db_manager_realm.dart';
 import 'manager/location_manager.dart';
 import 'manager/notification_manager.dart';
 import 'manager/player_manager.dart';
@@ -135,6 +134,7 @@ Future<void> main() async {
   Get.put(FundRaisingController());
   Get.put(NearByOffersController());
   Get.put(PromotionController());
+  Get.put(AppStoryController());
 
   setupServiceLocator();
 
@@ -146,7 +146,7 @@ Future<void> main() async {
 
   NotificationManager().initialize();
 
-  await getIt<DBManager>().createDatabase();
+  await getIt<RealmDBManager>().openDatabase();
 
   if (userProfileManager.isLogin == true) {
     AuthApi.updateFcmToken();
@@ -199,7 +199,7 @@ class _SocialifiedAppState extends State<SocialifiedApp> {
                   debugShowCheckedModeBanner: false,
                   // navigatorKey: navigationKey,
                   home: widget.startScreen,
-                  builder: EasyLoading.init(),
+                  // builder: Loader.init(),
                   // theme: AppTheme.lightTheme,
                   // darkTheme: AppTheme.darkTheme,
                   themeMode: ThemeMode.dark,

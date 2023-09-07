@@ -65,6 +65,8 @@ class HomeFeedState extends State<HomeFeedScreen> {
       _refreshController.refreshCompleted();
       _refreshController.loadComplete();
     });
+
+    _homeController.getPromotionalPosts();
   }
 
   void loadData() {
@@ -146,8 +148,10 @@ class HomeFeedState extends State<HomeFeedScreen> {
                                 width: 40,
                                 height: 40,
                               ).round(5)
-                            : BodyLargeText(_addPostController.postingTitle)
-                    : BodyLargeText(_addPostController.postingTitle),
+                            // : BodyLargeText(_addPostController.postingTitle)
+                            : Container()
+                    // : BodyLargeText(_addPostController.postingTitle),
+                    : Container(),
                 const SizedBox(
                   width: 10,
                 ),
@@ -217,7 +221,7 @@ class HomeFeedState extends State<HomeFeedScreen> {
                   live: live,
                 );
               },
-            ).vP16;
+            );
           }),
     );
   }
@@ -235,10 +239,9 @@ class HomeFeedState extends State<HomeFeedScreen> {
                           ? const StoryAndHighlightsShimmer()
                           : storiesView());
                 } else if (index == 1) {
-                  return postingView().hp(DesignConstants.horizontalPadding);
+                  return postingView().hP16;
                 } else {
                   PostModel model = _homeController.posts[index - 2];
-
                   return PostCard(
                     model: model,
                     removePostHandler: () {
@@ -251,21 +254,43 @@ class HomeFeedState extends State<HomeFeedScreen> {
                 }
               },
               separatorBuilder: (context, index) {
-                if (_settingsController.setting.value?.enablePolls == true) {
-                  return polls(index);
+                int separatorIndex = index - 2;
+                if (_homeController.positions.contains(separatorIndex)) {
+                  int positionIndex =
+                      _homeController.positions.indexOf(separatorIndex);
+                  return PostCard(
+                    model: _homeController.sponsoredPosts[positionIndex],
+                    isSponsored: true,
+                    // textTapHandler: (text) {
+                    //   _homeController.postTextTapHandler(
+                    //       post: _homeController.sponsoredPosts[positionIndex],
+                    //       text: text);
+                    // },
+                    removePostHandler: () {
+                      _homeController.removePostFromList(
+                          _homeController.sponsoredPosts[positionIndex]);
+                    },
+                    blockUserHandler: () {
+                      _homeController.removeUsersAllPostFromList(
+                          _homeController.sponsoredPosts[positionIndex]);
+                    },
+                  );
                 } else {
-                  if (index > 1) {
-                    return divider(height: 10).vP16;
+                  if (_settingsController.setting.value?.enablePolls == true) {
+                    return polls(index);
+                  } else {
+                    return const SizedBox(
+                      height: 0,
+                    );
                   }
-                  return Container();
                 }
               })
           .addPullToRefresh(
               refreshController: _refreshController,
-              enablePullUp: true,
-              enablePullDown: true,
+              enablePullUp: false,
               onRefresh: refreshData,
-              onLoading: loadData);
+              onLoading: () {},
+              enablePullDown: true);
     });
   }
 

@@ -9,10 +9,12 @@ import 'package:foap/manager/location_manager.dart';
 import 'package:foap/manager/socket_manager.dart';
 import 'package:get_it/get_it.dart';
 
+import 'db_manager_realm.dart';
+
 GetIt getIt = GetIt.instance;
 
 Future<void> setupServiceLocator() async {
-  getIt.registerLazySingleton<DBManager>(() => DBManager());
+  getIt.registerLazySingleton<RealmDBManager>(() => RealmDBManager());
   // getIt.registerLazySingleton<MediaManager>(() => MediaManager());
   getIt.registerLazySingleton<FileManager>(() => FileManager());
   getIt.registerLazySingleton<VoipController>(() => VoipController());

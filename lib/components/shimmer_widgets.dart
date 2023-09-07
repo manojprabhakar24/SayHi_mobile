@@ -345,11 +345,7 @@ class ShimmerUsers extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView.separated(
-      padding: EdgeInsets.only(
-          left: DesignConstants.horizontalPadding,
-          right: DesignConstants.horizontalPadding,
-          top: 20,
-          bottom: 100),
+      padding: const EdgeInsets.only(top: 20, bottom: 100),
       itemCount: 20,
       itemBuilder: (ctx, index) {
         return Row(

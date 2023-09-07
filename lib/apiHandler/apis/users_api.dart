@@ -99,12 +99,12 @@ class UsersApi {
   static Future<void> reportUser(
       {required int userId, required VoidCallback resultCallback}) async {
     var url = NetworkConstantsUtil.reportUser;
-    EasyLoading.show(status: loadingString.tr);
+    Loader.show(status: loadingString.tr);
 
     await ApiWrapper().postApi(
         url: url,
         param: {"report_to_user_id": userId.toString()}).then((result) {
-      EasyLoading.dismiss();
+      Loader.dismiss();
 
       if (result?.success == true) {
         resultCallback();
@@ -116,11 +116,11 @@ class UsersApi {
   static Future<void> blockUser(
       {required int userId, required VoidCallback resultCallback}) async {
     var url = NetworkConstantsUtil.blockUser;
-    EasyLoading.show(status: loadingString.tr);
+    Loader.show(status: loadingString.tr);
 
     await ApiWrapper().postApi(
         url: url, param: {"blocked_user_id": userId.toString()}).then((result) {
-      EasyLoading.dismiss();
+      Loader.dismiss();
 
       if (result?.success == true) {
         resultCallback();
@@ -132,11 +132,11 @@ class UsersApi {
   static Future<void> unBlockUser(
       {required int userId, required VoidCallback resultCallback}) async {
     var url = NetworkConstantsUtil.unBlockUser;
-    EasyLoading.show(status: loadingString.tr);
+    Loader.show(status: loadingString.tr);
 
     await ApiWrapper().postApi(
         url: url, param: {"blocked_user_id": userId.toString()}).then((result) {
-      EasyLoading.dismiss();
+      Loader.dismiss();
 
       if (result?.success == true) {
         resultCallback();
@@ -150,9 +150,9 @@ class UsersApi {
       required Function(List<UserModel>, APIMetaData) resultCallback}) async {
     var url = '${NetworkConstantsUtil.blockedUsers}&page=$page';
 
-    EasyLoading.show(status: loadingString.tr);
+    Loader.show(status: loadingString.tr);
     await ApiWrapper().getApi(url: url).then((result) {
-      EasyLoading.dismiss();
+      Loader.dismiss();
       if (result?.success == true) {
         var blockedUser = result!.data['blockedUser']['items'];
 

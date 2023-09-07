@@ -68,7 +68,7 @@ class EnlargeImageViewState extends State<EnlargeImageViewScreen> {
                           child: InkWell(
                               onTap: () {
                                 Get.to(() =>
-                                    OtherUserProfile(userId: model!.user.id));
+                                    OtherUserProfile(userId: model!.user.id,user: model!.user,));
                               },
                               child: Heading5Text(
                                 model!.user.userName,

@@ -133,8 +133,7 @@ class EventBookingDetailState extends State<EventBookingDetail> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          BodyLargeText(giftedToString.tr,
-              weight: TextWeight.semiBold),
+          BodyLargeText(giftedToString.tr, weight: TextWeight.semiBold),
           const SizedBox(
             height: 15,
           ),
@@ -163,7 +162,9 @@ class EventBookingDetailState extends State<EventBookingDetail> {
                   textStyle: TextStyle(fontSize: FontSizes.b4),
                   onPress: () {
                     Get.to(() => OtherUserProfile(
-                        userId: widget.booking.giftedToUser!.id));
+                          userId: widget.booking.giftedToUser!.id,
+                          user: widget.booking.giftedToUser!,
+                        ));
                   }),
             ],
           )
@@ -178,8 +179,7 @@ class EventBookingDetailState extends State<EventBookingDetail> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          BodyLargeText(giftedByString.tr,
-              weight: TextWeight.semiBold),
+          BodyLargeText(giftedByString.tr, weight: TextWeight.semiBold),
           const SizedBox(
             height: 15,
           ),
@@ -208,7 +208,9 @@ class EventBookingDetailState extends State<EventBookingDetail> {
                   textStyle: TextStyle(fontSize: FontSizes.b4),
                   onPress: () {
                     Get.to(() => OtherUserProfile(
-                        userId: widget.booking.giftedToUser!.id));
+                          userId: widget.booking.giftedToUser!.id,
+                          user: widget.booking.giftedToUser!,
+                        ));
                   }),
             ],
           ),
@@ -353,8 +355,7 @@ class EventBookingDetailState extends State<EventBookingDetail> {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                BodyLargeText(locationString.tr,
-                    weight: TextWeight.medium),
+                BodyLargeText(locationString.tr, weight: TextWeight.medium),
                 const SizedBox(
                   height: 5,
                 ),
@@ -418,8 +419,7 @@ class EventBookingDetailState extends State<EventBookingDetail> {
       children: [
         Container(
           color: AppColorConstants.themeColor.withOpacity(0.4),
-          child: Heading6Text(bookingInfoString.tr,
-                  weight: TextWeight.medium)
+          child: Heading6Text(bookingInfoString.tr, weight: TextWeight.medium)
               .setPadding(top: 5, bottom: 5, left: 10, right: 10),
         ).round(5),
         const SizedBox(
@@ -517,8 +517,8 @@ class EventBookingDetailState extends State<EventBookingDetail> {
           children: [
             SizedBox(
                 width: 120,
-                child: BodyMediumText(priceString.tr,
-                    weight: TextWeight.medium)),
+                child:
+                    BodyMediumText(priceString.tr, weight: TextWeight.medium)),
             Container(
               height: 5,
               width: 5,
@@ -539,8 +539,7 @@ class EventBookingDetailState extends State<EventBookingDetail> {
       children: [
         Container(
           color: AppColorConstants.themeColor.withOpacity(0.4),
-          child: Heading6Text(locationString.tr,
-                  weight: TextWeight.medium)
+          child: Heading6Text(locationString.tr, weight: TextWeight.medium)
               .setPadding(top: 5, bottom: 5, left: 10, right: 10),
         ).round(5),
         const SizedBox(
@@ -568,8 +567,7 @@ class EventBookingDetailState extends State<EventBookingDetail> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Heading6Text(eventGalleryString.tr,
-                    weight: TextWeight.medium),
+                Heading6Text(eventGalleryString.tr, weight: TextWeight.medium),
               ],
             ).setPadding(top: 5, bottom: 5, left: 10, right: 10),
           ).round(5),

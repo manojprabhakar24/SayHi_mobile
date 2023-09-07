@@ -33,16 +33,39 @@ class ReSharePostState extends State<ReSharePost> {
                   hintText: pleaseEnterMessageString,
                 ),
                 const SizedBox(height: 10),
-                Align(
-                  alignment: Alignment.centerRight,
-                  child: AppThemeButton(
-                      width: 100,
-                      text: shareString,
-                      onPress: () {
-                        postCardController.reSharePost(
-                            widget.post.id, commentInputField.text);
-                        Get.back();
-                      }),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      children: [
+                        BodyMediumText(
+                          allowCommentsString.tr,
+                          weight: TextWeight.semiBold,
+                        ),
+                        const SizedBox(
+                          width: 15,
+                        ),
+                        Obx(() => ThemeIconWidget(
+                                    postCardController.enableComments.value
+                                        ? ThemeIcon.selectedCheckbox
+                                        : ThemeIcon.emptyCheckbox)
+                                .ripple(() {
+                              postCardController.toggleEnableComments();
+                            })),
+                      ],
+                    ),
+                    AppThemeButton(
+                        width: 100,
+                        text: shareString,
+                        onPress: () {
+                          postCardController.reSharePost(
+                              postId: widget.post.id,
+                              comment: commentInputField.text,
+                              enableComments:
+                                  postCardController.enableComments.value);
+                          Get.back();
+                        }),
+                  ],
                 ),
                 const SizedBox(height: 20),
               ],

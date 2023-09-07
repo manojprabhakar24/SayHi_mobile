@@ -21,7 +21,7 @@ class PostList extends StatelessWidget {
     scrollController.addListener(() {
       if (scrollController.position.maxScrollExtent ==
           scrollController.position.pixels) {
-        if (!postController.isLoadingPosts) {
+        if (!postController.postDataWrapper.isLoading.value) {
           postController.getPosts(() {});
         }
       }
@@ -31,14 +31,13 @@ class PostList extends StatelessWidget {
         init: postController,
         builder: (ctx) {
           return Container(
-              child: postController.isLoadingPosts
+              child: postController.postDataWrapper.isLoading.value
                   ? const PostBoxShimmer()
                   : postController.posts.isNotEmpty
                       ? ListView.builder(
                           padding: const EdgeInsets.only(top: 20, bottom: 100),
                           controller: scrollController,
                           itemCount: postController.posts.length,
-                          // physics: const NeverScrollableScrollPhysics(),
                           shrinkWrap: true,
                           itemBuilder: (BuildContext context, int index) =>
                               PostCard(

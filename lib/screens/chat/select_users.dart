@@ -146,7 +146,7 @@ class SelectUserForChatState extends State<SelectUserForChat> {
                                       return UserTile(
                                         profile: usersList[index - 2],
                                         viewCallback: () {
-                                          EasyLoading.show(
+                                          Loader.show(
                                               status: loadingString.tr);
 
                                           widget.userSelected(
@@ -158,7 +158,7 @@ class SelectUserForChatState extends State<SelectUserForChat> {
                                               usersList[index - 2]);
                                         },
                                         chatCallback: () {
-                                          EasyLoading.show(
+                                          Loader.show(
                                               status: loadingString.tr);
 
                                           widget.userSelected(
@@ -272,7 +272,6 @@ class SelectFollowingUserForMessageSendingState
 
   @override
   void dispose() {
-    // TODO: implement dispose
     selectUserForChatController.clear();
     super.dispose();
   }
@@ -295,7 +294,7 @@ class SelectFollowingUserForMessageSendingState
 
           List<UserModel> usersList = selectUserForChatController.following;
           return selectUserForChatController.followingIsLoading
-              ? const ShimmerUsers().hp(DesignConstants.horizontalPadding)
+              ? const ShimmerUsers()
               : usersList.isNotEmpty
                   ? ListView.separated(
                       padding: const EdgeInsets.only(top: 20, bottom: 50),

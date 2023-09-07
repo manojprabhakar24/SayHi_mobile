@@ -5,6 +5,7 @@ import 'package:foap/helper/imports/chat_imports.dart';
 import 'package:foap/helper/list_extension.dart';
 import 'package:get/get.dart';
 import '../../helper/localization_strings.dart';
+import '../../manager/db_manager_realm.dart';
 import '../../screens/dashboard/dashboard_screen.dart';
 
 class ChatHistoryController extends GetxController {
@@ -21,7 +22,7 @@ class ChatHistoryController extends GetxController {
 
   getChatRooms() async {
     isLoading = true;
-    allRooms = await getIt<DBManager>().getAllRooms();
+    allRooms = await getIt<RealmDBManager>().getAllRooms();
 
     _searchedRooms.value = allRooms;
     update();
@@ -29,13 +30,10 @@ class ChatHistoryController extends GetxController {
     // if (allRooms.isEmpty) {
     ChatApi.getChatRooms(resultCallback: (result) async {
       isLoading = false;
-      List<ChatRoomModel> groupChatRooms = result
-          // .where((element) => element.isGroupChat == true)
-          .toList();
-      await getIt<DBManager>().saveRooms(groupChatRooms);
+      allRooms = result;
+      await getIt<RealmDBManager>().saveRooms(result);
 
-      allRooms = await getIt<DBManager>().getAllRooms();
-      // allRooms = await getIt<DBManager>().mapUnReadCount(groupChatRooms);
+      // allRooms = await getIt<RealmDBManager>().getAllRooms();
       _searchedRooms.value = allRooms;
       groupRooms();
       update();
@@ -83,9 +81,9 @@ class ChatHistoryController extends GetxController {
   }
 
   clearUnreadCount({required ChatRoomModel chatRoom}) async {
-    getIt<DBManager>().clearUnReadCount(roomId: chatRoom.id);
+    getIt<RealmDBManager>().clearUnReadCount(roomId: chatRoom.id);
     int roomsWithUnreadMessageCount =
-        await getIt<DBManager>().roomsWithUnreadMessages();
+        await getIt<RealmDBManager>().roomsWithUnreadMessages();
     _dashboardController.updateUnreadMessageCount(roomsWithUnreadMessageCount);
 
     getChatRooms();
@@ -94,7 +92,7 @@ class ChatHistoryController extends GetxController {
 
   deleteRoom(ChatRoomModel chatRoom) {
     allRooms.removeWhere((element) => element.id == chatRoom.id);
-    getIt<DBManager>().deleteRooms([chatRoom]);
+    getIt<RealmDBManager>().deleteRooms([chatRoom]);
     update();
     ChatApi.deleteChatRoom(chatRoom.id);
   }
@@ -116,7 +114,7 @@ class ChatHistoryController extends GetxController {
       // allRooms.refresh();
       _searchedRooms.refresh();
       update();
-      getIt<DBManager>().updateUnReadCount(roomId: message.roomId);
+      getIt<RealmDBManager>().updateUnReadCount(roomId: message.roomId);
     }
 
     getChatRooms();

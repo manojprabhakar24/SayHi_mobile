@@ -1,6 +1,7 @@
 import 'dart:ui';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
+
 import 'package:foap/apiHandler/apis/podcast_api.dart';
+import 'package:foap/components/loader.dart';
 import 'package:foap/helper/imports/event_imports.dart';
 import 'package:foap/helper/list_extension.dart';
 import 'package:foap/screens/add_on/model/podcast_banner_model.dart';
@@ -186,12 +187,12 @@ class PodcastStreamingController extends GetxController {
   }
 
   getPodcastById(int id, Function(PodcastModel) completionCallBack) {
-    EasyLoading.show(status: loadingString.tr);
+    Loader.show(status: loadingString.tr);
 
     PodcastApi.getPodcastById(
         id: id,
         resultCallback: (result) {
-          EasyLoading.dismiss();
+          Loader.dismiss();
           podcastDetail.value = result;
           update();
           completionCallBack(result);
@@ -199,12 +200,12 @@ class PodcastStreamingController extends GetxController {
   }
 
   getHostById(int hostId, Function(HostModel) completionCallBack) {
-    EasyLoading.show(status: loadingString.tr);
+    Loader.show(status: loadingString.tr);
 
     PodcastApi.getPodcastHostById(
         hostId: hostId,
         resultCallback: (result) {
-          EasyLoading.dismiss();
+          Loader.dismiss();
 
           hostDetail.value = result;
           update();

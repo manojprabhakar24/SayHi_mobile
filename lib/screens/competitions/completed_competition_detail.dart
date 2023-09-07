@@ -187,7 +187,7 @@ class CompletedCompetitionDetailState
                           weight: TextWeight.bold,
                           color: AppColorConstants.themeColor)
                       .ripple(() {
-                    Get.to(() => OtherUserProfile(userId: winner.id));
+                    Get.to(() => OtherUserProfile(userId: winner.id,user: winner,));
                   }),
                 ],
               ).bP8,

@@ -55,7 +55,7 @@ class PhoneLoginScreenState extends State<PhoneLoginScreen> {
                       // showDivider: true,
                       hintText: phoneNumberString.tr,
                       // cornerRadius: 5,
-                      // phoneCodeText: controller.phoneCountryCode.value,
+                      countryCodeText: '+${controller.phoneCountryCode.value}',
                       onChanged: (String value) {},
                       countryCodeValueChanged: (String value) {
                         controller.phoneCodeSelected(value);

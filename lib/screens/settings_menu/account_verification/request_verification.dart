@@ -27,125 +27,129 @@ class _RequestVerificationState extends State<RequestVerification> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColorConstants.backgroundColor,
-      body: Obx(() => SizedBox(
-            height: Get.height,
-            child: Column(
-              children: [
-                backNavigationBarWithTrailingWidget(
-                  title: requestVerificationString.tr,
-                  widget: const ThemeIconWidget(ThemeIcon.bookMark).ripple(() {
-                    if (_requestVerificationController
-                        .verificationRequests.isNotEmpty) {
-                      Get.to(() => const RequestVerificationList());
-                    }
-                  }),
+      body: GestureDetector(
+          onTap: () {
+            FocusScope.of(context).requestFocus(FocusNode());
+          },
+          child: Obx(() => SizedBox(
+                height: Get.height,
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      backNavigationBarWithTrailingWidget(
+                        title: requestVerificationString.tr,
+                        widget: const ThemeIconWidget(ThemeIcon.bookMark)
+                            .ripple(() {
+                          if (_requestVerificationController
+                              .verificationRequests.isNotEmpty) {
+                            Get.to(() => const RequestVerificationList());
+                          }
+                        }),
+                      ),
+                      // divider(context: context).tP8,
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      _requestVerificationController.isApproved ||
+                              _userProfileManager.user.value!.isVerified
+                          ? alreadyVerifiedView()
+                          : _requestVerificationController
+                                  .isVerificationInProcess
+                              ? verificationPendingView()
+                              : requestVerification(),
+                    ],
+                  ),
                 ),
-                // divider(context: context).tP8,
-                const SizedBox(
-                  height: 20,
-                ),
-                _requestVerificationController.isApproved ||
-                        _userProfileManager.user.value!.isVerified
-                    ? alreadyVerifiedView()
-                    : _requestVerificationController.isVerificationInProcess
-                        ? verificationPendingView()
-                        : requestVerification(),
-              ],
-            ),
-          )),
+              ))),
     );
   }
 
   Widget alreadyVerifiedView() {
-    return Expanded(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Heading4Text(verifiedString.tr.toUpperCase(),
-                  weight: TextWeight.bold),
-              const SizedBox(
-                width: 5,
-              ),
-              Image.asset(
-                'assets/verified.png',
-                height: 30,
-                width: 30,
-              )
-            ],
-          ),
-          const SizedBox(
-            height: 10,
-          ),
-          Text(
-            youAreVerifiedNowString.tr,
-            style: TextStyle(fontSize: FontSizes.b2),
-            textAlign: TextAlign.center,
-          ),
-          const SizedBox(
-            height: 5,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              BodyMediumText(
-                profileIsVerifiedOnString.tr,
-                textAlign: TextAlign.center,
-              ),
-              BodyMediumText(
-                _requestVerificationController.verifiedOn,
-                weight: TextWeight.bold,
-                color: AppColorConstants.themeColor,
-                textAlign: TextAlign.center,
-              ),
-            ],
-          ),
-          const SizedBox(
-            height: 300,
-          ),
-        ],
-      ),
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Heading4Text(verifiedString.tr.toUpperCase(),
+                weight: TextWeight.bold),
+            const SizedBox(
+              width: 5,
+            ),
+            Image.asset(
+              'assets/verified.png',
+              height: 30,
+              width: 30,
+            )
+          ],
+        ),
+        const SizedBox(
+          height: 10,
+        ),
+        Text(
+          youAreVerifiedNowString.tr,
+          style: TextStyle(fontSize: FontSizes.b2),
+          textAlign: TextAlign.center,
+        ),
+        const SizedBox(
+          height: 5,
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            BodyMediumText(
+              profileIsVerifiedOnString.tr,
+              textAlign: TextAlign.center,
+            ),
+            BodyMediumText(
+              _requestVerificationController.verifiedOn,
+              weight: TextWeight.bold,
+              color: AppColorConstants.themeColor,
+              textAlign: TextAlign.center,
+            ),
+          ],
+        ),
+        const SizedBox(
+          height: 300,
+        ),
+      ],
     );
   }
 
   Widget verificationPendingView() {
-    return Expanded(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Heading4Text(
-            verificationInUnderProcess.tr,
-            // style: TextStyle(fontSize: FontSizes.b2),
-            // textAlign: TextAlign.center,
-          ),
-          const SizedBox(
-            height: 5,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              BodyMediumText(
-                requestSentOn.tr,
-                textAlign: TextAlign.center,
-              ),
-              const SizedBox(
-                width: 5,
-              ),
-              BodyMediumText(
-                _requestVerificationController.requestSentOn,
-                weight: TextWeight.semiBold,
-                color: AppColorConstants.themeColor,
-                textAlign: TextAlign.center,
-              ),
-            ],
-          ),
-          const SizedBox(
-            height: 300,
-          ),
-        ],
-      ),
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Heading4Text(
+          verificationInUnderProcess.tr,
+          // style: TextStyle(fontSize: FontSizes.b2),
+          // textAlign: TextAlign.center,
+        ),
+        const SizedBox(
+          height: 5,
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            BodyMediumText(
+              requestSentOn.tr,
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(
+              width: 5,
+            ),
+            BodyMediumText(
+              _requestVerificationController.requestSentOn,
+              weight: TextWeight.semiBold,
+              color: AppColorConstants.themeColor,
+              textAlign: TextAlign.center,
+            ),
+          ],
+        ),
+        const SizedBox(
+          height: 300,
+        ),
+      ],
     );
   }
 
@@ -196,33 +200,34 @@ class _RequestVerificationState extends State<RequestVerification> {
                   const SizedBox(
                     height: 10,
                   ),
-                  AppDropdownField(
-                    value:
-                        _requestVerificationController.documentType.value.text,
-                    options: [
-                      drivingLicenseString.tr,
-                      passportString.tr,
-                      panCardString.tr,
-                      otherString.tr
-                    ],
-                    onChanged: (String value) {
-                      if (value == drivingLicenseString.tr) {
-                        _requestVerificationController
-                            .setSelectedDocumentType(drivingLicenseString.tr);
-                      } else if (value == passportString.tr) {
-                        _requestVerificationController
-                            .setSelectedDocumentType(passportString.tr);
-                      } else if (value == panCardString.tr) {
-                        _requestVerificationController
-                            .setSelectedDocumentType(panCardString.tr);
-                      } else if (value == otherString.tr) {
-                        _requestVerificationController
-                            .setSelectedDocumentType(otherString.tr);
-                      }
-                    },
-                    // controller:
-                    // _requestVerificationController.documentType.value,
-                  ),
+                  Obx(() => AppDropdownField(
+                        value: _requestVerificationController
+                            .documentType.value.text,
+                        options: [
+                          drivingLicenseString.tr,
+                          passportString.tr,
+                          panCardString.tr,
+                          otherString.tr
+                        ],
+                        onChanged: (String value) {
+                          if (value == drivingLicenseString.tr) {
+                            _requestVerificationController
+                                .setSelectedDocumentType(
+                                    drivingLicenseString.tr);
+                          } else if (value == passportString.tr) {
+                            _requestVerificationController
+                                .setSelectedDocumentType(passportString.tr);
+                          } else if (value == panCardString.tr) {
+                            _requestVerificationController
+                                .setSelectedDocumentType(panCardString.tr);
+                          } else if (value == otherString.tr) {
+                            _requestVerificationController
+                                .setSelectedDocumentType(otherString.tr);
+                          }
+                        },
+                        // controller:
+                        // _requestVerificationController.documentType.value,
+                      )),
                   const SizedBox(
                     height: 20,
                   ),

@@ -1,4 +1,5 @@
 import 'package:foap/helper/imports/common_import.dart';
+import 'package:foap/helper/string_extension.dart';
 import 'package:foap/screens/add_on/controller/dating/dating_controller.dart';
 import 'package:get/get.dart';
 
@@ -447,7 +448,7 @@ class ProfileCard extends StatelessWidget {
               height: 80,
               width: MediaQuery.of(context).size.width - 40,
               decoration: ShapeDecoration(
-                color: AppColorConstants.cardColor.darken().withOpacity(0.9),
+                color: AppColorConstants.cardColor.darken(),
                 shape: RoundedRectangleBorder(
                     // borderRadius: BorderRadius.circular(10),
                     ),
@@ -462,25 +463,39 @@ class ProfileCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Heading3Text(
-                    profile.name == null
-                        ? profile.userName
-                        : profile.name ?? '',
-                    color: AppColorConstants.grayscale900,
-                    weight: TextWeight.bold,
-                  ).bP4,
-                  BodyLargeText(
-                    profile.city ?? '',
+                  Row(
+                    children: [
+                      Heading4Text(
+                        profile.name == null
+                            ? profile.userName
+                            : profile.name ?? '',
+                        color: AppColorConstants.grayscale900,
+                        weight: TextWeight.semiBold,
+                        maxLines: 1,
+                      ),
+                      const SizedBox(
+                        width: 10,
+                      ),
+                      BodyLargeText(
+                        ', ${profile.dob!.calculateAge} ${yearString.tr}',
+                        color: AppColorConstants.themeColor,
+                        weight: TextWeight.semiBold,
+                      ),
+                    ],
+                  ),
+                  if (profile.city != null)
+                    BodyMediumText(
+                      profile.city!,
+                      color: AppColorConstants.grayscale500,
+                    ),
+                  BodySmallText(
+                    profile.genderType == GenderType.female
+                        ? femaleString.tr
+                        : profile.genderType == GenderType.other
+                            ? otherString.tr
+                            : maleString.tr,
                     color: AppColorConstants.grayscale500,
                   ),
-                  // BodyLargeText(
-                  //   profile.genderType == GenderType.female
-                  //       ? female
-                  //       : profile.genderType == GenderType.other
-                  //           ? other
-                  //           : male,
-                  //   color: AppColorConstants.grayscale500,
-                  // ),
                 ],
               ).setPadding(left: 20),
             ),

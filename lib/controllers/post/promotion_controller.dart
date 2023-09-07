@@ -62,15 +62,9 @@ class PromotionController extends GetxController {
   List<String> genderType = [maleString.tr, femaleString.tr, otherString.tr];
   Rx<String?> selectedGender = Rx<String?>(null);
 
-  // Rx<double> budget = Rx<double>(100);
-  // Rx<int> duration = Rx<int>(6);
-  // Rx<double> gst = Rx<double>(30);
-
   clear() {
     order = PostPromotionOrderRequest();
     pageChanged.value = 0;
-    // promotingPost.value = null;
-    // goalType.value = null;
 
     websiteUrl.text = '';
     isValidWebsite.value = null;
@@ -175,7 +169,7 @@ class PromotionController extends GetxController {
         List<Placemark> placeMarks = await placemarkFromCoordinates(
             double.parse(audience.latitude), double.parse(audience.longitude));
         location =
-        '${placeMarks.first.name ?? ''}, ${placeMarks.first.country ?? ''}';
+            '${placeMarks.first.name ?? ''}, ${placeMarks.first.country ?? ''}';
       }
       location = location.isEmpty ? '' : ', $location';
 
@@ -202,7 +196,7 @@ class PromotionController extends GetxController {
         List<Placemark> placeMarks = await placemarkFromCoordinates(
             latitude.value ?? 0.0, longitude.value ?? 0.0);
         selectedLocationNames.value =
-        '${placeMarks.first.name ?? ''}, ${placeMarks.first.country ?? ''}';
+            '${placeMarks.first.name ?? ''}, ${placeMarks.first.country ?? ''}';
 
         update();
         action();
@@ -220,7 +214,7 @@ class PromotionController extends GetxController {
 
   selectLocations(RegionalLocationModel model) {
     int index =
-    selectedLocations.indexWhere((element) => element.id == model.id);
+        selectedLocations.indexWhere((element) => element.id == model.id);
     index == -1
         ? selectedLocations.add(model)
         : selectedLocations.removeAt(index);
@@ -263,7 +257,7 @@ class PromotionController extends GetxController {
       List<Placemark> placeMarks = await placemarkFromCoordinates(
           latitude.value ?? 0.0, longitude.value ?? 0.0);
       selectedLocationNames.value =
-      '${placeMarks.first.name ?? ''}, ${placeMarks.first.country ?? ''}';
+          '${placeMarks.first.name ?? ''}, ${placeMarks.first.country ?? ''}';
 
       radius.value = model.radius.toDouble();
     }
@@ -356,13 +350,13 @@ class PromotionController extends GetxController {
       AppUtil.showToast(message: selectGenderAge.tr, isSuccess: false);
     } else {
       int? id = audience?.id;
-      EasyLoading.show(status: loadingString.tr);
+      Loader.show(status: loadingString.tr);
 
       PromotionApi.submitAudience(
           audienceId: id,
           resultCallback: () {
             getAudienceApi();
-            EasyLoading.dismiss();
+            Loader.dismiss();
 
             handler();
           });
@@ -381,22 +375,22 @@ class PromotionController extends GetxController {
     final CheckoutController checkoutController = Get.find();
 
     Get.to(() => Checkout(
-      amountToPay: order.grandTotalAmount,
-      itemName: postPromotionString.tr,
-      transactionCallbackHandler: (paymentTransactions) {
-        order.payments = paymentTransactions;
+          amountToPay: order.grandTotalAmount,
+          itemName: postPromotionString.tr,
+          transactionCallbackHandler: (paymentTransactions) {
+            order.payments = paymentTransactions;
 
-        PromotionApi.createPromotion(
-            order: order,
-            completionHandler: (status) {
-              print('createPromotion completed');
-              if (status) {
-                checkoutController.orderPlaced();
-              } else {
-                checkoutController.orderFailed();
-              }
-            });
-      },
-    ));
+            PromotionApi.createPromotion(
+                order: order,
+                completionHandler: (status) {
+                  print('createPromotion completed');
+                  if (status) {
+                    checkoutController.orderPlaced();
+                  } else {
+                    checkoutController.orderFailed();
+                  }
+                });
+          },
+        ));
   }
 }

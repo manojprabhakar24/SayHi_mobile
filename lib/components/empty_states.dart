@@ -60,7 +60,7 @@ Widget emptyUser(
     children: [
       Lottie.asset(
         'assets/lottie/no_record.json',
-        height: 200,
+        height: 150,
         // width: 200,
       ),
       const SizedBox(

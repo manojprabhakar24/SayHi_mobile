@@ -90,14 +90,14 @@ class _FindRandomUserState extends State<FindRandomUser> {
                             child: AppThemeButton(
                                 text: chatString.tr,
                                 onPress: () {
-                                  EasyLoading.show(
+                                  Loader.show(
                                       status: loadingString.tr);
 
                                   _chatDetailController.getChatRoomWithUser(
                                       userId: _randomChatAndCallController
                                           .randomOnlineUser.value!.id,
                                       callback: (room) {
-                                        EasyLoading.dismiss();
+                                        Loader.dismiss();
 
                                         Get.back();
                                         Get.to(() => ChatDetail(

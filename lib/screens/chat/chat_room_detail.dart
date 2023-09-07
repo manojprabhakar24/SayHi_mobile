@@ -729,6 +729,7 @@ class _ChatRoomDetailState extends State<ChatRoomDetail> {
                 if (item.id == '1') {
                   Get.to(() => OtherUserProfile(
                         userId: member.userDetail.id,
+                    user: member.userDetail,
                       ));
                 } else if (item.id == '2') {
                   _chatRoomDetailController.makeUserAsAdmin(

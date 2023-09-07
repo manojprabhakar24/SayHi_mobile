@@ -1,10 +1,8 @@
 import 'package:foap/helper/imports/common_import.dart';
-import 'package:get/get.dart';
 import 'package:foap/helper/imports/chat_imports.dart';
 
 import '../../manager/player_manager.dart';
 import '../audio_progress_bar.dart';
-import '../audio_tile.dart';
 
 class ReplyAudioChatTile extends StatefulWidget {
   final ChatMessageModel message;

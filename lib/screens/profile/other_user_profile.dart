@@ -20,8 +20,10 @@ import 'follower_following_list.dart';
 
 class OtherUserProfile extends StatefulWidget {
   final int userId;
+  final UserModel? user;
 
-  const OtherUserProfile({Key? key, required this.userId}) : super(key: key);
+  const OtherUserProfile({Key? key, required this.userId, this.user})
+      : super(key: key);
 
   @override
   OtherUserProfileState createState() => OtherUserProfileState();
@@ -43,6 +45,9 @@ class OtherUserProfileState extends State<OtherUserProfile>
   void initState() {
     super.initState();
 
+    if (widget.user != null) {
+      _profileController.setUser(widget.user!);
+    }
     controller = TabController(vsync: this, length: tabs.length)
       ..addListener(() {});
     initialLoad();
@@ -236,11 +241,11 @@ class OtherUserProfileState extends State<OtherUserProfile>
             height: 40,
             child: Center(child: BodyMediumText(chatString.tr)),
           ).ripple(() {
-            EasyLoading.show(status: loadingString.tr);
+            Loader.show(status: loadingString.tr);
             _chatDetailController.getChatRoomWithUser(
                 userId: _profileController.user.value!.id,
                 callback: (room) {
-                  EasyLoading.dismiss();
+                  Loader.dismiss();
                   Get.to(() => ChatDetail(
                         chatRoom: room,
                       ));
@@ -439,7 +444,7 @@ class OtherUserProfileState extends State<OtherUserProfile>
                         height: 10,
                       ),
                       BodyLargeText(
-                        _postController.totalPosts.value.formatNumber,
+                        _profileController.user.value!.totalPost.formatNumber,
                         weight: TextWeight.bold,
                       ),
                     ],
@@ -475,7 +480,7 @@ class OtherUserProfileState extends State<OtherUserProfile>
                         height: 10,
                       ),
                       BodyLargeText(
-                        _postController.totalReels.value.formatNumber,
+                        _profileController.user.value!.totalReels.formatNumber,
                         weight: TextWeight.bold,
                       ),
                     ],
@@ -488,7 +493,9 @@ class OtherUserProfileState extends State<OtherUserProfile>
               PostSearchQuery query = PostSearchQuery();
               query.userId = _profileController.user.value!.id;
               reelsController.setReelsSearchQuery(query);
-              Get.to(() => const Reels(needBackBtn: true,));
+              Get.to(() => const Reels(
+                    needBackBtn: true,
+                  ));
             }),
           ],
         ),
@@ -519,7 +526,8 @@ class OtherUserProfileState extends State<OtherUserProfile>
                         height: 10,
                       ),
                       BodyLargeText(
-                        _postController.totalMentionedPosts.value.formatNumber,
+                        _profileController
+                            .user.value!.totalMentions.formatNumber,
                         weight: TextWeight.bold,
                       ),
                     ],
@@ -553,7 +561,7 @@ class OtherUserProfileState extends State<OtherUserProfile>
                         height: 10,
                       ),
                       BodyLargeText(
-                        _postController.totalMentionedPosts.value.formatNumber,
+                        _profileController.user.value!.totalClubs.formatNumber,
                         weight: TextWeight.bold,
                       ),
                     ],

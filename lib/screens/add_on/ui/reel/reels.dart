@@ -21,6 +21,7 @@ class _ReelsState extends State<Reels> {
 
   @override
   void dispose() {
+    _reelsController.clearReels();
     super.dispose();
   }
 
@@ -41,18 +42,18 @@ class _ReelsState extends State<Reels> {
                         allowImplicitScrolling: true,
                         onPageChanged: (index) {
                           _reelsController.currentPageChanged(
-                              index, _reelsController.publicMoments[index]);
+                              index, _reelsController.publicReels[index]);
                         },
                         children: [
                           for (int i = 0;
-                              i < _reelsController.publicMoments.length;
+                              i < _reelsController.publicReels.length;
                               i++)
                             SizedBox(
                               height: Get.height,
                               width: Get.width,
                               // color: Colors.brown,
                               child: ReelVideoPlayer(
-                                reel: _reelsController.publicMoments[i],
+                                reel: _reelsController.publicReels[i],
                                 // play: false,
                               ),
                             )
@@ -65,18 +66,20 @@ class _ReelsState extends State<Reels> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      widget.needBackBtn ?
-                        Container(
-                          height: 40,
-                          width: 40,
-                          color: AppColorConstants.themeColor.withOpacity(0.5),
-                          child: const ThemeIconWidget(
-                            ThemeIcon.backArrow,
-                            color: Colors.white,
-                          ).lP8.ripple(() {
-                            Get.back();
-                          }),
-                        ).circular : Container(),
+                      widget.needBackBtn
+                          ? Container(
+                              height: 40,
+                              width: 40,
+                              color:
+                                  AppColorConstants.themeColor.withOpacity(0.5),
+                              child: const ThemeIconWidget(
+                                ThemeIcon.backArrow,
+                                color: Colors.white,
+                              ).lP8.ripple(() {
+                                Get.back();
+                              }),
+                            ).circular
+                          : Container(),
                       Container(
                         height: 40,
                         width: 40,

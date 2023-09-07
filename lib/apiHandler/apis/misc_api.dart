@@ -11,9 +11,9 @@ class MiscApi {
       {required Function(List<CategoryModel>) resultCallback}) async {
     var url = NetworkConstantsUtil.profileCategoryTypes;
 
-    EasyLoading.show(status: loadingString.tr);
+    Loader.show(status: loadingString.tr);
     await ApiWrapper().getApi(url: url).then((result) {
-      EasyLoading.dismiss();
+      Loader.dismiss();
       if (result?.success == true) {
         var items = result!.data['profileCategoryType'];
         resultCallback(List<CategoryModel>.from(
@@ -26,9 +26,9 @@ class MiscApi {
       {required Function(List<PollsQuestionModel>) resultCallback}) async{
     var url = NetworkConstantsUtil.getPolls;
 
-    EasyLoading.show(status: loadingString.tr);
+    Loader.show(status: loadingString.tr);
     await ApiWrapper().getApi(url: url).then((result) {
-      EasyLoading.dismiss();
+      Loader.dismiss();
       if (result?.success == true) {
         var items = result!.data['pollQuestion']['items'];
         resultCallback(List<PollsQuestionModel>.from(
@@ -92,7 +92,7 @@ class MiscApi {
   static getSettings({required Function(SettingModel) resultCallback}) async {
     var url = NetworkConstantsUtil.getSettings;
 
-    await ApiWrapper().getApi(url: url).then((result) {
+    await ApiWrapper().getApiWithoutToken(url: url).then((result) {
       if (result?.success == true) {
         var setting = result!.data['setting'];
         resultCallback(SettingModel.fromJson(setting));
@@ -171,16 +171,19 @@ class MiscApi {
 
   static Future uploadFile(String filePath,
       {required UploadMediaType type,
-      required Function(String, String) resultCallback}) async {
-    EasyLoading.show(status: loadingString.tr);
+        required GalleryMediaType mediaType,
+
+        required Function(String, String) resultCallback}) async {
+    Loader.show(status: loadingString.tr);
 
     await ApiWrapper()
         .uploadFile(
             url: NetworkConstantsUtil.uploadFileImage,
             file: filePath,
+            mediaType: mediaType,
             type: type)
         .then((result) {
-      EasyLoading.dismiss();
+      Loader.dismiss();
       if (result?.success == true) {
         var items = result!.data['files'] as List<dynamic>;
 

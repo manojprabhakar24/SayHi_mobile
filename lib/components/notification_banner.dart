@@ -1,13 +1,13 @@
 import 'package:foap/apiHandler/apis/chat_api.dart';
 import 'package:foap/helper/imports/common_import.dart';
 import 'package:overlay_support/overlay_support.dart';
-import '../manager/db_manager.dart';
+import '../manager/db_manager_realm.dart';
 import '../model/chat_message_model.dart';
 import '../model/chat_room_model.dart';
 import '../screens/chat/chat_detail.dart';
 
 showNewMessageBanner(ChatMessageModel message, int roomId) async {
-  ChatRoomModel? room = await getIt<DBManager>().getRoomById(roomId);
+  ChatRoomModel? room = await getIt<RealmDBManager>().getRoomById(roomId);
   if (room == null) {
     ChatApi.getChatRoomDetail(roomId, resultCallback: (result) {
       showNotification(message, result);

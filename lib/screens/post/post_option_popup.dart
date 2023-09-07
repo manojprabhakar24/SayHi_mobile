@@ -169,9 +169,9 @@ class PostOptionsPopup extends StatelessWidget {
               drawingCompleted: (media) {
                 if (selectedMediaList != null) {
                   // Navigator.of(context).pop();
-                  EasyLoading.show(status: loadingString);
+                  Loader.show(status: loadingString);
                   Future.delayed(const Duration(milliseconds: 200), () {
-                    EasyLoading.dismiss();
+                    Loader.dismiss();
                     selectedMediaList!([media]);
                   });
                 }

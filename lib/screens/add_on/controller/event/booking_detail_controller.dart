@@ -62,7 +62,7 @@ class EventBookingDetailController extends GetxController {
     EventApi.cancelEventBooking(
         bookingId: eventBooking.value!.id,
         resultCallback: (status) {
-          EasyLoading.dismiss();
+          Loader.dismiss();
           if (status) {
             processingBooking.value = ProcessingBookingStatus.cancelled;
           } else {

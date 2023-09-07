@@ -185,7 +185,7 @@
 //   }
 //
 //   payWithPaypal(EventTicketOrderRequest ticketOrder) async {
-//     EasyLoading.show(status: loadingString.tr);
+//     Loader.show(status: loadingString.tr);
 //
 //     PaymentGatewayApi.fetchPaypalClientToken(
 //         resultCallback: (paypalClientToken) async {
@@ -210,7 +210,7 @@
 //             IosDeviceInfo iosInfo = await deviceInfo.iosInfo;
 //             deviceData = 'iOS, ${iosInfo.utsname.machine}';
 //           }
-//           EasyLoading.dismiss();
+//           Loader.dismiss();
 //
 //           PaymentGatewayApi.sendPaypalPayment(
 //               amount: ticketOrder.amountToBePaid!,
@@ -233,10 +233,10 @@
 //                 }
 //               });
 //         } else {
-//           EasyLoading.dismiss();
+//           Loader.dismiss();
 //         }
 //       } else {
-//         EasyLoading.dismiss();
+//         Loader.dismiss();
 //         processingPayment.value = ProcessingPaymentStatus.failed;
 //       }
 //     });
@@ -617,7 +617,7 @@ class CheckoutController extends GetxController {
   }
 
   payWithPaypal() async {
-    EasyLoading.show(status: loadingString.tr);
+    Loader.show(status: loadingString.tr);
 
     PaymentGatewayApi.fetchPaypalClientToken(
         resultCallback: (paypalClientToken) async {
@@ -642,7 +642,7 @@ class CheckoutController extends GetxController {
             IosDeviceInfo iosInfo = await deviceInfo.iosInfo;
             deviceData = 'iOS, ${iosInfo.utsname.machine}';
           }
-          EasyLoading.dismiss();
+          Loader.dismiss();
 
           PaymentGatewayApi.sendPaypalPayment(
               amount: balanceToPay.value,
@@ -664,10 +664,10 @@ class CheckoutController extends GetxController {
                 }
               });
         } else {
-          EasyLoading.dismiss();
+          Loader.dismiss();
         }
       } else {
-        EasyLoading.dismiss();
+        Loader.dismiss();
         processingPayment.value = ProcessingPaymentStatus.failed;
       }
     });
@@ -680,6 +680,8 @@ class CheckoutController extends GetxController {
           await stripe.Stripe.instance.initPaymentSheet(
             paymentSheetParameters: stripe.SetupPaymentSheetParameters(
               paymentIntentClientSecret: clientSecret,
+              // customerEphemeralKeySecret: data['ephemeralKey'],
+
               merchantDisplayName: AppConfigConstants.appName,
               customerId: _userProfileManager.user.value!.id.toString(),
 
@@ -725,6 +727,7 @@ class CheckoutController extends GetxController {
     try {
       // 3. display the payment sheet.
       await stripe.Stripe.instance.presentPaymentSheet();
+      stripe.Stripe.instance.confirmPaymentSheetPayment();
 
       Payment payment = Payment();
       payment.paymentMode = '4';

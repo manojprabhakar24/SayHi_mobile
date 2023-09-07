@@ -74,50 +74,43 @@ class LikeListState extends State<LikeList> {
                       profile,
                       50,
                     ),
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width - 200,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          BodyMediumText(
-                            (profile.name == null
-                                    ? profile.userName
-                                    : profile.name ?? '') +
-                                (yearStr != null ? ', $yearStr' : ''),
-                            weight: TextWeight.bold,
-                          ).bP4,
-                          BodySmallText(
-                            profile.genderType == GenderType.female
-                                ? femaleString.tr
-                                : profile.genderType == GenderType.other
-                                    ? otherString.tr
-                                    : maleString.tr,
-                          )
-                        ],
-                      ).hp(DesignConstants.horizontalPadding),
-                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        BodyMediumText(
+                          (profile.name == null
+                                  ? profile.userName
+                                  : profile.name ?? '') +
+                              (yearStr != null ? ', $yearStr' : ''),
+                          weight: TextWeight.bold,
+                        ).bP4,
+                        BodySmallText(
+                          profile.genderType == GenderType.female
+                              ? femaleString.tr
+                              : profile.genderType == GenderType.other
+                                  ? otherString.tr
+                                  : maleString.tr,
+                        )
+                      ],
+                    ).hp(DesignConstants.horizontalPadding),
                     // const Spacer(),
                   ],
                 ).ripple(() {
-                  Get.to(() => OtherUserProfile(userId: profile.id));
+                  Get.to(() => OtherUserProfile(userId: profile.id,user: profile,));
                 }),
                 const Spacer(),
                 AppThemeBorderButton(
                     height: 30,
                     borderColor: AppColorConstants.themeColor,
                     text: likeBackString.tr,
-                    textStyle: TextStyle(
-                        fontSize: FontSizes.h6,
-                        fontWeight: TextWeight.medium,
-                        color: AppColorConstants.themeColor),
                     onPress: () {
                       datingController.likeUnlikeProfile(
                           DatingActions.liked, profile.id.toString());
-                      EasyLoading.show(status: loadingString.tr);
+                      Loader.show(status: loadingString.tr);
                       _chatDetailController.getChatRoomWithUser(
                           userId: profile.id,
                           callback: (room) {
-                            EasyLoading.dismiss();
+                            Loader.dismiss();
                             Get.to(() => ChatDetail(
                                   chatRoom: room,
                                 ));

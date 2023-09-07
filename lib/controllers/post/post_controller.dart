@@ -1,54 +1,57 @@
 import 'package:foap/helper/imports/common_import.dart';
 import 'package:foap/helper/list_extension.dart';
+import 'package:foap/model/data_wrapper.dart';
 import '../../apiHandler/apis/post_api.dart';
 import '../../model/post_model.dart';
 import '../../model/post_search_query.dart';
 
 class PostController extends GetxController {
   RxList<PostModel> posts = <PostModel>[].obs;
+  RxList<PostModel> videos = <PostModel>[].obs;
+
   RxList<PostModel> mentions = <PostModel>[].obs;
+  RxList<UserModel> likedByUsers = <UserModel>[].obs;
 
   Rx<PostInsight?> insight = Rx<PostInsight?>(null);
 
   int totalPages = 100;
-  RxInt totalPosts = 0.obs;
-  RxInt totalReels = 0.obs;
-  RxInt totalMentionedPosts = 0.obs;
 
-  bool isLoadingPosts = false;
-  int postsCurrentPage = 1;
-  bool canLoadMorePosts = true;
-
-  int mentionsPostPage = 1;
-  bool canLoadMoreMentionsPosts = true;
-  bool mentionsPostsIsLoading = false;
+  DataWrapper postDataWrapper = DataWrapper();
+  DataWrapper mentionsDataWrapper = DataWrapper();
+  DataWrapper videosDataWrapper = DataWrapper();
 
   PostSearchQuery? postSearchQuery;
   MentionedPostSearchQuery? mentionedPostSearchQuery;
 
+  DataWrapper postLikedByDataWrapper = DataWrapper();
+
   clear() {
     totalPages = 100;
-    isLoadingPosts = false;
-    postsCurrentPage = 1;
-    canLoadMorePosts = true;
+    postDataWrapper = DataWrapper();
 
-    mentionsPostPage = 1;
-    canLoadMoreMentionsPosts = true;
-    mentionsPostsIsLoading = false;
+    mentionsDataWrapper = DataWrapper();
 
     posts.value = [];
     mentions.value = [];
 
-    totalPosts.value = 0;
-    totalReels.value = 0;
-    totalMentionedPosts.value = 0;
-
+    clearVideos();
+    clearPostLikedByUsers();
     update();
   }
 
+  clearVideos() {
+    videos.clear();
+    videosDataWrapper = DataWrapper();
+  }
+
+  clearPostLikedByUsers() {
+    likedByUsers.clear();
+    postLikedByDataWrapper = DataWrapper();
+  }
+
   addPosts(List<PostModel> postsList, int? startPage, int? totalPages) {
-    mentionsPostPage = startPage ?? 1;
-    postsCurrentPage = startPage ?? 1;
+    mentionsDataWrapper.page = startPage ?? 1;
+    postDataWrapper.page = startPage ?? 1;
     this.totalPages = totalPages ?? 100;
 
     posts.addAll(postsList);
@@ -88,8 +91,9 @@ class PostController extends GetxController {
   }
 
   void getPosts(VoidCallback callback) async {
-    if (canLoadMorePosts == true && totalPages > postsCurrentPage) {
-      isLoadingPosts = true;
+    if (postDataWrapper.haveMoreData.value == true &&
+        totalPages > postDataWrapper.page) {
+      postDataWrapper.isLoading.value = true;
 
       PostApi.getPosts(
           userId: postSearchQuery!.userId,
@@ -100,46 +104,75 @@ class PostController extends GetxController {
           isRecent: postSearchQuery!.isRecent,
           title: postSearchQuery!.title,
           hashtag: postSearchQuery!.hashTag,
-          page: postsCurrentPage,
+          page: postDataWrapper.page,
           resultCallback: (result, metadata) {
             posts.addAll(result);
             posts.sort((a, b) => b.createDate!.compareTo(a.createDate!));
             posts.unique((e) => e.id);
-            isLoadingPosts = false;
+            postDataWrapper.isLoading.value = false;
 
-            totalPosts.value =  metadata.totalCount;
-            if (postsCurrentPage >= metadata.pageCount) {
-              canLoadMorePosts = false;
-            } else {
-              canLoadMorePosts = true;
-            }
-            postsCurrentPage += 1;
+            postDataWrapper.totalRecords.value = metadata.totalCount;
+            postDataWrapper.haveMoreData.value =
+                metadata.pageCount >= metadata.currentPage;
+
+            postDataWrapper.page += 1;
 
             callback();
 
-            print('posts = ${posts.length}');
+            update();
+          });
+    }
+  }
+
+  void getVideos(VoidCallback callback) async {
+    if (videosDataWrapper.haveMoreData.value == true &&
+        totalPages > videosDataWrapper.page) {
+      videosDataWrapper.isLoading.value = true;
+
+      PostApi.getPosts(
+          userId: postSearchQuery!.userId,
+          isPopular: postSearchQuery!.isPopular,
+          isFollowing: postSearchQuery!.isFollowing,
+          isSold: postSearchQuery!.isSold,
+          isMine: postSearchQuery!.isMine,
+          isRecent: postSearchQuery!.isRecent,
+          title: postSearchQuery!.title,
+          hashtag: postSearchQuery!.hashTag,
+          page: videosDataWrapper.page,
+          resultCallback: (result, metadata) {
+            posts.addAll(result);
+            posts.sort((a, b) => b.createDate!.compareTo(a.createDate!));
+            posts.unique((e) => e.id);
+            videosDataWrapper.isLoading.value = false;
+
+            videosDataWrapper.totalRecords.value = metadata.totalCount;
+            videosDataWrapper.haveMoreData.value =
+                metadata.pageCount >= metadata.currentPage;
+
+            videosDataWrapper.page += 1;
+
+            callback();
+
             update();
           });
     }
   }
 
   void getMyMentions() {
-    if (canLoadMoreMentionsPosts) {
+    if (mentionsDataWrapper.haveMoreData.value) {
       PostApi.getMentionedPosts(
           userId: mentionedPostSearchQuery!.userId,
           resultCallback: (result, metadata) {
-            mentionsPostsIsLoading = false;
+            mentionsDataWrapper.isLoading.value = false;
             mentions.addAll(result.reversed.toList());
             mentions.unique((e) => e.id);
 
-            totalMentionedPosts.value =  metadata.totalCount;
+            mentionsDataWrapper.totalRecords.value = metadata.totalCount;
 
-            mentionsPostPage += 1;
-            if (result.length == metadata.perPage) {
-              canLoadMoreMentionsPosts = true;
-            } else {
-              canLoadMoreMentionsPosts = false;
-            }
+            mentionsDataWrapper.page += 1;
+            mentionsDataWrapper.haveMoreData.value =
+                metadata.pageCount >= metadata.currentPage;
+
             update();
           });
     }
@@ -159,5 +192,31 @@ class PostController extends GetxController {
       insight.value = result;
       insight.refresh();
     });
+  }
+
+  void getPostLikedByUsers(
+      {required int postId, required VoidCallback callback}) async {
+    if (postLikedByDataWrapper.haveMoreData.value == true) {
+      postLikedByDataWrapper.isLoading.value = true;
+
+      PostApi.postLikedByUsers(
+          postId: postId,
+          page: postLikedByDataWrapper.page,
+          resultCallback: (result, metadata) {
+            likedByUsers.addAll(result);
+            likedByUsers.unique((e) => e.id);
+            postLikedByDataWrapper.isLoading.value = false;
+
+            postLikedByDataWrapper.totalRecords.value = metadata.totalCount;
+            postLikedByDataWrapper.haveMoreData.value =
+                metadata.pageCount >= metadata.currentPage;
+
+            postLikedByDataWrapper.page += 1;
+
+            callback();
+
+            update();
+          });
+    }
   }
 }

@@ -175,7 +175,7 @@ class WinnerDetailState extends State<WinnerDetailScreen> {
   }
 
   void openProfile() async {
-    Get.to(() => OtherUserProfile(userId: model.user.id));
+    Get.to(() => OtherUserProfile(userId: model.user.id,user: model.user,));
 
     setState(() {});
   }

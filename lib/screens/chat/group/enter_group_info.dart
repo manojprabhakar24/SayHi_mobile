@@ -153,7 +153,7 @@ class _EnterGroupInfoState extends State<EnterGroupInfo> {
       AppUtil.showToast(message: pleaseSelectUsersString.tr, isSuccess: false);
       return;
     }
-    EasyLoading.show(status: loadingString.tr);
+    Loader.show(status: loadingString.tr);
     enterGroupInfoController.createGroup(
         name: groupName.text,
         description: groupDescription.text,

@@ -186,7 +186,7 @@
 //   }
 //
 //   payWithPaypal(FundraisingDonationRequest order) async {
-//     EasyLoading.show(status: loadingString.tr);
+//     Loader.show(status: loadingString.tr);
 //
 //     PaymentGatewayApi.fetchPaypalClientToken(
 //         resultCallback: (paypalClientToken) async {
@@ -211,7 +211,7 @@
 //             IosDeviceInfo iosInfo = await deviceInfo.iosInfo;
 //             deviceData = 'iOS, ${iosInfo.utsname.machine}';
 //           }
-//           EasyLoading.dismiss();
+//           Loader.dismiss();
 //
 //           PaymentGatewayApi.sendPaypalPayment(
 //               amount: order.totalAmount!,
@@ -234,10 +234,10 @@
 //                 }
 //               });
 //         } else {
-//           EasyLoading.dismiss();
+//           Loader.dismiss();
 //         }
 //       } else {
-//         EasyLoading.dismiss();
+//         Loader.dismiss();
 //         processingPayment.value = ProcessingPaymentStatus.failed;
 //       }
 //     });

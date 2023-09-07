@@ -113,3 +113,15 @@ extension StringExtension on String {
   }
 
 }
+
+extension AgeCalculator on String {
+  String get calculateAge {
+    DateTime now = DateTime.now();
+    DateTime dob = DateTime.parse(this); // Parse the date string
+    int age = now.year - dob.year;
+    if (now.month < dob.month || (now.month == dob.month && now.day < dob.day)) {
+      age--;
+    }
+    return age.toString();
+  }
+}

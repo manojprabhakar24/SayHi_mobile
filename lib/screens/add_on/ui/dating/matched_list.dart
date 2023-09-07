@@ -105,7 +105,7 @@ class MatchedListState extends State<MatchedList> {
           .borderWithRadius(
               value: 1, radius: 10, color: AppColorConstants.themeColor)
           .ripple(() {
-        Get.to(() => OtherUserProfile(userId: profile.id));
+        Get.to(() => OtherUserProfile(userId: profile.id,user: profile,));
       }),
       Positioned.fill(
           child: Align(
@@ -150,11 +150,11 @@ class MatchedListState extends State<MatchedList> {
                     color: Colors.white,
                   )),
                 ).lp(1).rightRounded(10).ripple(() {
-                  EasyLoading.show(status: loadingString.tr);
+                  Loader.show(status: loadingString.tr);
                   _chatDetailController.getChatRoomWithUser(
                       userId: profile.id,
                       callback: (room) {
-                        EasyLoading.dismiss();
+                        Loader.dismiss();
                         Get.to(() => ChatDetail(
                               chatRoom: room,
                             ));

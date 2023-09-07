@@ -26,10 +26,7 @@ class ClubJoinRequestsState extends State<ClubJoinRequests> {
       backgroundColor: AppColorConstants.backgroundColor,
       body: Column(
         children: [
-
-          backNavigationBar(
-               title: joinRequestsString.tr),
-
+          backNavigationBar(title: joinRequestsString.tr),
           Expanded(
             child: GetBuilder<ClubDetailController>(
                 init: _clubDetailController,
@@ -48,15 +45,20 @@ class ClubJoinRequestsState extends State<ClubJoinRequests> {
                   List<ClubJoinRequest> requestsList =
                       _clubDetailController.joinRequests;
                   return ListView.separated(
-                      padding:  EdgeInsets.only(
-                          top: 25, left: DesignConstants.horizontalPadding, right: DesignConstants.horizontalPadding, bottom: 100),
+                      padding: EdgeInsets.only(
+                          top: 25,
+                          left: DesignConstants.horizontalPadding,
+                          right: DesignConstants.horizontalPadding,
+                          bottom: 100),
                       itemCount: requestsList.length,
                       itemBuilder: (context, index) {
                         return ClubJoinRequestTile(
                           request: requestsList[index],
                           viewCallback: () {
                             Get.to(() => OtherUserProfile(
-                                userId: requestsList[index].user!.id));
+                                  userId: requestsList[index].user!.id,
+                                  user: requestsList[index].user!,
+                                ));
                           },
                           acceptBtnClicked: () {
                             _clubDetailController

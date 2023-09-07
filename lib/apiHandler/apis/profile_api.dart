@@ -290,14 +290,14 @@ class ProfileApi {
 
   static uploadProfileImage(Uint8List imageData,
       {required VoidCallback resultCallback})async  {
-    EasyLoading.show(status: loadingString.tr);
+    Loader.show(status: loadingString.tr);
 
     await ApiWrapper()
         .multipartImageUpload(
             url: NetworkConstantsUtil.updateProfileImage,
             imageFileData: imageData)
         .then((result) {
-      EasyLoading.dismiss();
+      Loader.dismiss();
       if (result?.success == true) {
         resultCallback();
       }
@@ -306,14 +306,14 @@ class ProfileApi {
 
   static uploadProfileCoverImage(Uint8List imageData,
       {required VoidCallback resultCallback})async  {
-    EasyLoading.show(status: loadingString.tr);
+    Loader.show(status: loadingString.tr);
 
     await ApiWrapper()
         .multipartImageUpload(
             url: NetworkConstantsUtil.updateProfileCoverImage,
             imageFileData: imageData)
         .then((result) {
-      EasyLoading.dismiss();
+      Loader.dismiss();
       if (result?.success == true) {
         resultCallback();
       }

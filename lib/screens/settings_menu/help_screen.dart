@@ -72,7 +72,7 @@ class _HelpScreenState extends State<HelpScreen> {
                     ),
                     _submitBtn(),
                   ],
-                ).extended,
+                ),
               ),
             ).p25
           ],

@@ -40,11 +40,11 @@ class RelationshipController extends GetxController {
   }
 
   getMyRelationships() {
-    EasyLoading.show(status: loadingString.tr);
+    Loader.show(status: loadingString.tr);
     ProfileApi.getMyRelations(resultCallback: (result) {
       relationships.value = result;
       relationships.refresh();
-      EasyLoading.dismiss();
+      Loader.dismiss();
       update();
     });
   }
@@ -59,25 +59,25 @@ class RelationshipController extends GetxController {
 
   acceptRejectInvitation(int invitationId, int status, VoidCallback handler) {
     update();
-    EasyLoading.show(status: loadingString.tr);
+    Loader.show(status: loadingString.tr);
     ProfileApi.acceptRejectInvitation(
         invitationId: invitationId,
         status: status,
         resultCallback: () {
           handler();
-          EasyLoading.dismiss();
+          Loader.dismiss();
         });
   }
 
   postRelationshipSettings(int relationSetting) {
     update();
-    EasyLoading.show(status: loadingString.tr);
+    Loader.show(status: loadingString.tr);
     ProfileApi.postRelationshipSettings(
         relationSetting: relationSetting,
         resultCallback: () async {
           await _profileController.getMyProfile();
           update();
-          EasyLoading.dismiss();
+          Loader.dismiss();
         });
   }
 }

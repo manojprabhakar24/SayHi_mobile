@@ -1,7 +1,5 @@
 import 'package:foap/helper/imports/club_imports.dart';
 import 'package:foap/helper/imports/common_import.dart';
-import 'package:get/get.dart';
-
 import '../../components/user_card.dart';
 import '../profile/other_user_profile.dart';
 

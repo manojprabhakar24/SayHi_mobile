@@ -296,7 +296,7 @@ class CreateReelController extends GetxController {
       return;
     }
 
-    EasyLoading.showToast(loadingString.tr);
+    Loader.show(status:loadingString.tr);
     downloadAudio((status) async {
       if (status) {
         if (croppedAudioFile != null) {
@@ -314,7 +314,7 @@ class CreateReelController extends GetxController {
             (session) async {
               final returnCode = await session.getReturnCode();
 
-              EasyLoading.dismiss();
+              Loader.dismiss();
               if (ReturnCode.isSuccess(returnCode)) {
                 debugPrint('Audio Trimmed at: ${finalAudioFile.path}');
                 // SUCCESS

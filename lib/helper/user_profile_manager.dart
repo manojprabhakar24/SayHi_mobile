@@ -7,6 +7,7 @@ import 'package:foap/manager/socket_manager.dart';
 import 'package:foap/screens/dashboard/dashboard_screen.dart';
 import 'package:foap/screens/login_sign_up/login_screen.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import '../manager/db_manager_realm.dart';
 import '../util/shared_prefs.dart';
 
 class UserProfileManager extends GetxController {
@@ -26,14 +27,15 @@ class UserProfileManager extends GetxController {
     SharedPrefs().clearPreferences();
     Get.offAll(() => const LoginScreen());
     getIt<SocketManager>().disconnect();
-    getIt<DBManager>().clearAllUnreadCount();
-    getIt<DBManager>().deleteAllChatHistory();
+    getIt<RealmDBManager>().clearAllUnreadCount();
+    getIt<RealmDBManager>().deleteAllChatHistory();
 
     GoogleSignIn googleSignIn = GoogleSignIn();
     googleSignIn.disconnect();
     Future.delayed(const Duration(seconds: 2), () {
       _dashboardController.indexChanged(0);
     });
+    SharedPrefs().setBioMetricAuthStatus(false);
   }
 
   Future refreshProfile() async {

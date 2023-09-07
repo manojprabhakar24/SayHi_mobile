@@ -95,6 +95,8 @@ class EventDetailState extends State<EventDetail> {
                               const SizedBox(
                                 height: 24,
                               ),
+                              if (widget.event.latitude.isNotEmpty &&
+                                  widget.event.longitude.isNotEmpty)
                               eventLocation(),
                               const SizedBox(
                                 height: 150,

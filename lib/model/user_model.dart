@@ -39,6 +39,11 @@ class UserModel {
   int accountCreatedWith = 0;
 
   int totalPost = 0;
+  int totalMentions = 0;
+
+  int totalReels = 0;
+  int totalClubs = 0;
+
   int totalFollowing = 0;
   int totalFollower = 0;
   int totalWinnerPost = 0;
@@ -108,6 +113,10 @@ class UserModel {
             : GenderType.other;
 
     model.totalPost = json['totalActivePost'] ?? json['totalPost'] ?? 0;
+    model.totalReels = json['totalReels'] ?? 0;
+    model.totalClubs = json['totalClubs'] ?? 0;
+    model.totalMentions = json['totalMentions'] ?? 0;
+
     model.totalFollower = json['totalFollower'] ?? 0;
     model.totalFollowing = json['totalFollowing'] ?? 0;
     model.coins = json['available_coin'] ?? 0;

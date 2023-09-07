@@ -1,7 +1,6 @@
 import 'package:foap/helper/imports/common_import.dart';
 import 'package:foap/helper/imports/login_signup_imports.dart';
-
-import '../../universal_components/rounded_input_field.dart';
+import 'package:lottie/lottie.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -37,19 +36,34 @@ class LoginScreenState extends State<LoginScreen> {
               // mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.1,
+                  height: Get.height * 0.1,
                 ),
                 const Align(
                   alignment: Alignment.centerLeft,
                   child: AppThemeBackButton(),
                 ),
                 SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.05,
+                  height: Get.height * 0.05,
                 ),
-                Heading3Text(signInMessageString.tr, weight: TextWeight.bold)
-                    .rp(100),
                 SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.05,
+                    height: Get.height * 0.12,
+                    child: Stack(
+                      alignment: Alignment.center,
+                      children: [
+                        Heading3Text(signInMessageString.tr,
+                                weight: TextWeight.bold)
+                            .rp(100),
+                        Positioned(
+                            right: 0,
+                            top: 0,
+                            bottom: 0,
+                            child: Lottie.asset(
+                              'assets/lottie/syahi.json',
+                            ))
+                      ],
+                    )),
+                SizedBox(
+                  height: Get.height * 0.05,
                 ),
                 AppTextField(
                   controller: email,
@@ -57,15 +71,16 @@ class LoginScreenState extends State<LoginScreen> {
                   icon: ThemeIcon.email,
                 ),
                 SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.015,
+                  height: Get.height * 0.015,
                 ),
                 AppPasswordTextField(
                   controller: password,
                   hintText: passwordString.tr,
                   icon: ThemeIcon.lock,
+                  onChanged: (value) {},
                 ),
                 SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.02,
+                  height: Get.height * 0.02,
                 ),
                 InkWell(
                   onTap: () {
@@ -80,11 +95,11 @@ class LoginScreenState extends State<LoginScreen> {
                   ),
                 ),
                 SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.015,
+                  height: Get.height * 0.015,
                 ),
                 addLoginBtn(),
                 SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.02,
+                  height: Get.height * 0.02,
                 ),
                 Wrap(
                   spacing: 2,
@@ -101,13 +116,13 @@ class LoginScreenState extends State<LoginScreen> {
                 divider(height: 1).vp(40),
                 BodyMediumText(continueWithAccountsString),
                 SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.04,
+                  height: Get.height * 0.04,
                 ),
                 const SocialLogin(hidePhoneLogin: false)
                     .setPadding(left: 65, right: 65),
 
                 SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.05,
+                  height: Get.height * 0.05,
                 ),
                 // bioMetricView(),
                 // const Spacer(),

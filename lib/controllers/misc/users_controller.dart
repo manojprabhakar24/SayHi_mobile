@@ -56,10 +56,8 @@ class UsersController extends GetxController {
       accountsIsLoading.value = true;
 
       UsersApi.searchUsers(
-        searchModel: searchModel,
+          searchModel: searchModel,
           page: accountsPage,
-          // isExactMatch: 0,
-          // searchText: searchText,
           resultCallback: (result, metadata) {
             accountsIsLoading.value = false;
             searchedUsers.addAll(result);
