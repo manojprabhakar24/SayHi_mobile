@@ -13,6 +13,7 @@ import 'package:foap/screens/add_on/controller/event/event_controller.dart';
 import 'package:foap/screens/add_on/controller/relationship/relationship_controller.dart';
 import 'package:foap/screens/add_on/controller/relationship/relationship_search_controller.dart';
 import 'package:foap/controllers/live/live_users_controller.dart';
+import 'package:foap/screens/dashboard/loading.dart';
 import 'package:foap/screens/settings_menu/help_support_contorller.dart';
 import 'package:foap/screens/settings_menu/mercadopago_payment_controller.dart';
 import 'components/giphy/src/l10n/l10n.dart';
@@ -161,7 +162,7 @@ Future<void> main() async {
   } else {
     runApp(Phoenix(
         child: const SocialifiedApp(
-      startScreen: SplashScreen(),
+      startScreen: LoadingScreen(),
     )));
   }
 }

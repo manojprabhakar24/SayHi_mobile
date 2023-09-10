@@ -28,7 +28,6 @@ class PostController extends GetxController {
   clear() {
     totalPages = 100;
     postDataWrapper = DataWrapper();
-
     mentionsDataWrapper = DataWrapper();
 
     posts.value = [];
@@ -59,8 +58,7 @@ class PostController extends GetxController {
     update();
   }
 
-  setPostSearchQuery(
-      {required PostSearchQuery query, required VoidCallback callback}) {
+  setPostSearchQuery({required PostSearchQuery query, required VoidCallback callback}) {
     if (query != postSearchQuery) {
       clear();
     }
@@ -122,6 +120,9 @@ class PostController extends GetxController {
             update();
           });
     }
+    else{
+      callback();
+    }
   }
 
   void getVideos(VoidCallback callback) async {
@@ -155,6 +156,9 @@ class PostController extends GetxController {
 
             update();
           });
+    }
+    else{
+      callback();
     }
   }
 

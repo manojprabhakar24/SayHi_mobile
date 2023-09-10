@@ -1,18 +1,8 @@
-import 'dart:io';
-import 'package:flutter/material.dart';
-
-import 'package:foap/components/loader.dart';
 import 'package:foap/helper/imports/common_import.dart';
-import 'package:get/get.dart';
-
-import '../../helper/enum.dart';
 import '../../helper/enum_linking.dart';
-import '../../helper/localization_strings.dart';
 import '../../model/api_meta_data.dart';
 import '../../model/comment_model.dart';
 import '../../model/post_model.dart';
-import '../../util/app_util.dart';
-import '../../util/shared_prefs.dart';
 import '../api_wrapper.dart';
 
 class PostApi {
@@ -84,6 +74,7 @@ class PostApi {
       int? isSaved,
       int? isReel,
       int? audioId,
+      int? isVideo,
       int? isMine,
       int? isRecent,
       String? title,
@@ -127,6 +118,9 @@ class PostApi {
     }
     if (isSaved != null) {
       url = '$url&is_favorite=1';
+    }
+    if (isVideo != null) {
+      url = '$url&is_video_post=1';
     }
     url = '$url&page=$page';
     await ApiWrapper().getApi(url: url).then((response) {
@@ -335,6 +329,19 @@ class PostApi {
       if (result?.success == true) {
         resultCallback(result!.data['filename'], result.data['fileUrl']);
       }
+    });
+  }
+
+  static postView(
+      {required int postId,
+      required int sourceType,
+      int? postPromotionId}) async {
+    var url = NetworkConstantsUtil.postView;
+
+    await ApiWrapper().postApi(url: url, param: {
+      'post_id': postId.toString(),
+      'view_source': sourceType.toString(),
+      'post_promotion_id': postPromotionId
     });
   }
 }

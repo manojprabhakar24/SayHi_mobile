@@ -1373,6 +1373,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.2.1"
+  imgly_sdk:
+    dependency: transitive
+    description:
+      name: imgly_sdk
+      sha256: "18e3a7c6b5a842d849317f116e9870ce670a55453a5629fa2459d68c8e5f0305"
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.0.0"
   in_app_purchase:
     dependency: "direct main"
     description:
@@ -1813,6 +1821,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "5.4.0"
+  photo_editor_sdk:
+    dependency: "direct main"
+    description:
+      name: photo_editor_sdk
+      sha256: "39d9fed8602d5085214b236fb76c38090b864ef3fc80127727e95e96258af4e3"
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.0.0"
   photo_manager:
     dependency: "direct main"
     description:
@@ -2570,6 +2586,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.1.6"
+  video_editor_sdk:
+    dependency: "direct main"
+    description:
+      name: video_editor_sdk
+      sha256: "5475e777ed95b6b89a377ff83c5ba28fbefcaac196f1e9cbc6aef216e6d82233"
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.0.0"
   video_player:
     dependency: "direct main"
     description:

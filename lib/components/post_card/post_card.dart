@@ -5,12 +5,10 @@ import 'package:flare_flutter/flare_controls.dart';
 import 'package:foap/components/post_card/post_user_info.dart';
 import 'package:foap/components/post_card/reshare_post.dart';
 import 'package:foap/components/post_card/reshared_post_card.dart';
-import 'package:foap/components/post_card_controller.dart';
 import 'package:foap/components/post_card/post_text_widget.dart';
 import 'package:foap/screens/post/edit_post.dart';
 import 'package:foap/controllers/post/post_gift_controller.dart';
 import 'package:foap/components/video_widget.dart';
-import 'package:foap/controllers/profile/profile_controller.dart';
 import 'package:foap/helper/imports/common_import.dart';
 import 'package:foap/helper/imports/post_imports.dart';
 import 'package:profanity_filter/profanity_filter.dart';
@@ -22,8 +20,6 @@ import '../../controllers/home/home_controller.dart';
 import '../../controllers/post/comments_controller.dart';
 import '../../screens/post/liked_by_users.dart';
 import '../../controllers/post/promotion_controller.dart';
-import '../../model/post_gallery.dart';
-import '../../model/post_model.dart';
 import '../../screens/chat/chat_detail.dart';
 import '../../screens/chat/select_users.dart';
 import '../../screens/club/club_detail.dart';
@@ -33,7 +29,6 @@ import '../../screens/live/gifts_list.dart';
 import '../../screens/post/post_promotion/post_promotion.dart';
 import '../../screens/post/received_gifts.dart';
 import '../../screens/post/view_post_insight.dart';
-import '../../screens/profile/my_profile.dart';
 import '../../screens/profile/other_user_profile.dart';
 import '../audio_tile.dart';
 
@@ -145,7 +140,6 @@ class PostMediaTile extends StatelessWidget {
 class PostContent extends StatelessWidget {
   final PostModel model;
   final PostCardController postCardController = Get.find();
-  final ProfileController _profileController = Get.find();
 
   final FlareControls flareControls = FlareControls();
   final VoidCallback removePostHandler;
@@ -403,20 +397,6 @@ class PostContent extends StatelessWidget {
     ).round(40));
   }
 
-  void openProfile() async {
-    if (model.user.isMe) {
-      Get.to(() => const MyProfile(
-            showBack: true,
-          ));
-    } else {
-      _profileController.otherUserProfileView(refId: model.id, sourceType: 1);
-      Get.to(() => OtherUserProfile(
-            userId: model.user.id,
-            user: model.user,
-          ));
-    }
-  }
-
   void openClubDetail() async {
     Get.to(() => ClubDetail(
         club: model.club!,
@@ -430,14 +410,12 @@ class PostCard extends StatefulWidget {
 
   final VoidCallback removePostHandler;
   final VoidCallback blockUserHandler;
-  final bool? isSponsored;
 
   const PostCard({
     Key? key,
     required this.model,
     required this.removePostHandler,
     required this.blockUserHandler,
-    this.isSponsored,
   }) : super(key: key);
 
   @override
@@ -464,47 +442,60 @@ class PostCardState extends State<PostCard> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-      PostContent(
-        model: widget.model,
-        isSponsored: widget.isSponsored == true,
-        removePostHandler: widget.removePostHandler,
-        blockUserHandler: widget.blockUserHandler,
-      ),
-      if (widget.model.isMyPost)
-        Container(
-          color: AppColorConstants.cardColor.darken(),
-          height: 50,
-          width: double.infinity,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              BodyLargeText(
-                viewInsightsString.tr,
-                weight: TextWeight.semiBold,
-              ).ripple(() {
-                Get.to(() => ViewPostInsights(post: widget.model));
-              }),
-              AppThemeButton(
-                  text: boostPost.tr,
-                  cornerRadius: 8,
-                  height: 36,
-                  // width: 80,
-                  onPress: () {
-                    _promotionController.setPromotingPost(widget.model);
-                    Get.to(() => PostPromotionScreen());
-                  })
-            ],
-          ).hP16,
-        ),
-      const SizedBox(
-        height: 20,
-      ),
-      if (widget.isSponsored == true) sponsoredPostView(),
-      commentsCountWidget().hp(DesignConstants.horizontalPadding),
-      divider(height: 0.8).vP16,
-      commentAndLikeWidget().hp(DesignConstants.horizontalPadding),
-    ]);
+    return VisibilityDetector(
+        key: Key(widget.model.id.toString()),
+        onVisibilityChanged: (visibilityInfo) {
+          var visiblePercentage = visibilityInfo.visibleFraction * 100;
+          if (visiblePercentage >= 80) {
+            postCardController.postView(
+                postId: widget.model.id,
+                source: widget.model.postPromotionData != null
+                    ? ItemViewSource.promotion
+                    : ItemViewSource.normal,
+                postPromotionId: widget.model.postPromotionData?.id);
+          }
+        },
+        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+          PostContent(
+            model: widget.model,
+            isSponsored: widget.model.postPromotionData != null,
+            removePostHandler: widget.removePostHandler,
+            blockUserHandler: widget.blockUserHandler,
+          ),
+          if (widget.model.isMyPost)
+            Container(
+              color: AppColorConstants.cardColor.darken(),
+              height: 50,
+              width: double.infinity,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  BodyLargeText(
+                    viewInsightsString.tr,
+                    weight: TextWeight.semiBold,
+                  ).ripple(() {
+                    Get.to(() => ViewPostInsights(post: widget.model));
+                  }),
+                  AppThemeButton(
+                      text: boostPost.tr,
+                      cornerRadius: 5,
+                      height: 36,
+                      // width: 80,
+                      onPress: () {
+                        _promotionController.setPromotingPost(widget.model);
+                        Get.to(() => PostPromotionScreen());
+                      })
+                ],
+              ).hP16,
+            ),
+          const SizedBox(
+            height: 20,
+          ),
+          if (widget.model.postPromotionData != null) sponsoredPostView(),
+          commentsCountWidget().hp(DesignConstants.horizontalPadding),
+          divider(height: 0.8).vP16,
+          commentAndLikeWidget().hp(DesignConstants.horizontalPadding),
+        ]));
   }
 
   Widget sponsoredPostView() {
@@ -781,18 +772,5 @@ class PostCardState extends State<PostCard> {
                 });
               },
             ).round(40)));
-  }
-
-  void openProfile() async {
-    if (widget.model.user.isMe) {
-      Get.to(() => const MyProfile(
-            showBack: true,
-          ));
-    } else {
-      // postCardController.profileViewed(
-      //     sourceType: InsightSource.post, refId: widget.model.id);
-      Get.to(() => OtherUserProfile(
-          userId: widget.model.user.id, user: widget.model.user));
-    }
   }
 }

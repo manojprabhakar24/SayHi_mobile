@@ -113,6 +113,9 @@ class OtherUserProfileState extends State<OtherUserProfile>
           return _profileController.user.value != null
               ? Column(
                   children: [
+                    const SizedBox(
+                      height: 20,
+                    ),
                     Stack(
                       children: [coverImage(), imageAndNameView()],
                     ),
@@ -177,11 +180,10 @@ class OtherUserProfileState extends State<OtherUserProfile>
                         _profileController.user.value!.profileCategoryTypeName,
                         weight: TextWeight.regular)
                     .bP4,
-              _profileController.user.value?.country != null
-                  ? BodyMediumText(
-                      '${_profileController.user.value!.country},${_profileController.user.value!.city}',
-                    )
-                  : Container(),
+              if (_profileController.user.value?.country != null)
+                BodyMediumText(
+                  '${_profileController.user.value!.country},${_profileController.user.value!.city}',
+                ),
             ],
           ),
         ],
@@ -193,14 +195,14 @@ class OtherUserProfileState extends State<OtherUserProfile>
     return _profileController.user.value!.coverImage != null
         ? CachedNetworkImage(
                 width: Get.width,
-                height: 280,
+                height: 250,
                 fit: BoxFit.cover,
                 imageUrl: _profileController.user.value!.coverImage!)
             // .overlay(Colors.black26)
             .bottomRounded(20)
         : SizedBox(
             width: Get.width,
-            height: 280,
+            height: 250,
             // color: AppColorConstants.themeColor.withOpacity(0.2),
           );
   }
@@ -417,165 +419,203 @@ class OtherUserProfileState extends State<OtherUserProfile>
   }
 
   Widget contentWidget() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Container(
-              width: Get.width / 2.1,
-              color: AppColorConstants.themeColor.withOpacity(0.1),
-              child: Row(
+    return _profileController.user.value == null
+        ? Container()
+        : Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  ThemeIconWidget(
-                    ThemeIcon.gallery,
-                    size: 40,
-                    color: AppColorConstants.themeColor,
+                  Container(
+                    width: (Get.width -
+                            (2 * DesignConstants.horizontalPadding) -
+                            5) /
+                        2,
+                    height: 100,
+                    color: AppColorConstants.themeColor.withOpacity(0.1),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        ThemeIconWidget(
+                          ThemeIcon.gallery,
+                          size: 30,
+                          color: AppColorConstants.themeColor,
+                        ),
+                        const SizedBox(
+                          width: 20,
+                        ),
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            BodyLargeText(
+                              postsString,
+                              weight: TextWeight.bold,
+                            ),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            BodyLargeText(
+                              _profileController
+                                  .user.value!.totalPost.formatNumber,
+                              weight: TextWeight.bold,
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ).round(20).ripple(() {
+                    Get.to(() => Posts(
+                          userId: _profileController.user.value!.id,
+                        ));
+                  }),
+                  const SizedBox(
+                    width: 5,
                   ),
-                  Column(
-                    children: [
-                      BodyLargeText(
-                        postsString,
-                        weight: TextWeight.bold,
-                      ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      BodyLargeText(
-                        _profileController.user.value!.totalPost.formatNumber,
-                        weight: TextWeight.bold,
-                      ),
-                    ],
-                  ).p25,
-                ],
-              ),
-            ).round(20).ripple(() {
-              Get.to(() => Posts(
-                    userId: _profileController.user.value!.id,
-                  ));
-            }),
-            const SizedBox(
-              width: 5,
-            ),
-            Container(
-              width: Get.width / 2.1,
-              color: AppColorConstants.themeColor.withOpacity(0.1),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  ThemeIconWidget(
-                    ThemeIcon.videoCamera,
-                    size: 40,
-                    color: AppColorConstants.themeColor,
-                  ),
-                  Column(
-                    children: [
-                      BodyLargeText(
-                        reelsString,
-                        weight: TextWeight.bold,
-                      ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      BodyLargeText(
-                        _profileController.user.value!.totalReels.formatNumber,
-                        weight: TextWeight.bold,
-                      ),
-                    ],
-                  ).p25,
-                ],
-              ),
-            ).round(20).ripple(() {
-              ReelsController reelsController = Get.find();
+                  Container(
+                    width: (Get.width -
+                            (2 * DesignConstants.horizontalPadding) -
+                            5) /
+                        2,
+                    height: 100,
+                    color: AppColorConstants.themeColor.withOpacity(0.1),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        ThemeIconWidget(
+                          ThemeIcon.videoCamera,
+                          size: 30,
+                          color: AppColorConstants.themeColor,
+                        ),
+                        const SizedBox(
+                          width: 20,
+                        ),
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            BodyLargeText(
+                              reelsString,
+                              weight: TextWeight.bold,
+                            ),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            BodyLargeText(
+                              _profileController
+                                  .user.value!.totalReels.formatNumber,
+                              weight: TextWeight.bold,
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ).round(20).ripple(() {
+                    ReelsController reelsController = Get.find();
 
-              PostSearchQuery query = PostSearchQuery();
-              query.userId = _profileController.user.value!.id;
-              reelsController.setReelsSearchQuery(query);
-              Get.to(() => const Reels(
-                    needBackBtn: true,
-                  ));
-            }),
-          ],
-        ),
-        const SizedBox(
-          height: 5,
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Container(
-              width: Get.width / 2.1,
-              color: AppColorConstants.themeColor.withOpacity(0.1),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  ThemeIconWidget(
-                    ThemeIcon.mention,
-                    size: 40,
-                    color: AppColorConstants.themeColor,
-                  ),
-                  Column(
-                    children: [
-                      BodyLargeText(
-                        mentionsString,
-                        weight: TextWeight.bold,
-                      ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      BodyLargeText(
-                        _profileController
-                            .user.value!.totalMentions.formatNumber,
-                        weight: TextWeight.bold,
-                      ),
-                    ],
-                  ).p25,
+                    PostSearchQuery query = PostSearchQuery();
+                    query.userId = _profileController.user.value!.id;
+                    reelsController.setReelsSearchQuery(query);
+                    Get.to(() => const Reels(
+                          needBackBtn: true,
+                        ));
+                  }),
                 ],
               ),
-            ).round(20).ripple(() {
-              Get.to(() => Mentions(userId: _profileController.user.value!.id));
-            }),
-            const SizedBox(
-              width: 5,
-            ),
-            Container(
-              width: Get.width / 2.1,
-              color: AppColorConstants.themeColor.withOpacity(0.1),
-              child: Row(
+              const SizedBox(
+                height: 5,
+              ),
+              Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  ThemeIconWidget(
-                    ThemeIcon.group,
-                    size: 40,
-                    color: AppColorConstants.themeColor,
+                  Container(
+                    width: (Get.width -
+                            (2 * DesignConstants.horizontalPadding) -
+                            5) /
+                        2,
+                    height: 100,
+                    color: AppColorConstants.themeColor.withOpacity(0.1),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        ThemeIconWidget(
+                          ThemeIcon.mention,
+                          size: 30,
+                          color: AppColorConstants.themeColor,
+                        ),
+                        const SizedBox(
+                          width: 20,
+                        ),
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            BodyLargeText(
+                              mentionsString,
+                              weight: TextWeight.bold,
+                            ),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            BodyLargeText(
+                              _profileController
+                                  .user.value!.totalMentions.formatNumber,
+                              weight: TextWeight.bold,
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ).round(20).ripple(() {
+                    Get.to(() =>
+                        Mentions(userId: _profileController.user.value!.id));
+                  }),
+                  const SizedBox(
+                    width: 5,
                   ),
-                  Column(
-                    children: [
-                      BodyLargeText(
-                        clubsString,
-                        weight: TextWeight.bold,
-                      ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      BodyLargeText(
-                        _profileController.user.value!.totalClubs.formatNumber,
-                        weight: TextWeight.bold,
-                      ),
-                    ],
-                  ).p25,
+                  Container(
+                    width: (Get.width -
+                            (2 * DesignConstants.horizontalPadding) -
+                            5) /
+                        2,
+                    height: 100,
+                    color: AppColorConstants.themeColor.withOpacity(0.1),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        ThemeIconWidget(
+                          ThemeIcon.group,
+                          size: 30,
+                          color: AppColorConstants.themeColor,
+                        ),
+                        const SizedBox(
+                          width: 20,
+                        ),
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            BodyLargeText(
+                              clubsString,
+                              weight: TextWeight.bold,
+                            ),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            BodyLargeText(
+                              _profileController
+                                  .user.value!.totalClubs.formatNumber,
+                              weight: TextWeight.bold,
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ).round(20).ripple(() {
+                    Get.to(() => UsersClubs(
+                          user: _profileController.user.value!,
+                        ));
+                  }),
                 ],
               ),
-            ).round(20).ripple(() {
-              Get.to(() => UsersClubs(
-                    user: _profileController.user.value!,
-                  ));
-            }),
-          ],
-        ),
-      ],
-    );
+            ],
+          ).hp(DesignConstants.horizontalPadding);
   }
 }

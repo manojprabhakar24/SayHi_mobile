@@ -26,7 +26,7 @@ class AudienceLocationScreen extends StatelessWidget {
                   DefaultTabController(
                     length: _promotionController.locationType.length,
                     child: Column(children: [
-                      SMTabBar(tabs: _promotionController.locationType),
+                      SMTabBar(tabs: _promotionController.locationType,canScroll: false),
                       SizedBox(
                           height: MediaQuery.of(context).size.height - 320,
                           child: TabBarView(

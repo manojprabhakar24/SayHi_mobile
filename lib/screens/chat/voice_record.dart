@@ -219,7 +219,7 @@ class _VoiceRecordState extends State<VoiceRecord> {
     if (recordingPath != null) {
       Media media = Media(
         file: File(recordingPath!),
-        fileUrl: recordingPath!,
+        filePath: recordingPath!,
         fileSize: data.length,
         mediaByte: data,
         id: randomId(),

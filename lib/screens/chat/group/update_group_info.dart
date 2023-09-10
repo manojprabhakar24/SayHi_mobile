@@ -118,6 +118,7 @@ class _UpdateGroupInfoState extends State<UpdateGroupInfo> {
                     )
                   ],
                 ),
+                const SizedBox(height: 20,),
                 AppTextField(
                   maxLines: 5,
                   controller: groupDescription,

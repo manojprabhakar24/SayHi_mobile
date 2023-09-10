@@ -3,12 +3,11 @@ import 'dart:typed_data';
 
 import 'package:foap/helper/imports/common_import.dart';
 
-
 ///This class will contain the necessary data of selected media
 class Media {
   ///File saved on local storage
   File? file;
-  String? fileUrl;
+  String? filePath;
 
   ///Unique id to identify
   String? id;
@@ -62,8 +61,7 @@ class Media {
   Media({
     this.id,
     this.file,
-    this.fileUrl,
-
+    this.filePath,
     this.thumbnail,
     this.mediaByte,
     this.size,
@@ -72,5 +70,19 @@ class Media {
     this.mediaType,
     this.fileSize,
   });
-}
 
+  Media get copy {
+    Media media = Media();
+    media.id = id;
+    media.file = file;
+    media.filePath = filePath;
+    media.thumbnail = thumbnail;
+    media.mediaByte = mediaByte;
+    media.size = size;
+    media.creationTime = creationTime;
+    media.title = title;
+    media.mediaType = mediaType;
+    media.fileSize = fileSize;
+    return media;
+  }
+}

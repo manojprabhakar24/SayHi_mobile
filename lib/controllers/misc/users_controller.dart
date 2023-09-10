@@ -99,4 +99,5 @@ class UsersController extends GetxController {
     update();
     UsersApi.followUnfollowUser(isFollowing: false, userId: user.id);
   }
+
 }

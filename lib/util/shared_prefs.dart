@@ -149,4 +149,26 @@ class SharedPrefs {
     // If no data is found, return an empty map or null, depending on your requirements
     return null; // or return null;
   }
+
+  void setAppleIdEmail(
+      {required String forAppleId, required String email}) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString('${forAppleId}_email', email);
+  }
+
+  Future<String?> getAppleIdEmail({required String forAppleId}) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.get('${forAppleId}_email') as String?;
+  }
+
+  void setAppleIdName(
+      {required String forAppleId, required String email}) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString('${forAppleId}_name', email);
+  }
+
+  Future<String?> getAppleIdName({required String forAppleId}) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.get('${forAppleId}_name') as String?;
+  }
 }

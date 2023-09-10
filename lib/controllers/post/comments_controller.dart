@@ -107,7 +107,7 @@ class CommentsController extends GetxController {
       required CommentType type}) async {
     String filename = type == CommentType.image
         ? await uploadMedia(selectedMedia.value!)
-        : selectedMedia.value!.fileUrl!;
+        : selectedMedia.value!.filePath!;
 
     comments.add(CommentModel.fromNewMessage(
         type, _userProfileManager.user.value!,
@@ -297,7 +297,7 @@ class CommentsController extends GetxController {
 
     if (gif != null) {
       selectedMedia.value = Media(
-          fileUrl: 'https://i.giphy.com/media/${gif.id}/200.gif',
+          filePath: 'https://i.giphy.com/media/${gif.id}/200.gif',
           mediaType: GalleryMediaType.gif);
       handler();
     }

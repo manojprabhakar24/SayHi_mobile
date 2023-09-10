@@ -2,6 +2,7 @@ import 'package:camera/camera.dart';
 import 'package:foap/apiHandler/apis/gift_api.dart';
 import 'package:foap/apiHandler/apis/profile_api.dart';
 import 'package:foap/apiHandler/apis/wallet_api.dart';
+import 'package:foap/helper/enum_linking.dart';
 import 'package:foap/helper/imports/common_import.dart';
 import 'package:foap/helper/list_extension.dart';
 import 'package:foap/screens/add_on/ui/dating/profile/set_location.dart';
@@ -383,34 +384,6 @@ class ProfileController extends GetxController {
 
   //******************** Posts ****************//
 
-  // void getPosts(int userId) async {
-  //   if (canLoadMorePosts == true && totalPages > postsCurrentPage) {
-  //     isLoadingPosts = true;
-  //
-  //     PostApi.getPosts(
-  //         userId: userId,
-  //         page: postsCurrentPage,
-  //         resultCallback: (result, metadata) {
-  //           posts.addAll(
-  //               result.where((element) => element.gallery.isNotEmpty).toList());
-  //           posts.sort((a, b) => b.createDate!.compareTo(a.createDate!));
-  //           posts.unique((e) => e.id);
-  //
-  //           isLoadingPosts = false;
-  //
-  //           if (postsCurrentPage >= metadata.pageCount) {
-  //             canLoadMorePosts = false;
-  //           } else {
-  //             canLoadMorePosts = true;
-  //           }
-  //           postsCurrentPage += 1;
-  //           totalPages = metadata.pageCount;
-  //
-  //           update();
-  //         });
-  //   }
-  // }
-
   void getReels(int userId) async {
     if (canLoadMoreReels == true) {
       isLoadingReels = true;
@@ -480,7 +453,9 @@ class ProfileController extends GetxController {
     } else {}
   }
 
-  otherUserProfileView({required int refId, required int sourceType}) {
-    UsersApi.otherUserProfileView(refId: refId, sourceType: sourceType);
+  otherUserProfileView(
+      {required int refId, required UserViewSourceType viewSource}) {
+    UsersApi.otherUserProfileView(
+        refId: refId, sourceType: userViewSourceTypeToId(viewSource));
   }
 }

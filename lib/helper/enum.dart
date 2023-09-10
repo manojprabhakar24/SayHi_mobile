@@ -11,7 +11,7 @@ enum SearchFrom {
   phone,
 }
 
-enum PostSource { posts, mentions }
+enum PostSource { posts, mentions, videos, saved }
 
 enum PostType { basic, competition, club, reel, reshare }
 
@@ -127,3 +127,6 @@ enum LiveBattleResultType { winner, draw }
 enum BattleStatus { none, accepted, started, completed }
 enum OfferSource { normal, fav }
 enum GoalType { profile, website, message }
+enum ItemViewSource { normal, promotion }
+enum UserViewSourceType { post, reel,story }
+

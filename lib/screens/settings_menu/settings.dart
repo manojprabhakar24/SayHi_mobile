@@ -1,17 +1,9 @@
 import 'package:flutter_switch/flutter_switch.dart';
 import 'package:foap/helper/imports/common_import.dart';
 import 'package:foap/helper/imports/setting_imports.dart';
-import 'package:foap/screens/settings_menu/account.dart';
-import 'package:foap/screens/settings_menu/payment_and_coins.dart';
-import 'package:foap/screens/settings_menu/security_privacy_options.dart';
-import 'package:foap/screens/settings_menu/settings_controller.dart';
-import 'package:get/get.dart';
+import 'package:foap/screens/post/saved_posts.dart';
 import 'package:share_plus/share_plus.dart';
-
-import 'change_language.dart';
-import 'faq_list.dart';
 import 'help_screen.dart';
-import 'notification_settings.dart';
 
 class Settings extends StatefulWidget {
   const Settings({Key? key}) : super(key: key);
@@ -49,53 +41,57 @@ class _SettingsState extends State<Settings> {
                     Column(
                       children: [
                         addTileEvent(
-                            'assets/language.png', notificationsString.tr, '',
-                                () {
-                              Get.to(() => const NotificationsScreen());
-                            }, true),
+                            ThemeIcon.notification, notificationsString.tr, '',
+                            () {
+                          Get.to(() => const NotificationsScreen());
+                        }, true),
                         addTileEvent(
-                            'assets/language.png', changeLanguageString.tr, '',
+                            ThemeIcon.language, changeLanguageString.tr, '',
                             () {
                           Get.to(() => const ChangeLanguage());
                         }, true),
                         addTileEvent(
-                            'assets/coins.png', paymentAndCoinsString.tr, '',
-                            () {
+                            ThemeIcon.wallet, paymentAndCoinsString.tr, '', () {
                           Get.to(() => const PaymentAndCoins());
                         }, true),
-                        addTileEvent('assets/account.png', accountString.tr, '',
+                        addTileEvent(ThemeIcon.account, accountString.tr, '',
                             () {
                           Get.to(() => const AppAccount());
                         }, true),
-                        addTileEvent('assets/privacy.png', privacyString.tr, '',
-                            () {
+                        addTileEvent(
+                            ThemeIcon.bookMark, savedPostsString.tr, '', () {
+                          Get.to(() => const SavedPosts());
+                        }, true),
+                        addTileEvent(
+                            ThemeIcon.privacyPolicy, privacyString.tr, '', () {
                           Get.to(() => const PrivacyOptions());
                         }, true),
                         addTileEvent(
-                            'assets/settings.png',
+                            ThemeIcon.setting,
                             notificationSettingsString.tr,
                             tuneSettingsString.tr, () {
                           Get.to(() => const AppNotificationSettings());
                         }, true),
                         addTileEvent(
-                            'assets/faq.png', faqString.tr, faqMessageString.tr,
+                            ThemeIcon.info, faqString.tr, faqMessageString.tr,
                             () {
                           Get.to(() => const FaqList());
                         }, true),
-                        addTileEvent('assets/request.png', helpString.tr,
+                        addTileEvent(ThemeIcon.request, helpString.tr,
                             faqMessageString.tr, () {
                           Get.to(() => const HelpScreen());
                         }, true),
                         if (_settingsController
                             .setting.value!.enableDarkLightModeSwitch)
                           darkModeTile(),
-                        addTileEvent('assets/share.png', shareString.tr,
+                        addTileEvent(ThemeIcon.share, shareString.tr,
                             shareAppSubtitleString.tr, () {
                           Share.share(
                               '${installThisCoolAppString.tr} ${AppConfigConstants.liveAppLink}');
                         }, false),
-                        addTileEvent('assets/logout.png', logoutString.tr,
-                            exitAppString.tr, () {
+                        addTileEvent(
+                            ThemeIcon.logout, logoutString.tr, exitAppString.tr,
+                            () {
                           AppUtil.showConfirmationAlert(
                               title: logoutString.tr,
                               subTitle: logoutConfirmationString.tr,
@@ -103,9 +99,7 @@ class _SettingsState extends State<Settings> {
                                 _userProfileManager.logout();
                               });
                         }, false),
-                        addTileEvent(
-                            'assets/delete_account.png',
-                            deleteAccountString.tr,
+                        addTileEvent(ThemeIcon.delete, deleteAccountString.tr,
                             deleteAccountSubheadingString.tr, () {
                           AppUtil.showConfirmationAlert(
                               title: deleteAccountString.tr,
@@ -127,8 +121,8 @@ class _SettingsState extends State<Settings> {
         ));
   }
 
-  addTileEvent(String icon, String title, String subTitle, VoidCallback action,
-      bool showNextArrow) {
+  addTileEvent(ThemeIcon icon, String title, String subTitle,
+      VoidCallback action, bool showNextArrow) {
     return InkWell(
         onTap: action,
         child: Column(
@@ -138,11 +132,10 @@ class _SettingsState extends State<Settings> {
               child: Row(children: [
                 Container(
                         color: AppColorConstants.themeColor.withOpacity(0.2),
-                        child: Image.asset(
+                        child: ThemeIconWidget(
                           icon,
-                          height: 20,
-                          width: 20,
-                          color: AppColorConstants.themeColor,
+                          color: AppColorConstants.iconColor,
+                          size: 20,
                         ).p8)
                     .circular,
                 const SizedBox(width: 10),
@@ -177,12 +170,7 @@ class _SettingsState extends State<Settings> {
           child: Row(children: [
             Container(
                     color: AppColorConstants.themeColor.withOpacity(0.2),
-                    child: Image.asset(
-                      'assets/dark-mode.png',
-                      height: 20,
-                      width: 20,
-                      color: AppColorConstants.themeColor,
-                    ).p8)
+                    child: const ThemeIconWidget(ThemeIcon.darkMode).p8)
                 .circular,
             const SizedBox(width: 10),
             Expanded(

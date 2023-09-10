@@ -8,6 +8,7 @@ import '../../controllers/live/agora_live_controller.dart';
 import '../../controllers/home/home_controller.dart';
 import '../../model/call_model.dart';
 import '../../model/post_model.dart';
+import '../post/add_post_screen.dart';
 import '../post/view_post_insight.dart';
 import '../settings_menu/settings_controller.dart';
 import '../story/choose_media_for_story.dart';
@@ -105,6 +106,23 @@ class HomeFeedState extends State<HomeFeedScreen> {
                   ],
                 ),
                 const Spacer(),
+                const ThemeIconWidget(
+                  ThemeIcon.plus,
+                  size: 25,
+                ).ripple(() {
+                  Future.delayed(
+                    Duration.zero,
+                    () => showGeneralDialog(
+                        context: context,
+                        pageBuilder: (context, animation, secondaryAnimation) =>
+                            const AddPostScreen(
+                              postType: PostType.basic,
+                            )),
+                  );
+                }),
+                const SizedBox(
+                  width: 20,
+                ),
                 const ThemeIconWidget(
                   ThemeIcon.chat,
                   size: 25,
@@ -260,12 +278,6 @@ class HomeFeedState extends State<HomeFeedScreen> {
                       _homeController.positions.indexOf(separatorIndex);
                   return PostCard(
                     model: _homeController.sponsoredPosts[positionIndex],
-                    isSponsored: true,
-                    // textTapHandler: (text) {
-                    //   _homeController.postTextTapHandler(
-                    //       post: _homeController.sponsoredPosts[positionIndex],
-                    //       text: text);
-                    // },
                     removePostHandler: () {
                       _homeController.removePostFromList(
                           _homeController.sponsoredPosts[positionIndex]);
@@ -302,7 +314,7 @@ class HomeFeedState extends State<HomeFeedScreen> {
         return Container(
           color: AppColorConstants.cardColor,
           child: FlutterPolls(
-            pollId: _homeController.polls[pollIndex].pollId.toString(),
+            pollId: _homeController.polls[pollIndex].id.toString(),
             hasVoted: _homeController.polls[pollIndex].isVote! > 0,
             userVotedOptionId: _homeController.polls[pollIndex].isVote! > 0
                 ? _homeController.polls[pollIndex].isVote
@@ -310,8 +322,8 @@ class HomeFeedState extends State<HomeFeedScreen> {
             onVoted: (PollOption pollOption, int newTotalVotes) async {
               await Future.delayed(const Duration(seconds: 1));
               _homeController.postPollAnswer(
-                  _homeController.polls[pollIndex].pollId!,
                   _homeController.polls[pollIndex].id!,
+                  // _homeController.polls[pollIndex].id!,
                   pollOption.id!);
 
               /// If HTTP status is success, return true else false
@@ -338,7 +350,7 @@ class HomeFeedState extends State<HomeFeedScreen> {
               ),
             ),
             pollOptions: List<PollOption>.from(
-              (_homeController.polls[pollIndex].pollQuestionOption ?? []).map(
+              (_homeController.polls[pollIndex].pollOptions ?? []).map(
                 (option) {
                   var a = PollOption(
                     id: option.id,

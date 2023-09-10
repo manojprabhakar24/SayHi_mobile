@@ -1,4 +1,5 @@
 import 'package:foap/helper/imports/common_import.dart';
+import 'package:foap/screens/post/watch_videos.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../../components/force_update_view.dart';
@@ -13,19 +14,6 @@ class DashboardController extends GetxController {
   RxInt currentIndex = 0.obs;
   RxInt unreadMsgCount = 0.obs;
   RxBool isLoading = false.obs;
-
-  // getSettings() {
-  //  isLoading.value = true;
-  //   ApiController().getSettings().then((response) {
-  //     isLoading.value = false;
-  //
-  //     setting.value = response.settings;
-  //
-  //     if (setting.value?.latestVersion! != AppConfigConstants.currentVersion) {
-  //       forceUpdate.value = true;
-  //     }
-  //   });
-  // }
 
   indexChanged(int index) {
     currentIndex.value = index;
@@ -56,8 +44,10 @@ class DashboardState extends State<DashboardScreen> {
     items = [
       const HomeFeedScreen(),
       const Explore(),
-      Container(),
-      const Reels(needBackBtn: false,),
+      const WatchVideos(),
+      const Reels(
+        needBackBtn: false,
+      ),
       const MyProfile(
         showBack: false,
       ),
@@ -88,16 +78,6 @@ class DashboardState extends State<DashboardScreen> {
                     body: items[_dashboardController.currentIndex.value],
                     floatingActionButtonLocation:
                         FloatingActionButtonLocation.centerDocked,
-                    // floatingActionButton: Container(
-                    //   height: 50,
-                    //   width: 50,
-                    //   color: AppColorConstants.themeColor,
-                    //   child: const ThemeIconWidget(
-                    //     ThemeIcon.plus,
-                    //     size: 28,
-                    //     color: Colors.white,
-                    //   ),
-                    // ).round(20).tP16.ripple(() => {onTabTapped(2)}),
                     bottomNavigationBar: SizedBox(
                       height: MediaQuery.of(context).viewPadding.bottom > 0
                           ? 100
@@ -152,21 +132,17 @@ class DashboardState extends State<DashboardScreen> {
                             label: exploreString.tr,
                           ),
                           BottomNavigationBarItem(
-                              icon: Obx(() => Container(
-                                    height: 30,
-                                    width: 30,
-                                    color: _dashboardController
-                                                .currentIndex.value ==
-                                            0
-                                        ? AppColorConstants.themeColor
-                                        : AppColorConstants.iconColor,
-                                    child: const ThemeIconWidget(
-                                      ThemeIcon.plus,
-                                      size: 28,
-                                      color: Colors.white,
-                                    ),
-                                  ).circular).bP8,
-                              label: postString.tr),
+                            icon: Obx(() => ThemeIconWidget(
+                                  ThemeIcon.videoPost,
+                                  size: 28,
+                                  color:
+                                      _dashboardController.currentIndex.value ==
+                                              2
+                                          ? AppColorConstants.themeColor
+                                          : AppColorConstants.iconColor,
+                                ).bP8),
+                            label: videosString.tr,
+                          ),
                           BottomNavigationBarItem(
                             icon: Obx(() => ThemeIconWidget(
                                   ThemeIcon.videoCamera,
@@ -197,19 +173,19 @@ class DashboardState extends State<DashboardScreen> {
   }
 
   void onTabTapped(int index) async {
-    if (index == 2) {
-      Future.delayed(
-        Duration.zero,
-        () => showGeneralDialog(
-            context: context,
-            pageBuilder: (context, animation, secondaryAnimation) =>
-                const AddPostScreen(
-                  postType: PostType.basic,
-                )),
-      );
-    } else {
+    // if (index == 2) {
+    //   Future.delayed(
+    //     Duration.zero,
+    //     () => showGeneralDialog(
+    //         context: context,
+    //         pageBuilder: (context, animation, secondaryAnimation) =>
+    //             const AddPostScreen(
+    //               postType: PostType.basic,
+    //             )),
+    //   );
+    // } else {
       Future.delayed(
           Duration.zero, () => _dashboardController.indexChanged(index));
-    }
+    // }
   }
 }

@@ -1,9 +1,11 @@
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
+import 'package:foap/components/sm_tab_bar.dart';
 import 'package:foap/helper/imports/chat_imports.dart';
 import 'package:foap/helper/imports/common_import.dart';
 import '../../components/search_bar.dart';
 import '../calling/call_history.dart';
 import '../settings_menu/settings_controller.dart';
+import 'group/open_group_listing.dart';
 
 class ChatHistory extends StatefulWidget {
   const ChatHistory({Key? key}) : super(key: key);
@@ -17,10 +19,13 @@ class _ChatHistoryState extends State<ChatHistory> {
   final ChatDetailController _chatDetailController = Get.find();
   final SettingsController _settingsController = Get.find();
 
+  List<String> tabs = [privateString.tr, openGroupsString.tr];
+
   @override
   void initState() {
     super.initState();
     _chatController.getChatRooms();
+    _chatController.refreshPublicGroups(() {});
   }
 
   @override
@@ -41,52 +46,66 @@ class _ChatHistoryState extends State<ChatHistory> {
         selectUsers();
       }).bP16,
       body: KeyboardDismissOnTap(
-          child: Column(
-        children: [
-          const SizedBox(
-            height: 50,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              const ThemeIconWidget(
-                ThemeIcon.backArrow,
-              ).ripple(() {
-                Get.back();
-              }),
-              BodyLargeText(chatsString.tr, weight: TextWeight.medium),
-              _settingsController.setting.value!.enableAudioCalling ||
-                      _settingsController.setting.value!.enableVideoCalling
-                  ? ThemeIconWidget(
-                      ThemeIcon.mobile,
-                      color: AppColorConstants.iconColor,
-                      size: 25,
-                    ).ripple(() {
-                      Get.to(() => const CallHistory());
-                    })
-                  : const SizedBox(
-                      width: 25,
-                    ),
-            ],
-          ).setPadding(
-              left: DesignConstants.horizontalPadding,
-              right: DesignConstants.horizontalPadding,
-              top: 8,
-              bottom: 16),
-          SFSearchBar(
-                  showSearchIcon: true,
-                  iconColor: AppColorConstants.themeColor,
-                  onSearchChanged: (value) {
-                    _chatController.searchTextChanged(value);
-                  },
-                  onSearchStarted: () {
-                    //controller.startSearch();
-                  },
-                  onSearchCompleted: (searchTerm) {})
-              .p16,
-          Expanded(child: chatListView())
-        ],
-      )),
+          child: DefaultTabController(
+              length: tabs.length,
+              child: Column(
+                children: [
+                  const SizedBox(
+                    height: 50,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const ThemeIconWidget(
+                        ThemeIcon.backArrow,
+                      ).ripple(() {
+                        Get.back();
+                      }),
+                      BodyLargeText(chatsString.tr, weight: TextWeight.medium),
+                      _settingsController.setting.value!.enableAudioCalling ||
+                              _settingsController
+                                  .setting.value!.enableVideoCalling
+                          ? ThemeIconWidget(
+                              ThemeIcon.mobile,
+                              color: AppColorConstants.iconColor,
+                              size: 25,
+                            ).ripple(() {
+                              Get.to(() => const CallHistory());
+                            })
+                          : const SizedBox(
+                              width: 25,
+                            ),
+                    ],
+                  ).setPadding(
+                      left: DesignConstants.horizontalPadding,
+                      right: DesignConstants.horizontalPadding,
+                      top: 8,
+                      bottom: 8),
+                  SFSearchBar(
+                          showSearchIcon: true,
+                          iconColor: AppColorConstants.themeColor,
+                          onSearchChanged: (value) {
+                            _chatController.searchTextChanged(value);
+                          },
+                          onSearchStarted: () {
+                            //controller.startSearch();
+                          },
+                          onSearchCompleted: (searchTerm) {})
+                      .p16,
+                  SizedBox(
+                      width: Get.width,
+                      child: SMTabBar(
+                        tabs: tabs,
+                        canScroll: false,
+                      )),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Expanded(
+                      child: TabBarView(
+                          children: [chatListView(), OpenGroupListing()]))
+                ],
+              ))),
     );
   }
 
@@ -162,7 +181,7 @@ class _ChatHistoryState extends State<ChatHistory> {
                     return divider(height: 0.2).vP8;
                   })
               : emptyData(
-                  title: noNotificationFoundString,
+                  title: noChatFoundString,
                   subTitle: '',
                 );
         });

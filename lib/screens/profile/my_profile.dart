@@ -148,14 +148,14 @@ class MyProfileState extends State<MyProfile>
                                   weight: TextWeight.medium,
                                   color: AppColorConstants.grayscale700,
                                 ).bP4,
-                              _profileController.user.value!.country != null
-                                  ? BodyMediumText(
-                                      '${_profileController.user.value!.country}, ${_profileController.user.value!.city}',
-                                      color: AppColorConstants.grayscale700,
-                                    )
-                                  : Container(),
+                              if (_profileController.user.value!.country !=
+                                  null)
+                                BodyMediumText(
+                                  '${_profileController.user.value!.country}, ${_profileController.user.value!.city}',
+                                  color: AppColorConstants.grayscale700,
+                                ),
                               const SizedBox(
-                                height: 40,
+                                height: 20,
                               ),
                               Container(
                                 color: AppColorConstants.cardColor.darken(),
@@ -287,17 +287,23 @@ class MyProfileState extends State<MyProfile>
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Container(
-              width: Get.width / 2.1,
+              width:
+                  (Get.width - (2 * DesignConstants.horizontalPadding) - 5) / 2,
+              height: 100,
               color: AppColorConstants.themeColor.withOpacity(0.1),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   ThemeIconWidget(
                     ThemeIcon.gallery,
-                    size: 40,
+                    size: 30,
                     color: AppColorConstants.themeColor,
                   ),
+                  const SizedBox(
+                    width: 20,
+                  ),
                   Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       BodyLargeText(
                         postsString,
@@ -311,7 +317,7 @@ class MyProfileState extends State<MyProfile>
                         weight: TextWeight.bold,
                       ),
                     ],
-                  ).p25,
+                  ),
                 ],
               ),
             ).round(20).ripple(() {
@@ -323,17 +329,23 @@ class MyProfileState extends State<MyProfile>
               width: 5,
             ),
             Container(
-              width: Get.width / 2.1,
+              width:
+                  (Get.width - (2 * DesignConstants.horizontalPadding) - 5) / 2,
+              height: 100,
               color: AppColorConstants.themeColor.withOpacity(0.1),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   ThemeIconWidget(
                     ThemeIcon.videoCamera,
-                    size: 40,
+                    size: 30,
                     color: AppColorConstants.themeColor,
                   ),
+                  const SizedBox(
+                    width: 20,
+                  ),
                   Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       BodyLargeText(
                         reelsString,
@@ -347,7 +359,7 @@ class MyProfileState extends State<MyProfile>
                         weight: TextWeight.bold,
                       ),
                     ],
-                  ).p25,
+                  ),
                 ],
               ),
             ).round(20).ripple(() {
@@ -356,7 +368,9 @@ class MyProfileState extends State<MyProfile>
               PostSearchQuery query = PostSearchQuery();
               query.userId = _userProfileManager.user.value!.id;
               reelsController.setReelsSearchQuery(query);
-              Get.to(() => const Reels(needBackBtn: true,));
+              Get.to(() => const Reels(
+                    needBackBtn: true,
+                  ));
             }),
           ],
         ),
@@ -367,17 +381,23 @@ class MyProfileState extends State<MyProfile>
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Container(
-              width: Get.width / 2.1,
+              width:
+                  (Get.width - (2 * DesignConstants.horizontalPadding) - 5) / 2,
+              height: 100,
               color: AppColorConstants.themeColor.withOpacity(0.1),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   ThemeIconWidget(
                     ThemeIcon.mention,
-                    size: 40,
+                    size: 30,
                     color: AppColorConstants.themeColor,
                   ),
+                  const SizedBox(
+                    width: 20,
+                  ),
                   Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       BodyLargeText(
                         mentionsString,
@@ -387,11 +407,12 @@ class MyProfileState extends State<MyProfile>
                         height: 10,
                       ),
                       BodyLargeText(
-                        _userProfileManager.user.value!.totalMentions.formatNumber,
+                        _userProfileManager
+                            .user.value!.totalMentions.formatNumber,
                         weight: TextWeight.bold,
                       ),
                     ],
-                  ).p25,
+                  ),
                 ],
               ),
             ).round(20).ripple(() {
@@ -401,17 +422,23 @@ class MyProfileState extends State<MyProfile>
               width: 5,
             ),
             Container(
-              width: Get.width / 2.1,
+              width:
+                  (Get.width - (2 * DesignConstants.horizontalPadding) - 5) / 2,
+              height: 100,
               color: AppColorConstants.themeColor.withOpacity(0.1),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   ThemeIconWidget(
                     ThemeIcon.group,
-                    size: 40,
+                    size: 30,
                     color: AppColorConstants.themeColor,
                   ),
+                  const SizedBox(
+                    width: 20,
+                  ),
                   Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       BodyLargeText(
                         clubsString,
@@ -425,7 +452,7 @@ class MyProfileState extends State<MyProfile>
                         weight: TextWeight.bold,
                       ),
                     ],
-                  ).p25,
+                  ),
                 ],
               ),
             ).round(20).ripple(() {
@@ -436,6 +463,6 @@ class MyProfileState extends State<MyProfile>
           ],
         ),
       ],
-    );
+    ).hp(DesignConstants.horizontalPadding);
   }
 }

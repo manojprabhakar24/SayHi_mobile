@@ -23,30 +23,30 @@ class MiscApi {
   }
 
   static getPolls(
-      {required Function(List<PollsQuestionModel>) resultCallback}) async{
+      {required Function(List<PollsModel>) resultCallback}) async{
     var url = NetworkConstantsUtil.getPolls;
 
     Loader.show(status: loadingString.tr);
     await ApiWrapper().getApi(url: url).then((result) {
       Loader.dismiss();
       if (result?.success == true) {
-        var items = result!.data['pollQuestion']['items'];
-        resultCallback(List<PollsQuestionModel>.from(
-            items.map((x) => PollsQuestionModel.fromJson(x))));
+        var items = result!.data['poll']['items'];
+        resultCallback(List<PollsModel>.from(
+            items.map((x) => PollsModel.fromJson(x))));
       }
     });
   }
 
   static postPollAnswer(
       {required int pollId,
-      required int pollQuestionId,
+      // required int pollQuestionId,
       required int questionOptionId,
-      required Function(List<PollsQuestionModel>) resultCallback}) async{
+      required Function(List<PollsModel>) resultCallback}) async{
     var url = NetworkConstantsUtil.postPoll;
 
     await ApiWrapper().postApi(url: url, param: {
       "poll_id": pollId.toString(),
-      "poll_question_id": pollQuestionId.toString(),
+      // "poll_question_id": pollQuestionId.toString(),
       "question_option_id": questionOptionId.toString(),
     }).then((response) {
       if (response?.success == true) {
@@ -54,8 +54,8 @@ class MiscApi {
         var question = result['question'].first;
         question['pollQuestionOption'] = result['questionOption'];
 
-        resultCallback(List<PollsQuestionModel>.from(
-            [question].map((x) => PollsQuestionModel.fromJson(x))));
+        resultCallback(List<PollsModel>.from(
+            [question].map((x) => PollsModel.fromJson(x))));
       }
     });
   }

@@ -404,20 +404,26 @@ class RealmDBManager {
     return membersArr;
   }
 
+  insertChatMessageUsersFirstTime({required List<ChatMessageUser> users}){
+    realm.write(() {
+      insertChatMessageUsers(users: users);
+    });
+  }
+
   Future<void> insertChatMessageUsers(
       {required List<ChatMessageUser> users}) async {
     // var realm = await Realm.open(configuration);
 
     // realm.write(() {
-    for (ChatMessageUser user in users) {
-      var existingUser = realm.query<ChatMessageUserRealm>(
-          'userId == ${user.userId} AND chatMessageId == ${user.messageId}');
+      for (ChatMessageUser user in users) {
+        var existingUser = realm.query<ChatMessageUserRealm>(
+            'userId == ${user.userId} AND chatMessageId == ${user.messageId}');
 
-      if (existingUser.isEmpty) {
-        realm.add(ChatMessageUserRealm(
-            chatMessageId: user.messageId, userId: user.userId, status: 1));
+        if (existingUser.isEmpty) {
+          realm.add(ChatMessageUserRealm(
+              chatMessageId: user.messageId, userId: user.userId, status: 1));
+        }
       }
-    }
     // });
 
     // realm.close();

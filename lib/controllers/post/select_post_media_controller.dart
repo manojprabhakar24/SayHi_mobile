@@ -7,7 +7,6 @@ class SelectPostMediaController extends GetxController {
   RxInt currentIndex = 0.obs;
 
   clear() {
-    print('clear selectedMediaList');
     allowMultipleSelection.value = false;
     selectedMediaList.clear();
     update();
@@ -21,7 +20,16 @@ class SelectPostMediaController extends GetxController {
   mediaSelected(List<Media> media) {
     selectedMediaList.value = media;
     selectedMediaList.refresh();
-    print('mediaSelected');
+    update();
+  }
+
+  replaceMediaWithEditedMedia(
+      {required Media originalMedia, required Media editedMedia}) {
+    int indexOfItemToReplace = selectedMediaList
+        .indexWhere((element) => element.id == originalMedia.id);
+    selectedMediaList.removeAt(indexOfItemToReplace);
+    selectedMediaList.insert(indexOfItemToReplace, editedMedia);
+    selectedMediaList.refresh();
     update();
   }
 

@@ -148,7 +148,7 @@ class PostOptionsPopup extends StatelessWidget {
 
     if (gif != null) {
       Media media = Media();
-      media.fileUrl = 'https://i.giphy.com/media/${gif.id}/200.gif';
+      media.filePath = 'https://i.giphy.com/media/${gif.id}/200.gif';
       media.mediaType = GalleryMediaType.gif;
       if (selectGif != null) {
         selectGif!(media);

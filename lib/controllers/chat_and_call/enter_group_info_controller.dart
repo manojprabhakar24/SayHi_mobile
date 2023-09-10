@@ -10,21 +10,32 @@ class EnterGroupInfoController extends GetxController {
   final UserProfileManager _userProfileManager = Get.find();
 
   RxString groupImagePath = ''.obs;
+  RxBool isPublicGroup = false.obs;
 
   groupImageSelected(String imagePath) {
     groupImagePath.value = imagePath;
     groupImagePath.refresh();
   }
 
+  togglePublicGroup() {
+    isPublicGroup.value = !isPublicGroup.value;
+    update();
+  }
+
   createGroup(
       {required String name,
       required String? description,
+      required bool isPublicGroup,
       required String image,
       required List<UserModel> users}) {
     Loader.show(status: loadingString.tr);
 
     if (image.isEmpty) {
-      publishGroup(name: name, description: description, users: users);
+      publishGroup(
+          name: name,
+          isPublicGroup: isPublicGroup,
+          description: description,
+          users: users);
     } else {
       // Loader.show(status: loadingString.tr);
       MiscApi.uploadFile(image,
@@ -33,6 +44,7 @@ class EnterGroupInfoController extends GetxController {
         publishGroup(
             name: name,
             image: filename,
+            isPublicGroup: isPublicGroup,
             description: description,
             users: users);
       });
@@ -77,8 +89,10 @@ class EnterGroupInfoController extends GetxController {
       {required String name,
       required String? description,
       String? image,
+      required bool isPublicGroup,
       required List<UserModel> users}) {
     ChatApi.createGroupChatRoom(
+        isPublicGroup: isPublicGroup,
         image: image,
         description: description,
         title: name,

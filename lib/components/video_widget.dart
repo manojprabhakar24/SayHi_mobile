@@ -37,6 +37,8 @@ class _VideoPostTileState extends State<VideoPostTile> {
 
   @override
   void didUpdateWidget(covariant VideoPostTile oldWidget) {
+    print('didUpdateWidget ${widget.url}');
+    prepareVideo(url: widget.url, isLocalFile: widget.isLocalFile);
     playVideo = widget.play;
 
     if (playVideo == true) {
@@ -176,13 +178,13 @@ class _VideoPostTileState extends State<VideoPostTile> {
     // print('prepareVideo 2');
 
     if (isLocalFile) {
-      // print('prepareVideo 3');
+      print('prepareVideo 3');
 
       videoPlayerController = VideoPlayerController.file(File(url));
     } else {
-      // print('prepareVideo 4');
+      print('prepareVideo 4');
 
-      videoPlayerController = VideoPlayerController.network(url);
+      videoPlayerController = VideoPlayerController.networkUrl(Uri.parse(url));
     }
 
     // print('prepareVideo 5');

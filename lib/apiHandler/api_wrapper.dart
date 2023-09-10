@@ -24,6 +24,7 @@ class ApiResponse {
     ApiResponse model = ApiResponse();
     model.success = json['status'] == 200;
     model.data = json['data'];
+    model.message = json['message'];
 
     if (model.success != true &&
         model.data != null &&

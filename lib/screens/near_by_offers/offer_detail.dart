@@ -47,7 +47,7 @@ class OfferDetail extends StatelessWidget {
                       initialIndex: 0,
                       child: Column(
                         children: [
-                          SMTabBar(tabs: tabs),
+                          SMTabBar(tabs: tabs,canScroll: false),
                           const SizedBox(
                             height: 20,
                           ),

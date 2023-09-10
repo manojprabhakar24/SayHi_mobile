@@ -24,7 +24,7 @@ class HomeController extends GetxController {
   final UserProfileManager _userProfileManager = Get.find();
 
   RxList<PostModel> posts = <PostModel>[].obs;
-  RxList<PollsQuestionModel> polls = <PollsQuestionModel>[].obs;
+  RxList<PollsModel> polls = <PollsModel>[].obs;
   RxList<StoryModel> stories = <StoryModel>[].obs;
   RxList<UserModel> liveUsers = <UserModel>[].obs;
   RxList<GiftModel> timelineGift = <GiftModel>[].obs;
@@ -217,10 +217,10 @@ class HomeController extends GetxController {
   }
 
   void postPollAnswer(
-      int pollId, int pollQuestionId, int questionOptionId) async {
+      int pollId, int questionOptionId) async {
     MiscApi.postPollAnswer(
         pollId: pollId,
-        pollQuestionId: pollQuestionId,
+        // pollQuestionId: pollQuestionId,
         questionOptionId: questionOptionId,
         resultCallback: (result) {
           polls.addAll(result);
@@ -428,7 +428,8 @@ class HomeController extends GetxController {
     List<StoryModel> viewedAllStories = [];
     List<StoryModel> notViewedStories = [];
 
-    List<int> viewedStoryIds = await getIt<RealmDBManager>().getAllViewedStories();
+    List<int> viewedStoryIds =
+        await getIt<RealmDBManager>().getAllViewedStories();
 
     await StoryApi.getStories(resultCallback: (result) {
       for (var story in result) {

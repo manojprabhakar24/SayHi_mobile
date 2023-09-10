@@ -232,23 +232,6 @@ class ExploreClubsState extends State<ExploreClubs> {
                 });
   }
 
-  showActionSheet(PostModel post) {
-    showModalBottomSheet(
-        context: context,
-        backgroundColor: Colors.transparent,
-        builder: (context) => ActionSheet1(
-              items: [
-                GenericItem(
-                    id: '1', title: shareString.tr, icon: ThemeIcon.share),
-                GenericItem(
-                    id: '2', title: reportString.tr, icon: ThemeIcon.report),
-                GenericItem(
-                    id: '3', title: hideString.tr, icon: ThemeIcon.hide),
-              ],
-              itemCallBack: (item) {},
-            ));
-  }
-
   Widget topClubs() {
     return Obx(() => _clubsController.topClubs.isEmpty
         ? Container()
@@ -327,4 +310,22 @@ class ExploreClubsState extends State<ExploreClubs> {
             ],
           ).hP16);
   }
+
+  showActionSheet(PostModel post) {
+    showModalBottomSheet(
+        context: context,
+        backgroundColor: Colors.transparent,
+        builder: (context) => ActionSheet1(
+          items: [
+            GenericItem(
+                id: '1', title: shareString.tr, icon: ThemeIcon.share),
+            GenericItem(
+                id: '2', title: reportString.tr, icon: ThemeIcon.report),
+            GenericItem(
+                id: '3', title: hideString.tr, icon: ThemeIcon.hide),
+          ],
+          itemCallBack: (item) {},
+        ));
+  }
+
 }

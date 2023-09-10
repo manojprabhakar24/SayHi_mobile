@@ -129,7 +129,9 @@ enum ThemeIcon {
   dating,
   acceptCall,
   declineCall,
-  business
+  business,
+  language,
+  darkMode,
 }
 
 class ThemeIconWidget extends StatelessWidget {
@@ -473,7 +475,7 @@ class ThemeIconWidget extends StatelessWidget {
         );
       case ThemeIcon.plus:
         return Icon(
-          Icons.add,
+          Icons.add_circle,
           size: size ?? 20,
           color: color ?? AppColorConstants.iconColor,
         );
@@ -906,6 +908,18 @@ class ThemeIconWidget extends StatelessWidget {
       case ThemeIcon.arrowUp:
         return SvgPicture.asset(
           'assets/svg/outline/Arrow - Up 2.svg',
+          height: size ?? 20,
+          color: color ?? AppColorConstants.iconColor,
+        );
+      case ThemeIcon.language:
+        return Image.asset(
+          'assets/language.png',
+          height: size ?? 20,
+          color: color ?? AppColorConstants.iconColor,
+        );
+      case ThemeIcon.darkMode:
+        return Image.asset(
+          'assets/dark-mode.png',
           height: size ?? 20,
           color: color ?? AppColorConstants.iconColor,
         );

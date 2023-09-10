@@ -298,7 +298,7 @@ class AddPostController extends GetxController {
       uploadMainFile(file, media, videoThumbnailPath, competitionId, completer);
     } else if (media.mediaType == GalleryMediaType.gif) {
       gallery = {
-        'filename': media.fileUrl!,
+        'filename': media.filePath!,
         'video_thumb': videoThumbnailPath ?? '',
         'type': competitionId == null ? '1' : '2',
         'media_type': mediaTypeIdFromMediaType(media.mediaType!).toString(),

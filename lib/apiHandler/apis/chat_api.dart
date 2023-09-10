@@ -22,16 +22,18 @@ class ChatApi {
       {String? image,
       String? description,
       required String title,
+      required bool isPublicGroup,
       required Function(int) resultCallback}) async {
     var url = NetworkConstantsUtil.createChatRoom;
     dynamic param = {
-      "type": '2',
+      "type": isPublicGroup ? '3' : '2',
       'receiver_id': '',
       'title': title,
       'image': image ?? '',
       'description': description ?? ''
     };
 
+    print(param);
     await ApiWrapper().postApi(url: url, param: param).then((result) {
       resultCallback(result!.data['room_id']);
     });
@@ -71,9 +73,30 @@ class ChatApi {
         url: url, param: {'room_id': roomId.toString()}).then((result) {});
   }
 
+  static getPublicChatRooms(
+      {required int page,
+      required Function(List<ChatRoomModel>, APIMetaData)
+          resultCallback}) async {
+    var url = '${NetworkConstantsUtil.getPublicChatRooms}&page=$page';
+
+    await ApiWrapper().getApi(url: url).then((result) {
+      if (result?.success == true) {
+        var room = result!.data['room']['items'] as List<dynamic>?;
+        if (room != null && room.isNotEmpty) {
+          room = room.toList();
+          resultCallback(
+              List<ChatRoomModel>.from(
+                  room.map((x) => ChatRoomModel.fromJson(x))),
+              APIMetaData.fromJson(result.data['room']['_meta']));
+        }
+      }
+    });
+  }
+
   static getChatRooms(
       {required Function(List<ChatRoomModel>) resultCallback}) async {
     var url = NetworkConstantsUtil.getChatRooms;
+
     await ApiWrapper().getApi(url: url).then((result) {
       if (result?.success == true) {
         var room = result!.data['room'] as List<dynamic>?;
@@ -82,8 +105,10 @@ class ChatApi {
               // .where((element) =>
               //     (element['chatRoomUser'] as List<dynamic>).length > 1)
               .toList();
-          resultCallback(List<ChatRoomModel>.from(
-              room.map((x) => ChatRoomModel.fromJson(x))));
+          resultCallback(
+            List<ChatRoomModel>.from(
+                room.map((x) => ChatRoomModel.fromJson(x))),
+          );
         }
       }
     });

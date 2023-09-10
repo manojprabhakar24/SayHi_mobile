@@ -113,9 +113,9 @@ class UserModel {
             : GenderType.other;
 
     model.totalPost = json['totalActivePost'] ?? json['totalPost'] ?? 0;
-    model.totalReels = json['totalReels'] ?? 0;
-    model.totalClubs = json['totalClubs'] ?? 0;
-    model.totalMentions = json['totalMentions'] ?? 0;
+    model.totalReels = json['totalReel'] ?? 0;
+    model.totalClubs = json['totalClub'] ?? 0;
+    model.totalMentions = json['totalMention'] ?? 0;
 
     model.totalFollower = json['totalFollower'] ?? 0;
     model.totalFollowing = json['totalFollowing'] ?? 0;

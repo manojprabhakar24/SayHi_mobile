@@ -4,6 +4,7 @@ import 'package:foap/apiHandler/apis/users_api.dart';
 import 'package:foap/helper/imports/common_import.dart';
 import 'package:share_plus/share_plus.dart';
 import '../controllers/post/post_controller.dart';
+import '../helper/enum_linking.dart';
 import '../model/post_model.dart';
 import 'package:http/http.dart' as http;
 import 'package:path_provider/path_provider.dart';
@@ -107,5 +108,13 @@ class PostCardController extends GetxController {
           Loader.dismiss();
           update();
         });
+  }
+
+  postView(
+      {required int postId, required ItemViewSource source, int? postPromotionId}) {
+    PostApi.postView(
+        postId: postId,
+        sourceType: itemViewSourceToId(source),
+        postPromotionId: postPromotionId);
   }
 }

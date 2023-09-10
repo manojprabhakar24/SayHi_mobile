@@ -386,16 +386,11 @@ class SelectableUserCardState extends State<SelectableUserCard> {
 
 class SelectableUserTile extends StatefulWidget {
   final UserModel model;
-  final bool? canSelect;
   final bool? isSelected;
   final VoidCallback? selectionHandler;
 
   const SelectableUserTile(
-      {Key? key,
-      required this.model,
-      this.canSelect,
-      this.isSelected,
-      this.selectionHandler})
+      {Key? key, required this.model, this.isSelected, this.selectionHandler})
       : super(key: key);
 
   @override
@@ -417,31 +412,44 @@ class SelectableUserTileState extends State<SelectableUserTile> {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        UserInfo(model: model),
+        Row(
+          children: [
+            UserAvatarView(
+              user: model,
+              size: 40,
+            ),
+            const SizedBox(width: 10),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                BodyLargeText(
+                  model.userName,
+                  weight: TextWeight.semiBold,
+                  maxLines: 1,
+                ),
+                const SizedBox(
+                  height: 5,
+                ),
+                model.country != null
+                    ? BodySmallText(
+                        '${model.country},${model.city}',
+                      )
+                    : Container(),
+              ],
+            ),
+          ],
+        ),
         const Spacer(),
-        widget.canSelect == true
-            ? ThemeIconWidget(
-                widget.isSelected == true
-                    ? ThemeIcon.checkMarkWithCircle
-                    : ThemeIcon.circleOutline,
-                color: AppColorConstants.themeColor,
-                size: 25,
-              )
-            : Container()
+        ThemeIconWidget(
+          widget.isSelected == true
+              ? ThemeIcon.checkMarkWithCircle
+              : ThemeIcon.circleOutline,
+          color: AppColorConstants.themeColor,
+          size: 25,
+        )
       ],
     ).ripple(
       () {
-        if (widget.canSelect != true) {
-          if (model.id == _userProfileManager.user.value!.id) {
-            Get.to(() => const UpdateProfile());
-          } else {
-            Get.to(() => OtherUserProfile(
-                  userId: model.id,
-                  user: model,
-                ));
-          }
-        }
-
         if (widget.selectionHandler != null) {
           widget.selectionHandler!();
         }

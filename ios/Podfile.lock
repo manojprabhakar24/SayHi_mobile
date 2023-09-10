@@ -334,6 +334,10 @@ PODS:
   - GTMSessionFetcher/Core (2.3.0)
   - image_picker_ios (0.0.1):
     - Flutter
+  - imgly_sdk (3.0.0):
+    - Flutter
+    - imglyKit (~> 11.4)
+  - imglyKit (11.6.0)
   - in_app_purchase_storekit (0.0.1):
     - Flutter
     - FlutterMacOS
@@ -398,6 +402,9 @@ PODS:
     - FlutterMacOS
   - permission_handler_apple (9.1.1):
     - Flutter
+  - photo_editor_sdk (3.0.0):
+    - Flutter
+    - imgly_sdk (= 3.0.0)
   - photo_manager (2.0.0):
     - Flutter
     - FlutterMacOS
@@ -473,6 +480,9 @@ PODS:
     - Flutter
   - video_compress_ds (0.3.0):
     - Flutter
+  - video_editor_sdk (3.0.0):
+    - Flutter
+    - imgly_sdk (= 3.0.0)
   - video_player_avfoundation (0.0.1):
     - Flutter
   - video_thumbnail (0.0.1):
@@ -520,6 +530,7 @@ DEPENDENCIES:
   - google_mobile_ads (from `.symlinks/plugins/google_mobile_ads/ios`)
   - google_sign_in_ios (from `.symlinks/plugins/google_sign_in_ios/ios`)
   - image_picker_ios (from `.symlinks/plugins/image_picker_ios/ios`)
+  - imgly_sdk (from `.symlinks/plugins/imgly_sdk/ios`)
   - in_app_purchase_storekit (from `.symlinks/plugins/in_app_purchase_storekit/darwin`)
   - iris_method_channel (from `.symlinks/plugins/iris_method_channel/ios`)
   - just_audio (from `.symlinks/plugins/just_audio/ios`)
@@ -529,6 +540,7 @@ DEPENDENCIES:
   - package_info_plus (from `.symlinks/plugins/package_info_plus/ios`)
   - path_provider_foundation (from `.symlinks/plugins/path_provider_foundation/darwin`)
   - permission_handler_apple (from `.symlinks/plugins/permission_handler_apple/ios`)
+  - photo_editor_sdk (from `.symlinks/plugins/photo_editor_sdk/ios`)
   - photo_manager (from `.symlinks/plugins/photo_manager/ios`)
   - push_ios (from `.symlinks/plugins/push_ios/ios`)
   - razorpay_flutter (from `.symlinks/plugins/razorpay_flutter/ios`)
@@ -541,6 +553,7 @@ DEPENDENCIES:
   - stripe_ios (from `.symlinks/plugins/stripe_ios/ios`)
   - url_launcher_ios (from `.symlinks/plugins/url_launcher_ios/ios`)
   - video_compress_ds (from `.symlinks/plugins/video_compress_ds/ios`)
+  - video_editor_sdk (from `.symlinks/plugins/video_editor_sdk/ios`)
   - video_player_avfoundation (from `.symlinks/plugins/video_player_avfoundation/ios`)
   - video_thumbnail (from `.symlinks/plugins/video_thumbnail/ios`)
   - wakelock_plus (from `.symlinks/plugins/wakelock_plus/ios`)
@@ -583,6 +596,7 @@ SPEC REPOS:
     - GoogleUtilitiesComponents
     - GTMAppAuth
     - GTMSessionFetcher
+    - imglyKit
     - libwebp
     - Mantle
     - MLImage
@@ -681,6 +695,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/google_sign_in_ios/ios"
   image_picker_ios:
     :path: ".symlinks/plugins/image_picker_ios/ios"
+  imgly_sdk:
+    :path: ".symlinks/plugins/imgly_sdk/ios"
   in_app_purchase_storekit:
     :path: ".symlinks/plugins/in_app_purchase_storekit/darwin"
   iris_method_channel:
@@ -699,6 +715,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/path_provider_foundation/darwin"
   permission_handler_apple:
     :path: ".symlinks/plugins/permission_handler_apple/ios"
+  photo_editor_sdk:
+    :path: ".symlinks/plugins/photo_editor_sdk/ios"
   photo_manager:
     :path: ".symlinks/plugins/photo_manager/ios"
   push_ios:
@@ -723,6 +741,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/url_launcher_ios/ios"
   video_compress_ds:
     :path: ".symlinks/plugins/video_compress_ds/ios"
+  video_editor_sdk:
+    :path: ".symlinks/plugins/video_editor_sdk/ios"
   video_player_avfoundation:
     :path: ".symlinks/plugins/video_player_avfoundation/ios"
   video_thumbnail:
@@ -803,6 +823,8 @@ SPEC CHECKSUMS:
   GTMAppAuth: 0ff230db599948a9ad7470ca667337803b3fc4dd
   GTMSessionFetcher: 3a63d75eecd6aa32c2fc79f578064e1214dfdec2
   image_picker_ios: 4a8aadfbb6dc30ad5141a2ce3832af9214a705b5
+  imgly_sdk: a114555e1d98e4a4fa5cc8f2b258353198c64e8b
+  imglyKit: d118134604d8ad56889b1c3afd6707babce8fefc
   in_app_purchase_storekit: 4fb7ee9e824b1f09107fbfbbce8c4b276366dc43
   iris_method_channel: 0617c689164d8154c020c50f63ca79f92b8a7b9d
   just_audio: baa7252489dbcf47a4c7cc9ca663e9661c99aafa
@@ -821,6 +843,7 @@ SPEC CHECKSUMS:
   package_info_plus: fd030dabf36271f146f1f3beacd48f564b0f17f7
   path_provider_foundation: 29f094ae23ebbca9d3d0cec13889cd9060c0e943
   permission_handler_apple: e76247795d700c14ea09e3a2d8855d41ee80a2e6
+  photo_editor_sdk: d5eea1abfd23930ec45163f95d92e2570434e4cc
   photo_manager: 4f6810b7dfc4feb03b461ac1a70dacf91fba7604
   PromisesObjC: c50d2056b5253dadbd6c2bea79b0674bd5a52fa4
   PromisesSwift: 28dca69a9c40779916ac2d6985a0192a5cb4a265
@@ -849,6 +872,7 @@ SPEC CHECKSUMS:
   Toast: 91b396c56ee72a5790816f40d3a94dd357abc196
   url_launcher_ios: 08a3dfac5fb39e8759aeb0abbd5d9480f30fc8b4
   video_compress_ds: bb434c35e9ffdb4106a92b9115cd8fa8d5c555a4
+  video_editor_sdk: f113d4a2fc8838fdeee99a8461fb4c55ba6b9e3f
   video_player_avfoundation: 81e49bb3d9fb63dccf9fa0f6d877dc3ddbeac126
   video_thumbnail: c4e2a3c539e247d4de13cd545344fd2d26ffafd1
   wakelock_plus: 8b09852c8876491e4b6d179e17dfe2a0b5f60d47

@@ -3,8 +3,10 @@ import 'package:foap/helper/imports/common_import.dart';
 class SMTabBar extends StatelessWidget {
   final TabController? controller;
   final List<String> tabs;
+  final bool canScroll;
 
-  const SMTabBar({Key? key, required this.tabs, this.controller})
+  const SMTabBar(
+      {Key? key, required this.tabs, required this.canScroll, this.controller})
       : super(key: key);
 
   @override
@@ -19,7 +21,7 @@ class SMTabBar extends StatelessWidget {
               height: 2,
               color: AppColorConstants.dividerColor,
             ).round(5)),
-        getTextTabBar(tabs: tabs, controller: controller)
+        getTextTabBar(tabs: tabs, controller: controller,canScroll: canScroll)
       ],
     );
   }
@@ -83,13 +85,13 @@ class SMIconAndTextTabBar extends StatelessWidget {
   }
 }
 
-TabBar getTextTabBar({
-  TabController? controller,
-  required List<String> tabs,
-}) {
+TabBar getTextTabBar(
+    {TabController? controller,
+    required List<String> tabs,
+      required bool canScroll}) {
   return TabBar(
     controller: controller,
-    isScrollable: true,
+    isScrollable: canScroll,
     indicator: UnderlineTabIndicator(
       borderSide: BorderSide(width: 3.0, color: AppColorConstants.themeColor),
       insets: const EdgeInsets.symmetric(horizontal: 16.0),

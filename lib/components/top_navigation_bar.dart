@@ -81,55 +81,6 @@ Widget backNavigationBarWithTrailingWidget(
   );
 }
 
-// Widget backNavigationBarWithIcon(
-//     {required ThemeIcon icon,
-//     required String title,
-//     Color? iconColor,
-//     required VoidCallback iconBtnClicked}) {
-//   return Container(
-//     height: 100,
-//     color: AppColorConstants.themeColor.withOpacity(0.1),
-//     child: Stack(
-//       children: [
-//         Row(
-//           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//           crossAxisAlignment: CrossAxisAlignment.end,
-//           children: [
-//             const SizedBox(
-//               width: 50,
-//               child: ThemeIconWidget(
-//                 ThemeIcon.backArrow,
-//                 size: 18,
-//               ),
-//             ).ripple(() {
-//               Get.back();
-//             }),
-//             ThemeIconWidget(
-//               icon,
-//               size: 20,
-//               color: iconColor ?? AppColorConstants.iconColor,
-//             ).ripple(() {
-//               iconBtnClicked();
-//             }),
-//           ],
-//         ).setPadding(
-//             left: DesignConstants.horizontalPadding,
-//             right: DesignConstants.horizontalPadding,
-//             top: 50),
-//         Positioned(
-//           left: 0,
-//           right: 0,
-//           top: 0,
-//           bottom: 0,
-//           child: Center(
-//             child: BodyLargeText(title.tr, weight: TextWeight.medium),
-//           ),
-//         ),
-//       ],
-//     ),
-//   );
-// }
-
 Widget backNavigationBarWithIconBadge(
     {required ThemeIcon icon,
     required String title,
@@ -264,16 +215,17 @@ Widget titleNavigationBarWithIcon(
       bottom: 16);
 }
 
-Widget titleNavigationBar({
-  required String title,
-}) {
-  return BodyLargeText(title.tr, weight: TextWeight.medium).setPadding(
-      left: DesignConstants.horizontalPadding,
-      right: DesignConstants.horizontalPadding,
-      top: 8,
-      bottom: 16);
+Widget titleNavigationBar({required String title}) {
+  return Container(
+    height: 100,
+    width: Get.width,
+    color: AppColorConstants.themeColor.withOpacity(0.1),
+    child: Center(
+      child: BodyLargeText(title.tr, weight: TextWeight.medium)
+          .setPadding(top: 40),
+    ),
+  );
 }
-
 
 Widget customNavigationBar(
     {required String title, VoidCallback? action, Widget? trailing}) {

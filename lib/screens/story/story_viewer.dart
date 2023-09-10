@@ -229,16 +229,4 @@ class _StoryViewerState extends State<StoryViewer> {
         : Container());
   }
 
-// Widget replyView() {
-//   return Column(
-//     children: [
-//       Text(
-//         widget.story.title,
-//         style: TextStyle(fontSize: FontSizes.b2).bold,
-//         textAlign: TextAlign.center,
-//       ).hp(DesignConstants.horizontalPadding),
-//       divider(height: 0.5, color: AppTheme.dividerColor).tP16,
-//     ],
-//   );
-// }
 }

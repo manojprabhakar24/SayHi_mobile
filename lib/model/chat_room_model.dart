@@ -94,7 +94,7 @@ class ChatRoomModel {
       updatedAt: jsonData['updated_at'],
       createdBy: jsonData['created_by'],
       isOnline: jsonData['is_chat_user_online'] == 1,
-      isGroupChat: jsonData['type'] == 2,
+      isGroupChat: jsonData['type'] != 1,
       type: jsonData['type'],
       image: jsonData['imageUrl'],
       description: jsonData['description'],
@@ -147,6 +147,7 @@ class ChatRoomModel {
   }
 
   bool get amIGroupAdmin {
+    print(roomMembers.map((e) => '${e.userDetail.userName} = ${e.isAdmin}'));
     return roomMembers
         .where((element) => element.isAdmin == 1 && element.userDetail.isMe)
         .toList()

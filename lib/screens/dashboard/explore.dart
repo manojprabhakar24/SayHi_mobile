@@ -108,12 +108,14 @@ class _ExploreState extends State<Explore> {
                         child: Obx(() => exploreController.searchText.isNotEmpty
                             ? Column(
                                 children: [
-                                  SMTabBar(tabs: segments),
+                                  SMTabBar(tabs: segments,canScroll: true),
                                   // segmentView(),
                                   // divider(height: 0.2),
                                   Expanded(
                                     child: TabBarView(children: [
-                                      PostList(),
+                                      PostList(
+                                        postSource: PostSource.saved,
+                                      ),
                                       UsersList(),
                                       HashTagsList(),
                                       EventsList(),

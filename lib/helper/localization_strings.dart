@@ -439,8 +439,10 @@ String followingString = 'Following';
 String followersString = 'Followers';
 
 String postsString = 'Posts';
+String savedPostsString = 'Saved Posts';
 String postString = 'Post';
 String sentAPostString = 'Sent a Post';
+String videosString = 'Videos';
 
 String mentionsString = 'Mentions';
 String packagesString = 'Packages';
@@ -520,6 +522,8 @@ String postDeletedString = "Post deleted";
 String deletedString = "Deleted";
 
 String noPostFoundString = "No post updates found";
+String noVideoFoundString = "No video updates found";
+
 String followFriendsToSeeUpdatesString =
     "Follow your friends to see their post updates";
 String noUserFoundString = "No user found";
@@ -607,6 +611,7 @@ String chooseWhoCanEditGroupString = "Choose who can edit group";
 
 String followSomeUserToChatString = 'Follow some user to start chat';
 String noChatFoundString = "No chat found";
+String noChatGroupFoundString = "No chat group found";
 
 String makeSomeCallsString = 'Make some audio/video call with friends';
 String noCallFoundString = "No call found";
@@ -644,6 +649,8 @@ String editProfileCoverString = 'Update cover';
 String sentADrawingString = 'Sent a Drawing';
 String sentAProfileString = 'Sent a Profile';
 String chatString = 'Chat';
+
+String openGroupsString = 'Open Groups';
 
 String onlineString = 'Online';
 String offlineString = 'Offline';
@@ -985,6 +992,9 @@ String paidString = 'Paid';
 String suggestedForYouString = 'Suggested for you';
 
 String publicGroupString = "Public group";
+String groupGroupInfoString =
+    "Anyone can view this group and can join this group, You can remove any member in future";
+
 String joinRequestsString = "Join requests";
 String joinInvitationsString = "Join invitations";
 String invitesString = "Invites";

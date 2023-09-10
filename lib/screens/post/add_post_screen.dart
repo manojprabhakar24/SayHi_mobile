@@ -1,18 +1,18 @@
+import 'dart:io';
+
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:foap/helper/imports/common_import.dart';
 import 'package:foap/screens/post/post_option_popup.dart';
-import 'package:pull_to_refresh/pull_to_refresh.dart';
-import '../../components/hashtag_tile.dart';
-import '../../components/user_card.dart';
+import 'package:video_editor_sdk/video_editor_sdk.dart';
 import '../../components/video_widget.dart';
-import '../../controllers/misc/users_controller.dart';
 import '../../controllers/post/add_post_controller.dart';
 import '../../controllers/post/select_post_media_controller.dart';
 import 'tag_hashtag_view.dart';
 import 'tag_users_view.dart';
 import '../chat/media.dart';
 import 'audio_file_player.dart';
+import 'package:photo_editor_sdk/photo_editor_sdk.dart';
 
 class AddPostScreen extends StatefulWidget {
   final PostType postType;
@@ -198,74 +198,98 @@ class AddPostState extends State<AddPostScreen> {
   }
 
   Widget mediaList() {
-    return Stack(
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        AspectRatio(
-            aspectRatio: 1,
-            child: Obx(() {
-              return CarouselSlider(
-                items: [
-                  for (Media media
-                      in _selectPostMediaController.selectedMediaList)
-                    media.mediaType == GalleryMediaType.photo
-                        ? Image.file(
-                            media.file!,
-                            fit: BoxFit.cover,
-                            width: double.infinity,
-                          )
-                        : media.mediaType == GalleryMediaType.gif
-                            ? CachedNetworkImage(
-                                fit: BoxFit.cover, imageUrl: media.fileUrl!)
-                            : media.mediaType == GalleryMediaType.video
-                                ? VideoPostTile(
-                                    url: media.file!.path,
-                                    isLocalFile: true,
-                                    play: true,
-                                  )
-                                : audioPostTile(media)
-                ],
-                options: CarouselOptions(
-                  aspectRatio: 1,
-                  enlargeCenterPage: false,
-                  enableInfiniteScroll: false,
-                  height: double.infinity,
-                  viewportFraction: 1,
-                  onPageChanged: (index, reason) {
-                    _selectPostMediaController.updateGallerySlider(index);
-                  },
-                ),
-              );
-            })),
-        Obx(() {
-          return _selectPostMediaController.selectedMediaList.length > 1
-              ? Positioned(
-                  bottom: 10,
-                  left: 0,
-                  right: 0,
-                  child: Align(
-                      alignment: Alignment.center,
-                      child: Container(
-                              height: 25,
-                              color: AppColorConstants.cardColor,
-                              child: DotsIndicator(
-                                dotsCount: _selectPostMediaController
-                                    .selectedMediaList.length,
-                                position: _selectPostMediaController
-                                    .currentIndex.value,
-                                decorator: DotsDecorator(
-                                    activeColor: AppColorConstants.themeColor),
-                              ).hP8)
-                          .round(20)),
-                )
-              : Container();
-        })
+        SizedBox(
+          height: Get.height * 0.4,
+          child: Stack(
+            children: [
+              Obx(() {
+                print('reload');
+
+                return CarouselSlider(
+                  items: [
+                    for (Media media
+                        in _selectPostMediaController.selectedMediaList)
+                      media.mediaType == GalleryMediaType.photo
+                          ? Image.file(
+                              media.file!,
+                              fit: BoxFit.cover,
+                              width: double.infinity,
+                            ).ripple(() {
+                              openImageEditor(media);
+                            })
+                          : media.mediaType == GalleryMediaType.gif
+                              ? CachedNetworkImage(
+                                  fit: BoxFit.cover, imageUrl: media.filePath!)
+                              : media.mediaType == GalleryMediaType.video
+                                  ? VideoPostTile(
+                                      url: media.file!.path,
+                                      isLocalFile: true,
+                                      play: true,
+                                    ).ripple(() {
+                                      openVideoEditor(media);
+                                    })
+                                  : audioPostTile(media)
+                  ],
+                  options: CarouselOptions(
+                    aspectRatio: 1,
+                    enlargeCenterPage: false,
+                    enableInfiniteScroll: false,
+                    height: double.infinity,
+                    viewportFraction: 1,
+                    onPageChanged: (index, reason) {
+                      _selectPostMediaController.updateGallerySlider(index);
+                    },
+                  ),
+                );
+              }),
+              Obx(() {
+                return _selectPostMediaController.selectedMediaList.length > 1
+                    ? Positioned(
+                        bottom: 10,
+                        left: 0,
+                        right: 0,
+                        child: Align(
+                            alignment: Alignment.center,
+                            child: Container(
+                                    height: 25,
+                                    color: AppColorConstants.cardColor,
+                                    child: DotsIndicator(
+                                      dotsCount: _selectPostMediaController
+                                          .selectedMediaList.length,
+                                      position: _selectPostMediaController
+                                          .currentIndex.value,
+                                      decorator: DotsDecorator(
+                                          activeColor:
+                                              AppColorConstants.themeColor),
+                                    ).hP8)
+                                .round(20)),
+                      )
+                    : Container();
+              })
+            ],
+          ).p16,
+        ),
+        const SizedBox(
+          height: 20,
+        ),
+        if (_selectPostMediaController.selectedMediaList.isNotEmpty)
+          Heading2Text(
+            'Tap to edit',
+            weight: TextWeight.bold,
+          ),
+        const SizedBox(
+          height: 20,
+        ),
       ],
-    ).p16;
+    );
   }
 
   Widget audioPostTile(Media media) {
     return AudioFilePlayer(
-      path: media.fileUrl!,
+      path: media.filePath!,
     );
   }
 
@@ -313,5 +337,37 @@ class AddPostState extends State<AddPostScreen> {
         );
       }),
     );
+  }
+
+  openImageEditor(Media media) async {
+    final result = await PESDK.openEditor(image: media.file!.path);
+
+    if (result != null) {
+      // The user exported a new photo successfully and the newly generated photo is located at `result.image`.
+      Media editedMedia = media.copy;
+      editedMedia.file = File(result.image.replaceAll('file://', ''));
+      _selectPostMediaController.replaceMediaWithEditedMedia(
+          originalMedia: media, editedMedia: editedMedia);
+    } else {
+      // The user exported a new photo successfully and the newly generated photo is located at `result.image`.
+      return;
+    }
+  }
+
+  openVideoEditor(Media media) async {
+    final video = Video(media.file!.path);
+    final result = await VESDK.openEditor(video);
+
+    if (result != null) {
+      // The user exported a new photo successfully and the newly generated photo is located at `result.image`.
+      Media editedMedia = media.copy;
+      print('result.image ${result.video}');
+      editedMedia.file = File(result.video.replaceAll('file://', ''));
+      _selectPostMediaController.replaceMediaWithEditedMedia(
+          originalMedia: media, editedMedia: editedMedia);
+    } else {
+      // The user exported a new photo successfully and the newly generated photo is located at `result.image`.
+      return;
+    }
   }
 }

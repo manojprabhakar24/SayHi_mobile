@@ -23,10 +23,10 @@ class NetworkConstantsUtil {
   static String register = 'users/register';
   static String checkUserName = 'users/check-username';
   static String otherUser =
-      'users/{{id}}?expand=isFollowing,isFollower,totalFollowing,totalFollower,totalPost,totalWinnerPost,userLiveDetail,giftSummary,userSetting';
+      'users/{{id}}?expand=isFollowing,isFollower,totalFollowing,totalFollower,totalPost,totalWinnerPost,totalReel,totalClub,totalMention,userLiveDetail,giftSummary,userSetting';
 
   static String getMyProfile =
-      'users/profile?expand=totalFollowing,totalFollower,totalActivePost,userLiveDetail,giftSummary,userSetting,interest,language';
+      'users/profile?expand=totalFollowing,totalFollower,totalActivePost,totalReel,totalClub,totalMention,userLiveDetail,giftSummary,userSetting,interest,language';
   static String updateUserProfile = 'users/profile-update';
   static String updateProfileImage = 'users/update-profile-image';
   static String updateProfileCoverImage = 'users/update-profile-cover-image';
@@ -106,6 +106,7 @@ class NetworkConstantsUtil {
   static String searchPost =
       'posts/search-post?expand=user,user.userLiveDetail,clubDetail.createdByUser,clubDetail.totalJoinedUser,originPost.user,isFavorite,originPost,pollDetails,pollDetails.pollOptions';
   static String searchVideoPost = 'posts/post-video-list';
+  static String postView = 'posts/view-counter';
 
   static String postDetail =
       'posts/{id}?expand=user,user.userLiveDetail,clubDetail,giftSummary';
@@ -143,6 +144,9 @@ class NetworkConstantsUtil {
       'chats/room-detail?room_id={room_id}&expand=createdByUser,chatRoomUser.user,chatRoomUser.user.userLiveDetail';
   static String getChatRooms =
       'chats/room?expand=createdByUser,chatRoomUser,chatRoomUser.user,lastMessage,chatRoomUser.user.userLiveDetail';
+  static String getPublicChatRooms =
+      'chats/open-room?expand=createdByUser,chatRoomUser,chatRoomUser.user,lastMessage,chatRoomUser.user.userLiveDetail';
+
   static String deleteChatRoom = 'chats/delete-room?room_id=';
   static String deleteChatRoomMessages = 'chats/delete-room-chat';
 
@@ -205,8 +209,7 @@ class NetworkConstantsUtil {
 
   //***********Polls***********//
 
-  static String getPolls =
-      'poll-questions?expand=pollQuestionOption&poll_id=&title=';
+  static String getPolls = 'polls?expand=pollOptions&category_id=&title=';
   static String postPoll = 'poll-question-answers/add-answer';
 
   //***********Clubs***********//

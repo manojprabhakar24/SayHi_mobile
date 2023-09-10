@@ -39,3 +39,23 @@ int mediaTypeIdFromMediaType(GalleryMediaType type) {
   }
   return 1;
 }
+
+int itemViewSourceToId(ItemViewSource source) {
+  switch (source) {
+    case ItemViewSource.normal:
+      return 1;
+    case ItemViewSource.promotion:
+      return 2;
+  }
+}
+
+int userViewSourceTypeToId(UserViewSourceType source) {
+  switch (source) {
+    case UserViewSourceType.post:
+      return 1;
+    case UserViewSourceType.reel:
+      return 2;
+    case UserViewSourceType.story:
+      return 2;
+  }
+}

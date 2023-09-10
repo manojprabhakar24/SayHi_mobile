@@ -1361,35 +1361,27 @@ class ChatDetailController extends GetxController {
     update();
   }
 
-  messageUpdateReceived(Map<String, dynamic> updatedData) async {
-    String? localMessageId = updatedData['localMessageId'];
+  messageSendConfirmationReceived(Map<String, dynamic> updatedData) async {
+    String localMessageId = updatedData['localMessageId'];
     int roomId = updatedData['room'];
-    int status = updatedData['current_status'];
+
     int messageId = updatedData['id'];
-    int userId = updatedData['userId'];
-    if (localMessageId != null) {
-      if (chatRoom.value?.id == roomId) {
-        var message =
-            messages.where((e) => e.localMessageId == localMessageId).first;
-        message.id = messageId;
-        message.status = status;
-        // message.createdAt = createdAt;
-        // message.media = null;
-        if (message.messageContentType == MessageContentType.reply) {
-          // message.reply.media = null;
-        }
-        messages.refresh();
 
-        update();
-      }
+    getIt<RealmDBManager>()
+        .setMessageId(localMessageId: localMessageId, id: messageId);
+    // add chat message user to message for first time, as here we received the message id
+    addUsersToMessage(
+        roomId: roomId, messageId: messageId, localMessageId: localMessageId);
+  }
 
-      await getIt<RealmDBManager>().updateMessageStatus(
-          roomId: roomId, messageId: messageId, status: status, userId: userId);
-    }
-    if (status == 1) {
-      // add chat message user to message for first time, as here we received the message id
-      List<ChatRoomMember> usersInRoom =
-          await getIt<RealmDBManager>().getAllMembersInRoom(roomId);
+  Future addUsersToMessage(
+      {required int roomId,
+      required int messageId,
+      String? localMessageId}) async {
+    List<ChatRoomMember> usersInRoom =
+        getIt<RealmDBManager>().getAllMembersInRoom(roomId);
+
+    if (usersInRoom.isNotEmpty) {
       List<ChatMessageUser> chatMessageUsers = usersInRoom.map((e) {
         ChatMessageUser user = ChatMessageUser();
         user.id = 1;
@@ -1398,8 +1390,60 @@ class ChatDetailController extends GetxController {
         user.status = 1;
         return user;
       }).toList();
-      getIt<RealmDBManager>().insertChatMessageUsers(users: chatMessageUsers);
+
+      if (chatRoom.value?.id == roomId) {
+        var message = messages
+            .where(
+                (e) => e.localMessageId == localMessageId || e.id == messageId)
+            .first;
+        message.chatMessageUser = chatMessageUsers;
+        message.id = messageId;
+        messages.refresh();
+
+        update();
+      }
+      await getIt<RealmDBManager>().prepareSavingUsersInMessage(
+          users: chatMessageUsers, alreadyWritingInDB: false);
+    } else {
+      // get room detail for users in room, this case is to handle when first message is send room and users dont know about who are in the group
+
+      await ChatApi.getChatRoomDetail(roomId, resultCallback: (room) async {
+        chatRoom.value = room;
+        chatRoom.refresh();
+
+        // update room in local storage
+        await getIt<RealmDBManager>().saveRooms([chatRoom.value!]);
+      });
     }
+  }
+
+  messageUpdateReceived(Map<String, dynamic> updatedData) async {
+    int roomId = updatedData['room'];
+    int status = updatedData['status'];
+    int messageId = updatedData['id'];
+    int userId = updatedData['userId'];
+
+    if (chatRoom.value?.id == roomId) {
+      var matchedMessages = messages.where((e) => e.id == messageId);
+      if (matchedMessages.isNotEmpty) {
+        matchedMessages.first.id = messageId;
+        // find user in message who sent this notification
+        List<ChatMessageUser> usersFromNotification = matchedMessages
+            .first.chatMessageUser
+            .where((element) => element.userId == userId)
+            .toList();
+        if (usersFromNotification.isNotEmpty) {
+          usersFromNotification.first.status = status;
+          print('update status $status');
+        }
+
+        messages.refresh();
+        update();
+      }
+    }
+
+    await getIt<RealmDBManager>().updateMessageStatus(
+        roomId: roomId, messageId: messageId, status: status, userId: userId);
   }
 
   userTypingStatusChanged(

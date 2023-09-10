@@ -109,6 +109,8 @@ class SocketManager {
     _socketInstance?.on(SocketConstants.sendMessage, onReceiveMessage);
     _socketInstance?.on(
         SocketConstants.updateMessageStatus, updateMessageStatus);
+    _socketInstance?.on(SocketConstants.updateMessageCurrentStatusUser,
+        updateMessageCurrentStatusUser);
     _socketInstance?.on(SocketConstants.deleteMessage, onDeleteMessage);
     _socketInstance?.on(SocketConstants.addUserInChatRoom, addedInRoom);
 
@@ -266,6 +268,11 @@ class SocketManager {
   }
 
   void updateMessageStatus(dynamic response) {
+    _chatDetailController.messageSendConfirmationReceived(response);
+  }
+
+  void updateMessageCurrentStatusUser(dynamic response) {
+    print('updateMessageCurrentStatusUser $response');
     _chatDetailController.messageUpdateReceived(response);
   }
 

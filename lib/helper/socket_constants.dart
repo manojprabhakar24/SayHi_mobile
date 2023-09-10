@@ -32,6 +32,8 @@ class SocketConstants {
   static const String typing = "typing";
   static const String readMessage = "readMessage";
   static const String updateMessageStatus = "updateMessageCurrentStatus";
+  static const String updateMessageCurrentStatusUser =
+      "updateMessageCurrentStatusUser";
   static const String onlineStatusEvent = "userOnline";
   static const String offlineStatusEvent = "userOffline";
   static const String deleteMessage = "deleteMessage";
