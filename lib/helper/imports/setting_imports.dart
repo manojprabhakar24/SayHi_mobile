@@ -1,5 +1,5 @@
 export 'package:foap/screens/settings_menu/settings.dart';
-export 'package:foap/screens/settings_menu/payment_withdrawal_screen.dart';
+export 'package:foap/screens/settings_menu/transactions.dart';
 export 'package:foap/screens/settings_menu/notification_settings.dart';
 export 'package:foap/screens/settings_menu/obsolete/support_requests.dart';
 export 'package:foap/screens/settings_menu/faq_list.dart';

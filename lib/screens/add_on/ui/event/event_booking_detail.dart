@@ -1,29 +1,10 @@
 import 'dart:math';
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:foap/components/avatar_view.dart';
-import 'package:foap/components/custom_texts.dart';
 import 'package:foap/components/static_map_widget.dart';
-import 'package:foap/helper/common_components.dart';
-import 'package:foap/helper/enum.dart';
-import 'package:foap/helper/extension.dart';
 import 'package:foap/helper/imports/event_imports.dart';
-import 'package:foap/helper/localization_strings.dart';
-import 'package:foap/helper/user_profile_manager.dart';
-import 'package:foap/manager/service_locator.dart';
-import 'package:foap/screens/add_on/controller/event/booking_detail_controller.dart';
-import 'package:foap/screens/add_on/ui/event/select_user_to_gift.dart';
 import 'package:foap/screens/profile/other_user_profile.dart';
-import 'package:foap/theme/theme_icon.dart';
-import 'package:foap/universal_components/app_buttons.dart';
-import 'package:foap/util/app_config_constants.dart';
-import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
 import 'package:map_launcher/map_launcher.dart';
-import 'package:flutter/material.dart';
-
-import 'e_ticket.dart';
-import 'event_gallery.dart';
+import 'package:foap/helper/imports/common_import.dart';
 
 class EventBookingDetail extends StatefulWidget {
   final EventBookingModel booking;
@@ -57,7 +38,7 @@ class EventBookingDetailState extends State<EventBookingDetail> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return AppScaffold(
       backgroundColor: AppColorConstants.backgroundColor,
       body: GetBuilder<EventBookingDetailController>(
           init: _eventBookingDetailController,
@@ -609,7 +590,7 @@ class EventBookingDetailState extends State<EventBookingDetail> {
     return Positioned(
       child: Container(
         height: 150.0,
-        width: MediaQuery.of(context).size.width,
+        width: Get.width,
         decoration: BoxDecoration(
             color: Colors.white,
             gradient: LinearGradient(
@@ -676,11 +657,11 @@ class EventBookingDetailState extends State<EventBookingDetail> {
                     title: Heading5Text(
                       '${openInString.tr} ${map.mapName}',
                     ),
-                    leading: SvgPicture.asset(
-                      map.icon,
-                      height: 30.0,
-                      width: 30.0,
-                    ),
+                    // leading: SvgPicture.asset(
+                    //   map.icon,
+                    //   height: 30.0,
+                    //   width: 30.0,
+                    // ),
                   ),
               ],
             ),

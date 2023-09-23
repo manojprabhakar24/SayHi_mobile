@@ -16,7 +16,7 @@
 //   Widget build(BuildContext context) {
 //     return DefaultTabController(
 //         length: 2,
-//         child: Scaffold(
+//         child: AppScaffold(
 //             body: Stack(
 //           children: [
 //             const TabBarView(children: [

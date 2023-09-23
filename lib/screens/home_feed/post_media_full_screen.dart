@@ -20,7 +20,7 @@ class PostMediaFullScreen extends StatefulWidget {
 class _PostMediaFullScreenState extends State<PostMediaFullScreen> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return AppScaffold(
       backgroundColor: AppColorConstants.backgroundColor,
       body: Stack(
         children: [
@@ -69,7 +69,7 @@ class _PostMediaFullScreenState extends State<PostMediaFullScreen> {
     return CachedNetworkImage(
       imageUrl: media.filePath,
       fit: BoxFit.contain,
-      width: MediaQuery.of(context).size.width,
+      width: Get.width,
       placeholder: (context, url) => AppUtil.addProgressIndicator(size: 100),
       errorWidget: (context, url, error) => const Icon(Icons.error),
     ).addPinchAndZoom();
@@ -79,7 +79,7 @@ class _PostMediaFullScreenState extends State<PostMediaFullScreen> {
     return Positioned(
       child: SizedBox(
         height: 150.0,
-        width: MediaQuery.of(context).size.width,
+        width: Get.width,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [

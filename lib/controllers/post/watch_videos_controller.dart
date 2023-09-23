@@ -1,7 +1,7 @@
 import 'package:foap/helper/imports/common_import.dart';
 import 'package:foap/helper/list_extension.dart';
 import 'package:foap/model/data_wrapper.dart';
-import '../../apiHandler/apis/post_api.dart';
+import '../../api_handler/apis/post_api.dart';
 import '../../model/post_model.dart';
 
 class WatchVideosController extends GetxController {
@@ -42,13 +42,8 @@ class WatchVideosController extends GetxController {
           videos.addAll(result);
           videos.sort((a, b) => b.createDate!.compareTo(a.createDate!));
           videos.unique((e) => e.id);
-          postDataWrapper.isLoading.value = false;
 
-          postDataWrapper.totalRecords.value = metadata.totalCount;
-          postDataWrapper.haveMoreData.value =
-              metadata.pageCount >= metadata.currentPage;
-
-          postDataWrapper.page += 1;
+          postDataWrapper.processCompletedWithData(metadata);
 
           callback();
           update();

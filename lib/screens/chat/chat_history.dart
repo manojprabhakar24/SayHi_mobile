@@ -30,7 +30,7 @@ class _ChatHistoryState extends State<ChatHistory> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return AppScaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: AppColorConstants.backgroundColor,
       floatingActionButton: Container(
@@ -153,7 +153,7 @@ class _ChatHistoryState extends State<ChatHistory> {
                                       Heading6Text(
                                         deleteString.tr,
                                         weight: TextWeight.bold,
-                                        color: AppColorConstants.grayscale700,
+                                        color: AppColorConstants.mainTextColor,
                                       )
                                     ],
                                   ),
@@ -178,7 +178,9 @@ class _ChatHistoryState extends State<ChatHistory> {
                     );
                   },
                   separatorBuilder: (BuildContext context, int index) {
-                    return divider(height: 0.2).vP8;
+                    return const SizedBox(
+                      height: 16,
+                    );
                   })
               : emptyData(
                   title: noChatFoundString,

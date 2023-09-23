@@ -69,7 +69,7 @@ class _MentionsState extends State<Mentions> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return AppScaffold(
         backgroundColor: AppColorConstants.backgroundColor,
         body: Column(
           crossAxisAlignment: CrossAxisAlignment.center,

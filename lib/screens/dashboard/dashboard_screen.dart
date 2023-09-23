@@ -1,11 +1,11 @@
 import 'package:foap/helper/imports/common_import.dart';
 import 'package:foap/screens/post/watch_videos.dart';
 import 'package:image_picker/image_picker.dart';
-
+import 'package:awesome_bottom_bar/awesome_bottom_bar.dart';
+import 'package:awesome_bottom_bar/widgets/inspired/inspired.dart';
 import '../../components/force_update_view.dart';
 import '../add_on/ui/reel/reels.dart';
 import '../home_feed/home_feed_screen.dart';
-import '../post/add_post_screen.dart';
 import '../profile/my_profile.dart';
 import '../settings_menu/settings_controller.dart';
 import 'explore.dart';
@@ -35,19 +35,20 @@ class DashboardState extends State<DashboardScreen> {
   final DashboardController _dashboardController = Get.find();
   final SettingsController _settingsController = Get.find();
 
-  List<Widget> items = [];
+  List<Widget> widgets = [];
   final picker = ImagePicker();
   bool hasPermission = false;
 
   @override
   void initState() {
-    items = [
+    widgets = [
       const HomeFeedScreen(),
       const Explore(),
-      const WatchVideos(),
       const Reels(
         needBackBtn: false,
       ),
+      const WatchVideos(),
+
       const MyProfile(
         showBack: false,
       ),
@@ -55,11 +56,25 @@ class DashboardState extends State<DashboardScreen> {
     ];
 
     super.initState();
-
-    // WidgetsBinding.instance.addPostFrameCallback((_) {
-    //   _settingsController.getSettings();
-    // });
   }
+
+  List<TabItem> items = const [
+    TabItem(
+      icon: Icons.home_outlined,
+    ),
+    TabItem(
+      icon: Icons.search_sharp,
+    ),
+    TabItem(
+      icon: Icons.play_arrow_outlined,
+    ),
+    TabItem(
+      icon: Icons.videocam_outlined,
+    ),
+    TabItem(
+      icon: Icons.account_circle_outlined,
+    ),
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -73,101 +88,31 @@ class DashboardState extends State<DashboardScreen> {
             ? ForceUpdateView()
             : _settingsController.appearanceChanged?.value == null
                 ? Container()
-                : Scaffold(
+                : AppScaffold(
                     backgroundColor: AppColorConstants.backgroundColor,
-                    body: items[_dashboardController.currentIndex.value],
+                    body: widgets[_dashboardController.currentIndex.value],
                     floatingActionButtonLocation:
                         FloatingActionButtonLocation.centerDocked,
                     bottomNavigationBar: SizedBox(
                       height: MediaQuery.of(context).viewPadding.bottom > 0
                           ? 100
-                          : 80.0,
-                      width: MediaQuery.of(context).size.width,
-                      child: BottomNavigationBar(
-                        backgroundColor: AppColorConstants.backgroundColor,
-                        type: BottomNavigationBarType.fixed,
-                        currentIndex: _dashboardController.currentIndex.value,
-                        selectedFontSize: 12,
-                        unselectedFontSize: 12,
-                        unselectedItemColor: Colors.grey,
-                        selectedItemColor: AppColorConstants.themeColor,
-                        onTap: (index) => {onTabTapped(index)},
-                        items: [
-                          BottomNavigationBarItem(
-                              icon: Obx(() => ThemeIconWidget(
-                                    ThemeIcon.home,
-                                    size: 28,
-                                    color: _dashboardController
-                                                .currentIndex.value ==
-                                            0
-                                        ? AppColorConstants.themeColor
-                                        : AppColorConstants.iconColor,
-                                  ).bP8),
-                              label: homeString.tr),
-                          BottomNavigationBarItem(
-                            icon: Obx(() => Stack(
-                                  children: [
-                                    Obx(() => ThemeIconWidget(
-                                          ThemeIcon.search,
-                                          size: 28,
-                                          color: _dashboardController
-                                                      .currentIndex.value ==
-                                                  1
-                                              ? AppColorConstants.themeColor
-                                              : AppColorConstants.iconColor,
-                                        ).bP8),
-                                    if (_dashboardController
-                                            .unreadMsgCount.value >
-                                        0)
-                                      Positioned(
-                                          right: 0,
-                                          top: 0,
-                                          child: Container(
-                                            height: 12,
-                                            width: 12,
-                                            color: AppColorConstants.themeColor,
-                                          ).circular)
-                                  ],
-                                )),
-                            label: exploreString.tr,
-                          ),
-                          BottomNavigationBarItem(
-                            icon: Obx(() => ThemeIconWidget(
-                                  ThemeIcon.videoPost,
-                                  size: 28,
-                                  color:
-                                      _dashboardController.currentIndex.value ==
-                                              2
-                                          ? AppColorConstants.themeColor
-                                          : AppColorConstants.iconColor,
-                                ).bP8),
-                            label: videosString.tr,
-                          ),
-                          BottomNavigationBarItem(
-                            icon: Obx(() => ThemeIconWidget(
-                                  ThemeIcon.videoCamera,
-                                  size: 28,
-                                  color:
-                                      _dashboardController.currentIndex.value ==
-                                              3
-                                          ? AppColorConstants.themeColor
-                                          : AppColorConstants.iconColor,
-                                ).bP8),
-                            label: reelString.tr,
-                          ),
-                          BottomNavigationBarItem(
-                            icon: Obx(() => ThemeIconWidget(
-                                  ThemeIcon.account,
-                                  size: 28,
-                                  color:
-                                      _dashboardController.currentIndex.value ==
-                                              4
-                                          ? AppColorConstants.themeColor
-                                          : AppColorConstants.iconColor,
-                                ).bP8),
-                            label: accountString.tr,
-                          ),
-                        ],
+                          : 100.0,
+                      width: Get.width,
+                      child: BottomBarCreative(
+                        items: items,
+                        backgroundColor: AppColorConstants.cardColor,
+                        color: AppColorConstants.iconColor,
+                        colorSelected: AppColorConstants.themeColor,
+                        indexSelected: _dashboardController.currentIndex.value,
+                        // highlightStyle: const HighlightStyle(
+                        //     sizeLarge: true,
+                        //     background: Colors.red,
+                        //     elevation: 3),
+                        // isFloating: true,
+                        onTap: (index) {
+                          _dashboardController.indexChanged(index);
+                        },
+                        // backgroundSelected: AppColorConstants.themeColor,
                       ),
                     )));
   }
@@ -184,8 +129,8 @@ class DashboardState extends State<DashboardScreen> {
     //             )),
     //   );
     // } else {
-      Future.delayed(
-          Duration.zero, () => _dashboardController.indexChanged(index));
+    Future.delayed(
+        Duration.zero, () => _dashboardController.indexChanged(index));
     // }
   }
 }

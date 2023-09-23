@@ -33,7 +33,7 @@ class _ExploreOffersState extends State<ExploreOffers> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return AppScaffold(
         backgroundColor: AppColorConstants.backgroundColor,
         body: GestureDetector(
             onTap: () {

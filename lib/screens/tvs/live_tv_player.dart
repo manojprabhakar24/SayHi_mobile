@@ -59,7 +59,7 @@ class _LiveTvPlayerState extends State<LiveTvPlayer> {
         AutoOrientation.landscapeAutoMode();
       }
       return KeyboardVisibilityBuilder(builder: (context, isKeyboardVisible) {
-        return Scaffold(
+        return AppScaffold(
           backgroundColor: AppColorConstants.backgroundColor,
           body: Column(
             children: [
@@ -188,11 +188,11 @@ class _LiveTvPlayerState extends State<LiveTvPlayer> {
                                   BodyLargeText(
                                     messages[index].userName,
                                     weight: TextWeight.bold,
-                                    color: AppColorConstants.grayscale600,
+                                    color: AppColorConstants.subHeadingTextColor,
                                   ),
                                   BodyLargeText(
                                     messages[index].messageContent,
-                                    color: AppColorConstants.grayscale600,
+                                    color: AppColorConstants.subHeadingTextColor,
                                   ),
                                 ],
                               ),
@@ -232,7 +232,7 @@ class _LiveTvPlayerState extends State<LiveTvPlayer> {
                     textAlign: TextAlign.start,
                     style: TextStyle(
                         fontSize: FontSizes.b2,
-                        color: AppColorConstants.grayscale900),
+                        color: AppColorConstants.mainTextColor),
                     maxLines: 50,
                     decoration: InputDecoration(
                         floatingLabelBehavior: FloatingLabelBehavior.never,

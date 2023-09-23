@@ -18,7 +18,7 @@ class _EventGalleryState extends State<EventGallery> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return AppScaffold(
       backgroundColor: AppColorConstants.backgroundColor,
       body: Column(
         children: [

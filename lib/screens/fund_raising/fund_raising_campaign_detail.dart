@@ -23,80 +23,10 @@ class FundRaisingCampaignDetail extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return AppScaffold(
       backgroundColor: AppColorConstants.backgroundColor,
-      body: Stack(
+      body: Column(
         children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SizedBox(
-                height: Get.height * 0.4,
-                child: Stack(
-                  children: [
-                    CarouselSlider(
-                      items: mediaList(),
-                      options: CarouselOptions(
-                        aspectRatio: 1,
-                        enlargeCenterPage: false,
-                        enableInfiniteScroll: false,
-                        height: double.infinity,
-                        viewportFraction: 1,
-                        onPageChanged: (index, reason) {
-                          fundRaisingController.updateGallerySlider(index);
-                        },
-                      ),
-                    ),
-                    if (mediaList().length > 1)
-                      Positioned(
-                          bottom: 10,
-                          left: 0,
-                          right: 0,
-                          child: Align(
-                            alignment: Alignment.center,
-                            child: Obx(
-                              () {
-                                return DotsIndicator(
-                                  dotsCount: mediaList().length,
-                                  position:
-                                      fundRaisingController.currentIndex.value,
-                                  decorator: DotsDecorator(
-                                      activeColor:
-                                          Theme.of(Get.context!).primaryColor),
-                                );
-                              },
-                            ),
-                          )),
-                  ],
-                ),
-              ),
-              Expanded(
-                child: SizedBox(
-                  height: Get.height - (Get.height * 0.4),
-                  child: DefaultTabController(
-                      length: tabs.length,
-                      initialIndex: 0,
-                      child: Column(
-                        children: [
-                          SMTabBar(tabs: tabs,canScroll: false),
-                          const SizedBox(
-                            height: 20,
-                          ),
-                          Expanded(
-                            child: TabBarView(children: [
-                              AboutCampaign(
-                                campaign: campaign,
-                              ).hp(DesignConstants.horizontalPadding),
-                              const CampaignCommentsScreen(),
-                              DonorsList()
-                            ]),
-                          ),
-                        ],
-                      )),
-                ),
-              ),
-            ],
-          ),
           backNavigationBarWithTrailingWidget(
               title: '',
               widget: Obx(() => Container(
@@ -115,6 +45,76 @@ class FundRaisingCampaignDetail extends StatelessWidget {
                     fundRaisingController.favUnFavCampaign(
                         fundRaisingController.currentCampaign.value!);
                   }))),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(
+                  height: Get.height * 0.3,
+                  child: Stack(
+                    children: [
+                      CarouselSlider(
+                        items: mediaList(),
+                        options: CarouselOptions(
+                          aspectRatio: 1,
+                          enlargeCenterPage: false,
+                          enableInfiniteScroll: false,
+                          height: double.infinity,
+                          viewportFraction: 1,
+                          onPageChanged: (index, reason) {
+                            fundRaisingController.updateGallerySlider(index);
+                          },
+                        ),
+                      ),
+                      if (mediaList().length > 1)
+                        Positioned(
+                            bottom: 10,
+                            left: 0,
+                            right: 0,
+                            child: Align(
+                              alignment: Alignment.center,
+                              child: Obx(
+                                () {
+                                  return DotsIndicator(
+                                    dotsCount: mediaList().length,
+                                    position: fundRaisingController
+                                        .currentIndex.value,
+                                    decorator: DotsDecorator(
+                                        activeColor: Theme.of(Get.context!)
+                                            .primaryColor),
+                                  );
+                                },
+                              ),
+                            )),
+                    ],
+                  ),
+                ),
+                Expanded(
+                  child: SizedBox(
+                    height: Get.height - (Get.height * 0.4),
+                    child: DefaultTabController(
+                        length: tabs.length,
+                        initialIndex: 0,
+                        child: Column(
+                          children: [
+                            SMTabBar(tabs: tabs, canScroll: false),
+
+                            Expanded(
+                              child: TabBarView(children: [
+                                AboutCampaign(
+                                  campaign: campaign,
+                                ).hp(DesignConstants.horizontalPadding),
+                                const CampaignCommentsScreen(),
+                                DonorsList()
+                              ]),
+                            ),
+                          ],
+                        )),
+                  ),
+                ),
+              ],
+            ),
+          ),
         ],
       ),
     );
@@ -130,7 +130,12 @@ class FundRaisingCampaignDetail extends StatelessWidget {
     ));
 
     for (String image in campaign.allImages) {
-      images.add(CachedNetworkImage(imageUrl: image));
+      images.add(CachedNetworkImage(
+        imageUrl: image,
+        fit: BoxFit.cover,
+        width: double.infinity,
+        height: double.infinity,
+      ));
     }
 
     return images;

@@ -9,6 +9,7 @@ import 'package:foap/components/place_picker/entities/localization_item.dart';
 import 'package:foap/components/place_picker/widgets/widgets.dart';
 
 import '../../../util/app_config_constants.dart';
+import '../../app_scaffold.dart';
 import '../../custom_texts.dart';
 import '../uuid.dart';
 import 'package:get/get.dart';
@@ -98,7 +99,7 @@ class PlacePickerState extends State<PlacePicker> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return AppScaffold(
       backgroundColor: AppColorConstants.backgroundColor,
       appBar: AppBar(
         key: appBarKey,

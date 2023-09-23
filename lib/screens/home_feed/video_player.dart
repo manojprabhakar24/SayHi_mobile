@@ -33,7 +33,7 @@
 //
 //   @override
 //   Widget build(BuildContext context) {
-//     return Scaffold(
+//     return AppScaffold(
 //         backgroundColor: Colors.black,
 //         appBar: AppBar(
 //             backgroundColor: Colors.black,

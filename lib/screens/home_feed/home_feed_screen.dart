@@ -1,5 +1,9 @@
+import 'package:foap/helper/file_extension.dart';
 import 'package:foap/helper/imports/chat_imports.dart';
 import 'package:foap/helper/imports/common_import.dart';
+import 'package:foap/helper/imports/story_imports.dart';
+import 'package:foap/screens/home_feed/story_uploader.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:flutter_polls/flutter_polls.dart';
 import '../../components/post_card/post_card.dart';
@@ -8,12 +12,10 @@ import '../../controllers/live/agora_live_controller.dart';
 import '../../controllers/home/home_controller.dart';
 import '../../model/call_model.dart';
 import '../../model/post_model.dart';
+import '../dashboard/dashboard_screen.dart';
 import '../post/add_post_screen.dart';
-import '../post/view_post_insight.dart';
 import '../settings_menu/settings_controller.dart';
-import '../story/choose_media_for_story.dart';
-import '../story/story_updates_bar.dart';
-import '../story/story_viewer.dart';
+
 
 class HomeFeedScreen extends StatefulWidget {
   const HomeFeedScreen({Key? key}) : super(key: key);
@@ -29,7 +31,7 @@ class HomeFeedState extends State<HomeFeedScreen> {
   final RefreshController _refreshController =
       RefreshController(initialRefresh: false);
   final SettingsController _settingsController = Get.find();
-
+  final DashboardController _dashboardController = Get.find();
   final _controller = ScrollController();
 
   String? selectedValue;
@@ -84,7 +86,7 @@ class HomeFeedState extends State<HomeFeedScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return AppScaffold(
         backgroundColor: AppColorConstants.backgroundColor,
         body: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -96,20 +98,19 @@ class HomeFeedState extends State<HomeFeedScreen> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Row(
-                  children: [
-                    Heading3Text(
-                      AppConfigConstants.appName,
-                      weight: TextWeight.regular,
-                      color: AppColorConstants.themeColor,
-                    )
-                  ],
+                Heading3Text(
+                  AppConfigConstants.appName,
+                  weight: TextWeight.semiBold,
+                  color: AppColorConstants.themeColor,
                 ),
                 const Spacer(),
-                const ThemeIconWidget(
-                  ThemeIcon.plus,
-                  size: 25,
-                ).ripple(() {
+                const SizedBox(
+                    height: 35,
+                    width: 35,
+                    child: ThemeIconWidget(
+                      ThemeIcon.plus,
+                      size: 25,
+                    )).ripple(() {
                   Future.delayed(
                     Duration.zero,
                     () => showGeneralDialog(
@@ -123,12 +124,32 @@ class HomeFeedState extends State<HomeFeedScreen> {
                 const SizedBox(
                   width: 20,
                 ),
-                const ThemeIconWidget(
-                  ThemeIcon.chat,
-                  size: 25,
-                ).ripple(() {
-                  Get.to(() => const ChatHistory());
-                }),
+                SizedBox(
+                  height: 35,
+                  width: 35,
+                  child: Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      const ThemeIconWidget(
+                        ThemeIcon.chat,
+                        size: 25,
+                      ).ripple(() {
+                        Get.to(() => const ChatHistory());
+                      }),
+                      Obx(() => _dashboardController.unreadMsgCount.value == 0
+                          ? Container()
+                          : Positioned(
+                              top: 0,
+                              right: 5,
+                              child: Container(
+                                color: AppColorConstants.red,
+                                height: 10,
+                                width: 10,
+                              ).circular,
+                            ))
+                    ],
+                  ),
+                ),
               ],
             ).hp(20),
             const SizedBox(
@@ -207,8 +228,9 @@ class HomeFeedState extends State<HomeFeedScreen> {
   }
 
   Widget storiesView() {
-    return SizedBox(
-      height: 110,
+    return Container(
+      height: storyCircleSize + 30 + 2 * DesignConstants.horizontalPadding,
+      color: AppColorConstants.themeColor.withOpacity(0.05),
       child: GetBuilder<HomeController>(
           init: _homeController,
           builder: (ctx) {
@@ -216,8 +238,7 @@ class HomeFeedState extends State<HomeFeedScreen> {
               stories: _homeController.stories,
               liveUsers: _homeController.liveUsers,
               addStoryCallback: () {
-                // Get.to(() => const TextStoryMaker());
-                Get.to(() => const ChooseMediaForStory());
+                openStoryUploader();
               },
               viewStoryCallback: (story) {
                 Get.to(() => StoryViewer(
@@ -239,9 +260,9 @@ class HomeFeedState extends State<HomeFeedScreen> {
                   live: live,
                 );
               },
-            );
+            ).p(DesignConstants.horizontalPadding);
           }),
-    );
+    ).round(20).hp(DesignConstants.horizontalPadding);
   }
 
   postsView() {
@@ -291,6 +312,9 @@ class HomeFeedState extends State<HomeFeedScreen> {
                   if (_settingsController.setting.value?.enablePolls == true) {
                     return polls(index);
                   } else {
+                    if (index == 1) {
+                      return divider(height: 0.2).vP16;
+                    }
                     return const SizedBox(
                       height: 0,
                     );
@@ -365,12 +389,18 @@ class HomeFeedState extends State<HomeFeedScreen> {
           ).p16,
         ).round(15).p16;
       } else {
+        if (index == 1) {
+          return divider(height: 0.2).vP16;
+        }
         if (index > 1) {
           return divider(height: 10).vP16;
         }
         return Container();
       }
     } else {
+      if (index == 1) {
+        return divider(height: 0.2).vP16;
+      }
       if (index > 1) {
         return divider(height: 10).vP16;
       }

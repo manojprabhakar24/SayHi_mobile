@@ -38,7 +38,10 @@ class _CheckoutState extends State<Checkout> {
 
     _checkoutController.checkIfGooglePaySupported();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      _checkoutController.useWalletSwitchChange(false, widget.amountToPay);
+      _checkoutController.useWalletSwitchChange(
+          status: false,
+          totalAmount: widget.amountToPay,
+          transactionHandler: widget.transactionCallbackHandler);
     });
 
     super.initState();
@@ -52,7 +55,7 @@ class _CheckoutState extends State<Checkout> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return AppScaffold(
       backgroundColor: AppColorConstants.backgroundColor,
       body: Obx(() => _checkoutController.processingPayment.value != null
           ? statusView()
@@ -60,7 +63,7 @@ class _CheckoutState extends State<Checkout> {
               height: Get.height,
               child: Column(
                 children: [
-                  backNavigationBar(title: buyTicketString.tr),
+                  backNavigationBar(title: makePaymentString.tr),
                   Expanded(
                     child: Stack(
                       children: [
@@ -80,6 +83,7 @@ class _CheckoutState extends State<Checkout> {
                                   ],
                                 ).setPadding(
                                     top: 16,
+                                    bottom: 16,
                                     left: DesignConstants.horizontalPadding,
                                     right: DesignConstants.horizontalPadding),
                                 // divider().vP16,
@@ -124,13 +128,12 @@ class _CheckoutState extends State<Checkout> {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // divider().vP25,
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        BodyMediumText(
+                        BodyExtraLargeText(
                           '${walletString.tr} (\$${_userProfileManager.user.value!.balance})',
-                          weight: TextWeight.medium,
+                          weight: TextWeight.bold,
                           color: AppColorConstants.themeColor,
                         ),
                         const SizedBox(
@@ -155,7 +158,10 @@ class _CheckoutState extends State<Checkout> {
                                 value: _checkoutController.useWallet.value,
                                 onChanged: (value) {
                                   _checkoutController.useWalletSwitchChange(
-                                      value, widget.amountToPay);
+                                      status: value,
+                                      totalAmount: widget.amountToPay,
+                                      transactionHandler:
+                                          widget.transactionCallbackHandler);
                                 }))
                           ],
                         )
@@ -163,167 +169,8 @@ class _CheckoutState extends State<Checkout> {
                     ).hp(DesignConstants.horizontalPadding),
                   ],
                 ),
-              const SizedBox(
-                height: 10,
-              ),
-              if (double.parse(_profileController.user.value!.balance) > 0)
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        BodyMediumText(
-                          coinsString.tr,
-                          weight: TextWeight.medium,
-                          color: AppColorConstants.themeColor,
-                        ),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Row(
-                              children: [
-                                BodyLargeText(availableCoinsString.tr,
-                                    weight: TextWeight.medium),
-                                BodyLargeText(
-                                  ' (${_userProfileManager.user.value!.coins})',
-                                  weight: TextWeight.medium,
-                                  color: AppColorConstants.themeColor,
-                                ),
-                              ],
-                            ),
-                            redeemBtn()
-                          ],
-                        )
-                      ],
-                    ).hp(DesignConstants.horizontalPadding),
-                    divider().vP25,
-                  ],
-                ),
             ],
           ));
-  }
-
-  redeemBtn() {
-    return InkWell(
-      onTap: () {
-        if (_userProfileManager.user.value!.coins <
-            _settingsController.setting.value!.minCoinsWithdrawLimit) {
-          AppUtil.showToast(
-              message: minCoinsRedeemLimitString.tr.replaceAll(
-                  '{{coins}}',
-                  _settingsController.setting.value!.minCoinsWithdrawLimit
-                      .toString()),
-              isSuccess: false);
-        } else {
-          askNumberOfCoinToRedeem();
-        }
-      },
-      child: Center(
-        child: Container(
-            height: 35.0,
-            width: 100,
-            color: AppColorConstants.themeColor,
-            child: Center(
-              child: BodyLargeText(redeemString.tr, weight: TextWeight.medium),
-            )).round(5).backgroundCard(),
-      ),
-    );
-  }
-
-  Future<void> askNumberOfCoinToRedeem() async {
-    BuildContext dialogContext;
-
-    return showDialog(
-        context: context,
-        builder: (context) {
-          dialogContext = context;
-
-          return AlertDialog(
-            title: Text(
-              enterNumberOfCoinsString.tr,
-            ),
-            content: Container(
-              color: AppColorConstants.backgroundColor,
-              child: Row(
-                children: [
-                  Expanded(
-                    child: SizedBox(
-                      height: 50,
-                      child: TextField(
-                        keyboardType: TextInputType.number,
-                        decoration: const InputDecoration(
-                          border: InputBorder.none,
-                        ),
-                        style: TextStyle(fontSize: FontSizes.b2),
-                        onChanged: (value) {
-                          if (textController.text.isNotEmpty) {
-                            _settingsController
-                                .redeemCoinValueChange(int.parse(value));
-                          } else {
-                            _settingsController.redeemCoinValueChange(0);
-                          }
-                        },
-                        controller: textController,
-                      ).lP8,
-                    ),
-                  ),
-                  Obx(() => Container(
-                        height: 50,
-                        color: AppColorConstants.themeColor,
-                        child: Center(
-                          child: BodyMediumText(
-                                  '= \$${(_settingsController.redeemCoins * _settingsController.setting.value!.coinsValue).toStringAsFixed(2)}',
-                                  weight: TextWeight.medium)
-                              .hP8,
-                        ),
-                      ).rightRounded(10)),
-                ],
-              ),
-            ).round(10),
-            actions: <Widget>[
-              AppThemeButton(
-                text: redeemString.tr,
-                onPress: () {
-                  if (textController.text.isNotEmpty) {
-                    int coins = int.parse(textController.text);
-                    if (coins >=
-                        _settingsController
-                            .setting.value!.minCoinsWithdrawLimit) {
-                      if (coins >= _userProfileManager.user.value!.coins) {
-                        AppUtil.showToast(
-                            message: enterValidAmountOfCoinsString.tr
-                                .replaceAll(
-                                    '{{coins}}',
-                                    _settingsController
-                                        .setting.value!.minCoinsWithdrawLimit
-                                        .toString()),
-                            isSuccess: false);
-                        return;
-                      }
-                      _profileController.redeemRequest(coins, () {
-                        _checkoutController.update();
-                      });
-                      textController.text = '';
-                      Navigator.pop(dialogContext);
-                    } else {
-                      AppUtil.showToast(
-                          message: minCoinsRedeemLimitString.tr.replaceAll(
-                              '{{coins}}',
-                              _settingsController
-                                  .setting.value!.minCoinsWithdrawLimit
-                                  .toString()),
-                          isSuccess: false);
-                    }
-                  }
-                },
-              ),
-            ],
-          );
-        });
   }
 
   Widget paymentGateways() {
@@ -469,19 +316,11 @@ class _CheckoutState extends State<Checkout> {
               // ),
             ],
           )
-        : Container());
-  }
-
-  // widget.ticketOrder.amountToBePaid! -
-  // double.parse(_userProfileManager.user.value!.balance) >
-  // 0
-
-  Widget checkoutButton() {
-    return AppThemeButton(
-        text: payAndBuyString.tr,
-        onPress: () {
-          checkout();
-        });
+        : AppThemeButton(
+            text: makePaymentString.tr,
+            onPress: () {
+              checkout();
+            }));
   }
 
   checkout() {

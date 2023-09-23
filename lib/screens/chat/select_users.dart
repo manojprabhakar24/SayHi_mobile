@@ -46,7 +46,7 @@ class SelectUserForChatState extends State<SelectUserForChat> {
             child: Container(
               height: 5,
               width: 100,
-              color: AppColorConstants.grayscale900,
+              color: AppColorConstants.mainTextColor,
             ).circular,
           ),
           const SizedBox(
@@ -54,140 +54,132 @@ class SelectUserForChatState extends State<SelectUserForChat> {
           ),
           Expanded(
             child: SizedBox(
-              child: Expanded(
-                child: GetBuilder<SelectUserForChatController>(
-                    init: _selectUserForChatController,
-                    builder: (ctx) {
-                      ScrollController scrollController = ScrollController();
-                      scrollController.addListener(() {
-                        if (scrollController.position.maxScrollExtent ==
-                            scrollController.position.pixels) {
-                          if (!_selectUserForChatController
-                              .followingIsLoading) {
-                            _selectUserForChatController.getFollowingUsers();
-                          }
+              child: GetBuilder<SelectUserForChatController>(
+                  init: _selectUserForChatController,
+                  builder: (ctx) {
+                    ScrollController scrollController = ScrollController();
+                    scrollController.addListener(() {
+                      if (scrollController.position.maxScrollExtent ==
+                          scrollController.position.pixels) {
+                        if (!_selectUserForChatController.followingIsLoading) {
+                          _selectUserForChatController.getFollowingUsers();
                         }
-                      });
+                      }
+                    });
 
-                      List<UserModel> usersList =
-                          _selectUserForChatController.following;
-                      return _selectUserForChatController.followingIsLoading
-                          ? const ShimmerUsers()
-                              .hp(DesignConstants.horizontalPadding)
-                          : usersList.isNotEmpty
-                              ? ListView.separated(
-                                  padding: const EdgeInsets.only(
-                                      top: 20, bottom: 50),
-                                  controller: scrollController,
-                                  itemCount: usersList.length + 2,
-                                  itemBuilder: (context, index) {
-                                    if (index == 0) {
-                                      return SizedBox(
-                                        height: 40,
-                                        child: Row(
-                                          children: [
-                                            Container(
-                                                    color: AppColorConstants
-                                                        .themeColor
-                                                        .withOpacity(0.2),
-                                                    child: ThemeIconWidget(
-                                                      ThemeIcon.group,
-                                                      size: 15,
-                                                      color: AppColorConstants
-                                                          .themeColor,
-                                                    ).p8)
-                                                .circular,
-                                            const SizedBox(
-                                              width: 16,
-                                            ),
-                                            Heading6Text(
-                                              createGroupString.tr,
-                                              weight: TextWeight.semiBold,
-                                            )
-                                          ],
-                                        ),
-                                      ).ripple(() {
-                                        Get.back();
-                                        Get.to(() =>
-                                            const SelectUserForGroupChat());
-                                      }).hp(DesignConstants.horizontalPadding);
-                                    } else if (index == 1) {
-                                      return SizedBox(
-                                        height: 40,
-                                        child: Row(
-                                          children: [
-                                            Container(
-                                                    color: AppColorConstants
-                                                        .themeColor
-                                                        .withOpacity(0.2),
-                                                    child: ThemeIconWidget(
-                                                      ThemeIcon.randomChat,
-                                                      size: 15,
-                                                      color: AppColorConstants
-                                                          .themeColor,
-                                                    ).p8)
-                                                .circular,
-                                            const SizedBox(
-                                              width: 16,
-                                            ),
-                                            Heading6Text(
-                                              strangerChatString.tr,
-                                              weight: TextWeight.semiBold,
-                                            )
-                                          ],
-                                        ),
-                                      ).ripple(() {
-                                        Get.to(
-                                            () => const ChooseProfileCategory(
-                                                  isCalling: false,
-                                                ));
-                                      }).hp(DesignConstants.horizontalPadding);
-                                    } else {
-                                      return UserTile(
-                                        profile: usersList[index - 2],
-                                        viewCallback: () {
-                                          Loader.show(
-                                              status: loadingString.tr);
-
-                                          widget.userSelected(
-                                              usersList[index - 2]);
-                                        },
-                                        audioCallCallback: () {
-                                          Get.back();
-                                          initiateAudioCall(
-                                              usersList[index - 2]);
-                                        },
-                                        chatCallback: () {
-                                          Loader.show(
-                                              status: loadingString.tr);
-
-                                          widget.userSelected(
-                                              usersList[index - 2]);
-                                        },
-                                        videoCallCallback: () {
-                                          Get.back();
-                                          initiateVideoCall(
-                                              usersList[index - 2]);
-                                        },
-                                      ).hp(DesignConstants.horizontalPadding);
-                                    }
-                                  },
-                                  separatorBuilder: (context, index) {
-                                    if (index > 1) {
-                                      return divider(height: 1).vP16;
-                                    }
-
-                                    return const SizedBox(
+                    List<UserModel> usersList =
+                        _selectUserForChatController.following;
+                    return _selectUserForChatController.followingIsLoading
+                        ? const ShimmerUsers()
+                            .hp(DesignConstants.horizontalPadding)
+                        : usersList.isNotEmpty
+                            ? ListView.separated(
+                                padding:
+                                    const EdgeInsets.only(top: 20, bottom: 50),
+                                controller: scrollController,
+                                itemCount: usersList.length + 2,
+                                itemBuilder: (context, index) {
+                                  if (index == 0) {
+                                    return SizedBox(
                                       height: 40,
-                                    );
-                                  },
-                                )
-                              : emptyUser(
-                                  title: noUserFoundString.tr,
-                                  subTitle: followSomeUserToChatString.tr,
-                                );
-                    }),
-              ),
+                                      child: Row(
+                                        children: [
+                                          Container(
+                                                  color: AppColorConstants
+                                                      .themeColor
+                                                      .withOpacity(0.2),
+                                                  child: ThemeIconWidget(
+                                                    ThemeIcon.group,
+                                                    size: 15,
+                                                    color: AppColorConstants
+                                                        .themeColor,
+                                                  ).p8)
+                                              .circular,
+                                          const SizedBox(
+                                            width: 16,
+                                          ),
+                                          Heading6Text(
+                                            createGroupString.tr,
+                                            weight: TextWeight.semiBold,
+                                          )
+                                        ],
+                                      ),
+                                    ).ripple(() {
+                                      Get.back();
+                                      Get.to(
+                                          () => const SelectUserForGroupChat());
+                                    }).hp(DesignConstants.horizontalPadding);
+                                  } else if (index == 1) {
+                                    return SizedBox(
+                                      height: 40,
+                                      child: Row(
+                                        children: [
+                                          Container(
+                                                  color: AppColorConstants
+                                                      .themeColor
+                                                      .withOpacity(0.2),
+                                                  child: ThemeIconWidget(
+                                                    ThemeIcon.randomChat,
+                                                    size: 15,
+                                                    color: AppColorConstants
+                                                        .themeColor,
+                                                  ).p8)
+                                              .circular,
+                                          const SizedBox(
+                                            width: 16,
+                                          ),
+                                          Heading6Text(
+                                            strangerChatString.tr,
+                                            weight: TextWeight.semiBold,
+                                          )
+                                        ],
+                                      ),
+                                    ).ripple(() {
+                                      Get.to(() => const ChooseProfileCategory(
+                                            isCalling: false,
+                                          ));
+                                    }).hp(DesignConstants.horizontalPadding);
+                                  } else {
+                                    return UserTile(
+                                      profile: usersList[index - 2],
+                                      viewCallback: () {
+                                        Loader.show(status: loadingString.tr);
+
+                                        widget
+                                            .userSelected(usersList[index - 2]);
+                                      },
+                                      audioCallCallback: () {
+                                        Get.back();
+                                        initiateAudioCall(usersList[index - 2]);
+                                      },
+                                      chatCallback: () {
+                                        Loader.show(status: loadingString.tr);
+
+                                        widget
+                                            .userSelected(usersList[index - 2]);
+                                      },
+                                      videoCallCallback: () {
+                                        Get.back();
+                                        initiateVideoCall(usersList[index - 2]);
+                                      },
+                                    ).hp(DesignConstants.horizontalPadding);
+                                  }
+                                },
+                                separatorBuilder: (context, index) {
+                                  if (index > 1) {
+                                    return divider(height: 1).vP16;
+                                  }
+
+                                  return const SizedBox(
+                                    height: 40,
+                                  );
+                                },
+                              )
+                            : emptyUser(
+                                title: noUserFoundString.tr,
+                                subTitle: followSomeUserToChatString.tr,
+                              );
+                  }),
             ),
           ),
         ],

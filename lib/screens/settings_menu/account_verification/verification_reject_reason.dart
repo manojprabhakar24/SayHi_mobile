@@ -9,7 +9,7 @@ class VerificationRejectReason extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return AppScaffold(
       backgroundColor: AppColorConstants.backgroundColor,
       body: Column(
         children: [

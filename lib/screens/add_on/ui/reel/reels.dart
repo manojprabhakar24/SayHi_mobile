@@ -30,7 +30,7 @@ class _ReelsState extends State<Reels> {
     return SafeArea(
       top: false,
       bottom: false,
-      child: Scaffold(
+      child: AppScaffold(
           backgroundColor: AppColorConstants.backgroundColor,
           body: Stack(
             children: [

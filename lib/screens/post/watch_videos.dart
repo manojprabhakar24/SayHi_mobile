@@ -1,7 +1,6 @@
 import 'package:foap/controllers/post/watch_videos_controller.dart';
 import 'package:foap/screens/reuseable_widgets/post_list.dart';
 import '../../helper/imports/common_import.dart';
-import 'package:foap/controllers/post/saved_post_controller.dart';
 
 class WatchVideos extends StatefulWidget {
   const WatchVideos({Key? key}) : super(key: key);
@@ -19,7 +18,7 @@ class _WatchVideosState extends State<WatchVideos> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return AppScaffold(
       backgroundColor: AppColorConstants.backgroundColor,
       body: Column(
         children: [

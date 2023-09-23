@@ -43,12 +43,12 @@ class TvDashboardScreenState extends State<TvDashboardScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Obx(() => Scaffold(
+    return Obx(() => AppScaffold(
         backgroundColor: AppColorConstants.backgroundColor,
         body: items[_dashboardController.currentIndex.value],
         bottomNavigationBar: SizedBox(
           height: MediaQuery.of(context).viewPadding.bottom > 0 ? 90 : 70.0,
-          width: MediaQuery.of(context).size.width,
+          width: Get.width,
           child: BottomNavigationBar(
             backgroundColor: AppColorConstants.backgroundColor,
             type: BottomNavigationBarType.fixed,

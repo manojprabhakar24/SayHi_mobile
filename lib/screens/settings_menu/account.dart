@@ -14,7 +14,6 @@ class AppAccount extends StatefulWidget {
 }
 
 class _AppAccountState extends State<AppAccount> {
-
   final SettingsController _settingsController = Get.find();
 
   @override
@@ -24,44 +23,34 @@ class _AppAccountState extends State<AppAccount> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return AppScaffold(
       backgroundColor: AppColorConstants.backgroundColor,
       body: Column(
         children: [
-
-          backNavigationBar(
-               title: accountString.tr),
-
+          backNavigationBar(title: accountString.tr),
           Expanded(
             child: ListView(
               padding: EdgeInsets.zero,
               children: [
                 Column(
                   children: [
-                    addTileEvent(
-                        'assets/live_bw.png',
-                        liveHistoryString.tr,
-                        liveHistorySubHeadlineString.tr, () {
+                    addTileEvent(liveHistoryString.tr, () {
                       Get.to(() => const LiveHistory());
                     }),
-                    addTileEvent(
-                        'assets/blocked_user.png',
-                        blockedUserString.tr,
-                        manageBlockedUserString.tr, () {
+                    addTileEvent(blockedUserString.tr, () {
                       Get.to(() => const BlockedUsersList());
                     }),
                     if (_settingsController
                         .setting.value!.enableProfileVerification)
-                      addTileEvent('assets/verification.png',
-                          requestVerificationString.tr, '', () {
-                            Get.to(() => const RequestVerification());
-                          }),
-                    addTileEvent(
-                        'assets/findFriends.png',
-                        addRelationshipString.tr,
-                        '', () {
-                      Get.to(() => const AddRelationship());
-                    }),
+                      addTileEvent(requestVerificationString.tr, () {
+                        Get.to(() => const RequestVerification());
+                      }),
+                    // addTileEvent(
+                    //     'assets/findFriends.png',
+                    //     addRelationshipString.tr,
+                    //     '', () {
+                    //   Get.to(() => const AddRelationship());
+                    // }),
                   ],
                 ),
                 const SizedBox(
@@ -75,33 +64,20 @@ class _AppAccountState extends State<AppAccount> {
     );
   }
 
-  addTileEvent(
-      String icon, String title, String subTitle, VoidCallback action) {
+  addTileEvent(String title, VoidCallback action) {
     return InkWell(
         onTap: action,
         child: Column(
           children: [
             SizedBox(
-              height: 75,
+              height: 50,
               child: Row(children: [
-                Container(
-                        color: AppColorConstants.themeColor.withOpacity(0.2),
-                        child: Image.asset(
-                          icon,
-                          height: 20,
-                          width: 20,
-                          color: AppColorConstants.themeColor,
-                        ).p8)
-                    .circular,
-                const SizedBox(width: 10),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      BodyLargeText(title.tr,
-                          weight: TextWeight.medium)
-
+                      BodyLargeText(title.tr, weight: TextWeight.medium)
                     ],
                   ),
                 ),

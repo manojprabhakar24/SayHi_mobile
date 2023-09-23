@@ -16,7 +16,7 @@ class AllowNotification extends StatefulWidget {
 class _AllowNotificationState extends State<AllowNotification> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return AppScaffold(
       backgroundColor: AppColorConstants.backgroundColor,
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -38,7 +38,7 @@ class _AllowNotificationState extends State<AllowNotification> {
           Center(
             child: SizedBox(
                 height: 50,
-                width: MediaQuery.of(context).size.width - 50,
+                width: Get.width - 50,
                 child: AppThemeButton(
                     cornerRadius: 25,
                     text: allowNotificationString.tr,
@@ -49,7 +49,7 @@ class _AllowNotificationState extends State<AllowNotification> {
           Center(
             child: SizedBox(
                 height: 50,
-                width: MediaQuery.of(context).size.width - 50,
+                width: Get.width - 50,
                 child: AppThemeButton(
                     cornerRadius: 25,
                     text: notNowString.tr,

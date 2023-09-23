@@ -45,6 +45,7 @@ class HashTagsList extends StatelessWidget {
                     onItemCallback: () {
                       Get.to(() => Posts(
                             hashTag: _miscController.hashTags[index].name,
+                            title: _miscController.hashTags[index].name,
                           ));
                     },
                   );

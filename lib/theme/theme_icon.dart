@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:foap/util/app_config_constants.dart';
 
 enum ThemeIcon {
@@ -13,14 +12,11 @@ enum ThemeIcon {
   gallery,
   mention,
   wallpaper,
-  // cameraFront,
-  // cameraRear,
   cameraSwitch,
   videoCameraOff,
   videoCamera,
   emptyCheckbox,
   selectedCheckbox,
-  search,
   downArrow,
   arrowUp,
   star,
@@ -132,6 +128,10 @@ enum ThemeIcon {
   business,
   language,
   darkMode,
+  product,
+  event,
+  search,
+  bookings
 }
 
 class ThemeIconWidget extends StatelessWidget {
@@ -894,33 +894,52 @@ class ThemeIconWidget extends StatelessWidget {
           color: color ?? AppColorConstants.iconColor,
         );
       case ThemeIcon.acceptCall:
-        return SvgPicture.asset(
-          'assets/svg/bold/Call.svg',
-          height: size ?? 20,
+        return Icon(
+          Icons.call,
+          size: size ?? 20,
           color: color ?? AppColorConstants.iconColor,
         );
       case ThemeIcon.declineCall:
-        return SvgPicture.asset(
-          'assets/svg/bold/Close Square.svg',
-          height: size ?? 20,
+        return Icon(
+          Icons.call_end,
+          size: size ?? 20,
           color: color ?? AppColorConstants.iconColor,
         );
       case ThemeIcon.arrowUp:
-        return SvgPicture.asset(
-          'assets/svg/outline/Arrow - Up 2.svg',
-          height: size ?? 20,
+        return Icon(
+          Icons.arrow_circle_up,
+          size: size ?? 20,
+          color: color ?? AppColorConstants.iconColor,
+        );
+      case ThemeIcon.product:
+        return Icon(
+          Icons.storefront,
+          size: size ?? 20,
           color: color ?? AppColorConstants.iconColor,
         );
       case ThemeIcon.language:
-        return Image.asset(
-          'assets/language.png',
-          height: size ?? 20,
+        return Icon(
+          Icons.language,
+          size: size ?? 20,
           color: color ?? AppColorConstants.iconColor,
         );
       case ThemeIcon.darkMode:
-        return Image.asset(
-          'assets/dark-mode.png',
-          height: size ?? 20,
+        return Icon(
+          Icons.sunny,
+          size: size ?? 20,
+          color: color ?? AppColorConstants.iconColor,
+        );
+      case ThemeIcon.event:
+        return Icon(
+          Icons.event,
+          size: size ?? 20,
+          color: color ?? AppColorConstants.iconColor,
+        );
+
+      case ThemeIcon.bookings:
+        return Icon(
+          Icons.calendar_month,
+          size: size ?? 20,
           color: color ?? AppColorConstants.iconColor,
         );
     }

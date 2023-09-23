@@ -32,7 +32,7 @@ class _SetProfileCategoryTypeState extends State<SetProfileCategoryType> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return AppScaffold(
       backgroundColor: AppColorConstants.backgroundColor,
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -78,7 +78,7 @@ class _SetProfileCategoryTypeState extends State<SetProfileCategoryType> {
                         Text(category.name,
                             style: TextStyle(
                                 fontSize: FontSizes.b2,
-                                color: AppColorConstants.grayscale900,
+                                color: AppColorConstants.mainTextColor,
                                 fontWeight: TextWeight.semiBold)),
                         Obx(() => ThemeIconWidget(
                               _setProfileCategoryController

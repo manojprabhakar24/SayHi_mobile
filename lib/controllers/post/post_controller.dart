@@ -1,7 +1,7 @@
 import 'package:foap/helper/imports/common_import.dart';
 import 'package:foap/helper/list_extension.dart';
 import 'package:foap/model/data_wrapper.dart';
-import '../../apiHandler/apis/post_api.dart';
+import '../../api_handler/apis/post_api.dart';
 import '../../model/post_model.dart';
 import '../../model/post_search_query.dart';
 
@@ -58,7 +58,8 @@ class PostController extends GetxController {
     update();
   }
 
-  setPostSearchQuery({required PostSearchQuery query, required VoidCallback callback}) {
+  setPostSearchQuery(
+      {required PostSearchQuery query, required VoidCallback callback}) {
     if (query != postSearchQuery) {
       clear();
     }
@@ -107,20 +108,14 @@ class PostController extends GetxController {
             posts.addAll(result);
             posts.sort((a, b) => b.createDate!.compareTo(a.createDate!));
             posts.unique((e) => e.id);
-            postDataWrapper.isLoading.value = false;
 
-            postDataWrapper.totalRecords.value = metadata.totalCount;
-            postDataWrapper.haveMoreData.value =
-                metadata.pageCount >= metadata.currentPage;
-
-            postDataWrapper.page += 1;
+            postDataWrapper.processCompletedWithData(metadata);
 
             callback();
 
             update();
           });
-    }
-    else{
+    } else {
       callback();
     }
   }
@@ -144,20 +139,14 @@ class PostController extends GetxController {
             posts.addAll(result);
             posts.sort((a, b) => b.createDate!.compareTo(a.createDate!));
             posts.unique((e) => e.id);
-            videosDataWrapper.isLoading.value = false;
 
-            videosDataWrapper.totalRecords.value = metadata.totalCount;
-            videosDataWrapper.haveMoreData.value =
-                metadata.pageCount >= metadata.currentPage;
-
-            videosDataWrapper.page += 1;
+            videosDataWrapper.processCompletedWithData(metadata);
 
             callback();
 
             update();
           });
-    }
-    else{
+    } else {
       callback();
     }
   }
@@ -167,15 +156,10 @@ class PostController extends GetxController {
       PostApi.getMentionedPosts(
           userId: mentionedPostSearchQuery!.userId,
           resultCallback: (result, metadata) {
-            mentionsDataWrapper.isLoading.value = false;
             mentions.addAll(result.reversed.toList());
             mentions.unique((e) => e.id);
 
-            mentionsDataWrapper.totalRecords.value = metadata.totalCount;
-
-            mentionsDataWrapper.page += 1;
-            mentionsDataWrapper.haveMoreData.value =
-                metadata.pageCount >= metadata.currentPage;
+            mentionsDataWrapper.processCompletedWithData(metadata);
 
             update();
           });
@@ -209,13 +193,8 @@ class PostController extends GetxController {
           resultCallback: (result, metadata) {
             likedByUsers.addAll(result);
             likedByUsers.unique((e) => e.id);
-            postLikedByDataWrapper.isLoading.value = false;
 
-            postLikedByDataWrapper.totalRecords.value = metadata.totalCount;
-            postLikedByDataWrapper.haveMoreData.value =
-                metadata.pageCount >= metadata.currentPage;
-
-            postLikedByDataWrapper.page += 1;
+            postLikedByDataWrapper.processCompletedWithData(metadata);
 
             callback();
 

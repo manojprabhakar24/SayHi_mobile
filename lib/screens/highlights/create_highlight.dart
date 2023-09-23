@@ -26,7 +26,7 @@ class _CreateHighlightState extends State<CreateHighlight> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return AppScaffold(
       backgroundColor: AppColorConstants.backgroundColor,
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -76,7 +76,7 @@ class _CreateHighlightState extends State<CreateHighlight> {
             child: TextField(
               controller: nameText,
               textAlign: TextAlign.center,
-              style: TextStyle(fontSize: FontSizes.b3, color: AppColorConstants.grayscale900),
+              style: TextStyle(fontSize: FontSizes.b3, color: AppColorConstants.mainTextColor),
               maxLines: 5,
               onChanged: (text) {},
               decoration: InputDecoration(

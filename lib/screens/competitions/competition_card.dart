@@ -1,6 +1,6 @@
 import 'package:foap/helper/imports/common_import.dart';
 import 'package:foap/helper/imports/competition_imports.dart';
-import '../../apiHandler/apis/users_api.dart';
+import '../../api_handler/apis/users_api.dart';
 
 class CompetitionCard extends StatefulWidget {
   final CompetitionModel model;
@@ -37,7 +37,7 @@ class CompetitionCardState extends State<CompetitionCard> {
                   child: CachedNetworkImage(
                     imageUrl: model.photo,
                     fit: BoxFit.cover,
-                    width: MediaQuery.of(context).size.width,
+                    width: Get.width,
                     height: 200,
                     placeholder: (context, url) =>
                         AppUtil.addProgressIndicator(size: 100),

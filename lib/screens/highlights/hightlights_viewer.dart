@@ -26,7 +26,7 @@ class _HighlightViewerState extends State<HighlightViewer> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return AppScaffold(
       backgroundColor: AppColorConstants.backgroundColor,
       resizeToAvoidBottomInset: false,
       body: storyWidget(),
@@ -98,11 +98,13 @@ class _HighlightViewerState extends State<HighlightViewer> {
                         highlightController
                             .storyMediaModel.value!.story.user!.userName,
                         weight: TextWeight.medium,
+                        color: Colors.white,
                       ),
                       BodyMediumText(
                         highlightController.storyMediaModel.value!.createdAt,
                         weight: TextWeight.medium,
-                        color: AppColorConstants.grayscale600,
+                        color: Colors.white,
+                        // color: AppColorConstants.grayscale600,
                       )
                     ],
                   )),
@@ -113,9 +115,9 @@ class _HighlightViewerState extends State<HighlightViewer> {
         SizedBox(
           height: 25,
           width: 40,
-          child: ThemeIconWidget(
+          child: const ThemeIconWidget(
             ThemeIcon.more,
-            color: AppColorConstants.iconColor,
+            color: Colors.white,
             size: 20,
           ).ripple(() {
             openActionPopup();

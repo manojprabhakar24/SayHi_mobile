@@ -91,7 +91,7 @@ class UserModel {
     // model.category = json['category'] ?? 'Other';
 
     model.email = json['email'];
-    model.picture = json['picture'];
+    model.picture = json['picture'] ?? json['campaginImage'];
     model.coverImage = json['coverImageUrl'];
 
     model.bio = json['bio'];

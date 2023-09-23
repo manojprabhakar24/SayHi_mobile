@@ -111,7 +111,7 @@ class AppThemeBorderButton extends StatelessWidget {
               TextStyle(
                   fontSize: FontSizes.b2,
                   fontWeight: TextWeight.medium,
-                  color: AppColorConstants.grayscale900),
+                  color: AppColorConstants.mainTextColor),
         ).hP8,
       ),
     )

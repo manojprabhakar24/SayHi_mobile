@@ -42,7 +42,7 @@ class _AddRelationshipState extends State<AddRelationship> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return AppScaffold(
       backgroundColor: AppColorConstants.backgroundColor,
       body: Column(
         children: [
@@ -163,7 +163,7 @@ class _AddRelationshipState extends State<AddRelationship> {
               builder: (BuildContext context, StateSetter setState) {
             return SizedBox(
                 height: 225,
-                width: MediaQuery.of(context).size.width - 20,
+                width: Get.width - 20,
                 child: Center(
                   child: Column(
                     children: [
@@ -172,7 +172,7 @@ class _AddRelationshipState extends State<AddRelationship> {
                           'Choose who can view your Relationships',
                           style: TextStyle(
                               fontSize: FontSizes.h5,
-                              color: AppColorConstants.grayscale100),
+                              color: AppColorConstants.subHeadingTextColor),
                         ),
                       ),
                       ListTile(

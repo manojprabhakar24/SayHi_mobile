@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 
 import '../components/custom_texts.dart';
 import '../util/app_config_constants.dart';
+import '../util/constant_util.dart';
 
 class HorizontalMenuBar extends StatefulWidget {
   final Function(int) onSegmentChange;
@@ -32,62 +33,55 @@ class HorizontalMenuBarState extends State<HorizontalMenuBar> {
 
   @override
   void initState() {
-    // TODO: implement initState
-
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: widget.height ??
-          (widget.padding == null
-              ? 35
-              : (35 + widget.padding!.top + widget.padding!.bottom)),
-      child: Center(
-        child: ListView.separated(
-            padding: widget.padding ?? EdgeInsets.zero,
-            scrollDirection: Axis.horizontal,
-            itemBuilder: (BuildContext context, index) {
-              return Column(
-                children: [
-                  Container(
+      height: 40,
+      child: ListView.separated(
+          padding: EdgeInsets.only(
+              left: DesignConstants.horizontalPadding,
+              right: DesignConstants.horizontalPadding),
+          scrollDirection: Axis.horizontal,
+          itemBuilder: (BuildContext context, index) {
+            return Column(
+              children: [
+                Container(
+                  color: index == widget.selectedIndex
+                      ? AppColorConstants.themeColor
+                      : isDarkMode
+                          ? AppColorConstants.cardColor.lighten()
+                          : AppColorConstants.cardColor.darken(),
+                  child: BodyLargeText(
+                    widget.menus[index].tr,
                     color: index == widget.selectedIndex
-                        ? AppColorConstants.themeColor
-                        : AppColorConstants.cardColor.darken(),
-                    child: BodyLargeText(
-                      widget.menus[index].tr,
-                      color: AppColorConstants.grayscale900,
-                      weight: index == widget.selectedIndex
-                          ? TextWeight.semiBold
-                          : TextWeight.medium,
-                    )
-                        .setPadding(left: DesignConstants.horizontalPadding, right: DesignConstants.horizontalPadding, top: 5, bottom: 5)
-                        .ripple(() {
-                      setState(() {
-                        // selectedMenu = menus[index];
-                        widget.onSegmentChange(index);
-                      });
-                    }),
-                  ).round(20),
-                  // const SizedBox(
-                  //   height: 5,
-                  // ),
-                  // Container(
-                  //   height: 2,
-                  //   width: widget.menus[index].length * 8,
-                  //   color: index == widget.selectedIndex
-                  //       ? ColorConstants.themeColor
-                  //       : Colors.transparent,
-                  // ).round(10)
-                ],
-              );
-            },
-            separatorBuilder: (BuildContext context, index) {
-              return const SizedBox(width: 10);
-            },
-            itemCount: widget.menus.length),
-      ),
+                        ? Colors.white
+                        : AppColorConstants.mainTextColor,
+                    weight: index == widget.selectedIndex
+                        ? TextWeight.semiBold
+                        : TextWeight.medium,
+                  )
+                      .setPadding(
+                          left: DesignConstants.horizontalPadding,
+                          right: DesignConstants.horizontalPadding,
+                          top: 5,
+                          bottom: 5)
+                      .ripple(() {
+                    setState(() {
+                      // selectedMenu = menus[index];
+                      widget.onSegmentChange(index);
+                    });
+                  }),
+                ).round(20),
+              ],
+            );
+          },
+          separatorBuilder: (BuildContext context, index) {
+            return const SizedBox(width: 10);
+          },
+          itemCount: widget.menus.length),
     );
   }
 }
@@ -175,7 +169,7 @@ class _HorizontalSegmentBarState extends State<HorizontalSegmentBar> {
     width = 0;
     Future.delayed(Duration.zero, () {
       setState(() {
-        width = widget.width ?? MediaQuery.of(context).size.width - 40;
+        width = widget.width ?? Get.width - 40;
       });
     });
   }
@@ -210,7 +204,7 @@ class _HorizontalSegmentBarState extends State<HorizontalSegmentBar> {
                         widget.segments[index],
                         color: index == selectedMenuIndex
                             ? AppColorConstants.themeColor
-                            : AppColorConstants.grayscale900,
+                            : AppColorConstants.mainTextColor,
                         weight: index == selectedMenuIndex
                             ? TextWeight.bold
                             : TextWeight.medium,
@@ -347,7 +341,7 @@ class _HorizontalSegmentBarWithPointerState
 
     Future.delayed(Duration.zero, () {
       setState(() {
-        width = widget.width ?? MediaQuery.of(context).size.width - 40;
+        width = widget.width ?? Get.width - 40;
       });
     });
   }
@@ -377,7 +371,7 @@ class _HorizontalSegmentBarWithPointerState
                       menus[index],
                       color: index == selectedMenuIndex
                           ? AppColorConstants.themeColor
-                          : AppColorConstants.grayscale900,
+                          : AppColorConstants.mainTextColor,
                       weight: index == selectedMenuIndex
                           ? TextWeight.bold
                           : TextWeight.medium,

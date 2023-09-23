@@ -1,4 +1,4 @@
-import 'package:foap/apiHandler/apis/dating_api.dart';
+import 'package:foap/api_handler/apis/dating_api.dart';
 import 'package:foap/helper/imports/common_import.dart';
 import 'package:foap/screens/add_on/model/preference_model.dart';
 import 'package:get/get.dart';

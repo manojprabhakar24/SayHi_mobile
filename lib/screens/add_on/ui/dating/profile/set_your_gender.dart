@@ -32,7 +32,7 @@ class _SetYourGenderState extends State<SetYourGender> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return AppScaffold(
         backgroundColor: AppColorConstants.backgroundColor,
         body: Column(children: [
           backNavigationBar(
@@ -59,7 +59,7 @@ class _SetYourGenderState extends State<SetYourGender> {
                 const Spacer(),
                 SizedBox(
                     height: 50,
-                    width: MediaQuery.of(context).size.width - 50,
+                    width: Get.width - 50,
                     child: AppThemeButton(
                         cornerRadius: 25,
                         text: submitString.tr,
@@ -96,7 +96,7 @@ class _SetYourGenderState extends State<SetYourGender> {
         children: [
           Heading6Text(
             genders[index],
-            color: AppColorConstants.grayscale900,
+            color: AppColorConstants.mainTextColor,
           ),
           ThemeIconWidget(
               selectedGender == index

@@ -42,7 +42,7 @@ class _ExplorePodcastsState extends State<ExplorePodcasts> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return AppScaffold(
         backgroundColor: AppColorConstants.backgroundColor,
         body: GestureDetector(
             onTap: () {

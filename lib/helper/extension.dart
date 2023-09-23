@@ -371,7 +371,6 @@ extension PulltoRefresh on Widget {
     required VoidCallback onLoading,
     required bool enablePullUp,
     required bool enablePullDown,
-
   }) =>
       SmartRefresher(
         enablePullDown: enablePullDown,
@@ -428,7 +427,11 @@ extension PinchZoomImage on Widget {
 
 extension AppChip on Widget {
   Widget makeChip({Color? backGroundColor}) => Container(
-    color: backGroundColor ?? AppColorConstants.themeColor.withOpacity(0.2),
-    child: setPadding(left: DesignConstants.horizontalPadding, right: DesignConstants.horizontalPadding, top: 8, bottom: 8),
-  ).borderWithRadius(value: 1, radius: 20);
+        color: backGroundColor ?? AppColorConstants.themeColor.withOpacity(0.2),
+        child: setPadding(
+            left: DesignConstants.horizontalPadding,
+            right: DesignConstants.horizontalPadding,
+            top: 8,
+            bottom: 8),
+      ).borderWithRadius(value: 1, radius: 20);
 }

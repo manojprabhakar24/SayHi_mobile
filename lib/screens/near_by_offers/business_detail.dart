@@ -23,7 +23,7 @@ class BusinessDetail extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return AppScaffold(
       body: Stack(
         children: [
           Column(

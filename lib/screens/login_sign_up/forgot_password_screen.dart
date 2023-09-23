@@ -14,7 +14,7 @@ class ForgotPasswordState extends State<ForgotPasswordScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return AppScaffold(
         backgroundColor: AppColorConstants.backgroundColor,
         body: GestureDetector(
           onTap: () {
@@ -24,22 +24,22 @@ class ForgotPasswordState extends State<ForgotPasswordScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SizedBox(
-                height: MediaQuery.of(context).size.height * 0.1,
+                height: Get.height * 0.1,
               ),
               const Align(
                 alignment: Alignment.centerLeft,
                 child: AppThemeBackButton(),
               ),
               SizedBox(
-                height: MediaQuery.of(context).size.height * 0.05,
+                height: Get.height * 0.05,
               ),
               Heading3Text(forgotPwdString.tr, weight: TextWeight.bold).rp(100),
               SizedBox(
-                height: MediaQuery.of(context).size.height * 0.01,
+                height: Get.height * 0.01,
               ),
               BodyMediumText(
                 helpToGetAccountString.tr,
-                color: AppColorConstants.grayscale600,
+                color: AppColorConstants.subHeadingTextColor,
               ).setPadding(top: 10, bottom: 40),
               AppTextField(
                 controller: email,
@@ -55,7 +55,7 @@ class ForgotPasswordState extends State<ForgotPasswordScreen> {
                   loginAnotherAccountString.tr,
                   weight: TextWeight.bold,
                   textAlign: TextAlign.start,
-                  color: AppColorConstants.grayscale600,
+                  color: AppColorConstants.subHeadingTextColor,
                 ).ripple(() {
                   Get.back();
                 }),

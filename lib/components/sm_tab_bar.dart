@@ -104,7 +104,7 @@ TabBar getTextTabBar(
         color: AppColorConstants.themeColor,
         fontWeight: TextWeight.regular),
     labelColor: AppColorConstants.themeColor,
-    unselectedLabelColor: AppColorConstants.grayscale500,
+    unselectedLabelColor: AppColorConstants.subHeadingTextColor,
     tabs: List.generate(tabs.length, (int index) {
       return Tab(
         text: tabs[index],
@@ -124,14 +124,14 @@ TabBar getIconTabBar(
       insets: const EdgeInsets.symmetric(horizontal: 16.0),
     ),
     labelColor: AppColorConstants.themeColor,
-    unselectedLabelColor: AppColorConstants.grayscale500,
+    unselectedLabelColor: AppColorConstants.subHeadingTextColor,
     tabs: List.generate(icons.length, (int index) {
       return Tab(
         icon: ThemeIconWidget(
           icons[index],
           color: index == selectedTab
               ? AppColorConstants.themeColor
-              : AppColorConstants.grayscale900,
+              : AppColorConstants.mainTextColor,
         ),
         // text: tabs[index],
       );
@@ -151,7 +151,7 @@ TabBar getIconAndTexTabBar(
       insets: const EdgeInsets.symmetric(horizontal: 16.0),
     ),
     labelColor: AppColorConstants.themeColor,
-    unselectedLabelColor: AppColorConstants.grayscale500,
+    unselectedLabelColor: AppColorConstants.subHeadingTextColor,
     tabs: List.generate(icons.length, (int index) {
       return Tab(
         icon: Row(
@@ -161,7 +161,7 @@ TabBar getIconAndTexTabBar(
               icons[index],
               color: index == selectedTab
                   ? AppColorConstants.themeColor
-                  : AppColorConstants.grayscale900,
+                  : AppColorConstants.mainTextColor,
             ),
             const SizedBox(
               width: 5,
@@ -170,7 +170,7 @@ TabBar getIconAndTexTabBar(
               texts[index],
               color: index == selectedTab
                   ? AppColorConstants.themeColor
-                  : AppColorConstants.grayscale900,
+                  : AppColorConstants.mainTextColor,
               weight: TextWeight.semiBold,
             )
           ],

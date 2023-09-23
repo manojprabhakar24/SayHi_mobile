@@ -24,7 +24,7 @@ class MatchedListState extends State<MatchedList> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return AppScaffold(
       backgroundColor: AppColorConstants.backgroundColor,
       body: Column(
         children: [
@@ -105,7 +105,10 @@ class MatchedListState extends State<MatchedList> {
           .borderWithRadius(
               value: 1, radius: 10, color: AppColorConstants.themeColor)
           .ripple(() {
-        Get.to(() => OtherUserProfile(userId: profile.id,user: profile,));
+        Get.to(() => OtherUserProfile(
+              userId: profile.id,
+              user: profile,
+            ));
       }),
       Positioned.fill(
           child: Align(
@@ -114,13 +117,12 @@ class MatchedListState extends State<MatchedList> {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              BodySmallText(
-                      (profile.name == null
-                              ? profile.userName
-                              : profile.name ?? '') +
-                          (yearStr != null ? ', $yearStr' : ''),
-                      weight: TextWeight.medium)
-                  .setPadding(left: 15, bottom: 10),
+              BodyLargeText(
+                (profile.name == null ? profile.userName : profile.name ?? '') +
+                    (yearStr != null ? ', $yearStr' : ''),
+                weight: TextWeight.medium,
+                color: Colors.white,
+              ).setPadding(left: 5, bottom: 10),
               Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
                 Flexible(
                     child: Container(

@@ -1,6 +1,6 @@
 import 'dart:io';
 import 'package:foap/helper/imports/common_import.dart';
-import '../../apiHandler/apis/post_api.dart';
+import '../../api_handler/apis/post_api.dart';
 import '../../model/post_model.dart';
 import '../profile/other_user_profile.dart';
 import 'comments_screen.dart';
@@ -28,7 +28,7 @@ class EnlargeImageViewState extends State<EnlargeImageViewScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return AppScaffold(
         backgroundColor: AppColorConstants.backgroundColor,
         body: Column(
           children: [
@@ -78,7 +78,6 @@ class EnlargeImageViewState extends State<EnlargeImageViewScreen> {
                       ),
               ],
             ).hp(DesignConstants.horizontalPadding),
-            divider().vP8,
             Expanded(
               child: Stack(children: [
                 CachedNetworkImage(

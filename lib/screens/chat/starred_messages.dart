@@ -1,5 +1,4 @@
 import 'package:flutter_contacts/contact.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:foap/helper/imports/common_import.dart';
 import 'package:foap/helper/imports/chat_imports.dart';
 import 'package:map_launcher/map_launcher.dart';
@@ -35,7 +34,7 @@ class _StarredMessagesState extends State<StarredMessages> {
     return SafeArea(
       bottom: false,
       top: false,
-      child: Scaffold(
+      child: AppScaffold(
         backgroundColor: AppColorConstants.backgroundColor,
         body: Column(
           children: [
@@ -218,11 +217,11 @@ class _StarredMessagesState extends State<StarredMessages> {
                         title: Heading5Text(
                           '${openInString.tr} ${map.mapName}',
                         ),
-                        leading: SvgPicture.asset(
-                          map.icon,
-                          height: 30.0,
-                          width: 30.0,
-                        ),
+                        // leading: SvgPicture.asset(
+                        //   map.icon,
+                        //   height: 30.0,
+                        //   width: 30.0,
+                        // ),
                       ),
                   ],
                 ),

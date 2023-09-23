@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'package:flutter/services.dart';
 import 'package:flutter_contacts/contact.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:foap/helper/imports/common_import.dart';
 import 'package:focused_menu/focused_menu.dart';
 import 'package:focused_menu/modals.dart';
@@ -73,7 +72,7 @@ class _ChatDetailState extends State<ChatDetail> {
     return SafeArea(
       bottom: false,
       top: false,
-      child: Scaffold(
+      child: AppScaffold(
         backgroundColor: AppColorConstants.backgroundColor,
         body: Column(
           children: [
@@ -81,7 +80,6 @@ class _ChatDetailState extends State<ChatDetail> {
               height: 50,
             ),
             appBar(),
-
             Expanded(child: messagesListView()),
             Obx(() {
               return Column(
@@ -266,7 +264,7 @@ class _ChatDetailState extends State<ChatDetail> {
                                                   '',
                                           weight: TextWeight.medium)
                                   : SizedBox(
-                                      width: MediaQuery.of(context).size.width -
+                                      width: Get.width -
                                           120,
                                       child: BodyMediumText(
                                         _chatDetailController
@@ -302,7 +300,7 @@ class _ChatDetailState extends State<ChatDetail> {
           ),
         ),
       ],
-    );
+    ).vP8;
   }
 
   Widget selectedMessageView() {
@@ -460,7 +458,7 @@ class _ChatDetailState extends State<ChatDetail> {
                                   style: TextStyle(
                                       fontSize: FontSizes.h5,
                                       fontWeight: TextWeight.regular,
-                                      color: AppColorConstants.grayscale900),
+                                      color: AppColorConstants.mainTextColor),
                                   maxLines: 50,
                                   onChanged: (text) {
                                     _chatDetailController.messageChanges();
@@ -613,7 +611,7 @@ class _ChatDetailState extends State<ChatDetail> {
     return FocusedMenuHolder(
       key: dataKey,
 
-      menuWidth: MediaQuery.of(context).size.width * 0.50,
+      menuWidth: Get.width * 0.50,
       blurSize: 5.0,
       menuItemExtent: 45,
       menuBoxDecoration: BoxDecoration(
@@ -787,11 +785,11 @@ class _ChatDetailState extends State<ChatDetail> {
                         title: Heading5Text(
                           '${openInString.tr} ${map.mapName}',
                         ),
-                        leading: SvgPicture.asset(
-                          map.icon,
-                          height: 30.0,
-                          width: 30.0,
-                        ),
+                        // leading: SvgPicture.asset(
+                        //   map.icon,
+                        //   height: 30.0,
+                        //   width: 30.0,
+                        // ),
                       ),
                   ],
                 ),

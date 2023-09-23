@@ -40,7 +40,7 @@ class _LeaveDialogState extends State<LeaveDialog> {
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(5),
               ),
-              width: MediaQuery.of(context).size.width * 0.85,
+              width: Get.width * 0.85,
               alignment: Alignment.center,
               padding: const EdgeInsets.symmetric(
                   horizontal: 20, vertical: 40),

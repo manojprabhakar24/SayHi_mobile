@@ -1,7 +1,7 @@
 import 'package:flutter/services.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
-import 'package:foap/apiHandler/apis/auth_api.dart';
-import 'package:foap/apiHandler/apis/misc_api.dart';
+import 'package:foap/api_handler/apis/auth_api.dart';
+import 'package:foap/api_handler/apis/misc_api.dart';
 import 'package:foap/helper/imports/common_import.dart';
 import 'package:foap/util/constant_util.dart';
 import 'package:local_auth/error_codes.dart' as auth_error;

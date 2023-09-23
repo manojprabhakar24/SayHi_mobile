@@ -5,26 +5,27 @@ import 'package:get/get.dart';
 Widget backNavigationBar({required String title}) {
   return Container(
     height: 100,
-    color: AppColorConstants.themeColor.withOpacity(0.1),
+    color: AppColorConstants.cardColor,
     child: Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        Container(
-          color: AppColorConstants.themeColor.withOpacity(0.4),
+        SizedBox(
           height: 40,
           width: 40,
           child: Center(
-            child: const Icon(
+            child: Icon(
               Icons.arrow_back_ios,
               size: 20,
-              color: Colors.white,
-            ).lP8.ripple(() {
-              Get.back();
-            }),
-          ).p8,
-        ).circular,
-        BodyLargeText(title.tr, weight: TextWeight.medium),
+              color: AppColorConstants.iconColor,
+            ),
+          ),
+        ).lP8.ripple(() {
+          Get.back();
+        }),
+        Expanded(
+            child: BodyLargeText(title.tr,
+                maxLines: 1, weight: TextWeight.medium)),
         const SizedBox(
           width: 40,
         )
@@ -40,7 +41,7 @@ Widget backNavigationBarWithTrailingWidget(
     {required String title, required Widget widget}) {
   return Container(
     height: 100,
-    color: AppColorConstants.themeColor.withOpacity(0.1),
+    color: AppColorConstants.cardColor,
     width: double.infinity,
     child: Stack(
       children: [
@@ -219,7 +220,7 @@ Widget titleNavigationBar({required String title}) {
   return Container(
     height: 100,
     width: Get.width,
-    color: AppColorConstants.themeColor.withOpacity(0.1),
+    color: AppColorConstants.cardColor,
     child: Center(
       child: BodyLargeText(title.tr, weight: TextWeight.medium)
           .setPadding(top: 40),
@@ -231,7 +232,7 @@ Widget customNavigationBar(
     {required String title, VoidCallback? action, Widget? trailing}) {
   return Container(
     height: 100,
-    color: AppColorConstants.themeColor.withOpacity(0.1),
+    color: AppColorConstants.cardColor,
     child: Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       crossAxisAlignment: CrossAxisAlignment.end,

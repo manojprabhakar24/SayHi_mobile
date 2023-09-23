@@ -21,7 +21,7 @@ class EnlargeImageViewState extends State<ChatImageViewer> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return AppScaffold(
         backgroundColor: AppColorConstants.backgroundColor,
         body: Column(
           children: [
@@ -40,7 +40,6 @@ class EnlargeImageViewState extends State<ChatImageViewer> {
                 }),
               ],
             ).hp(DesignConstants.horizontalPadding),
-            divider().vP8,
             Expanded(
                 child: MessageImage(
                     message: widget.chatMessage, fitMode: BoxFit.contain)),

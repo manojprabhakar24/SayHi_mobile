@@ -24,8 +24,14 @@ String youString = 'You';
 String successString = 'Success';
 String errorString = 'Error';
 String pendingString = 'Pending';
+String activeString = 'Active';
+String expiredString = 'Expired';
+String soldString = 'Sold';
+String deletedString = 'Deleted';
 String rejectedString = 'Rejected';
 String withdrawalString = 'Withdrawal';
+String withdrawalRefundString = 'Withdrawal refund';
+
 String transactionHistoryString = 'Transaction history';
 String earningString = 'Earning';
 String withdrawString = 'Withdraw';
@@ -301,6 +307,8 @@ String deleteMessageForAllString = 'Delete message for all';
 String thisMessageIsDeletedString = 'This message is deleted';
 
 String closeString = 'Close';
+String closedString = 'Closed';
+
 String deleteRequestString = 'Delete Request';
 String deActivateWallpaperString = 'De-Activate Wallpaper';
 String deActivateAlbumString = 'De-Activate Album';
@@ -403,6 +411,8 @@ String reportedString = 'Reported';
 String postReportedSuccessfullyString = 'Post is reported successfully';
 String userReportedSuccessfullyString = 'User is reported successfully';
 String storyReportedSuccessfullyString = 'Story is reported successfully';
+String storyPostedSuccessfullyString = 'Story is posted successfully';
+
 String userBlockedSuccessfullyString = 'User is blocked successfully';
 
 String reportString = 'Report';
@@ -519,7 +529,6 @@ String reConnectingString = "Reconnecting...";
 String typingString = "typing...";
 
 String postDeletedString = "Post deleted";
-String deletedString = "Deleted";
 
 String noPostFoundString = "No post updates found";
 String noVideoFoundString = "No video updates found";
@@ -899,6 +908,8 @@ String giftingToString = 'Gifting to';
 String giftString = 'Gift';
 String giftedToString = 'Gifted to :';
 String giftedByString = 'Gifted by :';
+String evenTicketString = 'Event ticket';
+String evenTicketRefundString = 'Event ticket refund';
 
 String ticketGiftedString = 'Ticket is gifted successfully';
 String bookingCancelledString = 'Booking is cancelled successfully';
@@ -906,6 +917,8 @@ String bookingCancelledString = 'Booking is cancelled successfully';
 String ticketWillBeAvailableSoonString = 'Tickets will be available soon';
 
 String eventIsSoldOutString = 'Event is sold out';
+String eventClosedString = 'Event is closed';
+
 String ticketTypeString = 'Ticket type';
 String orderSummaryString = 'Order Summary';
 String organizerString = 'Organizer';
@@ -1083,9 +1096,11 @@ String enableDatingProfileToUseString =
 
 String followFriendsToSendPostString = 'Follow friends to send post.';
 
+String chooseUserNameString = 'Choose username';
+
 String setUserNameString = 'Set username';
 String setUserNameSubHeadingString =
-    'This username will be shown to all user. Choose a wise user name like it_mike_here';
+    'This username will be shown to all user. Choose a wise user name like its_mike_here';
 
 String setProfileCategoryTypeString = 'Choose profile category type';
 String setProfileCategoryTypeSubHeadingString =
@@ -1170,6 +1185,7 @@ String favCampaignsString = 'Favourite Campaigns';
 
 String fundRaisedFrom = 'fund raised from';
 
+String donationString = 'Donation';
 String donationsString = 'Donations';
 String closingOnString = 'Closing on';
 
@@ -1211,6 +1227,7 @@ String promptSelectGoal = 'Please select a goal';
 String website = 'Website';
 String buttonAction = 'Action button';
 String postPromotionString = 'Post promotion';
+String postPromotionRefundString = 'Post promotion refund';
 
 String postPromotedString = 'Your post is promoted';
 String promoteMorePostsString = 'Promote more posts';
@@ -1256,8 +1273,6 @@ String adGoal = 'Ad goal';
 String costSummary = 'Cost summary';
 String adBudget = 'Ad budget';
 String gst = 'GST';
-String makePayment = 'Make payment';
-
 String learnMore = 'Learn More';
 String showNow = 'Shop Now';
 String watchMore = 'Watch More';
@@ -1269,9 +1284,59 @@ String locationAndTarget = 'Please enter the location of the target audience';
 String audienceInterest = 'Please enter the audience\'s interests';
 String selectGenderAge = 'Please select gender and age';
 
-String sendMessage = 'Send message';
-String viewProfile = 'View profile';
 String flutterWaveString = 'FlutterWave';
 String thanks = 'Thanks';
 String sponsoredString = 'Sponsored';
 String noViewString = 'No view';
+
+String boughtCoinsString = 'Bought coins';
+String awardedString = 'Awarded';
+String subscribedTvString = 'Subscribed TV';
+String datingSubscriptionString = 'Dating subscription';
+String promotedAdString = 'Promoted ad';
+
+String shopString = 'Shop';
+String myProductString = 'My Products';
+String sellerString = 'Seller';
+
+String titleString = 'Title';
+
+String enterProductDetailString = 'Enter product detail';
+String selectAdTypeString = 'Please select ad type.';
+String enterTitleString = 'Please enter title.';
+String enterDescriptionString = 'Please enter description.';
+String enterPriceString = 'Please enter price.';
+String markAsSoldString = "Sold";
+
+String chooseCategoryString = "Choose category";
+String chooseSubCategoryString = "Choose Sub Category";
+String contactDetailString = 'Contact detail';
+
+String addAddressString = 'Please add address.';
+String addImagesString = 'Please add property images.';
+
+String noProductFoundString = 'No products found';
+String pleaseModifyYourSearch = 'Please modify your search';
+String listingCreatedSuccessfully = 'Listing is created successfully';
+String listingUpdatedSuccessfully = 'Listing is updated successfully';
+
+String jobsString = 'Jobs';
+String appliedJobsString = 'Applied jobs';
+String postedByString = 'Posted by';
+String appliedString = 'Applied';
+String skillsString = 'Skills';
+
+String experienceString = 'Experience';
+String salaryString = 'Salary';
+String experienceInYearsString = 'Experience(in years)';
+String uploadResumeString = 'Upload resume';
+
+String educationString = 'Education';
+
+String coverLetterString = 'Cover letter';
+String enterHereString = 'Enter here';
+String pleaseSelectResumeString = 'Please select resume.';
+String pleaseSelectExperienceString = 'Please select experience.';
+String pleaseEnterEducationString = 'Please enter education.';
+String pleaseEnterCoverLetterString = 'Please enter cover letter.';
+String appliedSuccessfully = 'Your have applied for this job successfully';

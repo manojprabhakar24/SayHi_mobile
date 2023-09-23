@@ -26,19 +26,20 @@ class ClubListing extends StatelessWidget {
         bool isTop = _controller.position.pixels == 0;
         if (isTop) {
         } else {
-          if (!_clubsController.isLoadingClubs.value) {
+          if (!_clubsController.clubsDataWrapper.isLoading.value) {
             _clubsController.getClubs();
           }
         }
       }
     });
 
-    return Obx(() => _clubsController.isLoadingClubs.value
+    return Obx(() => _clubsController.clubsDataWrapper.isLoading.value
         ? const ClubsScreenShimmer()
         : _clubsController.clubs.isEmpty
             ? emptyData(title: noDataString, subTitle: '')
             : SizedBox(
-                height: (Get.width / 2) * 0.8 * _clubsController.clubs.length,
+                height:
+                    (Get.width / 2) * 0.8 * (_clubsController.clubs.length + 1),
                 child: GridView.builder(
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 2,

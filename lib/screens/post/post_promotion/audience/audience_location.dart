@@ -12,7 +12,7 @@ class AudienceLocationScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return AppScaffold(
         backgroundColor: AppColorConstants.backgroundColor,
         body: GetBuilder<PromotionController>(
         init: _promotionController,
@@ -28,7 +28,7 @@ class AudienceLocationScreen extends StatelessWidget {
                     child: Column(children: [
                       SMTabBar(tabs: _promotionController.locationType,canScroll: false),
                       SizedBox(
-                          height: MediaQuery.of(context).size.height - 320,
+                          height: Get.height - 320,
                           child: TabBarView(
                             children: [
                               regionalLocationView(),
@@ -48,14 +48,14 @@ class AudienceLocationScreen extends StatelessWidget {
         onSearchCompleted: (value) => {},
         onSearchChanged: (value) => _promotionController.searchLocations(value),
         showSearchIcon: true,
-        backgroundColor: AppColorConstants.grayscale200,
+        backgroundColor: AppColorConstants.subHeadingTextColor,
         radius: 15,
       ).p8,
       Expanded(
         child: SingleChildScrollView(
             child:
                 Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          BodyMediumText(addLocations.tr, color: AppColorConstants.grayscale600)
+          BodyMediumText(addLocations.tr, color: AppColorConstants.subHeadingTextColor)
               .hP16,
           _promotionController.selectedLocations.isNotEmpty
               ? Heading6Text(selectedRegion.tr, weight: TextWeight.semiBold)
@@ -82,7 +82,7 @@ class AudienceLocationScreen extends StatelessWidget {
                           BodyMediumText(
                               _promotionController
                                   .selectedLocations[index].type,
-                              color: AppColorConstants.grayscale600)
+                              color: AppColorConstants.subHeadingTextColor)
                         ]).vp(10).ripple(() {
                       _promotionController.selectLocations(
                           _promotionController.selectedLocations[index]);
@@ -110,7 +110,7 @@ class AudienceLocationScreen extends StatelessWidget {
                           BodyMediumText(
                               _promotionController
                                   .regionalLocations[index].type,
-                              color: AppColorConstants.grayscale600)
+                              color: AppColorConstants.subHeadingTextColor)
                         ]).vp(10).ripple(() {
                       _promotionController.selectLocations(
                           _promotionController.regionalLocations[index]);
@@ -172,14 +172,14 @@ class AudienceLocationScreen extends StatelessWidget {
                 trackHeight: 3.0,
                 valueIndicatorColor: Colors.transparent,
                 valueIndicatorTextStyle:
-                    TextStyle(color: AppColorConstants.grayscale900),
+                    TextStyle(color: AppColorConstants.mainTextColor),
                 showValueIndicator: ShowValueIndicator.always),
             child: Slider(
               min: 0.0,
               max: 100.0,
               value: _promotionController.radius.value,
               activeColor: AppColorConstants.themeColor,
-              inactiveColor: AppColorConstants.grayscale300,
+              inactiveColor: AppColorConstants.subHeadingTextColor,
               label: '${_promotionController.radius.value.toInt()} km',
               divisions: 100,
               onChanged: (value) => _promotionController.setRadiusRange(value),

@@ -1,6 +1,6 @@
 import 'dart:io';
 import 'package:flutter_login_facebook/flutter_login_facebook.dart';
-import 'package:foap/apiHandler/apis/auth_api.dart';
+import 'package:foap/api_handler/apis/auth_api.dart';
 import 'package:foap/helper/imports/common_import.dart';
 import 'package:foap/screens/login_sign_up/phone_login.dart';
 import 'package:foap/screens/login_sign_up/set_user_name.dart';
@@ -23,9 +23,11 @@ String sha256ofString(String input) {
 }
 
 class SocialLogin extends StatefulWidget {
+  final String? userName;
   final bool hidePhoneLogin;
 
-  const SocialLogin({Key? key, required this.hidePhoneLogin}) : super(key: key);
+  const SocialLogin({Key? key, required this.hidePhoneLogin, this.userName})
+      : super(key: key);
 
   @override
   State<SocialLogin> createState() => _SocialLoginState();
@@ -204,6 +206,7 @@ class _SocialLoginState extends State<SocialLogin> {
 
     AuthApi.socialLogin(
         name: name,
+        userName: widget.userName ?? '',
         socialType: type,
         socialId: userId,
         email: email,
@@ -215,15 +218,15 @@ class _SocialLoginState extends State<SocialLogin> {
           await _settingsController.getSettings();
 
           if (_userProfileManager.user.value != null) {
-            if (_userProfileManager.user.value!.userName.isEmpty) {
-              isLoginFirstTime = true;
-              Get.offAll(() => const SetUserName());
-            } else {
-              // ask for location
-              isLoginFirstTime = false;
-              getIt<LocationManager>().postLocation();
-              Get.offAll(() => const DashboardScreen());
-            }
+            // if (_userProfileManager.user.value!.userName.isEmpty) {
+            //   isLoginFirstTime = true;
+            //   Get.offAll(() => const SetUserName());
+            // } else {
+            // ask for location
+            isLoginFirstTime = false;
+            getIt<LocationManager>().postLocation();
+            Get.offAll(() => const DashboardScreen());
+            // }
             getIt<SocketManager>().connect();
           }
         });

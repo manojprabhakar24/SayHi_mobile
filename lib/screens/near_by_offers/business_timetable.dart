@@ -37,7 +37,7 @@
 //           children: [
 //             BodyMediumText(
 //               monday.tr,
-//               color: TextColor.grayscale700,
+//               color: TextColor.mainTextColor,
 //             ),
 //             BodySmallText(
 //               business!.timingForDay(1),
@@ -50,7 +50,7 @@
 //           children: [
 //             BodyMediumText(
 //               tuesday.tr,
-//               color: TextColor.grayscale700,
+//               color: TextColor.mainTextColor,
 //             ),
 //             BodySmallText(
 //               business!.timingForDay(2),
@@ -63,7 +63,7 @@
 //           children: [
 //             BodyMediumText(
 //               wednesday.tr,
-//               color: TextColor.grayscale700,
+//               color: TextColor.mainTextColor,
 //             ),
 //             BodySmallText(
 //               business!.timingForDay(3),
@@ -76,7 +76,7 @@
 //           children: [
 //             BodyMediumText(
 //               thursday.tr,
-//               color: TextColor.grayscale700,
+//               color: TextColor.mainTextColor,
 //             ),
 //             BodySmallText(
 //               business!.timingForDay(4),
@@ -89,7 +89,7 @@
 //           children: [
 //             BodyMediumText(
 //               friday.tr,
-//               color: TextColor.grayscale700,
+//               color: TextColor.mainTextColor,
 //             ),
 //             BodySmallText(
 //               business!.timingForDay(5),
@@ -102,7 +102,7 @@
 //           children: [
 //             BodyMediumText(
 //               saturday.tr,
-//               color: TextColor.grayscale700,
+//               color: TextColor.mainTextColor,
 //             ),
 //             BodySmallText(
 //               business!.timingForDay(6),
@@ -115,7 +115,7 @@
 //           children: [
 //             BodyMediumText(
 //               sunday.tr,
-//               color: TextColor.grayscale700,
+//               color: TextColor.mainTextColor,
 //             ),
 //             BodySmallText(
 //               business!.timingForDay(7),

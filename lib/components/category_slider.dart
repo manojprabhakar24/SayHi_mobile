@@ -1,5 +1,6 @@
 import '../helper/imports/common_import.dart';
 import '../model/category_model.dart';
+import '../util/constant_util.dart';
 
 class CategorySlider extends StatefulWidget {
   final List<CategoryModel> categories;
@@ -10,7 +11,7 @@ class CategorySlider extends StatefulWidget {
       : super(key: key);
 
   @override
-  _CategorySliderState createState() => _CategorySliderState();
+  State<CategorySlider> createState() => _CategorySliderState();
 }
 
 class _CategorySliderState extends State<CategorySlider> {
@@ -18,7 +19,7 @@ class _CategorySliderState extends State<CategorySlider> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       height: 40,
       child: ListView.separated(
           scrollDirection: Axis.horizontal,
@@ -27,16 +28,18 @@ class _CategorySliderState extends State<CategorySlider> {
           itemBuilder: (context, index) {
             return ChoiceChip(
               selectedColor: AppColorConstants.themeColor.darken(),
-              backgroundColor: AppColorConstants.themeColor.withOpacity(0.2),
+              backgroundColor: isDarkMode
+                  ? AppColorConstants.cardColor.lighten()
+                  : AppColorConstants.cardColor.darken(),
               shape: const RoundedRectangleBorder(
                   borderRadius: BorderRadius.all(
                 Radius.circular(10),
               )),
               label: BodyMediumText(
-                '${widget.categories[index].name}',
+                widget.categories[index].name,
                 color: widget.categories[index] == selectCategory
                     ? Colors.white
-                    : AppColorConstants.grayscale900,
+                    : AppColorConstants.mainTextColor,
               ),
               selected: widget.categories[index] == selectCategory,
               onSelected: (status) {

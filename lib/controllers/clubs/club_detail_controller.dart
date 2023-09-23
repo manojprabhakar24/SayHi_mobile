@@ -1,6 +1,6 @@
-import 'package:foap/apiHandler/apis/club_api.dart';
+import 'package:foap/api_handler/apis/club_api.dart';
 import 'package:foap/helper/imports/common_import.dart';
-import '../../apiHandler/apis/post_api.dart';
+import '../../api_handler/apis/post_api.dart';
 import '../../manager/db_manager_realm.dart';
 import '../../model/club_join_request.dart';
 import '../../model/club_model.dart';
@@ -63,10 +63,9 @@ class ClubDetailController extends GetxController {
           clubId: postSearchQuery.clubId,
           page: postsPage,
           resultCallback: (result, metadata) {
-            posts.addAll(
-                result);
+            posts.addAll(result);
             posts.sort((a, b) => b.createDate!.compareTo(a.createDate!));
-            posts.unique((e)=> e.id);
+            posts.unique((e) => e.id);
 
             isLoading.value = false;
 
@@ -91,7 +90,7 @@ class ClubDetailController extends GetxController {
           page: jonRequestsPage,
           resultCallback: (result, metadata) {
             joinRequests.addAll(result);
-            joinRequests.unique((e)=> e.id);
+            joinRequests.unique((e) => e.id);
 
             isLoading.value = false;
 
@@ -109,6 +108,7 @@ class ClubDetailController extends GetxController {
     if (text.startsWith('#')) {
       Get.to(() => Posts(
                 hashTag: text.replaceAll('#', ''),
+                title: text,
               ))!
           .then((value) {
         getPosts(clubId: postSearchQuery.clubId!, callback: () {});

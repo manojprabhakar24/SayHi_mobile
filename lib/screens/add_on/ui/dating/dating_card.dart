@@ -13,7 +13,7 @@ class DatingCard extends StatefulWidget {
 class DatingCardState extends State<DatingCard> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return AppScaffold(
       backgroundColor: AppColorConstants.backgroundColor,
       body: Column(
         children: [
@@ -321,13 +321,13 @@ class _DragWidgetState extends State<DragWidget> {
         // When Draggable widget is dragged right
         if (dragUpdateDetails.delta.dx > 0 &&
             dragUpdateDetails.globalPosition.dx >
-                MediaQuery.of(context).size.width / 2) {
+                Get.width / 2) {
           swipeNotifier.value = Swipe.right;
         }
         // When Draggable widget is dragged left
         if (dragUpdateDetails.delta.dx < 0 &&
             dragUpdateDetails.globalPosition.dx <
-                MediaQuery.of(context).size.width / 2) {
+                Get.width / 2) {
           swipeNotifier.value = Swipe.left;
         }
       },
@@ -418,8 +418,8 @@ class ProfileCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: MediaQuery.of(context).size.height - 270,
-      width: MediaQuery.of(context).size.width - 40,
+      height: Get.height - 270,
+      width: Get.width - 40,
       child: Stack(
         children: [
           Positioned.fill(
@@ -446,7 +446,7 @@ class ProfileCard extends StatelessWidget {
             bottom: 0,
             child: Container(
               height: 80,
-              width: MediaQuery.of(context).size.width - 40,
+              width: Get.width - 40,
               decoration: ShapeDecoration(
                 color: AppColorConstants.cardColor.darken(),
                 shape: RoundedRectangleBorder(
@@ -469,7 +469,7 @@ class ProfileCard extends StatelessWidget {
                         profile.name == null
                             ? profile.userName
                             : profile.name ?? '',
-                        color: AppColorConstants.grayscale900,
+                        color: AppColorConstants.mainTextColor,
                         weight: TextWeight.semiBold,
                         maxLines: 1,
                       ),
@@ -486,7 +486,7 @@ class ProfileCard extends StatelessWidget {
                   if (profile.city != null)
                     BodyMediumText(
                       profile.city!,
-                      color: AppColorConstants.grayscale500,
+                      color: AppColorConstants.subHeadingTextColor,
                     ),
                   BodySmallText(
                     profile.genderType == GenderType.female
@@ -494,7 +494,7 @@ class ProfileCard extends StatelessWidget {
                         : profile.genderType == GenderType.other
                             ? otherString.tr
                             : maleString.tr,
-                    color: AppColorConstants.grayscale500,
+                    color: AppColorConstants.subHeadingTextColor,
                   ),
                 ],
               ).setPadding(left: 20),

@@ -31,7 +31,7 @@ class PackagesScreenState extends State<PackagesScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return AppScaffold(
       backgroundColor: AppColorConstants.backgroundColor,
       body: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
 

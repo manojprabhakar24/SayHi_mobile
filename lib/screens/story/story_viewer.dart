@@ -31,7 +31,7 @@ class _StoryViewerState extends State<StoryViewer> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return AppScaffold(
       backgroundColor: AppColorConstants.backgroundColor,
       resizeToAvoidBottomInset: false,
       body: storyWidget(),
@@ -138,8 +138,9 @@ class _StoryViewerState extends State<StoryViewer> {
                 Obx(() => storyController.currentStoryMediaModel.value != null
                     ? BodyMediumText(
                         storyController.currentStoryMediaModel.value!.createdAt,
-                        color: AppColorConstants.grayscale100,
-                      )
+                        color: Colors.white
+                        // color: AppColorConstants.subHeadingTextColor,
+                        )
                     : Container())
               ],
             ),
@@ -228,5 +229,4 @@ class _StoryViewerState extends State<StoryViewer> {
           })
         : Container());
   }
-
 }

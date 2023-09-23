@@ -15,7 +15,7 @@ class _ChatGPTState extends State<ChatGPT> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return AppScaffold(
       backgroundColor: AppColorConstants.backgroundColor,
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -89,7 +89,7 @@ class _ChatGPTState extends State<ChatGPT> {
                               textAlign: TextAlign.start,
                               style: TextStyle(
                                   fontSize: FontSizes.h5,
-                                  color: AppColorConstants.grayscale900,
+                                  color: AppColorConstants.mainTextColor,
                                   fontWeight: TextWeight.medium),
                               maxLines: 50,
                               decoration: InputDecoration(

@@ -44,10 +44,6 @@ class OtherUserProfileState extends State<OtherUserProfile>
   @override
   void initState() {
     super.initState();
-
-    if (widget.user != null) {
-      _profileController.setUser(widget.user!);
-    }
     controller = TabController(vsync: this, length: tabs.length)
       ..addListener(() {});
     initialLoad();
@@ -55,6 +51,8 @@ class OtherUserProfileState extends State<OtherUserProfile>
 
   initialLoad() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
+      _profileController.setUser(widget.user!);
+
       _profileController.clear();
       loadData();
     });
@@ -86,17 +84,18 @@ class OtherUserProfileState extends State<OtherUserProfile>
 
   @override
   Widget build(BuildContext context) {
-    return Obx(() => Scaffold(
+    return Obx(() => AppScaffold(
           backgroundColor: AppColorConstants.backgroundColor,
           body: Stack(
             children: [
               SingleChildScrollView(
                 child: Column(children: [
                   if (_settingsController.appearanceChanged!.value) Container(),
-                  addProfileView(),
                   const SizedBox(
                     height: 20,
                   ),
+                  addProfileView(),
+                  addHighlightsView().bP25,
                   contentWidget()
                 ]),
               ),
@@ -113,9 +112,6 @@ class OtherUserProfileState extends State<OtherUserProfile>
           return _profileController.user.value != null
               ? Column(
                   children: [
-                    const SizedBox(
-                      height: 20,
-                    ),
                     Stack(
                       children: [coverImage(), imageAndNameView()],
                     ),
@@ -223,7 +219,7 @@ class OtherUserProfileState extends State<OtherUserProfile>
                       : followString.tr.toUpperCase(),
               color: _profileController.user.value!.isFollowing
                   ? AppColorConstants.themeColor
-                  : AppColorConstants.grayscale900,
+                  : AppColorConstants.mainTextColor,
               weight: _profileController.user.value!.isFollowing
                   ? TextWeight.bold
                   : TextWeight.medium,
@@ -294,7 +290,14 @@ class OtherUserProfileState extends State<OtherUserProfile>
                 postsString.tr,
               ),
             ],
-          ),
+          ).ripple(() {
+            if (_profileController.user.value!.totalPost > 0) {
+              Get.to(() => Posts(
+                    userId: _profileController.user.value!.id,
+                    title: _profileController.user.value!.userName,
+                  ));
+            }
+          }),
           // const SizedBox(
           //   width: 20,
           // ),
@@ -350,17 +353,33 @@ class OtherUserProfileState extends State<OtherUserProfile>
 
   Widget appBar() {
     return Container(
-      color: Colors.black26,
       height: 100,
-      child: backNavigationBarWithTrailingWidget(
-        title: '',
-        widget: const ThemeIconWidget(
-          ThemeIcon.more,
-          color: Colors.white,
-        ).ripple(() {
-          openActionPopup();
-        }),
-      ),
+      color: AppColorConstants.cardColor,
+      width: double.infinity,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          const SizedBox(
+              width: 50,
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: ThemeIconWidget(
+                  ThemeIcon.backArrow,
+                  size: 18,
+                ),
+              )).ripple(() {
+            Get.back();
+          }),
+          const ThemeIconWidget(
+            ThemeIcon.more,
+          ).ripple(() {
+            openActionPopup();
+          }),
+        ],
+      ).setPadding(
+          left: DesignConstants.horizontalPadding,
+          right: DesignConstants.horizontalPadding,
+          top: 40),
     );
   }
 
@@ -397,24 +416,23 @@ class OtherUserProfileState extends State<OtherUserProfile>
             ));
   }
 
-  addHighlightsView() {
+  Widget addHighlightsView() {
     return GetBuilder<HighlightsController>(
         init: _highlightsController,
         builder: (ctx) {
           return _highlightsController.isLoading == true
               ? const StoryAndHighlightsShimmer()
-              : HighlightsBar(
-                  highlights: _highlightsController.highlights,
-                  addHighlightCallback: () {
-                    Get.to(() => const ChooseStoryForHighlights());
-                  },
-                  viewHighlightCallback: (highlight) {
-                    Get.to(() => HighlightViewer(highlight: highlight))!
-                        .then((value) {
-                      loadData();
-                    });
-                  },
-                );
+              : _highlightsController.highlights.isEmpty
+                  ? Container()
+                  : HighlightsBar(
+                      highlights: _highlightsController.highlights,
+                      viewHighlightCallback: (highlight) {
+                        Get.to(() => HighlightViewer(highlight: highlight))!
+                            .then((value) {
+                          loadData();
+                        });
+                      },
+                    ).vP25;
         });
   }
 
@@ -465,9 +483,12 @@ class OtherUserProfileState extends State<OtherUserProfile>
                       ],
                     ),
                   ).round(20).ripple(() {
-                    Get.to(() => Posts(
-                          userId: _profileController.user.value!.id,
-                        ));
+                    if (_profileController.user.value!.totalPost > 0) {
+                      Get.to(() => Posts(
+                            userId: _profileController.user.value!.id,
+                            title: _profileController.user.value!.userName,
+                          ));
+                    }
                   }),
                   const SizedBox(
                     width: 5,
@@ -510,14 +531,16 @@ class OtherUserProfileState extends State<OtherUserProfile>
                       ],
                     ),
                   ).round(20).ripple(() {
-                    ReelsController reelsController = Get.find();
+                    if (_profileController.user.value!.totalReels > 0) {
+                      ReelsController reelsController = Get.find();
 
-                    PostSearchQuery query = PostSearchQuery();
-                    query.userId = _profileController.user.value!.id;
-                    reelsController.setReelsSearchQuery(query);
-                    Get.to(() => const Reels(
-                          needBackBtn: true,
-                        ));
+                      PostSearchQuery query = PostSearchQuery();
+                      query.userId = _profileController.user.value!.id;
+                      reelsController.setReelsSearchQuery(query);
+                      Get.to(() => const Reels(
+                            needBackBtn: true,
+                          ));
+                    }
                   }),
                 ],
               ),
@@ -565,8 +588,10 @@ class OtherUserProfileState extends State<OtherUserProfile>
                       ],
                     ),
                   ).round(20).ripple(() {
-                    Get.to(() =>
-                        Mentions(userId: _profileController.user.value!.id));
+                    if (_profileController.user.value!.totalMentions > 0) {
+                      Get.to(() =>
+                          Mentions(userId: _profileController.user.value!.id));
+                    }
                   }),
                   const SizedBox(
                     width: 5,
@@ -609,9 +634,11 @@ class OtherUserProfileState extends State<OtherUserProfile>
                       ],
                     ),
                   ).round(20).ripple(() {
-                    Get.to(() => UsersClubs(
-                          user: _profileController.user.value!,
-                        ));
+                    if (_profileController.user.value!.totalClubs > 0) {
+                      Get.to(() => UsersClubs(
+                            user: _profileController.user.value!,
+                          ));
+                    }
                   }),
                 ],
               ),

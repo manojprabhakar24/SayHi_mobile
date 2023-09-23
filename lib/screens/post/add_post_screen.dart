@@ -61,7 +61,7 @@ class AddPostState extends State<AddPostScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return AppScaffold(
       backgroundColor: AppColorConstants.backgroundColor,
       body: GetBuilder<AddPostController>(
           init: addPostController,
@@ -310,7 +310,7 @@ class AddPostState extends State<AddPostScreen> {
               textAlign: TextAlign.left,
               style: TextStyle(
                   fontSize: FontSizes.h5,
-                  color: AppColorConstants.grayscale900),
+                  color: AppColorConstants.mainTextColor),
               maxLines: 5,
               onChanged: (text) {
                 addPostController.textChanged(
@@ -323,7 +323,7 @@ class AddPostState extends State<AddPostScreen> {
                   counterText: "",
                   hintStyle: TextStyle(
                       fontSize: FontSizes.h5,
-                      color: AppColorConstants.grayscale500),
+                      color: AppColorConstants.subHeadingTextColor),
                   hintText: addSomethingAboutPostString.tr),
             ),
           ).round(10),

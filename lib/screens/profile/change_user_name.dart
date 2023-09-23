@@ -21,7 +21,7 @@ class _ChangeUserNameState extends State<ChangeUserName> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return AppScaffold(
       backgroundColor: AppColorConstants.backgroundColor,
       body: Column(
         children: [
@@ -38,7 +38,6 @@ class _ChangeUserNameState extends State<ChangeUserName> {
                     isSigningUp: false,
                     );
               }),
-          divider().vP8,
           const SizedBox(
             height: 20,
           ),

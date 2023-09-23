@@ -26,30 +26,31 @@ class EventCard extends StatelessWidget {
         children: [
           Stack(
             children: [
-              Container(
-                child: CachedNetworkImage(
-                  imageUrl: event.image,
-                  fit: BoxFit.cover,
-                  width: double.infinity,
-                  height: Get.width * 0.41,
-                ).round(25).ripple(() {
-                  previewBtnClicked();
-                }),
-              ),
+              CachedNetworkImage(
+                imageUrl: event.image,
+                fit: BoxFit.cover,
+                width: double.infinity,
+                height: Get.width * 0.45,
+              ).round(25).ripple(() {
+                previewBtnClicked();
+              }),
               if (event.isFree)
                 Positioned(
                     top: 10,
                     right: 10,
                     child: Container(
                       color: AppColorConstants.themeColor,
-                      child: Text(freeString.tr).p4,
+                      child: BodyLargeText(
+                        freeString.tr,
+                        color: Colors.white,
+                      ).p8,
                     ).round(5))
             ],
           ),
           const SizedBox(
             height: 12,
           ),
-          Heading4Text(
+          Heading5Text(
             event.name,
             weight: TextWeight.semiBold,
             maxLines: 1,
@@ -144,12 +145,12 @@ class EventCard2 extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Heading4Text(event.name,
+                    Heading5Text(event.name,
                         maxLines: 1, weight: TextWeight.semiBold),
                     const SizedBox(
                       height: 10,
                     ),
-                    Heading6Text(event.startAtDateTime.toUpperCase(),
+                    BodyMediumText(event.startAtDateTime.toUpperCase(),
                         maxLines: 1,
                         weight: TextWeight.regular,
                         color: AppColorConstants.themeColor),
@@ -167,7 +168,7 @@ class EventCard2 extends StatelessWidget {
                         const SizedBox(
                           width: 5,
                         ),
-                        BodyLargeText(event.placeName,
+                        BodyMediumText(event.placeName,
                             weight: TextWeight.medium),
                       ],
                     ),

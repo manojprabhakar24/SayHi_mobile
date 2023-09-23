@@ -4,11 +4,14 @@ import 'package:foap/helper/number_extension.dart';
 import 'package:foap/screens/profile/update_profile.dart';
 import 'package:foap/screens/profile/users_club_listing.dart';
 import 'package:foap/screens/settings_menu/settings.dart';
+import '../../components/highlights_bar.dart';
 import '../../controllers/post/post_controller.dart';
 import '../../controllers/story/highlights_controller.dart';
 import '../../controllers/profile/profile_controller.dart';
 import '../dashboard/mentions.dart';
 import '../dashboard/posts.dart';
+import '../highlights/choose_stories.dart';
+import '../highlights/hightlights_viewer.dart';
 import '../settings_menu/settings_controller.dart';
 import 'follower_following_list.dart';
 
@@ -76,7 +79,7 @@ class MyProfileState extends State<MyProfile>
 
   @override
   Widget build(BuildContext context) {
-    return Obx(() => Scaffold(
+    return Obx(() => AppScaffold(
           backgroundColor: AppColorConstants.backgroundColor,
           body: Stack(
             children: [
@@ -84,6 +87,7 @@ class MyProfileState extends State<MyProfile>
                 child: Column(children: [
                   if (_settingsController.appearanceChanged!.value) Container(),
                   addProfileView(),
+                  addHighlightsView(),
                   contentWidget(),
                 ]),
               ),
@@ -95,7 +99,7 @@ class MyProfileState extends State<MyProfile>
 
   Widget addProfileView() {
     return SizedBox(
-      height: 480,
+      height: 440,
       child: GetBuilder<ProfileController>(
           init: _profileController,
           builder: (ctx) {
@@ -146,94 +150,18 @@ class MyProfileState extends State<MyProfile>
                                   _profileController
                                       .user.value!.profileCategoryTypeName,
                                   weight: TextWeight.medium,
-                                  color: AppColorConstants.grayscale700,
+                                  color: AppColorConstants.mainTextColor,
                                 ).bP4,
                               if (_profileController.user.value!.country !=
                                   null)
                                 BodyMediumText(
                                   '${_profileController.user.value!.country}, ${_profileController.user.value!.city}',
-                                  color: AppColorConstants.grayscale700,
+                                  color: AppColorConstants.mainTextColor,
                                 ),
                               const SizedBox(
                                 height: 20,
                               ),
-                              Container(
-                                color: AppColorConstants.cardColor.darken(),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceAround,
-                                  children: [
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      children: [
-                                        Heading4Text(
-                                          _profileController
-                                              .user.value!.totalPost
-                                              .toString(),
-                                          weight: TextWeight.medium,
-                                        ).bP8,
-                                        BodySmallText(
-                                          postsString.tr,
-                                        ),
-                                      ],
-                                    ),
-                                    // const Spacer(),
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      children: [
-                                        Heading4Text(
-                                          '${_profileController.user.value!.totalFollower}',
-                                          weight: TextWeight.medium,
-                                        ).bP8,
-                                        BodySmallText(
-                                          followersString.tr,
-                                        ),
-                                      ],
-                                    ).ripple(() {
-                                      if (_profileController
-                                              .user.value!.totalFollower >
-                                          0) {
-                                        Get.to(() => FollowerFollowingList(
-                                                  isFollowersList: true,
-                                                  userId: _userProfileManager
-                                                      .user.value!.id,
-                                                ))!
-                                            .then((value) {
-                                          loadData();
-                                        });
-                                      }
-                                    }),
-                                    // const Spacer(),
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      children: [
-                                        Heading4Text(
-                                          '${_profileController.user.value!.totalFollowing}',
-                                          weight: TextWeight.medium,
-                                        ).bP8,
-                                        BodySmallText(
-                                          followingString.tr,
-                                        ),
-                                      ],
-                                    ).ripple(() {
-                                      if (_profileController
-                                              .user.value!.totalFollowing >
-                                          0) {
-                                        Get.to(() => FollowerFollowingList(
-                                                isFollowersList: false,
-                                                userId: _userProfileManager
-                                                    .user.value!.id))!
-                                            .then((value) {
-                                          loadData();
-                                        });
-                                      }
-                                    }),
-                                  ],
-                                ).p16,
-                              ).round(15),
+                              statsView(),
                               const SizedBox(
                                 height: 20,
                               ),
@@ -255,16 +183,114 @@ class MyProfileState extends State<MyProfile>
     );
   }
 
-  Widget appBar() {
+  Widget statsView() {
     return Container(
-      color: Colors.black26,
+      color: AppColorConstants.cardColor.darken(),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Heading4Text(
+                _profileController.user.value!.totalPost.toString(),
+                weight: TextWeight.medium,
+              ).bP8,
+              BodySmallText(
+                postsString.tr,
+              ),
+            ],
+          ).ripple(() {
+            if (_userProfileManager.user.value!.totalPost > 0) {
+              Get.to(() => Posts(
+                    userId: _userProfileManager.user.value!.id,
+                    title: _userProfileManager.user.value!.userName,
+                  ));
+            }
+          }),
+          // const Spacer(),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Heading4Text(
+                '${_profileController.user.value!.totalFollower}',
+                weight: TextWeight.medium,
+              ).bP8,
+              BodySmallText(
+                followersString.tr,
+              ),
+            ],
+          ).ripple(() {
+            if (_profileController.user.value!.totalFollower > 0) {
+              Get.to(() => FollowerFollowingList(
+                        isFollowersList: true,
+                        userId: _userProfileManager.user.value!.id,
+                      ))!
+                  .then((value) {
+                loadData();
+              });
+            }
+          }),
+          // const Spacer(),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Heading4Text(
+                '${_profileController.user.value!.totalFollowing}',
+                weight: TextWeight.medium,
+              ).bP8,
+              BodySmallText(
+                followingString.tr,
+              ),
+            ],
+          ).ripple(() {
+            if (_profileController.user.value!.totalFollowing > 0) {
+              Get.to(() => FollowerFollowingList(
+                      isFollowersList: false,
+                      userId: _userProfileManager.user.value!.id))!
+                  .then((value) {
+                loadData();
+              });
+            }
+          }),
+        ],
+      ).p16,
+    ).round(15);
+  }
+
+  addHighlightsView() {
+    return GetBuilder<HighlightsController>(
+        init: _highlightsController,
+        builder: (ctx) {
+          return _highlightsController.isLoading == true
+              ? const StoryAndHighlightsShimmer()
+              : _highlightsController.highlights.isEmpty
+                  ? Container()
+                  : HighlightsBar(
+                      highlights: _highlightsController.highlights,
+                      addHighlightCallback: () {
+                        Get.to(() => const ChooseStoryForHighlights());
+                      },
+                      viewHighlightCallback: (highlight) {
+                        Get.to(() => HighlightViewer(highlight: highlight))!
+                            .then((value) {
+                          loadData();
+                        });
+                      },
+                    ).vP25;
+        });
+  }
+
+  Widget appBar() {
+    return SizedBox(
+      // color: Colors.black26,
       height: 100,
       child: widget.showBack == true
           ? backNavigationBarWithTrailingWidget(
               title: '',
-              widget: const ThemeIconWidget(
+              widget: ThemeIconWidget(
                 ThemeIcon.setting,
-                color: Colors.white,
+                color: AppColorConstants.themeColor,
               ).ripple(() {
                 Get.to(() => const Settings());
               }),
@@ -272,7 +298,7 @@ class MyProfileState extends State<MyProfile>
           : titleNavigationBarWithIcon(
               title: '',
               icon: ThemeIcon.setting,
-              iconColor: Colors.white,
+              iconColor: AppColorConstants.themeColor,
               completion: () {
                 Get.to(() => const Settings());
               }).tp(40),
@@ -323,6 +349,7 @@ class MyProfileState extends State<MyProfile>
             ).round(20).ripple(() {
               Get.to(() => Posts(
                     userId: _userProfileManager.user.value!.id,
+                    title: _userProfileManager.user.value!.userName,
                   ));
             }),
             const SizedBox(

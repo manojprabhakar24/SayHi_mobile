@@ -13,7 +13,7 @@ class ClubDescriptionState extends State<ClubDescription> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return AppScaffold(
       backgroundColor: AppColorConstants.backgroundColor,
       // appBar: CustomNavigationBar(
       //   child: appBar(),

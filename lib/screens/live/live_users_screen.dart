@@ -1,6 +1,7 @@
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:foap/helper/imports/common_import.dart';
 import 'package:foap/helper/number_extension.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 import '../../controllers/live/agora_live_controller.dart';
 import '../../model/call_model.dart';
 import '../../controllers/live/live_users_controller.dart';
@@ -15,18 +16,30 @@ class LiveUserScreen extends StatefulWidget {
 class _LiveUserScreenState extends State<LiveUserScreen> {
   final AgoraLiveController _agoraLiveController = Get.find();
   final LiveUserController _liveUserController = Get.find();
+  final RefreshController _refreshController =
+      RefreshController(initialRefresh: false);
 
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      _liveUserController.getLiveUsers();
+      _liveUserController.getLiveUsers(() {});
     });
     super.initState();
   }
 
+  loadMore() {
+    _liveUserController.loadMore(() {});
+  }
+
+  @override
+  void dispose() {
+    _liveUserController.clear();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return AppScaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: AppColorConstants.backgroundColor,
       body: KeyboardDismissOnTap(
@@ -60,12 +73,12 @@ class _LiveUserScreenState extends State<LiveUserScreen> {
                           child: Stack(
                             children: [
                               Center(
-                                child: UserAvatarView(
-                                  size: Get.width/2,
+                                child: UserPlaneImageView(
+                                  size: Get.width / 3,
                                   user: liveStreaming.host![0],
-                                  hideBorder: true,
-                                  hideOnlineIndicator: true,
-                                  hideLiveIndicator: true,
+                                  // hideBorder: true,
+                                  // hideOnlineIndicator: true,
+                                  // hideLiveIndicator: true,
                                 ),
                               ),
                               Positioned(
@@ -106,7 +119,14 @@ class _LiveUserScreenState extends State<LiveUserScreen> {
                             live: live,
                           );
                         });
-                      }),
+                      }).addPullToRefresh(
+                      refreshController: _refreshController,
+                      onRefresh: () {},
+                      onLoading: () {
+                        loadMore();
+                      },
+                      enablePullUp: true,
+                      enablePullDown: false),
             ),
           ),
         ],

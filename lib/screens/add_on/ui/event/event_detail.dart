@@ -1,23 +1,8 @@
 import 'dart:math';
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:foap/components/avatar_view.dart';
-import 'package:foap/components/custom_texts.dart';
 import 'package:foap/components/static_map_widget.dart';
-import 'package:foap/helper/common_components.dart';
-import 'package:foap/helper/extension.dart';
-import 'package:foap/helper/localization_strings.dart';
-import 'package:foap/helper/user_profile_manager.dart';
-import 'package:foap/theme/theme_icon.dart';
-import 'package:foap/universal_components/app_buttons.dart';
-import 'package:foap/util/app_config_constants.dart';
-import 'package:get/get.dart';
 import 'package:foap/helper/imports/event_imports.dart';
 import 'package:map_launcher/map_launcher.dart';
-import 'package:flutter/material.dart';
-
-import 'buy_ticket.dart';
-import 'event_gallery.dart';
+import 'package:foap/helper/imports/common_import.dart';
 
 class EventDetail extends StatefulWidget {
   final EventModel event;
@@ -52,7 +37,7 @@ class EventDetailState extends State<EventDetail> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return AppScaffold(
       backgroundColor: AppColorConstants.backgroundColor,
       body: GetBuilder<EventDetailController>(
           init: _eventDetailController,
@@ -78,9 +63,9 @@ class EventDetailState extends State<EventDetail> {
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Heading3Text(
+                              Heading4Text(
                                 widget.event.name,
-                                weight: TextWeight.medium,
+                                weight: TextWeight.semiBold,
                               ),
                               const SizedBox(
                                 height: 20,
@@ -97,7 +82,7 @@ class EventDetailState extends State<EventDetail> {
                               ),
                               if (widget.event.latitude.isNotEmpty &&
                                   widget.event.longitude.isNotEmpty)
-                              eventLocation(),
+                                eventLocation(),
                               const SizedBox(
                                 height: 150,
                               ),
@@ -112,12 +97,15 @@ class EventDetailState extends State<EventDetail> {
                 if (!widget.event.isFree)
                   Obx(() => _eventDetailController.isLoading.value == true
                       ? Container()
-                      : _eventDetailController.event.value?.ticketsAdded == true
-                          ? _eventDetailController.event.value?.isSoldOut ==
+                      : _eventDetailController.event.value?.isClosed == true
+                          ? eventClosedWidget()
+                          : _eventDetailController.event.value?.ticketsAdded ==
                                   true
-                              ? soldOutWidget()
-                              : buyTicketWidget()
-                          : ticketNotAddedWidget())
+                              ? _eventDetailController.event.value?.isSoldOut ==
+                                      true
+                                  ? soldOutWidget()
+                                  : buyTicketWidget()
+                              : ticketNotAddedWidget())
               ],
             );
           }),
@@ -232,6 +220,8 @@ class EventDetailState extends State<EventDetail> {
                           UserAvatarView(
                             user: _userProfileManager.user.value!,
                             size: 30,
+                            hideLiveIndicator: true,
+                            hideOnlineIndicator: true,
                           ),
                           const SizedBox(
                             width: 10,
@@ -310,9 +300,37 @@ class EventDetailState extends State<EventDetail> {
                 width: 10,
               ),
               Expanded(
-                  child: Text(
+                  child: BodyLargeText(
                 eventIsSoldOutString.tr,
-                style: TextStyle(fontSize: FontSizes.b2),
+              )),
+            ],
+          ).hp(DesignConstants.horizontalPadding),
+        ));
+  }
+
+  Widget eventClosedWidget() {
+    return Positioned(
+        bottom: 0,
+        left: 0,
+        right: 0,
+        child: Container(
+          color: AppColorConstants.cardColor,
+          height: 100,
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Image.asset(
+                'assets/out_of_stock.png',
+                height: 20,
+                width: 20,
+                color: AppColorConstants.themeColor,
+              ),
+              const SizedBox(
+                width: 10,
+              ),
+              Expanded(
+                  child: BodyLargeText(
+                eventClosedString.tr,
               )),
             ],
           ).hp(DesignConstants.horizontalPadding),
@@ -502,11 +520,11 @@ class EventDetailState extends State<EventDetail> {
                     title: Heading5Text(
                       '${openInString.tr} ${map.mapName}',
                     ),
-                    leading: SvgPicture.asset(
-                      map.icon,
-                      height: 30.0,
-                      width: 30.0,
-                    ),
+                    // leading: SvgPicture.asset(
+                    //   map.icon,
+                    //   height: 30.0,
+                    //   width: 30.0,
+                    // ),
                   ),
               ],
             ),
@@ -520,7 +538,7 @@ class EventDetailState extends State<EventDetail> {
     return Positioned(
       child: Container(
         height: 150.0,
-        width: MediaQuery.of(context).size.width,
+        width: Get.width,
         decoration: BoxDecoration(
             color: Colors.white,
             gradient: LinearGradient(
@@ -547,7 +565,7 @@ class EventDetailState extends State<EventDetail> {
               Get.back();
             }),
           ],
-        ).hp(DesignConstants.horizontalPadding),
+        ).hp(DesignConstants.horizontalPadding * 2),
       ),
     );
   }

@@ -253,7 +253,7 @@ class CameraPickerViewerState extends State<CameraPickerViewer> {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         SizedBox(
-          width: MediaQuery.of(context).size.width * 0.45,
+          width: Get.width * 0.45,
           child: AppThemeBorderButton(
               backgroundColor: AppColorConstants.backgroundColor,
               text: backString.tr,
@@ -265,7 +265,7 @@ class CameraPickerViewerState extends State<CameraPickerViewer> {
               }),
         ),
         SizedBox(
-          width: MediaQuery.of(context).size.width * 0.45,
+          width: Get.width * 0.45,
           child: AppThemeButton(
             text: Constants.textDelegate.confirm,
             onPress: createAssetEntityAndPop,

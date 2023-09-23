@@ -1,12 +1,10 @@
 import 'package:detectable_text_field/detector/sample_regular_expressions.dart';
 import 'package:detectable_text_field/widgets/detectable_text.dart';
-import 'package:foap/apiHandler/apis/users_api.dart';
+import 'package:foap/api_handler/apis/users_api.dart';
 import 'package:foap/helper/imports/common_import.dart';
 import '../model/comment_model.dart';
-
 import '../model/post_gallery.dart';
 import '../model/search_model.dart';
-
 import '../screens/dashboard/posts.dart';
 import '../screens/home_feed/post_media_full_screen.dart';
 import '../screens/profile/other_user_profile.dart';
@@ -83,9 +81,9 @@ class CommentTileState extends State<CommentTile> {
       detectedStyle: TextStyle(
           fontSize: FontSizes.b3,
           fontWeight: TextWeight.semiBold,
-          color: AppColorConstants.grayscale900),
+          color: AppColorConstants.mainTextColor),
       basicStyle: TextStyle(
-          fontSize: FontSizes.b3, color: AppColorConstants.grayscale900),
+          fontSize: FontSizes.b3, color: AppColorConstants.mainTextColor),
       onTap: (tappedText) {
         commentTextTapHandler(text: tappedText);
         // postCardController.titleTextTapped(text: tappedText,post: widget.model);
@@ -124,6 +122,7 @@ class CommentTileState extends State<CommentTile> {
     if (text.startsWith('#')) {
       Get.to(() => Posts(
             hashTag: text.replaceAll('#', ''),
+            title: text,
           ));
     } else {
       String userTag = text.replaceAll('@', '');

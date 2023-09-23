@@ -1,8 +1,13 @@
 import 'dart:io';
-
 import 'package:foap/helper/enum.dart';
 import 'package:foap/helper/imports/common_import.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:mime/mime.dart';
+import 'package:video_thumbnail/video_thumbnail.dart';
+
+import '../screens/chat/media.dart';
+import '../util/constant_util.dart';
+
 extension FileExtension on File {
   GalleryMediaType get mediaType {
     final mimeType = lookupMimeType(path)!.toLowerCase();
@@ -48,5 +53,27 @@ extension FileExtension on File {
         return GalleryMediaType.txt;
     }
     return GalleryMediaType.photo;
+  }
+}
+
+extension XFileExtension on XFile {
+  Future<Media> toMedia(GalleryMediaType mediaType) async {
+    Media media = Media();
+    media.mediaType = mediaType;
+    media.file = File(path);
+    media.mainFileBytes = await readAsBytes();
+    media.title = name;
+    if (mediaType == GalleryMediaType.video) {
+      media.thumbnail = await VideoThumbnail.thumbnailData(
+        video: path,
+        imageFormat: ImageFormat.JPEG,
+        maxWidth: 500,
+        // specify the width of the thumbnail, let the height auto-scaled to keep the source aspect ratio
+        quality: 25,
+      );
+    }
+
+    media.id = randomId();
+    return media;
   }
 }

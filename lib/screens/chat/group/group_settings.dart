@@ -18,7 +18,7 @@ class _GroupSettingsState extends State<GroupSettings> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return AppScaffold(
       backgroundColor: AppColorConstants.backgroundColor,
       body: Column(
         children: [

@@ -44,7 +44,7 @@ class PromotionGoalScreen extends StatelessWidget {
               BodyMediumText(
                 goalInfo.tr,
                 weight: FontWeight.normal,
-                color: AppColorConstants.grayscale600,
+                color: AppColorConstants.subHeadingTextColor,
               ).setPadding(top: 8, bottom: 25),
               addCheckboxTile(moreProfileVisits.tr, GoalType.profile),
               addCheckboxTile(moreMessages.tr, GoalType.message),
@@ -78,7 +78,7 @@ class PromotionGoalScreen extends StatelessWidget {
         BodyExtraLargeText(
           title,
           weight: FontWeight.normal,
-          color: AppColorConstants.grayscale800,
+          color: AppColorConstants.mainTextColor,
         ),
         ThemeIconWidget(
             _promotionController.order.goalType == type
@@ -87,7 +87,7 @@ class PromotionGoalScreen extends StatelessWidget {
             size: 25,
             color: _promotionController.order.goalType == type
                 ? AppColorConstants.themeColor
-                : AppColorConstants.grayscale800),
+                : AppColorConstants.mainTextColor),
       ],
     ).vP16.ripple(() {
       if (type == GoalType.website) {

@@ -49,7 +49,7 @@ class CallHistoryTile extends StatelessWidget {
                             : incomingString.tr,
                     color: model.isMissedCall
                         ? AppColorConstants.red
-                        : AppColorConstants.grayscale900,
+                        : AppColorConstants.mainTextColor,
                   ),
                 ],
               )

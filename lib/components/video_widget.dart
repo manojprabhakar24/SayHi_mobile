@@ -62,9 +62,9 @@ class _VideoPostTileState extends State<VideoPostTile> {
       children: [
         SizedBox(
           height: min(
-              (MediaQuery.of(context).size.width - 32) /
+              (Get.width - 32) /
                   videoPlayerController!.value.aspectRatio,
-              MediaQuery.of(context).size.height * 0.5),
+              Get.height * 0.5),
           child: FutureBuilder(
             future: initializeVideoPlayerFuture,
             builder: (context, snapshot) {
@@ -116,9 +116,9 @@ class _VideoPostTileState extends State<VideoPostTile> {
                 top: 0,
                 child: Container(
                   height: min(
-                      (MediaQuery.of(context).size.width - 32) /
+                      (Get.width - 32) /
                           videoPlayerController!.value.aspectRatio,
-                      MediaQuery.of(context).size.height * 0.5),
+                      Get.height * 0.5),
                   color: Colors.black38,
                   child: const ThemeIconWidget(
                     ThemeIcon.play,

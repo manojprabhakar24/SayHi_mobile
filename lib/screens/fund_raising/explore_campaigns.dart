@@ -30,7 +30,7 @@ class _ExploreCampaignsState extends State<ExploreCampaigns> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return AppScaffold(
         backgroundColor: AppColorConstants.backgroundColor,
         body: GestureDetector(
           onTap: () {

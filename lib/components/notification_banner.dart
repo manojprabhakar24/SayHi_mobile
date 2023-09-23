@@ -1,4 +1,4 @@
-import 'package:foap/apiHandler/apis/chat_api.dart';
+import 'package:foap/api_handler/apis/chat_api.dart';
 import 'package:foap/helper/imports/common_import.dart';
 import 'package:overlay_support/overlay_support.dart';
 import '../manager/db_manager_realm.dart';
@@ -50,7 +50,7 @@ showNotification(ChatMessageModel message, ChatRoomModel room) {
                 chatRoom: room,
               ));
         }),
-      ).backgroundCard().round(15),
+      ).bottomRounded(15),
     );
   }, duration: const Duration(milliseconds: 4000));
 }

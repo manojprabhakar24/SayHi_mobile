@@ -33,7 +33,7 @@ class _SearchProfileState extends State<SearchProfile> {
     return SafeArea(
       top: false,
       bottom: false,
-      child: Scaffold(
+      child: AppScaffold(
         backgroundColor: AppColorConstants.backgroundColor,
         body: KeyboardDismissOnTap(
             child: Column(
@@ -133,7 +133,7 @@ class _SearchProfileState extends State<SearchProfile> {
                   return const SizedBox(height: 20);
                 })
             : SizedBox(
-                height: MediaQuery.of(context).size.height * 0.5,
+                height: Get.height * 0.5,
                 child: emptyUser(
                     title: noUserFoundString.tr,
                     subTitle: ''),

@@ -54,7 +54,7 @@ class _CheckingLiveFeasibilityState extends State<CheckingLiveFeasibility> {
       Colors.yellow,
       Colors.red,
     ];
-    return Scaffold(
+    return AppScaffold(
         backgroundColor: AppColorConstants.backgroundColor,
         body: Obx(() => Stack(
           children: [
@@ -109,7 +109,7 @@ class _CheckingLiveFeasibilityState extends State<CheckingLiveFeasibility> {
                           textAlign: TextAlign.center,
                           style: TextStyle(
                               fontSize: FontSizes.h4,
-                              color: AppColorConstants.grayscale900,
+                              color: AppColorConstants.mainTextColor,
                               fontWeight: TextWeight.regular),
                         ),
                         const SizedBox(

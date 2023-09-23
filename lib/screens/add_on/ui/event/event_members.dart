@@ -1,14 +1,6 @@
-import 'package:foap/components/empty_states.dart';
-import 'package:foap/components/shimmer_widgets.dart';
-import 'package:foap/components/top_navigation_bar.dart';
-import 'package:foap/helper/common_components.dart';
-import 'package:foap/helper/extension.dart';
-import 'package:foap/helper/localization_strings.dart';
+import 'package:foap/helper/imports/common_import.dart';
 import 'package:foap/screens/profile/other_user_profile.dart';
-import 'package:foap/util/app_config_constants.dart';
-import 'package:get/get.dart';
 import 'package:foap/helper/imports/event_imports.dart';
-import 'package:flutter/material.dart';
 
 class EventMembers extends StatefulWidget {
   final EventModel event;
@@ -46,7 +38,7 @@ class EventMembersState extends State<EventMembers> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return AppScaffold(
         backgroundColor: AppColorConstants.backgroundColor,
         body: Column(
           children: [

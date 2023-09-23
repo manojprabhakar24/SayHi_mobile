@@ -76,12 +76,12 @@ class PromotionAudienceScreen extends StatelessWidget {
                 : BodyMediumText(
                     subTitle,
                     weight: FontWeight.normal,
-                    color: AppColorConstants.grayscale600,
+                    color: AppColorConstants.subHeadingTextColor,
                   ).tP4
           ],
         )),
         ThemeIconWidget(ThemeIcon.nextArrow,
-                size: 25, color: AppColorConstants.grayscale800)
+                size: 25, color: AppColorConstants.mainTextColor)
             .lP4,
       ],
     ).vP16;
@@ -108,7 +108,7 @@ class PromotionAudienceScreen extends StatelessWidget {
                       BodyMediumText(
                         subTitle,
                         weight: FontWeight.normal,
-                        color: AppColorConstants.grayscale600,
+                        color: AppColorConstants.subHeadingTextColor,
                       ),
                       audience == null
                           ? const SizedBox()
@@ -132,7 +132,7 @@ class PromotionAudienceScreen extends StatelessWidget {
                 size: 25,
                 color: _promotionController.order.audience?.id == audience?.id
                     ? AppColorConstants.themeColor
-                    : AppColorConstants.grayscale800)
+                    : AppColorConstants.mainTextColor)
             .lP4,
       ],
     ).vP16.ripple(() {

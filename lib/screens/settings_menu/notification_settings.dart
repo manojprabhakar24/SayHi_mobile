@@ -23,13 +23,12 @@ class _AppNotificationSettingsState extends State<AppNotificationSettings> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return AppScaffold(
       backgroundColor: AppColorConstants.backgroundColor,
       body: SingleChildScrollView(
         child: Column(
           children: [
             backNavigationBar(title: notificationSettingsString.tr),
-            divider().vP8,
             const SizedBox(
               height: 20,
             ),

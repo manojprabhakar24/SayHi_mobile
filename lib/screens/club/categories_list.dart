@@ -16,7 +16,7 @@ class CategoriesList extends StatefulWidget {
 class _CategoriesListState extends State<CategoriesList> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return AppScaffold(
       backgroundColor: AppColorConstants.backgroundColor,
       body: Column(
         children: [

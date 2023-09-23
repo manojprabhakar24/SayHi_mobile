@@ -28,7 +28,7 @@ class PublicGroupDetailState extends State<PublicGroupDetail> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return AppScaffold(
       backgroundColor: AppColorConstants.backgroundColor,
       body: Stack(
         children: [
@@ -173,7 +173,7 @@ class PublicGroupDetailState extends State<PublicGroupDetail> {
     return Positioned(
       child: Container(
         height: 150.0,
-        width: MediaQuery.of(context).size.width,
+        width: Get.width,
         decoration: BoxDecoration(
             color: Colors.white,
             gradient: LinearGradient(

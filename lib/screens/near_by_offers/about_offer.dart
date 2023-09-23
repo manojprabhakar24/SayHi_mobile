@@ -14,6 +14,9 @@ class AboutOffer extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          const SizedBox(
+            height: 20,
+          ),
           Wrap(
             children: [
               BodyExtraLargeText(
@@ -32,7 +35,7 @@ class AboutOffer extends StatelessWidget {
           ),
           BodyMediumText(
             offer.name,
-            color: AppColorConstants.grayscale500,
+            color: AppColorConstants.subHeadingTextColor,
             weight: TextWeight.bold,
           ),
           const SizedBox(
@@ -40,7 +43,7 @@ class AboutOffer extends StatelessWidget {
           ),
           BodyMediumText(
             aboutString.tr,
-            color: AppColorConstants.grayscale500,
+            color: AppColorConstants.subHeadingTextColor,
             weight: TextWeight.bold,
           ),
           const SizedBox(
@@ -55,7 +58,7 @@ class AboutOffer extends StatelessWidget {
           ),
           BodyMediumText(
             expiringOnString.tr,
-            color: AppColorConstants.grayscale500,
+            color: AppColorConstants.subHeadingTextColor,
             weight: TextWeight.bold,
           ),
           const SizedBox(

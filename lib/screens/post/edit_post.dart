@@ -22,8 +22,13 @@ class EditPostScreenState extends State<EditPostScreen> {
 
   @override
   void initState() {
-    addPostController.textChanged(widget.post.title, widget.post.title.length);
-    descriptionText.text = widget.post.title;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      addPostController.textChanged(
+          widget.post.title, widget.post.title.length);
+      descriptionText.text = widget.post.title;
+      addPostController.enableComments.value = widget.post.commentsEnabled;
+    });
+
     super.initState();
   }
 
@@ -35,7 +40,7 @@ class EditPostScreenState extends State<EditPostScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return AppScaffold(
       backgroundColor: AppColorConstants.backgroundColor,
       body: GetBuilder<AddPostController>(
           init: addPostController,
@@ -150,7 +155,7 @@ class EditPostScreenState extends State<EditPostScreen> {
               textAlign: TextAlign.left,
               style: TextStyle(
                   fontSize: FontSizes.h5,
-                  color: AppColorConstants.grayscale900),
+                  color: AppColorConstants.mainTextColor),
               maxLines: 5,
               onChanged: (text) {
                 addPostController.textChanged(
@@ -163,7 +168,7 @@ class EditPostScreenState extends State<EditPostScreen> {
                   counterText: "",
                   hintStyle: TextStyle(
                       fontSize: FontSizes.h5,
-                      color: AppColorConstants.grayscale500),
+                      color: AppColorConstants.subHeadingTextColor),
                   hintText: addSomethingAboutPostString.tr),
             ),
           ).round(10),

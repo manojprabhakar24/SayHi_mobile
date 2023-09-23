@@ -2,7 +2,7 @@ import 'package:foap/screens/add_on/ui/dating/profile/set_location.dart';
 import 'package:get/get.dart';
 import 'package:foap/helper/imports/common_import.dart';
 import 'package:url_launcher/url_launcher.dart';
-import '../../apiHandler/apis/auth_api.dart';
+import '../../api_handler/apis/auth_api.dart';
 import '../../screens/login_sign_up/set_user_name.dart';
 import '../../screens/login_sign_up/verify_phone_login_OTP.dart';
 import '../../util/shared_prefs.dart';
@@ -134,19 +134,14 @@ class LoginController extends GetxController {
     update();
   }
 
-  void register(
-      {required String email,
-      required String name,
-      required String password,
-      }) {
-    if (FormValidator().isTextEmpty(name) || userNameCheckStatus != 1) {
+  void register({
+    required String email,
+    required String name,
+    required String password,
+  }) {
+    if (FormValidator().isTextEmpty(name)) {
       showErrorMessage(
         pleaseEnterValidUserNameString.tr,
-      );
-    }
-    if (name.contains(' ')) {
-      showErrorMessage(
-        userNameCanNotHaveSpaceString.tr,
       );
     } else if (FormValidator().isTextEmpty(email)) {
       showErrorMessage(
@@ -175,11 +170,11 @@ class LoginController extends GetxController {
     }
   }
 
-  void resetPassword(
-      {required String newPassword,
-      required String confirmPassword,
-      required String token,
-      }) {
+  void resetPassword({
+    required String newPassword,
+    required String confirmPassword,
+    required String token,
+  }) {
     if (FormValidator().isTextEmpty(newPassword)) {
       showErrorMessage(
         pleaseEnterPasswordString.tr,
@@ -272,16 +267,16 @@ class LoginController extends GetxController {
               await _userProfileManager.refreshProfile();
               await _settingsController.getSettings();
               if (_userProfileManager.user.value != null) {
-                if (_userProfileManager.user.value!.userName.isEmpty) {
-                  isLoginFirstTime = true;
-                  Get.offAll(() => const SetUserName());
-                } else {
-                  // ask for location
-                  // AppUtil.showToast(
-                  //     message: registeredSuccessFully,
-                  //     isSuccess: true);
-                  Get.to(() => const DashboardScreen());
-                }
+                // if (_userProfileManager.user.value!.userName.isEmpty) {
+                //   isLoginFirstTime = true;
+                //   Get.offAll(() => const SetUserName());
+                // } else {
+                // ask for location
+                // AppUtil.showToast(
+                //     message: registeredSuccessFully,
+                //     isSuccess: true);
+                Get.to(() => const DashboardScreen());
+                // }
               }
             });
           });
@@ -317,12 +312,12 @@ class LoginController extends GetxController {
             await _settingsController.getSettings();
 
             if (_userProfileManager.user.value != null) {
-              if (_userProfileManager.user.value!.userName.isEmpty) {
-                isLoginFirstTime = true;
-                Get.offAll(() => const SetUserName());
-              } else {
-                Get.to(() => const DashboardScreen());
-              }
+              // if (_userProfileManager.user.value!.userName.isEmpty) {
+              //   isLoginFirstTime = true;
+              //   Get.offAll(() => const SetUserName());
+              // } else {
+              Get.to(() => const DashboardScreen());
+              // }
             }
           });
         });
@@ -344,8 +339,7 @@ class LoginController extends GetxController {
 
   void forgotPassword({required String email}) {
     if (FormValidator().isTextEmpty(email)) {
-      AppUtil.showToast(
-          message: pleaseEnterEmailString.tr, isSuccess: false);
+      AppUtil.showToast(message: pleaseEnterEmailString.tr, isSuccess: false);
     } else if (FormValidator().isNotValidEmail(email)) {
       AppUtil.showToast(
           message: pleaseEnterValidEmailString.tr, isSuccess: false);

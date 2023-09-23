@@ -45,7 +45,7 @@ class _TvListHomeState extends State<TvListHome> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return AppScaffold(
         backgroundColor: AppColorConstants.backgroundColor,
         body: Column(
           mainAxisSize: MainAxisSize.min,
@@ -87,7 +87,7 @@ class _TvListHomeState extends State<TvListHome> {
         ? CachedNetworkImage(
             imageUrl: _tvStreamingController.banners.first.coverImageUrl ?? "",
             fit: BoxFit.cover,
-            width: MediaQuery.of(context).size.width,
+            width: Get.width,
             height: 200,
           )
             .round(10)
@@ -102,7 +102,7 @@ class _TvListHomeState extends State<TvListHome> {
                   CachedNetworkImage(
                     imageUrl: banner.coverImageUrl ?? "",
                     fit: BoxFit.cover,
-                    width: MediaQuery.of(context).size.width,
+                    width: Get.width,
                     height: 200,
                   )
                       .round(10)
@@ -159,7 +159,7 @@ class _TvListHomeState extends State<TvListHome> {
               CachedNetworkImage(
                 imageUrl: tv.image,
                 fit: BoxFit.cover,
-                width: MediaQuery.of(context).size.width,
+                width: Get.width,
                 height: 200,
               ).backgroundCard().p16.ripple(() {
                 Get.to(() => LiveTvPlayer(

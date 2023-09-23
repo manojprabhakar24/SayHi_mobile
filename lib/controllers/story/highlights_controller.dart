@@ -1,8 +1,8 @@
 import 'dart:io';
 import 'dart:typed_data';
-import 'package:foap/apiHandler/apis/highlights_api.dart';
-import 'package:foap/apiHandler/apis/misc_api.dart';
-import 'package:foap/apiHandler/apis/story_api.dart';
+import 'package:foap/api_handler/apis/highlights_api.dart';
+import 'package:foap/api_handler/apis/misc_api.dart';
+import 'package:foap/api_handler/apis/story_api.dart';
 import 'package:foap/components/custom_gallery_picker.dart';
 import 'package:foap/helper/imports/common_import.dart';
 import 'package:foap/helper/imports/highlights_imports.dart';

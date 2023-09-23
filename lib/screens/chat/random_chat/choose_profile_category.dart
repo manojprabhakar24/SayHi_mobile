@@ -27,7 +27,7 @@ class _ChooseProfileCategoryState extends State<ChooseProfileCategory> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return AppScaffold(
       backgroundColor: AppColorConstants.backgroundColor,
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,

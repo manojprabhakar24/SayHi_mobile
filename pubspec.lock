@@ -37,10 +37,10 @@ packages:
     dependency: "direct main"
     description:
       name: agora_rtc_engine
-      sha256: "5e0d363c8ae68b08028d19a743972278266b8cb73f81243d09bc024f5541412c"
+      sha256: "2b9ea091c9123be01e9289167e0bcdd91aa7d8fdc24c94e23f1629c3a6e5391a"
       url: "https://pub.dev"
     source: hosted
-    version: "6.2.1"
+    version: "6.2.2"
   analyzer:
     dependency: transitive
     description:
@@ -169,6 +169,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.2"
+  awesome_bottom_bar:
+    dependency: "direct main"
+    description:
+      name: awesome_bottom_bar
+      sha256: dd42e6767ae22cf5eb47695991e7a3f964ccba3b403a93837c20eb4f74e4ad0f
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.2.4"
   background_downloader:
     dependency: "direct main"
     description:
@@ -770,10 +778,10 @@ packages:
     dependency: "direct main"
     description:
       name: flutter_braintree
-      sha256: d364251cf57c028e8481869222d571c90df819ae234d9fb349713c4ffa25ba96
+      sha256: "081511833d564e1f9330864a97163a9c7110b735261ed5e7c88c2b897ac66744"
       url: "https://pub.dev"
     source: hosted
-    version: "3.0.0"
+    version: "4.0.0-dev.1"
   flutter_cache_manager:
     dependency: transitive
     description:
@@ -1011,14 +1019,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "9.3.0"
-  flutter_svg:
-    dependency: "direct main"
-    description:
-      name: flutter_svg
-      sha256: "8c5d68a82add3ca76d792f058b186a0599414f279f00ece4830b9b231b570338"
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.0.7"
   flutter_switch:
     dependency: "direct main"
     description:
@@ -1433,10 +1433,10 @@ packages:
     dependency: transitive
     description:
       name: iris_method_channel
-      sha256: dce2527839b46d1d0f0573b5ae1425e23a111afb280245ea1500f16a11957ad4
+      sha256: "195a3224b26a6eb60dadd96d04da9f013a00541adac60cc8fdc9dbb104e581db"
       url: "https://pub.dev"
     source: hosted
-    version: "1.1.0"
+    version: "1.2.0"
   js:
     dependency: transitive
     description:
@@ -1709,14 +1709,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.8.3"
-  path_parsing:
-    dependency: transitive
-    description:
-      name: path_parsing
-      sha256: e3e67b1629e6f7e8100b367d3db6ba6af4b1f0bb80f64db18ef1fbabd2fa9ccf
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.0.1"
   path_provider:
     dependency: transitive
     description:
@@ -1837,6 +1829,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.6.0"
+  photo_view:
+    dependency: "direct main"
+    description:
+      name: photo_view
+      sha256: "8036802a00bae2a78fc197af8a158e3e2f7b500561ed23b4c458107685e645bb"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.14.0"
   pin_code_text_field:
     dependency: "direct main"
     description:
@@ -2546,30 +2546,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.0.7"
-  vector_graphics:
-    dependency: transitive
-    description:
-      name: vector_graphics
-      sha256: "670f6e07aca990b4a2bcdc08a784193c4ccdd1932620244c3a86bb72a0eac67f"
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.1.7"
-  vector_graphics_codec:
-    dependency: transitive
-    description:
-      name: vector_graphics_codec
-      sha256: "7451721781d967db9933b63f5733b1c4533022c0ba373a01bdd79d1a5457f69f"
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.1.7"
-  vector_graphics_compiler:
-    dependency: transitive
-    description:
-      name: vector_graphics_compiler
-      sha256: "80a13c613c8bde758b1464a1755a7b3a8f2b6cec61fbf0f5a53c94c30f03ba2e"
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.1.7"
   vector_math:
     dependency: transitive
     description:

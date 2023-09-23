@@ -1,13 +1,5 @@
-import 'package:foap/components/custom_texts.dart';
-import 'package:foap/helper/extension.dart';
-import 'package:foap/helper/localization_strings.dart';
-import 'package:foap/screens/add_on/controller/reel/create_reel_controller.dart';
-import 'package:foap/screens/add_on/model/reel_music_model.dart';
-import 'package:foap/theme/theme_icon.dart';
-import 'package:foap/util/app_config_constants.dart';
-import 'package:get/get.dart';
 import 'package:foap/helper/imports/reel_imports.dart';
-import 'package:flutter/material.dart';
+import 'package:foap/helper/imports/common_import.dart';
 
 class CropAudioScreen extends StatefulWidget {
   final ReelMusicModel reelMusicModel;
@@ -44,7 +36,7 @@ class _CropAudioState extends State<CropAudioScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return AppScaffold(
       backgroundColor: AppColorConstants.backgroundColor,
       body: Column(children: [
         Row(

@@ -10,7 +10,6 @@ import '../model/club_member_model.dart';
 import '../model/gift_model.dart';
 import '../model/story_model.dart';
 import '../screens/profile/other_user_profile.dart';
-import '../screens/profile/update_profile.dart';
 import '../screens/settings_menu/settings_controller.dart';
 
 class UserInfo extends StatelessWidget {
@@ -32,7 +31,7 @@ class UserInfo extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               BodyLargeText(
-                model.userName,
+                model.name ?? model.userName,
                 weight: TextWeight.semiBold,
                 maxLines: 1,
               ),
@@ -79,7 +78,6 @@ class UserTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ProfileController profileController = Get.find();
     final AgoraLiveController agoraLiveController = Get.find();
     final SettingsController settingsController = Get.find();
 
@@ -95,9 +93,7 @@ class UserTile extends StatelessWidget {
                 onTapHandler: () {
                   Live live = Live(
                       channelName: profile.liveCallDetail!.channelName,
-                      // isHosting: false,
                       mainHostUserDetail: profile,
-                      // battleUsers: [],
                       token: profile.liveCallDetail!.token,
                       id: profile.liveCallDetail!.id);
                   agoraLiveController.joinAsAudience(
@@ -235,10 +231,6 @@ class UserCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ProfileController profileController = Get.find();
-    final AgoraLiveController agoraLiveController = Get.find();
-    final SettingsController settingsController = Get.find();
-
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -275,7 +267,7 @@ class UserCard extends StatelessWidget {
                   ).bP4,
                   BodyMediumText(
                     '${profile.totalFollower.formatNumber} $followersString',
-                    color: AppColorConstants.grayscale700,
+                    color: AppColorConstants.mainTextColor,
                   )
                 ],
               ),
@@ -398,7 +390,6 @@ class SelectableUserTile extends StatefulWidget {
 }
 
 class SelectableUserTileState extends State<SelectableUserTile> {
-  final UserProfileManager _userProfileManager = Get.find();
   late final UserModel model;
 
   @override
@@ -555,9 +546,6 @@ class RelationUserTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ProfileController profileController = Get.find();
-    final AgoraLiveController agoraLiveController = Get.find();
-
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -659,7 +647,7 @@ class ClubMemberTile extends StatelessWidget {
               },
             ),
             SizedBox(
-              width: MediaQuery.of(context).size.width - 200,
+              width: Get.width - 250,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -728,8 +716,6 @@ class SendMessageUserTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ProfileController profileController = Get.find();
-
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -805,7 +791,7 @@ class BlockedUserTile extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        UserInfo(model: profile),
+        Expanded(child: UserInfo(model: profile)),
         SizedBox(
             height: 35,
             width: 110,
@@ -836,7 +822,7 @@ class GifterUserTile extends StatelessWidget {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        UserInfo(model: gift.sender),
+        Expanded(child: UserInfo(model: gift.sender)),
         const Spacer(),
         CachedNetworkImage(
           imageUrl: gift.giftDetail.logo,
@@ -889,7 +875,7 @@ class ClubJoinRequestTile extends StatelessWidget {
               size: 40,
             ),
             SizedBox(
-              width: MediaQuery.of(context).size.width - 200,
+              width: Get.width - 200,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -962,7 +948,7 @@ class StoryViewerTile extends StatelessWidget {
         BodyMediumText(
           viewer.viewedAt,
           maxLines: 1,
-          color: AppColorConstants.grayscale600,
+          color: AppColorConstants.subHeadingTextColor,
         )
         // const Spacer(),
       ],

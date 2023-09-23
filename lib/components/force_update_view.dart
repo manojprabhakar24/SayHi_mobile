@@ -11,14 +11,14 @@ class ForceUpdateView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       color: AppColorConstants.backgroundColor,
-      height: MediaQuery.of(context).size.height,
-      width: MediaQuery.of(context).size.width,
+      height: Get.height,
+      width: Get.width,
       child: Center(
           child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           SizedBox(
-            height: MediaQuery.of(context).size.height * 0.1,
+            height: Get.height * 0.1,
           ),
           Expanded(
               child: Image.asset(
@@ -31,7 +31,7 @@ class ForceUpdateView extends StatelessWidget {
             textAlign: TextAlign.center,
           ).hP25,
           SizedBox(
-            height: MediaQuery.of(context).size.height * 0.03,
+            height: Get.height * 0.03,
           ),
           Heading3Text(
             usingOlderVersionMessageString.tr,
@@ -39,7 +39,7 @@ class ForceUpdateView extends StatelessWidget {
             textAlign: TextAlign.center,
           ).hP25,
           SizedBox(
-            height: MediaQuery.of(context).size.height * 0.07,
+            height: Get.height * 0.07,
           ),
           SizedBox(
             height: 50,
@@ -55,7 +55,7 @@ class ForceUpdateView extends StatelessWidget {
             ),
           ),
           SizedBox(
-            height: MediaQuery.of(context).size.height * 0.1,
+            height: Get.height * 0.1,
           ),
         ],
       )),
@@ -68,17 +68,17 @@ class InvalidPurchaseView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return AppScaffold(
       backgroundColor: AppColorConstants.backgroundColor,
       body: SizedBox(
-        height: MediaQuery.of(context).size.height,
-        width: MediaQuery.of(context).size.width,
+        height: Get.height,
+        width: Get.width,
         child: Center(
             child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             SizedBox(
-              height: MediaQuery.of(context).size.height * 0.1,
+              height: Get.height * 0.1,
             ),
             Expanded(
                 child: Image.asset(
@@ -91,7 +91,7 @@ class InvalidPurchaseView extends StatelessWidget {
               textAlign: TextAlign.center,
             ).hP25,
             SizedBox(
-              height: MediaQuery.of(context).size.height * 0.03,
+              height: Get.height * 0.03,
             ),
             Heading3Text(
               'Please buy the original code from codecanyon.net to use this app',
@@ -99,7 +99,7 @@ class InvalidPurchaseView extends StatelessWidget {
               textAlign: TextAlign.center,
             ).hP25,
             SizedBox(
-              height: MediaQuery.of(context).size.height * 0.07,
+              height: Get.height * 0.07,
             ),
             SizedBox(
               height: 50,
@@ -115,7 +115,7 @@ class InvalidPurchaseView extends StatelessWidget {
               ),
             ),
             SizedBox(
-              height: MediaQuery.of(context).size.height * 0.1,
+              height: Get.height * 0.1,
             ),
           ],
         )),

@@ -36,7 +36,7 @@ class _TvListByCategoryState extends State<TvListByCategory> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return AppScaffold(
         backgroundColor: AppColorConstants.backgroundColor,
         body: Column(
           children: [
@@ -86,8 +86,8 @@ class _TvListByCategoryState extends State<TvListByCategory> {
         builder: (ctx) {
           return _tvStreamingController.tvs.isEmpty
               ? SizedBox(
-                  height: (MediaQuery.of(context).size.height / 1.5),
-                  width: (MediaQuery.of(context).size.width),
+                  height: (Get.height / 1.5),
+                  width: (Get.width),
                   child: const Center(child: CircularProgressIndicator()))
               : GridView.builder(
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(

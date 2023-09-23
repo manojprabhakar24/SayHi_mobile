@@ -2,6 +2,8 @@ import 'package:foap/components/thumbnail_view.dart';
 import 'package:foap/helper/imports/common_import.dart';
 import 'package:foap/helper/imports/story_imports.dart';
 
+double storyCircleSize = 70;
+
 class StoryUpdatesBar extends StatelessWidget {
   final List<StoryModel> stories;
   final List<UserModel> liveUsers;
@@ -23,30 +25,28 @@ class StoryUpdatesBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListView.builder(
       padding: EdgeInsets.only(
-          left: DesignConstants.horizontalPadding,right: DesignConstants.horizontalPadding),
+          right: DesignConstants.horizontalPadding),
       scrollDirection: Axis.horizontal,
       itemCount: stories.length + liveUsers.length,
       itemBuilder: (BuildContext ctx, int index) {
-        print('index $index');
-
         if (index == 0) {
           return SizedBox(
-            width: 70,
+            width: storyCircleSize + 20,
             child: stories.isNotEmpty
                 ? stories[index].media.isEmpty == true
                     ? Column(
                         children: [
                           SizedBox(
-                            height: 50,
-                            width: 50,
+                            height: storyCircleSize,
+                            width: storyCircleSize,
                             child: ThemeIconWidget(
                               ThemeIcon.plus,
-                              size: 25,
-                              color: AppColorConstants.iconColor,
+                              size: storyCircleSize,
+                              color: AppColorConstants.themeColor.darken(),
                             ),
                           )
                               .borderWithRadius(
-                                  value: 2, radius: 20)
+                                  value: 2, radius: storyCircleSize / 2)
                               .ripple(() {
                             addStoryCallback();
                           }),
@@ -72,8 +72,7 @@ class StoryUpdatesBar extends StatelessWidget {
                           ),
                           Expanded(
                             child: BodySmallText(yourStoryString.tr,
-                                maxLines: 1,
-                                weight: TextWeight.medium),
+                                maxLines: 1, weight: TextWeight.medium),
                           )
                         ],
                       )
@@ -82,11 +81,11 @@ class StoryUpdatesBar extends StatelessWidget {
         } else {
           if (index <= liveUsers.length) {
             return SizedBox(
-                width: 70,
+                width: 100,
                 child: Column(
                   children: [
                     UserAvatarView(
-                      size: 50,
+                      size: storyCircleSize,
                       user: liveUsers[index - 1],
                       onTapHandler: () {
                         joinLiveUserCallback(liveUsers[index - 1]);
@@ -97,13 +96,13 @@ class StoryUpdatesBar extends StatelessWidget {
                     ),
                     Expanded(
                         child: BodySmallText(liveUsers[index - 1].userName,
-                            maxLines: 1,
-                            weight: TextWeight.medium).hP4)
+                                maxLines: 1, weight: TextWeight.medium)
+                            .hP4)
                   ],
                 ));
           } else {
             return SizedBox(
-                width: 70,
+                width: storyCircleSize + 20,
                 child: Column(
                   children: [
                     MediaThumbnailView(
@@ -121,9 +120,11 @@ class StoryUpdatesBar extends StatelessWidget {
                       height: 4,
                     ),
                     Expanded(
-                      child: BodySmallText(stories[index - liveUsers.length].userName,
-                          maxLines: 1,
-                          weight: TextWeight.medium).hP4,
+                      child: BodySmallText(
+                              stories[index - liveUsers.length].userName,
+                              maxLines: 1,
+                              weight: TextWeight.medium)
+                          .hP4,
                     ),
                   ],
                 ));

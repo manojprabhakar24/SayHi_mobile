@@ -51,7 +51,7 @@ class _ExploreState extends State<Explore> {
     return SafeArea(
       top: false,
       bottom: false,
-      child: Scaffold(
+      child: AppScaffold(
         backgroundColor: AppColorConstants.backgroundColor,
         body: GestureDetector(
             onTap: () {
@@ -135,7 +135,7 @@ class _ExploreState extends State<Explore> {
 
   Widget segmentView() {
     return HorizontalSegmentBar(
-        width: MediaQuery.of(context).size.width,
+        width: Get.width,
         onSegmentChange: (segment) {
           exploreController.segmentChanged(segment);
         },

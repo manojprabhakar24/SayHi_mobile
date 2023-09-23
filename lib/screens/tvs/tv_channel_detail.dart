@@ -56,7 +56,7 @@ class _TVChannelDetailState extends State<TVChannelDetail> {
       } else {
         AutoOrientation.landscapeAutoMode();
       }
-      return Scaffold(
+      return AppScaffold(
           backgroundColor: AppColorConstants.backgroundColor,
           body: Column(
             mainAxisSize: MainAxisSize.min,
@@ -109,12 +109,12 @@ class _TVChannelDetailState extends State<TVChannelDetail> {
                                     // showMinimumHeight: isKeyboardVisible,
                                   )
                                 : SizedBox(
-                                    width: MediaQuery.of(context).size.width,
+                                    width: Get.width,
                                     height: 250,
                                     child: CachedNetworkImage(
                                       imageUrl: widget.tvModel.image,
                                       fit: BoxFit.cover,
-                                      width: MediaQuery.of(context).size.width,
+                                      width: Get.width,
                                       height: 200,
                                     )),
                             Column(
@@ -136,17 +136,17 @@ class _TVChannelDetailState extends State<TVChannelDetail> {
                                           fontSize: FontSizes.b2,
                                           fontWeight: TextWeight.regular,
                                           color:
-                                              AppColorConstants.grayscale900),
+                                              AppColorConstants.mainTextColor),
                                       moreStyle: TextStyle(
                                           fontSize: FontSizes.b2,
                                           fontWeight: TextWeight.bold,
                                           color:
-                                              AppColorConstants.grayscale900),
+                                              AppColorConstants.mainTextColor),
                                       lessStyle: TextStyle(
                                           fontSize: FontSizes.b2,
                                           fontWeight: TextWeight.bold,
                                           color:
-                                              AppColorConstants.grayscale900)),
+                                              AppColorConstants.mainTextColor)),
                                   Heading5Text(
                                           '${moreFromString.tr} ${widget.tvModel.name}',
                                           weight: TextWeight.bold,

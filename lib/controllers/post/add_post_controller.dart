@@ -1,15 +1,15 @@
 import 'dart:async';
 import 'dart:io';
 import 'dart:typed_data';
-import 'package:foap/apiHandler/apis/misc_api.dart';
-import 'package:foap/apiHandler/apis/post_api.dart';
+import 'package:foap/api_handler/apis/misc_api.dart';
+import 'package:foap/api_handler/apis/post_api.dart';
 import 'package:foap/components/custom_gallery_picker.dart';
 import 'package:foap/controllers/misc/users_controller.dart';
 import 'package:foap/helper/imports/common_import.dart';
 import 'package:foap/helper/list_extension.dart';
 import 'package:foap/helper/string_extension.dart';
 import 'package:video_compress_ds/video_compress_ds.dart';
-import '../../apiHandler/apis/users_api.dart';
+import '../../api_handler/apis/users_api.dart';
 import '../../helper/enum_linking.dart';
 import '../../model/hash_tag.dart';
 import '../../screens/chat/media.dart';
@@ -414,11 +414,19 @@ class AddPostController extends GetxController {
     required String title,
     required bool allowComments,
   }) {
+    HomeController homeController = Get.find();
+
     PostApi.updatePost(
-      postId: postId,
-      title: title,
-      allowComments: allowComments,
-    );
-    Get.back();
+        postId: postId,
+        title: title,
+        allowComments: allowComments,
+        successHandler: () {
+          PostApi.getPostDetail(postId, resultCallback: (post) {
+            if (post != null) {
+              homeController.postEdited(post);
+            }
+          });
+          Get.back();
+        });
   }
 }

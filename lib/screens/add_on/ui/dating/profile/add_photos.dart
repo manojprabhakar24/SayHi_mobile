@@ -19,7 +19,7 @@ class _AddPhotosState extends State<AddPhotos> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return AppScaffold(
       backgroundColor: AppColorConstants.backgroundColor,
       body: SingleChildScrollView(
         child: Column(
@@ -47,7 +47,7 @@ class _AddPhotosState extends State<AddPhotos> {
             Center(
               child: SizedBox(
                   height: 50,
-                  width: MediaQuery.of(context).size.width - 50,
+                  width: Get.width - 50,
                   child: AppThemeButton(
                       cornerRadius: 25,
                       text: nextString.tr,

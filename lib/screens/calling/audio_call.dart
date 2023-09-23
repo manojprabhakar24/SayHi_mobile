@@ -1,9 +1,7 @@
-import 'package:flutter_svg/svg.dart';
 import 'package:foap/helper/imports/call_imports.dart';
 import 'package:foap/helper/imports/common_import.dart';
 import 'package:pip_view/pip_view.dart';
 import 'package:wakelock_plus/wakelock_plus.dart';
-
 import '../../components/timer_widget.dart';
 import '../dashboard/dashboard_screen.dart';
 
@@ -42,7 +40,7 @@ class _AudioCallingScreenState extends State<AudioCallingScreen> {
   Widget build(BuildContext context) {
     return PIPView(
       builder: (context, isFloating) {
-        return Scaffold(
+        return AppScaffold(
           backgroundColor: AppColorConstants.backgroundColor,
           body: widget.call.isOutGoing == true
               ? outgoingCallView(isFloating)
@@ -137,7 +135,7 @@ class _AudioCallingScreenState extends State<AudioCallingScreen> {
               child: Center(
                   child: Heading3Text(
                     reConnectingString.tr,
-                    color: AppColorConstants.grayscale100,
+                    color: AppColorConstants.subHeadingTextColor,
                   )))
               : const SizedBox(),
           Center(child: opponentInfo(isFloating)),
@@ -187,7 +185,7 @@ class _AudioCallingScreenState extends State<AudioCallingScreen> {
         Heading3Text(
           widget.call.opponent.userName,
           weight: TextWeight.bold,
-          color: AppColorConstants.grayscale900,
+          color: AppColorConstants.mainTextColor,
         ),
         const SizedBox(
           height: 5,
@@ -198,7 +196,7 @@ class _AudioCallingScreenState extends State<AudioCallingScreen> {
               ? ringingString.tr
               : incomingCallString.tr,
           weight: TextWeight.medium,
-          color: AppColorConstants.grayscale800,
+          color: AppColorConstants.mainTextColor,
         )
             : _timerView(),
       ],

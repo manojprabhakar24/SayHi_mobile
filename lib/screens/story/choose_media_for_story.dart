@@ -1,3 +1,4 @@
+/*
 import 'package:foap/helper/imports/story_imports.dart';
 import 'package:foap/helper/imports/common_import.dart';
 import '../../components/custom_gallery_picker.dart';
@@ -14,13 +15,12 @@ class _ChooseMediaForStoryState extends State<ChooseMediaForStory> {
 
   @override
   void initState() {
-    // storyController.loadGalleryData(context);
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return AppScaffold(
       backgroundColor: AppColorConstants.backgroundColor,
       body: Column(
         children: [
@@ -38,12 +38,6 @@ class _ChooseMediaForStoryState extends State<ChooseMediaForStory> {
                 Get.back();
               }),
               const Spacer(),
-              // Image.asset(
-              //   'assets/logo.png',
-              //   width: 80,
-              //   height: 25,
-              // ),
-              const Spacer(),
               Obx(() => Heading4Text(
                     postString.tr,
                     weight: storyController.mediaList.isNotEmpty
@@ -52,11 +46,8 @@ class _ChooseMediaForStoryState extends State<ChooseMediaForStory> {
                   ).ripple(() {
                     if (storyController.mediaList.isNotEmpty) {
                       storyController.uploadAllMedia(
-                           items: storyController.mediaList);
+                          items: storyController.mediaList);
                     }
-                    // Get.to(() => ChooseStoryViewers(
-                    //       images: storyController.selectedItems,
-                    //     ));
                   })),
             ],
           ).hp(20),
@@ -69,8 +60,7 @@ class _ChooseMediaForStoryState extends State<ChooseMediaForStory> {
                         mediaSelectionCompletion: (medias) {
                       storyController.mediaSelected(medias);
                     }, mediaCapturedCompletion: (media) {
-                      storyController
-                          .uploadAllMedia( items: [media]);
+                      storyController.uploadAllMedia(items: [media]);
                     });
                   }))
         ],
@@ -78,3 +68,4 @@ class _ChooseMediaForStoryState extends State<ChooseMediaForStory> {
     );
   }
 }
+*/

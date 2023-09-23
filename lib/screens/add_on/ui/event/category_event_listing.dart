@@ -1,8 +1,5 @@
-import 'package:foap/components/top_navigation_bar.dart';
-import 'package:foap/util/app_config_constants.dart';
 import 'package:foap/helper/imports/event_imports.dart';
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+import 'package:foap/helper/imports/common_import.dart';
 import '../../components/event/events_list.dart';
 
 class CategoryEventsListing extends StatefulWidget {
@@ -33,7 +30,7 @@ class CategoryEventsListingState extends State<CategoryEventsListing> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return AppScaffold(
       backgroundColor: AppColorConstants.backgroundColor,
       body: Column(
         children: [

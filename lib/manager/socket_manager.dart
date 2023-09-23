@@ -4,7 +4,7 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:flutter_fgbg/flutter_fgbg.dart';
-import 'package:foap/apiHandler/apis/users_api.dart';
+import 'package:foap/api_handler/apis/users_api.dart';
 import 'package:foap/controllers/chat_and_call/agora_call_controller.dart';
 import 'package:foap/controllers/live/agora_live_controller.dart';
 import 'package:foap/controllers/chat_and_call/chat_detail_controller.dart';

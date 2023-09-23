@@ -12,8 +12,8 @@ class PasswordChangedPopup extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: MediaQuery.of(context).size.height,
-      width: MediaQuery.of(context).size.width,
+      height: Get.height,
+      width: Get.width,
       child: Stack(
         children: [
           Container(

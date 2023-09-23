@@ -1,5 +1,5 @@
 import 'package:foap/helper/imports/common_import.dart';
-import '../../apiHandler/apis/post_api.dart';
+import '../../api_handler/apis/post_api.dart';
 import '../../model/post_model.dart';
 import '../home_feed/comments_screen.dart';
 import '../home_feed/enlarge_image_view.dart';
@@ -26,7 +26,7 @@ class WinnerDetailState extends State<WinnerDetailScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return AppScaffold(
         backgroundColor: AppColorConstants.backgroundColor,
         appBar: AppBar(
           backgroundColor: Colors.white,
@@ -70,7 +70,7 @@ class WinnerDetailState extends State<WinnerDetailScreen> {
                     child: CachedNetworkImage(
                       imageUrl: model.gallery.first.filePath,
                       fit: BoxFit.fill,
-                      width: MediaQuery.of(context).size.width,
+                      width: Get.width,
                       placeholder: (context, url) =>
                           AppUtil.addProgressIndicator(size:100),
                       errorWidget: (context, url, error) =>

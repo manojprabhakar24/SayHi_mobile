@@ -1,13 +1,7 @@
 import 'package:foap/components/search_bar.dart';
-import 'package:foap/helper/common_components.dart';
-import 'package:foap/helper/extension.dart';
-import 'package:foap/helper/localization_strings.dart';
-import 'package:foap/theme/theme_icon.dart';
-import 'package:foap/util/app_config_constants.dart';
-import 'package:get/get.dart';
 import 'package:foap/helper/imports/event_imports.dart';
-import 'package:flutter/material.dart';
 import '../../components/event/events_list.dart';
+import 'package:foap/helper/imports/common_import.dart';
 
 class SearchEventListing extends StatefulWidget {
   const SearchEventListing({Key? key}) : super(key: key);
@@ -34,7 +28,7 @@ class SearchEventListingState extends State<SearchEventListing> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return AppScaffold(
       backgroundColor: AppColorConstants.backgroundColor,
       body: Column(
         children: [

@@ -13,7 +13,7 @@ class CreateAudienceScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return AppScaffold(
       backgroundColor: AppColorConstants.backgroundColor,
       body: GetBuilder<PromotionController>(
           init: _promotionController,
@@ -92,19 +92,19 @@ class CreateAudienceScreen extends StatelessWidget {
             Heading6Text(
               title,
               weight: FontWeight.normal,
-              color: AppColorConstants.grayscale600,
+              color: AppColorConstants.subHeadingTextColor,
             ),
             subTitle == ''
                 ? const SizedBox()
                 : BodyMediumText(
                     subTitle,
                     weight: FontWeight.normal,
-                    color: AppColorConstants.grayscale600,
+                    color: AppColorConstants.subHeadingTextColor,
                   ).tP4
           ],
         )),
         ThemeIconWidget(ThemeIcon.nextArrow,
-                size: 25, color: AppColorConstants.grayscale800)
+                size: 25, color: AppColorConstants.mainTextColor)
             .lP4,
       ],
     ).vP16;

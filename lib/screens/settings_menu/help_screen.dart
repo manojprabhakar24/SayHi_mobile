@@ -18,7 +18,7 @@ class _HelpScreenState extends State<HelpScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return AppScaffold(
       backgroundColor: AppColorConstants.backgroundColor,
       body: SingleChildScrollView(
         child: Column(
@@ -39,28 +39,28 @@ class _HelpScreenState extends State<HelpScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.01,
+                      height: Get.height * 0.01,
                     ),
                     AppTextField(
                       controller: nameController,
                       hintText: nameString.tr,
                     ),
                     SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.025,
+                      height: Get.height * 0.025,
                     ),
                     AppTextField(
                       controller: emailController,
                       hintText: emailString.tr,
                     ),
                     SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.025,
+                      height: Get.height * 0.025,
                     ),
                     AppTextField(
                       controller: phoneController,
                       hintText: phoneNumberString.tr,
                     ),
                     SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.025,
+                      height: Get.height * 0.025,
                     ),
                     AppTextField(
                       controller: messageController,
@@ -68,7 +68,7 @@ class _HelpScreenState extends State<HelpScreen> {
                       hintText: messageString.tr,
                     ),
                     SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.04,
+                      height: Get.height * 0.04,
                     ),
                     _submitBtn(),
                   ],

@@ -59,19 +59,15 @@ class CommentsScreenState extends State<CommentsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-        color: AppColorConstants.backgroundColor.lighten(0.02),
-        child: Column(
+    return AppScaffold(
+        backgroundColor: AppColorConstants.backgroundColor,
+        body: Column(
           children: <Widget>[
-            // SizedBox(
-            //   height: widget.isPopup == true ? 0 : 50,
-            // ),
             backNavigationBar(title: commentsString.tr),
             Obx(() => _commentsController.hashTags.isNotEmpty ||
                     _commentsController.searchedUsers.isNotEmpty
                 ? Expanded(
                     child: Container(
-                      // height: 500,
                       width: double.infinity,
                       color: AppColorConstants.disabledColor,
                       child: _commentsController.hashTags.isNotEmpty
@@ -87,7 +83,9 @@ class CommentsScreenState extends State<CommentsScreen> {
                         builder: (ctx) {
                           return ListView.separated(
                             padding: EdgeInsets.only(
-                                top: 20, left: DesignConstants.horizontalPadding, right: DesignConstants.horizontalPadding),
+                                top: 20,
+                                left: DesignConstants.horizontalPadding,
+                                right: DesignConstants.horizontalPadding),
                             itemCount: _commentsController.comments.length,
                             // reverse: true,
                             controller: _controller,
@@ -143,12 +141,12 @@ class CommentsScreenState extends State<CommentsScreen> {
                         hintText: writeCommentString.tr,
                         hintStyle: TextStyle(
                             fontSize: FontSizes.b2,
-                            color: AppColorConstants.grayscale700),
+                            color: AppColorConstants.mainTextColor),
                       ),
                       textInputAction: TextInputAction.send,
                       style: TextStyle(
                           fontSize: FontSizes.b2,
-                          color: AppColorConstants.grayscale900),
+                          color: AppColorConstants.mainTextColor),
                       onSubmitted: (_) {
                         addNewMessage();
                       },
@@ -163,7 +161,7 @@ class CommentsScreenState extends State<CommentsScreen> {
                 ),
                 ThemeIconWidget(
                   ThemeIcon.camera,
-                  color: AppColorConstants.grayscale900,
+                  color: AppColorConstants.mainTextColor,
                 ).rP8.ripple(() => _commentsController.selectPhoto(handler: () {
                       _commentsController.postMediaCommentsApiCall(
                           type: CommentType.image,
@@ -178,7 +176,7 @@ class CommentsScreenState extends State<CommentsScreen> {
                     })),
                 ThemeIconWidget(
                   ThemeIcon.gif,
-                  color: AppColorConstants.grayscale900,
+                  color: AppColorConstants.mainTextColor,
                 ).rP8.ripple(() {
                   commentInputField.text = '';
                   _commentsController.openGify(() {
@@ -201,7 +199,7 @@ class CommentsScreenState extends State<CommentsScreen> {
           Container(
             width: 45,
             height: 45,
-            color: AppColorConstants.grayscale900,
+            color: AppColorConstants.mainTextColor,
             child: InkWell(
               onTap: addNewMessage,
               child: Icon(
@@ -243,7 +241,10 @@ class CommentsScreenState extends State<CommentsScreen> {
         init: _commentsController,
         builder: (ctx) {
           return ListView.separated(
-              padding: EdgeInsets.only(top: 20, left: DesignConstants.horizontalPadding, right: DesignConstants.horizontalPadding),
+              padding: EdgeInsets.only(
+                  top: 20,
+                  left: DesignConstants.horizontalPadding,
+                  right: DesignConstants.horizontalPadding),
               itemCount: _commentsController.searchedUsers.length,
               itemBuilder: (BuildContext ctx, int index) {
                 return UserTile(
@@ -275,7 +276,9 @@ class CommentsScreenState extends State<CommentsScreen> {
         init: _commentsController,
         builder: (ctx) {
           return ListView.builder(
-            padding: EdgeInsets.only(left: DesignConstants.horizontalPadding, right: DesignConstants.horizontalPadding),
+            padding: EdgeInsets.only(
+                left: DesignConstants.horizontalPadding,
+                right: DesignConstants.horizontalPadding),
             itemCount: _commentsController.hashTags.length,
             itemBuilder: (BuildContext ctx, int index) {
               return HashTagTile(

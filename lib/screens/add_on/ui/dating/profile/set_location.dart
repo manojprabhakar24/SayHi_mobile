@@ -22,7 +22,7 @@ class _SetLocationState extends State<SetLocation> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return AppScaffold(
       backgroundColor: AppColorConstants.backgroundColor,
       body: Column(
         children: [
@@ -54,7 +54,7 @@ class _SetLocationState extends State<SetLocation> {
                 Center(
                   child: SizedBox(
                       height: 50,
-                      width: MediaQuery.of(context).size.width - 50,
+                      width: Get.width - 50,
                       child: AppThemeButton(
                           cornerRadius: 25,
                           text: setLocationServiceStrng.tr,

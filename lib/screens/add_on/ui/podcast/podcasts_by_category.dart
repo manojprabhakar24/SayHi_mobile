@@ -40,7 +40,7 @@
 //
 //   @override
 //   Widget build(BuildContext context) {
-//     return Scaffold(
+//     return AppScaffold(
 //         backgroundColor: AppColorConstants.backgroundColor,
 //         body: NestedScrollView(
 //           headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {

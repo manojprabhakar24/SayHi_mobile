@@ -87,11 +87,11 @@ class BattleInvitation extends StatelessWidget {
                 children: [
                   BodyLargeText(
                     acceptString,
-                    color: AppColorConstants.grayscale100,
+                    color: AppColorConstants.subHeadingTextColor,
                     weight: TextWeight.bold,
                   )
                       .p(10)
-                      .makeChip(backGroundColor: AppColorConstants.grayscale900)
+                      .makeChip(backGroundColor: AppColorConstants.green)
                       .ripple(() {
                     Get.back(closeOverlays: true);
                     okHandler();

@@ -1,6 +1,5 @@
 import 'package:chewie/chewie.dart';
 import 'package:foap/helper/imports/common_import.dart';
-import 'package:get/get.dart';
 import 'package:video_player/video_player.dart';
 import '../controllers/tv/live_tv_streaming_controller.dart';
 import '../model/live_tv_model.dart';
@@ -109,7 +108,7 @@ class _SocialifiedVideoPlayerState extends State<SocialifiedVideoPlayer> {
                               return Center(
                                 child: BodyLargeText(
                                   errorMessage,
-                                  color: AppColorConstants.grayscale100,
+                                  color: AppColorConstants.subHeadingTextColor,
                                 ),
                               );
                             },
@@ -194,7 +193,8 @@ class _SocialifiedVideoPlayerState extends State<SocialifiedVideoPlayer> {
                             Get.back();
                           }),
                         ],
-                      ).setPadding(left: DesignConstants.horizontalPadding, top: 28),
+                      ).setPadding(
+                          left: DesignConstants.horizontalPadding, top: 28),
                     ),
                   )
                 : Container())

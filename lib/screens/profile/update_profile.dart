@@ -32,19 +32,20 @@ class UpdateProfileState extends State<UpdateProfile> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return AppScaffold(
       backgroundColor: AppColorConstants.backgroundColor,
       body: Column(
         children: [
-          addProfileView(),
-          const SizedBox(
-            height: 40,
-          ),
+          backNavigationBar(title: ''),
           Expanded(
             child: SingleChildScrollView(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  addProfileView(),
+                  const SizedBox(
+                    height: 40,
+                  ),
                   Row(
                     children: [
                       BodyLargeText(
@@ -201,24 +202,6 @@ class UpdateProfileState extends State<UpdateProfile> {
                     ],
                   ),
                   divider().vP16,
-                  // Row(
-                  //   children: [
-                  //     BodyLargeText(currentLocation,
-                  //         weight: TextWeight.medium),
-                  //     const Spacer(),
-                  //     ThemeIconWidget(
-                  //       ThemeIcon.edit,
-                  //       color: AppColorConstants.iconColor,
-                  //       size: 15,
-                  //     ).ripple(() {
-                  //       Get.to(() => const SetLocation(isFromSignup: false))!
-                  //           .then((value) {
-                  //         reloadData();
-                  //       });
-                  //     })
-                  //   ],
-                  // ),
-                  // divider().vP16,
                   Row(
                     children: [
                       BodyLargeText(nameString.tr, weight: TextWeight.medium),
@@ -356,7 +339,7 @@ class UpdateProfileState extends State<UpdateProfile> {
                   ),
                   divider().vP16,
                 ],
-              ).hp(DesignConstants.horizontalPadding * 2),
+              ).hp(DesignConstants.horizontalPadding),
             ),
           ),
         ],
@@ -369,59 +352,50 @@ class UpdateProfileState extends State<UpdateProfile> {
         init: profileController,
         builder: (ctx) {
           return SizedBox(
-            height: 320,
+            height: 225,
             child: profileController.user.value != null
-                ? Stack(
-                    children: [
-                      SizedBox(
-                        width: Get.width,
-                        child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              const SizedBox(
-                                height: 100,
-                              ),
-                              UserAvatarView(
-                                      user: profileController.user.value!,
-                                      size: 85,
-                                      onTapHandler: () {})
-                                  .ripple(() {
-                                openImagePickingPopup();
-                              }),
-                              const SizedBox(
-                                height: 10,
-                              ),
-                              BodySmallText(
-                                editProfilePictureString.tr,
-                              ).vP4.ripple(() {
-                                openImagePickingPopup();
-                              }),
-                              Heading6Text(
-                                profileController.user.value!.userName,
-                                weight: TextWeight.bold,
-                              ).setPadding(bottom: 4),
-                              profileController.user.value?.email != null
-                                  ? BodyMediumText(
-                                      '${profileController.user.value!.email}',
-                                      color: AppColorConstants.grayscale700,
-                                      weight: TextWeight.regular,
-                                    )
-                                  : Container(),
-                              profileController.user.value?.country != null
-                                  ? BodyMediumText(
-                                      '${profileController.user.value?.country ?? ''},${profileController.user.value?.city ?? ''}',
-                                      color: AppColorConstants.grayscale700,
-                                      weight: TextWeight.regular,
-                                    ).vP4
-                                  : Container(),
-                            ]).p8,
-                      ),
-                      Positioned(
-                          top: 0,
-                          left: 0,
-                          right: 0,
-                          child: backNavigationBar(title: ''))
-                    ],
+                ? SizedBox(
+                    width: Get.width,
+                    child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          UserAvatarView(
+                                  user: profileController.user.value!,
+                                  size: 85,
+                                  onTapHandler: () {})
+                              .ripple(() {
+                            openImagePickingPopup();
+                          }),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          BodySmallText(
+                            editProfilePictureString.tr,
+                          ).vP4.ripple(() {
+                            openImagePickingPopup();
+                          }),
+                          Heading6Text(
+                            profileController.user.value!.userName,
+                            weight: TextWeight.bold,
+                          ).setPadding(bottom: 4),
+                          profileController.user.value?.email != null
+                              ? BodyMediumText(
+                                  '${profileController.user.value!.email}',
+                                  color: AppColorConstants.mainTextColor,
+                                  weight: TextWeight.regular,
+                                )
+                              : Container(),
+                          profileController.user.value?.country != null
+                              ? BodyMediumText(
+                                  '${profileController.user.value?.country ?? ''},${profileController.user.value?.city ?? ''}',
+                                  color: AppColorConstants.mainTextColor,
+                                  weight: TextWeight.regular,
+                                ).vP4
+                              : Container(),
+                        ]).p8,
                   )
                 : Container(),
           );

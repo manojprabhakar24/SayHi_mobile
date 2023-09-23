@@ -18,7 +18,7 @@ class StripeCardPaymentState extends State<StripeCardPayment> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return AppScaffold(
         backgroundColor: AppColorConstants.backgroundColor,
         body: SizedBox(
             height: Get.height,

@@ -10,23 +10,23 @@ class ChatHistoryTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-            height: 80,
-            color: AppColorConstants.cardColor,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Flexible(
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      model.isGroupChat
-                          ? Container(
-                              color: AppColorConstants.themeColor,
-                              height: 45,
-                              width: 45,
-                              child: model.image == null ||
-                                      (model.image ?? '').isEmpty
+        height: 80,
+        color: AppColorConstants.cardColor,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Flexible(
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  model.isGroupChat
+                      ? Container(
+                          color: AppColorConstants.themeColor,
+                          height: 45,
+                          width: 45,
+                          child:
+                              model.image == null || (model.image ?? '').isEmpty
                                   ? const ThemeIconWidget(
                                       ThemeIcon.group,
                                       color: Colors.white,
@@ -38,79 +38,78 @@ class ChatHistoryTile extends StatelessWidget {
                                       width: 35,
                                       fit: BoxFit.cover,
                                     ),
-                            ).circular
-                          : UserAvatarView(
-                              size: 45,
-                              user: model.opponent.userDetail,
-                              onTapHandler: () {},
-                            ),
-                      // AvatarView(size: 50, url: model.opponent.picture),
-                      const SizedBox(
-                        width: 8,
-                      ),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            const Spacer(),
-                            BodyLargeText(
-                              model.isGroupChat
-                                  ? model.name!
-                                  : model.opponent.userDetail.userName,
-                              maxLines: 1,
-                              weight: TextWeight.bold,
-                            ),
-                            const SizedBox(
-                              height: 8,
-                            ),
-                            model.whoIsTyping.isNotEmpty
-                                ? BodyMediumText(
-                                    '${model.whoIsTyping.join(',')} ${typingString.tr}',
-                                  )
-                                : model.lastMessage == null
-                                    ? Container()
-                                    : messageTypeShortInfo(
-                                        message: model.lastMessage!,
-                                      ),
-                            const Spacer(),
-                          ],
+                        ).circular
+                      : UserAvatarView(
+                          size: 45,
+                          user: model.opponent.userDetail,
+                          onTapHandler: () {},
                         ),
-                      )
-                    ],
+                  // AvatarView(size: 50, url: model.opponent.picture),
+                  const SizedBox(
+                    width: 8,
                   ),
-                ),
-                const SizedBox(
-                  width: 10,
-                ),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    model.unreadMessages > 0
-                        ? Container(
-                            height: 25,
-                            width: 25,
-                            color: AppColorConstants.themeColor,
-                            child: Center(
-                              child: BodyLargeText(
-                                '${model.unreadMessages}',
-                                weight: TextWeight.bold,
-                              ),
-                            ),
-                          ).circular.bP8
-                        : Container(),
-                    model.lastMessage == null
-                        ? Container()
-                        : BodySmallText(
-                            model.lastMessage!.messageTime,
-                            weight: TextWeight.regular,
-                            color: AppColorConstants.themeColor,
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        const Spacer(),
+                        BodyLargeText(
+                          model.isGroupChat
+                              ? model.name!
+                              : model.opponent.userDetail.userName,
+                          maxLines: 1,
+                          weight: TextWeight.bold,
+                        ),
+                        const SizedBox(
+                          height: 8,
+                        ),
+                        model.whoIsTyping.isNotEmpty
+                            ? BodyMediumText(
+                                '${model.whoIsTyping.join(',')} ${typingString.tr}',
+                              )
+                            : model.lastMessage == null
+                                ? Container()
+                                : messageTypeShortInfo(
+                                    message: model.lastMessage!,
+                                  ),
+                        const Spacer(),
+                      ],
+                    ),
+                  )
+                ],
+              ),
+            ),
+            const SizedBox(
+              width: 10,
+            ),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                model.unreadMessages > 0
+                    ? Container(
+                        height: 25,
+                        width: 25,
+                        color: AppColorConstants.themeColor,
+                        child: Center(
+                          child: BodyLargeText(
+                            '${model.unreadMessages}',
+                            weight: TextWeight.bold,
                           ),
-                  ],
-                ),
+                        ),
+                      ).circular.bP8
+                    : Container(),
+                model.lastMessage == null
+                    ? Container()
+                    : BodySmallText(
+                        model.lastMessage!.messageTime,
+                        weight: TextWeight.regular,
+                        color: AppColorConstants.themeColor,
+                      ),
               ],
-            ).hP8)
-        .shadowWithBorder(borderWidth: 0);
+            ),
+          ],
+        ).hP8).round(20);
   }
 }
 

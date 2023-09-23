@@ -7,7 +7,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
-	<string>Jinnyouity</string>
+	<string>SayHi Social</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -15,7 +15,7 @@
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
-	<string>Jinnyouity</string>
+	<string>SayHi Social</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
@@ -98,23 +98,23 @@
 	<key>NSAppleMusicUsageDescription</key>
 	<string>Need access</string>
 	<key>NSCameraUsageDescription</key>
-	<string>$(PRODUCT_NAME) wants to access camera to capture images.</string>
+	<string>SayHi Social wants to access camera to capture images for sharing in chat and timeline</string>
 	<key>NSContactsUsageDescription</key>
-	<string>Need access to contacts for sharing and saving contacts</string>
+	<string>SayHi Social wants to access contact for sharing in chat</string>
 	<key>NSFaceIDUsageDescription</key>
-	<string>Want to access biometric authentication for login</string>
+	<string>SayHi Social want to access biometric authentication for login</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<string>$(PRODUCT_NAME) Need access to current location for sharing location</string>
+	<string>SayHi Social wants to access Location to capture images for sharing in chat</string>
 	<key>NSLocationAlwaysUsageDescription</key>
-	<string>Need access to current location for sharing location</string>
+	<string>SayHi Social wants to access Location to capture images for sharing in chat</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Need access to current location for sharing location</string>
+	<string>SayHi Social wants to access Location to capture images for sharing in chat</string>
 	<key>NSMicrophoneUsageDescription</key>
-	<string>This app is requires Mic permission</string>
+	<string>SayHi Social wants to access Mic to record audio for sharing in chat and timeline</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
-	<string>$(PRODUCT_NAME) wants to access gallery to post images.</string>
+	<string>SayHi Social wants to access gallery to share images in chat and timeline</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>$(PRODUCT_NAME) wants to access gallery to post images.</string>
+	<string>SayHi Social wants to access gallery to share images in chat and timeline</string>
 	<key>SKAdNetworkItems</key>
 	<array>
 		<dict>

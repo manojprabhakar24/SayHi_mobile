@@ -45,7 +45,7 @@ class NotificationTileType4 extends StatelessWidget {
                       text: notification.actionBy?.userName ?? '',
                       style: TextStyle(
                           fontSize: FontSizes.b3,
-                          color: AppColorConstants.grayscale900,
+                          color: AppColorConstants.mainTextColor,
                           fontWeight: TextWeight.semiBold),
                       recognizer: TapGestureRecognizer()
                         ..onTap = () {
@@ -58,14 +58,14 @@ class NotificationTileType4 extends StatelessWidget {
                       text: ' ${notificationMessage(notification.type)}',
                       style: TextStyle(
                           fontSize: FontSizes.b3,
-                          color: AppColorConstants.grayscale900,
+                          color: AppColorConstants.mainTextColor,
                           fontWeight: TextWeight.medium),
                     ),
                     TextSpan(
                       text: ' ${notification.notificationTime}',
                       style: TextStyle(
                           fontSize: FontSizes.b3,
-                          color: AppColorConstants.grayscale500,
+                          color: AppColorConstants.subHeadingTextColor,
                           fontWeight: TextWeight.medium),
                     ),
                   ]))

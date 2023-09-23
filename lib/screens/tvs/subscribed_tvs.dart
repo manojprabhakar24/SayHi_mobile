@@ -38,7 +38,7 @@ class _SubscribedTvListState extends State<SubscribedTvList> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return AppScaffold(
         backgroundColor: AppColorConstants.backgroundColor,
         body: Column(
           children: [
@@ -55,8 +55,8 @@ class _SubscribedTvListState extends State<SubscribedTvList> {
         builder: (ctx) {
           return _tvStreamingController.isLoadingSubscribedTvs
               ? SizedBox(
-                  height: (MediaQuery.of(context).size.height / 1.5),
-                  width: (MediaQuery.of(context).size.width),
+                  height: (Get.height / 1.5),
+                  width: (Get.width),
                   child: const Center(child: CircularProgressIndicator()))
               : _tvStreamingController.tvs.isEmpty
                   ? emptyData(title: noDataString, subTitle: '')

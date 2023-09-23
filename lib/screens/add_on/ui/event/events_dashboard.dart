@@ -1,9 +1,7 @@
 import 'package:foap/screens/add_on/ui/event/search_events.dart';
-import 'package:foap/util/app_config_constants.dart';
-import 'package:get/get.dart';
-import 'package:flutter/material.dart';
 import 'event_bookings.dart';
 import 'explore_events.dart';
+import 'package:foap/helper/imports/common_import.dart';
 
 class EventsDashboardController extends GetxController {
   RxInt currentIndex = 0.obs;
@@ -46,12 +44,12 @@ class EventsDashboardScreenState extends State<EventsDashboardScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Obx(() => Scaffold(
+    return Obx(() => AppScaffold(
         backgroundColor: AppColorConstants.backgroundColor,
         body: items[_dashboardController.currentIndex.value],
         bottomNavigationBar: SizedBox(
           height: MediaQuery.of(context).viewPadding.bottom > 0 ? 90 : 70.0,
-          width: MediaQuery.of(context).size.width,
+          width: Get.width,
           child: BottomNavigationBar(
             backgroundColor: AppColorConstants.backgroundColor,
             type: BottomNavigationBarType.fixed,
@@ -63,28 +61,22 @@ class EventsDashboardScreenState extends State<EventsDashboardScreen> {
             onTap: (index) => {onTabTapped(index)},
             items: [
               BottomNavigationBarItem(
-                  icon: Image.asset('assets/event.png',
-                      height: 20,
-                      width: 20,
+                  icon: ThemeIconWidget(ThemeIcon.event,
                       color: _dashboardController.currentIndex.value == 0
                           ? AppColorConstants.themeColor
-                          : AppColorConstants.disabledColor),
+                          : AppColorConstants.iconColor),
                   label: ''),
               BottomNavigationBarItem(
-                  icon: Image.asset('assets/search.png',
-                      height: 20,
-                      width: 20,
+                  icon: ThemeIconWidget(ThemeIcon.search,
                       color: _dashboardController.currentIndex.value == 1
                           ? AppColorConstants.themeColor
-                          : AppColorConstants.disabledColor),
+                          : AppColorConstants.iconColor),
                   label: ''),
               BottomNavigationBarItem(
-                icon: Image.asset('assets/bookings.png',
-                    height: 20,
-                    width: 20,
+                icon: ThemeIconWidget(ThemeIcon.bookings,
                     color: _dashboardController.currentIndex.value == 2
                         ? AppColorConstants.themeColor
-                        : AppColorConstants.disabledColor),
+                        : AppColorConstants.iconColor),
                 label: '',
               ),
             ],

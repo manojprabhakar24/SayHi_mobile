@@ -1,11 +1,11 @@
 import 'dart:io';
 import 'package:flutter/foundation.dart';
-import 'package:foap/apiHandler/apis/post_api.dart';
+import 'package:foap/api_handler/apis/post_api.dart';
 import 'package:foap/components/custom_gallery_picker.dart';
 import 'package:foap/helper/imports/common_import.dart';
 import 'package:foap/helper/list_extension.dart';
 import 'package:image_picker/image_picker.dart';
-import '../../apiHandler/apis/misc_api.dart';
+import '../../api_handler/apis/misc_api.dart';
 import '../../helper/imports/chat_imports.dart';
 import '../../model/comment_model.dart';
 import '../../model/hash_tag.dart';

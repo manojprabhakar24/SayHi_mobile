@@ -1,14 +1,6 @@
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:foap/components/custom_texts.dart';
-import 'package:foap/components/top_navigation_bar.dart';
-import 'package:foap/helper/common_components.dart';
-import 'package:foap/helper/extension.dart';
 import 'package:foap/helper/imports/reel_imports.dart';
-import 'package:foap/helper/localization_strings.dart';
 import 'package:foap/helper/number_extension.dart';
-import 'package:foap/util/app_config_constants.dart';
-import 'package:get/get.dart';
-import 'package:flutter/material.dart';
+import 'package:foap/helper/imports/common_import.dart';
 
 class ReelAudioDetail extends StatefulWidget {
   final ReelMusicModel audio;
@@ -36,7 +28,7 @@ class _ReelAudioDetailState extends State<ReelAudioDetail> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return AppScaffold(
         backgroundColor: AppColorConstants.backgroundColor,
         body: Column(children: [
           backNavigationBar( title: audioString.tr),

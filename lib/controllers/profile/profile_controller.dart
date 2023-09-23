@@ -1,15 +1,16 @@
 import 'package:camera/camera.dart';
-import 'package:foap/apiHandler/apis/gift_api.dart';
-import 'package:foap/apiHandler/apis/profile_api.dart';
-import 'package:foap/apiHandler/apis/wallet_api.dart';
+import 'package:foap/api_handler/apis/gift_api.dart';
+import 'package:foap/api_handler/apis/profile_api.dart';
+import 'package:foap/api_handler/apis/wallet_api.dart';
 import 'package:foap/helper/enum_linking.dart';
 import 'package:foap/helper/imports/common_import.dart';
 import 'package:foap/helper/list_extension.dart';
+import 'package:foap/model/data_wrapper.dart';
 import 'package:foap/screens/add_on/ui/dating/profile/set_location.dart';
 import 'package:get/get.dart';
-import '../../apiHandler/apis/auth_api.dart';
-import '../../apiHandler/apis/post_api.dart';
-import '../../apiHandler/apis/users_api.dart';
+import '../../api_handler/apis/auth_api.dart';
+import '../../api_handler/apis/post_api.dart';
+import '../../api_handler/apis/users_api.dart';
 import '../../util/shared_prefs.dart';
 import 'package:flutter/services.dart';
 import 'dart:io';
@@ -31,6 +32,7 @@ class ProfileController extends GetxController {
   final PostController postController = Get.find<PostController>();
   final UserProfileManager _userProfileManager = Get.find();
 
+  DataWrapper transactionsDataWrapper = DataWrapper();
   Rx<UserModel?> user = Rx<UserModel?>(null);
 
   int totalPages = 100;
@@ -38,7 +40,7 @@ class ProfileController extends GetxController {
   RxInt userNameCheckStatus = (-1).obs;
   RxBool isLoading = true.obs;
 
-  RxList<PaymentModel> payments = <PaymentModel>[].obs;
+  RxList<TransactionModel> transactions = <TransactionModel>[].obs;
   RxInt selectedSegment = 0.obs;
 
   RxBool noDataFound = false.obs;
@@ -356,11 +358,35 @@ class ProfileController extends GetxController {
     callback();
   }
 
-  void getWithdrawHistory() {
-    WalletApi.getWithdrawHistory(resultCallback: (result) {
-      payments.value = result;
-      update();
-    });
+  loadMore(VoidCallback callback) {
+    if (transactionsDataWrapper.haveMoreData.value) {
+      getTransactionHistory(callback);
+    } else {
+      callback();
+    }
+  }
+
+  // void getWithdrawHistory(VoidCallback callback) {
+  //   WalletApi.getWithdrawHistory(resultCallback: (result) {
+  //     transactions.value = result;
+  //     callback();
+  //     update();
+  //   });
+  // }
+
+  void getTransactionHistory(VoidCallback callback) {
+    WalletApi.getTransactionHistory(
+        page: transactionsDataWrapper.page,
+
+        resultCallback: (result, metadata) {
+          transactions.addAll(result);
+          transactions.unique((e)=> e.id);
+
+          transactionsDataWrapper.processCompletedWithData(metadata);
+
+          callback();
+          update();
+        });
   }
 
   followUser(UserModel user) {

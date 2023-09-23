@@ -51,8 +51,8 @@ class ChatMessageTile extends StatelessWidget {
                               MessageContentType.sticker
                       ? Colors.transparent
                       : message.isMineMessage
-                          ? AppColorConstants.backgroundColor
-                          : AppColorConstants.themeColor.lighten(0.5),
+                          ? AppColorConstants.themeColor
+                          : AppColorConstants.cardColor,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [

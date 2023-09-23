@@ -1,7 +1,7 @@
 import 'package:foap/helper/date_extension.dart';
 import 'package:foap/helper/imports/common_import.dart';
 import 'package:foap/helper/list_extension.dart';
-import '../../apiHandler/apis/misc_api.dart';
+import '../../api_handler/apis/misc_api.dart';
 import '../../model/notification_modal.dart';
 
 class NotificationController extends GetxController {

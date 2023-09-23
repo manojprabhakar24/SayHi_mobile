@@ -4,14 +4,15 @@ import 'package:lottie/lottie.dart';
 import '../settings_menu/settings_controller.dart';
 
 class SignUpScreen extends StatefulWidget {
-  const SignUpScreen({Key? key}) : super(key: key);
+  final String userName;
+
+  const SignUpScreen({Key? key, required this.userName}) : super(key: key);
 
   @override
   SignUpScreenState createState() => SignUpScreenState();
 }
 
 class SignUpScreenState extends State<SignUpScreen> {
-  TextEditingController name = TextEditingController();
   TextEditingController email = TextEditingController();
   TextEditingController password = TextEditingController();
   SettingsController settingsController = Get.find();
@@ -20,8 +21,13 @@ class SignUpScreenState extends State<SignUpScreen> {
   final LoginController loginController = Get.find();
 
   @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return AppScaffold(
       backgroundColor: AppColorConstants.backgroundColor,
       body: SingleChildScrollView(
         child: GestureDetector(
@@ -59,42 +65,6 @@ class SignUpScreenState extends State<SignUpScreen> {
                 )),
             SizedBox(
               height: Get.height * 0.05,
-            ),
-            GetBuilder<LoginController>(
-                init: loginController,
-                builder: (ctx) {
-                  return Stack(children: [
-                    AppTextField(
-                      controller: name,
-                      icon: ThemeIcon.account,
-                      hintText: userNameString.tr,
-                      onChanged: (value) {
-                        if (value.length > 3) {
-                          loginController.verifyUsername(value);
-                        }
-                      },
-                    ),
-                    Positioned(
-                        right: 10,
-                        bottom: 15,
-                        child: loginController.userNameCheckStatus != -1
-                            ? loginController.userNameCheckStatus == 1
-                                ? ThemeIconWidget(
-                                    ThemeIcon.checkMark,
-                                    color: AppColorConstants.themeColor,
-                                  )
-                                : ThemeIconWidget(
-                                    ThemeIcon.close,
-                                    color: AppColorConstants.red,
-                                  )
-                            : Container()),
-                    const SizedBox(
-                      width: 20,
-                    )
-                  ]);
-                }),
-            SizedBox(
-              height: Get.height * 0.015,
             ),
             AppTextField(
               icon: ThemeIcon.email,
@@ -168,8 +138,10 @@ class SignUpScreenState extends State<SignUpScreen> {
             SizedBox(
               height: Get.height * 0.04,
             ),
-            const SocialLogin(hidePhoneLogin: false)
-                .setPadding(left: 45, right: 45),
+            SocialLogin(
+              hidePhoneLogin: false,
+              userName: widget.userName,
+            ).setPadding(left: 45, right: 45),
             SizedBox(
               height: Get.height * 0.2,
             ),
@@ -197,7 +169,7 @@ class SignUpScreenState extends State<SignUpScreen> {
             },
             okHandler: () {
               loginController.register(
-                name: name.text,
+                name: widget.userName,
                 email: email.text,
                 password: password.text,
               );

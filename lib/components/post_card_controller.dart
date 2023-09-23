@@ -1,6 +1,6 @@
 import 'dart:io';
-import 'package:foap/apiHandler/apis/post_api.dart';
-import 'package:foap/apiHandler/apis/users_api.dart';
+import 'package:foap/api_handler/apis/post_api.dart';
+import 'package:foap/api_handler/apis/users_api.dart';
 import 'package:foap/helper/imports/common_import.dart';
 import 'package:share_plus/share_plus.dart';
 import '../controllers/post/post_controller.dart';

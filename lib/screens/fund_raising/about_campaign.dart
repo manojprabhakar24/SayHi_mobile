@@ -19,6 +19,7 @@ class AboutCampaign extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          const SizedBox(height: 30),
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -89,7 +90,7 @@ class AboutCampaign extends StatelessWidget {
                   BodyMediumText(
                     donationsString,
                     weight: TextWeight.semiBold,
-                    color: AppColorConstants.grayscale600,
+                    color: AppColorConstants.subHeadingTextColor,
                   ),
                 ],
               ),
@@ -98,7 +99,7 @@ class AboutCampaign extends StatelessWidget {
                   BodyMediumText(
                     closingOnString,
                     weight: TextWeight.semiBold,
-                    color: AppColorConstants.grayscale600,
+                    color: AppColorConstants.subHeadingTextColor,
                   ),
                   const SizedBox(
                     width: 5,
@@ -106,7 +107,7 @@ class AboutCampaign extends StatelessWidget {
                   BodyMediumText(
                     campaign.endDate.formatTo('yyyy-MMM-dd'),
                     weight: TextWeight.bold,
-                    color: AppColorConstants.grayscale600,
+                    color: AppColorConstants.subHeadingTextColor,
                   ),
                 ],
               )
@@ -159,9 +160,7 @@ class AboutCampaign extends StatelessWidget {
             AvatarView(
               url: campaign.createdBy!.coverImage,
               name: campaign.createdBy!.name,
-            ),
-            const SizedBox(
-              width: 20,
+              size: 50,
             ),
             Expanded(
               child: Column(
@@ -172,7 +171,8 @@ class AboutCampaign extends StatelessWidget {
                   ),
                 ],
               ),
-            )
+            ),
+            const Spacer()
           ],
         )
       ],
@@ -196,9 +196,7 @@ class AboutCampaign extends StatelessWidget {
             AvatarView(
               url: campaign.createdFor!.picture,
               name: campaign.createdFor!.name,
-            ),
-            const SizedBox(
-              width: 20,
+              size: 50,
             ),
             Expanded(
               child: Column(
@@ -209,7 +207,8 @@ class AboutCampaign extends StatelessWidget {
                   ),
                 ],
               ),
-            )
+            ),
+            const Spacer()
           ],
         )
       ],

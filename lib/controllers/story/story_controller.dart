@@ -1,5 +1,5 @@
-import 'package:foap/apiHandler/apis/misc_api.dart';
-import 'package:foap/apiHandler/apis/story_api.dart';
+import 'package:foap/api_handler/apis/misc_api.dart';
+import 'package:foap/api_handler/apis/story_api.dart';
 import 'package:foap/helper/imports/common_import.dart';
 import 'package:flutter/services.dart';
 import 'dart:io';
@@ -66,13 +66,9 @@ class AppStoryController extends GetxController {
           storyId: currentStoryMediaModel.value!.id,
           page: storyViewerDataWrapper.page,
           resultCallback: (result, metadata) {
-            storyViewerDataWrapper.isLoading.value = false;
-
             storyViewers.addAll(result);
 
-            storyViewerDataWrapper.haveMoreData.value =
-                result.length >= metadata.perPage;
-            storyViewerDataWrapper.page += 1;
+            storyViewerDataWrapper.processCompletedWithData(metadata);
           });
     }
   }
@@ -159,30 +155,14 @@ class AppStoryController extends GetxController {
   void publishAction({
     required List<Map<String, String>> galleryItems,
   }) {
-    StoryApi.postStory(gallery: galleryItems);
-    Get.offAll(const DashboardScreen());
+    StoryApi.postStory(
+        gallery: galleryItems,
+        successHandler: () {
+          AppUtil.showToast(
+              message: storyPostedSuccessfullyString, isSuccess: true);
+        });
+    DashboardController dashboardController = Get.find();
+    dashboardController.indexChanged(0);
+    Get.offAll(() => const DashboardScreen());
   }
-
-// isSelected(String id) {
-//   return selectedItems.where((item) => item.id == id).isNotEmpty;
-// }
-//
-// selectItem(int index) async {
-//   var galleryImage = mediaList[index];
-//
-//   if (isSelected(galleryImage.id)) {
-//     selectedItems.removeWhere((anItem) => anItem.id == galleryImage.id);
-//     // if (selectedItems.isEmpty) {
-//     //   print('4');
-//     //
-//     //   selectedItems.add(galleryImage);
-//     // }
-//   } else {
-//     if (selectedItems.length < 10) {
-//       selectedItems.add(galleryImage);
-//     }
-//   }
-//
-//   update();
-// }
 }

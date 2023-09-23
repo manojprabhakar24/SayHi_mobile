@@ -28,7 +28,7 @@ class LineDotsIndicator extends StatelessWidget {
             height: 5,
             color: currentIndex == index
                 ? AppColorConstants.themeColor
-                : AppColorConstants.grayscale400,
+                : AppColorConstants.subHeadingTextColor,
           ).circular.hp(2);
         }).toList(),
       ),

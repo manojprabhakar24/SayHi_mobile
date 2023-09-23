@@ -74,7 +74,7 @@ class _TVShowDetailState extends State<TVShowDetail> {
         AutoOrientation.landscapeAutoMode();
       }
       return KeyboardVisibilityBuilder(builder: (context, isKeyboardVisible) {
-        return Scaffold(
+        return AppScaffold(
           backgroundColor: AppColorConstants.backgroundColor,
           body: Column(
             children: [
@@ -146,7 +146,7 @@ class _TVShowDetailState extends State<TVShowDetail> {
               imageUrl: episode.imageUrl ?? '',
               fit: BoxFit.cover,
               height: 50,
-              width: MediaQuery.of(context).size.width / 4.5,
+              width: Get.width / 4.5,
             ),
             const Positioned.fill(child: Icon(Icons.play_circle))
           ],

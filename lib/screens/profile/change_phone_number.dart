@@ -28,7 +28,7 @@ class ChangePhoneNumberState extends State<ChangePhoneNumber> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return AppScaffold(
         backgroundColor: AppColorConstants.backgroundColor,
         body: GestureDetector(
           onTap: () {
@@ -49,7 +49,6 @@ class ChangePhoneNumberState extends State<ChangePhoneNumber> {
                       phoneNumber: phoneNumber.text,
                       );
                 }),
-            divider().vP8,
             const SizedBox(
               height: 20,
             ),

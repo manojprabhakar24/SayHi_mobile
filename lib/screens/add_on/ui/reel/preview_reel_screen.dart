@@ -1,22 +1,12 @@
 import 'package:chewie/chewie.dart';
-import 'package:foap/components/custom_texts.dart';
-import 'package:foap/helper/enum.dart';
-import 'package:foap/helper/extension.dart';
-import 'package:foap/helper/localization_strings.dart';
 import 'package:foap/screens/chat/media.dart';
 import 'package:foap/screens/post/add_post_screen.dart';
-import 'package:foap/theme/theme_icon.dart';
-import 'package:foap/util/app_config_constants.dart';
 import 'package:foap/util/constant_util.dart';
-import 'package:get/get.dart';
 import 'package:video_compress_ds/video_compress_ds.dart';
 import 'package:video_player/video_player.dart';
 import 'package:video_thumbnail/video_thumbnail.dart';
 import 'dart:io';
-import 'package:flutter/material.dart';
-
-import '../../../../components/loader.dart';
-import '../../../../controllers/post/select_post_media_controller.dart';
+import 'package:foap/helper/imports/common_import.dart';
 
 class PreviewReelsScreen extends StatefulWidget {
   final File reel;
@@ -75,7 +65,7 @@ class _PreviewReelsState extends State<PreviewReelsScreen> {
     return SafeArea(
       top: false,
       bottom: false,
-      child: Scaffold(
+      child: AppScaffold(
         backgroundColor: AppColorConstants.backgroundColor,
         body: Column(
             // alignment: Alignment.topCenter,
@@ -87,7 +77,7 @@ class _PreviewReelsState extends State<PreviewReelsScreen> {
               chewieController == null
                   ? Container()
                   : SizedBox(
-                      height: (MediaQuery.of(context).size.width - 32) /
+                      height: (Get.width - 32) /
                           videoPlayerController!.value.aspectRatio,
                       child: Chewie(
                         controller: chewieController!,

@@ -1,4 +1,4 @@
-import 'package:foap/apiHandler/apis/profile_api.dart';
+import 'package:foap/api_handler/apis/profile_api.dart';
 import 'package:foap/controllers/profile/profile_controller.dart';
 import 'package:foap/helper/imports/common_import.dart';
 import '../../model/get_relationship_model.dart';

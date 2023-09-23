@@ -1,22 +1,14 @@
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:foap/components/custom_texts.dart';
-import 'package:foap/components/top_navigation_bar.dart';
 import 'package:foap/controllers/podcast/podcast_streaming_controller.dart';
-import 'package:foap/helper/extension.dart';
-import 'package:foap/helper/localization_strings.dart';
 import 'package:foap/screens/add_on/model/podcast_model.dart';
-import 'package:foap/util/app_config_constants.dart';
-import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:readmore/readmore.dart' as read_more;
 import 'audio_song_player.dart';
-import 'package:flutter/material.dart';
+import 'package:foap/helper/imports/common_import.dart';
 
 class PodcastDetail extends StatefulWidget {
   final PodcastModel podcastModel;
 
-  const PodcastDetail({Key? key, required this.podcastModel})
-      : super(key: key);
+  const PodcastDetail({Key? key, required this.podcastModel}) : super(key: key);
 
   @override
   State<PodcastDetail> createState() => _PodcastDetailState();
@@ -25,39 +17,40 @@ class PodcastDetail extends StatefulWidget {
 class _PodcastDetailState extends State<PodcastDetail> {
   final PodcastStreamingController _podcastStreamingController = Get.find();
   final RefreshController _refreshController =
-  RefreshController(initialRefresh: false);
+      RefreshController(initialRefresh: false);
+
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _podcastStreamingController.getPodcastEpisode(
-          podcastId: widget.podcastModel.id,callback: (){});
+          podcastId: widget.podcastModel.id, callback: () {});
     });
     super.initState();
   }
 
   @override
-  void dispose(){
+  void dispose() {
     super.dispose();
     _podcastStreamingController.clearPodcastEpisodes();
   }
 
-  loadMore(){
+  loadMore() {
     _podcastStreamingController.getPodcastEpisode(
-        podcastId: widget.podcastModel.id,callback: (){
-      _refreshController.loadComplete();
-    });
+        podcastId: widget.podcastModel.id,
+        callback: () {
+          _refreshController.loadComplete();
+        });
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return AppScaffold(
         backgroundColor: AppColorConstants.backgroundColor,
         body: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               backNavigationBar(title: widget.podcastModel.name),
-
               Expanded(
                 child: CustomScrollView(slivers: [
                   SliverList(
@@ -144,15 +137,15 @@ class _PodcastDetailState extends State<PodcastDetail> {
           trimMode: read_more.TrimMode.Line,
           colorClickableText: Colors.white,
           trimCollapsedText: showMoreString.tr,
-          style: TextStyle(fontSize: 14, color: AppColorConstants.grayscale900),
+          style: TextStyle(fontSize: 14, color: AppColorConstants.mainTextColor),
           trimExpandedText: '    ${showLessString.tr}',
           moreStyle: TextStyle(
               fontSize: 14,
-              color: AppColorConstants.grayscale900,
+              color: AppColorConstants.mainTextColor,
               fontWeight: FontWeight.bold),
           lessStyle: TextStyle(
               fontSize: 14,
-              color: AppColorConstants.grayscale900,
+              color: AppColorConstants.mainTextColor,
               fontWeight: FontWeight.bold),
         ),
       ]).setPadding(
@@ -171,8 +164,8 @@ class _PodcastDetailState extends State<PodcastDetail> {
         leading: Stack(
           children: [
             CachedNetworkImage(
-              imageUrl: _podcastStreamingController
-                  .podcastEpisodes[index].imageUrl,
+              imageUrl:
+                  _podcastStreamingController.podcastEpisodes[index].imageUrl,
               fit: BoxFit.cover,
               height: 50,
               width: 50,
@@ -186,6 +179,7 @@ class _PodcastDetailState extends State<PodcastDetail> {
       ),
     ).round(10).ripple(() {
       Get.to(() => AudioSongPlayer(
+          currentSongIndex: index,
           songsArray: _podcastStreamingController.podcastEpisodes,
           show: widget.podcastModel));
     });

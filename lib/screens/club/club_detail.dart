@@ -60,16 +60,11 @@ class ClubDetailState extends State<ClubDetail> {
         callback: () {
           _refreshController.refreshCompleted();
         });
-    // _clubDetailController.getPosts(
-    //     clubId: ,
-    //     callback: () {
-    //       _refreshController.refreshCompleted();
-    //     });
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return AppScaffold(
       backgroundColor: AppColorConstants.backgroundColor,
       floatingActionButton: _clubDetailController.club.value == null
           ? null
@@ -102,56 +97,61 @@ class ClubDetailState extends State<ClubDetail> {
               SliverList(
                   delegate: SliverChildListDelegate([
                 Obx(() {
-                  return Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      SizedBox(
-                          height: 350,
-                          child: CachedNetworkImage(
-                            imageUrl: _clubDetailController.club.value!.image!,
-                            fit: BoxFit.cover,
-                          )
-                          // CachedNetworkImage(
+                  return _clubDetailController.club.value == null
+                      ? Container()
+                      : Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            SizedBox(
+                                height: 350,
+                                child: CachedNetworkImage(
+                                  imageUrl:
+                                      _clubDetailController.club.value!.image!,
+                                  fit: BoxFit.cover,
+                                )
+                                // CachedNetworkImage(
 
-                          ),
-                      const SizedBox(
-                        height: 24,
-                      ),
-                      BodyLargeText(_clubDetailController.club.value!.name!,
-                              weight: TextWeight.medium)
-                          .hp(DesignConstants.horizontalPadding),
-                      const SizedBox(
-                        height: 12,
-                      ),
-                      Row(
-                        children: [
-                          const ThemeIconWidget(ThemeIcon.userGroup),
-                          const SizedBox(
-                            width: 5,
-                          ),
-                          BodyMediumText(
-                            _clubDetailController.club.value!.groupType,
-                            weight: TextWeight.medium,
-                          ),
-                          const ThemeIconWidget(
-                            ThemeIcon.circle,
-                            size: 8,
-                          ).hP8,
-                          BodyMediumText(
-                                  '${_clubDetailController.club.value!.totalMembers!.formatNumber} ${clubMembersString.tr}',
-                                  weight: TextWeight.regular)
-                              .ripple(() {
-                            Get.to(() => ClubMembers(
-                                club: _clubDetailController.club.value!));
-                          })
-                        ],
-                      ).hp(DesignConstants.horizontalPadding),
-                      const SizedBox(
-                        height: 12,
-                      ),
-                      buttonsWidget().hp(DesignConstants.horizontalPadding),
-                    ],
-                  );
+                                ),
+                            const SizedBox(
+                              height: 24,
+                            ),
+                            BodyLargeText(
+                                    _clubDetailController.club.value!.name!,
+                                    weight: TextWeight.medium)
+                                .hp(DesignConstants.horizontalPadding),
+                            const SizedBox(
+                              height: 12,
+                            ),
+                            Row(
+                              children: [
+                                const ThemeIconWidget(ThemeIcon.userGroup),
+                                const SizedBox(
+                                  width: 5,
+                                ),
+                                BodyMediumText(
+                                  _clubDetailController.club.value!.groupType,
+                                  weight: TextWeight.medium,
+                                ),
+                                const ThemeIconWidget(
+                                  ThemeIcon.circle,
+                                  size: 8,
+                                ).hP8,
+                                BodyMediumText(
+                                        '${_clubDetailController.club.value!.totalMembers!.formatNumber} ${clubMembersString.tr}',
+                                        weight: TextWeight.regular)
+                                    .ripple(() {
+                                  Get.to(() => ClubMembers(
+                                      club: _clubDetailController.club.value!));
+                                })
+                              ],
+                            ).hp(DesignConstants.horizontalPadding),
+                            const SizedBox(
+                              height: 12,
+                            ),
+                            buttonsWidget()
+                                .hp(DesignConstants.horizontalPadding),
+                          ],
+                        );
                 }),
                 Obx(() => SizedBox(
                       height: (_clubDetailController.posts.length * 500) +
@@ -291,7 +291,7 @@ class ClubDetailState extends State<ClubDetail> {
     return Positioned(
       child: Container(
         height: 150.0,
-        width: MediaQuery.of(context).size.width,
+        width: Get.width,
         decoration: BoxDecoration(
             color: Colors.white,
             gradient: LinearGradient(

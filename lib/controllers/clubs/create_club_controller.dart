@@ -2,8 +2,8 @@ import 'dart:io';
 import 'package:camera/camera.dart';
 import 'package:foap/helper/imports/common_import.dart';
 import 'package:foap/helper/imports/club_imports.dart';
-import '../../apiHandler/apis/club_api.dart';
-import '../../apiHandler/apis/misc_api.dart';
+import '../../api_handler/apis/club_api.dart';
+import '../../api_handler/apis/misc_api.dart';
 import '../../model/category_model.dart';
 
 class CreateClubController extends GetxController {

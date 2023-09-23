@@ -27,7 +27,7 @@ class AboutBusiness extends StatelessWidget {
           ),
           BodyMediumText(
             addressString.tr,
-            color: AppColorConstants.grayscale500,
+            color: AppColorConstants.subHeadingTextColor,
             weight: TextWeight.bold,
           ),
           const SizedBox(
@@ -35,7 +35,7 @@ class AboutBusiness extends StatelessWidget {
           ),
           BodyMediumText(
             business.address,
-            color: AppColorConstants.grayscale800,
+            color: AppColorConstants.mainTextColor,
             weight: TextWeight.medium,
           ),
           const SizedBox(
@@ -43,7 +43,7 @@ class AboutBusiness extends StatelessWidget {
           ),
           BodyMediumText(
             aboutString.tr,
-            color: AppColorConstants.grayscale500,
+            color: AppColorConstants.subHeadingTextColor,
             weight: TextWeight.bold,
           ),
           const SizedBox(
@@ -65,7 +65,7 @@ class AboutBusiness extends StatelessWidget {
                   children: [
                     BodyMediumText(
                       openTimeString.tr,
-                      color: AppColorConstants.grayscale500,
+                      color: AppColorConstants.subHeadingTextColor,
                       weight: TextWeight.bold,
                     ),
                     const SizedBox(
@@ -82,7 +82,7 @@ class AboutBusiness extends StatelessWidget {
                   children: [
                     BodyMediumText(
                       closeTimeString.tr,
-                      color: AppColorConstants.grayscale500,
+                      color: AppColorConstants.subHeadingTextColor,
                       weight: TextWeight.bold,
                     ),
                     const SizedBox(
@@ -102,7 +102,7 @@ class AboutBusiness extends StatelessWidget {
               children: [
                 BodyMediumText(
                   'Price range',
-                  color: AppColorConstants.grayscale500,
+                  color: AppColorConstants.subHeadingTextColor,
                   weight: TextWeight.bold,
                 ),
                 const SizedBox(
@@ -116,7 +116,7 @@ class AboutBusiness extends StatelessWidget {
             ).bp(20),
           BodyMediumText(
             offers.tr,
-            color: AppColorConstants.grayscale500,
+            color: AppColorConstants.subHeadingTextColor,
             weight: TextWeight.bold,
           ),
           BodyMediumText(

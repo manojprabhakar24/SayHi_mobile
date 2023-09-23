@@ -36,7 +36,7 @@ class _MediaListViewerState extends State<MediaListViewer> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return AppScaffold(
       backgroundColor: AppColorConstants.backgroundColor,
       body: SizedBox(
           child: Column(
@@ -69,7 +69,6 @@ class _MediaListViewerState extends State<MediaListViewer> {
                   })
                 ],
               ).hp(DesignConstants.horizontalPadding),
-              divider().vP8,
               GetBuilder<MediaListViewerController>(
                   init: mediaListViewerController,
                   builder: (ctx) {

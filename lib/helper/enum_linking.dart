@@ -1,4 +1,5 @@
 import 'package:foap/helper/enum.dart';
+import 'package:foap/helper/imports/common_import.dart';
 
 int postTypeValueFrom(PostType postType) {
   switch (postType) {
@@ -58,4 +59,100 @@ int userViewSourceTypeToId(UserViewSourceType source) {
     case UserViewSourceType.story:
       return 2;
   }
+}
+
+PaymentType paymentTypeFromId(int id) {
+  switch (id) {
+    case 1:
+      return PaymentType.package;
+    case 2:
+      return PaymentType.award;
+    case 3:
+      return PaymentType.withdrawal;
+    case 4:
+      return PaymentType.withdrawalRefund;
+    case 5:
+      return PaymentType.liveTvSubscribe;
+    case 6:
+      return PaymentType.gift;
+    case 7:
+      return PaymentType.redeemCoin;
+    case 8:
+      return PaymentType.eventTicket;
+    case 9:
+      return PaymentType.eventTicketRefund;
+    case 10:
+      return PaymentType.datingSubscription;
+    case 11:
+      return PaymentType.promotion;
+    case 12:
+      return PaymentType.promotionRefund;
+    case 15:
+      return PaymentType.fundRaising;
+    case 16:
+      return PaymentType.featureAd;
+    case 17:
+      return PaymentType.bannerAd;
+  }
+  return PaymentType.package;
+}
+
+String paymentTypeStringFromId(PaymentType type) {
+  switch (type) {
+    case PaymentType.package:
+      return boughtCoinsString.tr;
+    case PaymentType.award:
+      return awardedString.tr;
+    case PaymentType.withdrawal:
+      return withdrawalString.tr;
+    case PaymentType.withdrawalRefund:
+      return withdrawalRefundString.tr;
+    case PaymentType.liveTvSubscribe:
+      return subscribedTvString.tr;
+    case PaymentType.gift:
+      return giftsReceivedString.tr;
+    case PaymentType.redeemCoin:
+      return redeemString.tr;
+    case PaymentType.eventTicket:
+      return evenTicketString.tr;
+    case PaymentType.eventTicketRefund:
+      return evenTicketRefundString.tr;
+    case PaymentType.datingSubscription:
+      return datingSubscriptionString.tr;
+    case PaymentType.promotion:
+      return postPromotionString.tr;
+    case PaymentType.promotionRefund:
+      return postPromotionRefundString.tr;
+    case PaymentType.fundRaising:
+      return donationString.tr;
+    case PaymentType.featureAd:
+      return promotedAdString.tr;
+    case PaymentType.bannerAd:
+      return promotedAdString.tr;
+  }
+}
+
+PaymentMode paymentModeFromId(int id) {
+  switch (id) {
+    case 1:
+      return PaymentMode.inAppPurchase;
+    case 2:
+      return PaymentMode.paypal;
+    case 3:
+      return PaymentMode.wallet;
+    case 4:
+      return PaymentMode.stripe;
+    case 5:
+      return PaymentMode.razorpay;
+    case 9:
+      return PaymentMode.flutterWave;
+  }
+  return PaymentMode.inAppPurchase;
+}
+
+TransactionType transactionTypeFromId(int id) {
+  if (id == 1) {
+    return TransactionType.credit;
+  }
+  return TransactionType.debit;
 }

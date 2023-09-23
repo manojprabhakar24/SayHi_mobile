@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:flutter/animation.dart';
-import 'package:foap/apiHandler/apis/chat_api.dart';
+import 'package:foap/api_handler/apis/chat_api.dart';
 import 'package:foap/helper/date_extension.dart';
 import 'package:foap/helper/imports/chat_imports.dart';
 import 'package:foap/helper/imports/common_import.dart';
@@ -66,12 +66,10 @@ class ChatHistoryController extends GetxController {
     ChatApi.getPublicChatRooms(
         page: publicGroupsDataWrapper.page,
         resultCallback: (result, metaData) async {
-          publicGroupsDataWrapper.isLoading.value = false;
-          publicGroups.addAll(result) ;
+          publicGroups.addAll(result);
+          publicGroups.unique((e) => e.id);
 
-          publicGroupsDataWrapper.haveMoreData.value =
-              metaData.currentPage <= metaData.pageCount;
-          publicGroupsDataWrapper.page += 1;
+          publicGroupsDataWrapper.processCompletedWithData(metaData);
           callback();
           update();
         });

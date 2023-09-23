@@ -16,7 +16,7 @@ class Media {
   Uint8List? thumbnail;
 
   // ///The image file in bytes format
-  Uint8List? mediaByte;
+  Uint8List? mainFileBytes;
 
   ///Image Dimensions
   Size? size;
@@ -63,7 +63,7 @@ class Media {
     this.file,
     this.filePath,
     this.thumbnail,
-    this.mediaByte,
+    this.mainFileBytes,
     this.size,
     this.creationTime,
     this.title,
@@ -77,7 +77,7 @@ class Media {
     media.file = file;
     media.filePath = filePath;
     media.thumbnail = thumbnail;
-    media.mediaByte = mediaByte;
+    media.mainFileBytes = mainFileBytes;
     media.size = size;
     media.creationTime = creationTime;
     media.title = title;

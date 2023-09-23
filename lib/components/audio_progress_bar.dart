@@ -29,7 +29,7 @@ class AudioProgressBar extends StatelessWidget {
         timeLabelTextStyle: TextStyle(
             fontSize: FontSizes.b4,
             fontWeight: TextWeight.bold,
-            color: AppColorConstants.grayscale900),
+            color: AppColorConstants.mainTextColor),
         onDragUpdate: (detail) {
           _playerManager.pauseAudio();
           _playerManager

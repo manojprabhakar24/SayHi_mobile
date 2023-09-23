@@ -5,7 +5,7 @@
     <application
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher"
-        android:label="Social media"
+        android:label="SayHi"
         android:requestLegacyExternalStorage="true"
         tools:replace="android:label"
         >

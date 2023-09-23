@@ -41,7 +41,7 @@ class CompetitionDetailState extends State<CompetitionDetailScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return AppScaffold(
       backgroundColor: AppColorConstants.backgroundColor,
       body: Column(
         children: [
@@ -91,58 +91,58 @@ class CompetitionDetailState extends State<CompetitionDetailScreen> {
           divider().tP8,
           Obx(() => competitionController.competition.value != null
               ? Expanded(
-            child: Stack(children: [
-              SingleChildScrollView(
-                  child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Stack(
-                          children: [
-                            CachedNetworkImage(
-                              imageUrl: competitionController
-                                  .competition.value!.photo,
-                              fit: BoxFit.cover,
-                              width: Get.width,
-                              height: 270,
-                              placeholder: (context, url) =>
-                                  AppUtil.addProgressIndicator(size: 100),
-                              errorWidget: (context, url, error) =>
-                              const Icon(Icons.error),
-                            ),
-                            applyShader(),
-                            CompetitionHighlightBar(
-                                model:
-                                competitionController.competition.value!)
-                          ],
-                        ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Heading5Text(
-                              competitionController.competition.value!.title,
-                              weight: TextWeight.bold,
-                              color: AppColorConstants.themeColor,
-                            ).bP8,
-                            Heading5Text(
-                              competitionController
-                                  .competition.value!.description,
-                            ),
-                          ],
-                        ).p16,
-                        const SizedBox(
-                          height: 40,
-                        ),
-                        competitionController.competition.value!
-                            .competitionMediaType ==
-                            1
-                            ? addPhotoGrid()
-                            .hp(DesignConstants.horizontalPadding)
-                            : addVideoGrid()
-                            .hp(DesignConstants.horizontalPadding),
-                      ])),
-              addBottomActionButton()
-            ]),
-          )
+                  child: Stack(children: [
+                    SingleChildScrollView(
+                        child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                          Stack(
+                            children: [
+                              CachedNetworkImage(
+                                imageUrl: competitionController
+                                    .competition.value!.photo,
+                                fit: BoxFit.cover,
+                                width: Get.width,
+                                height: 270,
+                                placeholder: (context, url) =>
+                                    AppUtil.addProgressIndicator(size: 100),
+                                errorWidget: (context, url, error) =>
+                                    const Icon(Icons.error),
+                              ),
+                              applyShader(),
+                              CompetitionHighlightBar(
+                                  model:
+                                      competitionController.competition.value!)
+                            ],
+                          ),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              BodyLargeText(
+                                competitionController.competition.value!.title,
+                                weight: TextWeight.bold,
+                                color: AppColorConstants.themeColor,
+                              ).bP8,
+                              BodyMediumText(
+                                competitionController
+                                    .competition.value!.description,
+                              ),
+                            ],
+                          ).p16,
+                          const SizedBox(
+                            height: 40,
+                          ),
+                          competitionController.competition.value!
+                                      .competitionMediaType ==
+                                  1
+                              ? addPhotoGrid()
+                                  .hp(DesignConstants.horizontalPadding)
+                              : addVideoGrid()
+                                  .hp(DesignConstants.horizontalPadding),
+                        ])),
+                    addBottomActionButton()
+                  ]),
+                )
               : Container()),
         ],
       ),
@@ -154,9 +154,9 @@ class CompetitionDetailState extends State<CompetitionDetailScreen> {
 
     return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
       model.exampleImages.isNotEmpty
-          ? Heading4Text(exampleVideosString.tr, weight: TextWeight.bold).hp(DesignConstants.horizontalPadding)
+          ? Heading6Text(exampleVideosString.tr, weight: TextWeight.bold)
+              .hp(DesignConstants.horizontalPadding)
           : Container(),
-      const SizedBox(height: 65)
     ]).hp(DesignConstants.horizontalPadding);
   }
 
@@ -165,14 +165,11 @@ class CompetitionDetailState extends State<CompetitionDetailScreen> {
 
     return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
       model.exampleImages.isNotEmpty
-          ? Heading3Text(
+          ? Heading6Text(
               examplePhotosString.tr,
               weight: TextWeight.medium,
             )
           : Container(),
-      const SizedBox(
-        height: 20,
-      ),
       GridView.builder(
         itemCount: model.exampleImages.length,
         physics: const NeverScrollableScrollPhysics(),
@@ -258,7 +255,7 @@ class CompetitionDetailState extends State<CompetitionDetailScreen> {
             }
           },
           child: Container(
-            width: MediaQuery.of(context).size.width,
+            width: Get.width,
             height: 95,
             color: AppColorConstants.themeColor,
             child: Center(

@@ -49,7 +49,7 @@ class SegmentedControlState extends State<SegmentedControl> {
     Map<int, Widget> hashmap = {};
     for (int i = 0; i < segments.length; i++) {
       hashmap[i] = SizedBox(
-          width: (MediaQuery.of(context).size.width - 40) / segments.length,
+          width: (Get.width - 40) / segments.length,
           height: 36,
           child: BodySmallText(
             segments[i],

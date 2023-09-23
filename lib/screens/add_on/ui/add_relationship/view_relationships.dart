@@ -28,12 +28,12 @@ class _ViewRelationshipState extends State<ViewRelationship> {
     List outputList = _relationshipController.relationshipNames
         .where((o) => o.id == id)
         .toList();
-    return outputList.isNotEmpty ? outputList[0].name : '';
+    return outputList.isNotEmpty ? outputList[0].userName : '';
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return AppScaffold(
       backgroundColor: AppColorConstants.backgroundColor,
       body: Column(
         children: [
@@ -83,7 +83,7 @@ class _ViewRelationshipState extends State<ViewRelationship> {
                                     _relationshipController.relationships[index]
                                             .user?.userName ??
                                         '',
-                                    color: AppColorConstants.grayscale100,
+                                    color: AppColorConstants.subHeadingTextColor,
                                     weight: TextWeight.regular,
                                   ).setPadding(top: 15, bottom: 2),
                                   Text(
@@ -93,7 +93,7 @@ class _ViewRelationshipState extends State<ViewRelationship> {
                                         0),
                                     style: TextStyle(
                                         fontSize: FontSizes.h5,
-                                        color: AppColorConstants.grayscale100),
+                                        color: AppColorConstants.subHeadingTextColor),
                                   ),
                                   if (_relationshipController
                                           .relationships[index].status !=

@@ -8,7 +8,7 @@ class AudienceInterestsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return AppScaffold(
         backgroundColor: AppColorConstants.backgroundColor,
         body: GestureDetector(
           onTap: (){
@@ -27,7 +27,7 @@ class AudienceInterestsScreen extends StatelessWidget {
                         onSearchChanged: (value) =>
                             _promotionController.searchInterests(value),
                         showSearchIcon: true,
-                        backgroundColor: AppColorConstants.grayscale200,
+                        backgroundColor: AppColorConstants.subHeadingTextColor,
                         radius: 15,
                       ).p8,
                       Expanded(
@@ -35,7 +35,7 @@ class AudienceInterestsScreen extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                             BodyMediumText(addInterests.tr,
-                                color: AppColorConstants.grayscale600),
+                                color: AppColorConstants.subHeadingTextColor),
                             ListView.builder(
                               shrinkWrap: true,
                               padding: const EdgeInsets.only(top: 15),

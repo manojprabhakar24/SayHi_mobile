@@ -35,6 +35,7 @@ class EventModel {
 
   List<EventOrganizer> organizers;
   List<EventTicketType> tickets;
+  bool isClosed;
 
   EventModel({
     required this.id,
@@ -65,10 +66,7 @@ class EventModel {
     required this.organizers,
     required this.eventCurrentStatus,
     required this.isTicketBooked,
-
-    // required this.address,
-    // required this.sponsorImage,
-    // required this.sponsorName,
+    required this.isClosed,
   });
 
   factory EventModel.fromJson(Map<String, dynamic> json) => EventModel(
@@ -90,6 +88,7 @@ class EventModel {
 
         isFree: json["is_paid"] == 0,
         isTicketBooked: json["is_ticket_booked"] == 1,
+        isClosed: json["eventCurrentStatus"] == 2,
 
         createdAt: json["created_at"],
         createdBy: json["created_by"],

@@ -30,7 +30,7 @@ class _ChangeLocationState extends State<ChangeLocation> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return AppScaffold(
       backgroundColor: AppColorConstants.backgroundColor,
       body: Column(
         children: [
@@ -44,7 +44,6 @@ class _ChangeLocationState extends State<ChangeLocation> {
               completion: () {
                 updateLocation();
               }),
-          divider().vP8,
           const SizedBox(
             height: 20,
           ),

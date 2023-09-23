@@ -3,8 +3,8 @@
 // import 'package:device_info_plus/device_info_plus.dart';
 // import 'package:flutter/services.dart';
 // import 'package:flutter_braintree/flutter_braintree.dart';
-// import 'package:foap/apiHandler/apis/events_api.dart';
-// import 'package:foap/apiHandler/apis/payment_gateway_api.dart';
+// import 'package:foap/api_handler/apis/events_api.dart';
+// import 'package:foap/api_handler/apis/payment_gateway_api.dart';
 // import 'package:foap/helper/imports/common_import.dart';
 // import 'package:foap/util/constant_util.dart';
 // import 'package:flutter_stripe/flutter_stripe.dart' as stripe;
@@ -417,8 +417,8 @@ import 'dart:io';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_braintree/flutter_braintree.dart';
-import 'package:foap/apiHandler/apis/events_api.dart';
-import 'package:foap/apiHandler/apis/payment_gateway_api.dart';
+import 'package:foap/api_handler/apis/events_api.dart';
+import 'package:foap/api_handler/apis/payment_gateway_api.dart';
 import 'package:foap/helper/imports/common_import.dart';
 import 'package:foap/model/post_promotion_model.dart';
 import 'package:foap/util/constant_util.dart';
@@ -470,7 +470,13 @@ class CheckoutController extends GetxController {
     selectedPaymentGateway.value = gateway;
   }
 
-  useWalletSwitchChange(bool status, double totalAmount) {
+  useWalletSwitchChange({
+    required bool status,
+    required double totalAmount,
+    required Function(List<Payment>) transactionHandler,
+  }) {
+    this.transactionHandler = transactionHandler;
+
     useWallet.value = status;
     totalAmountToPay = totalAmount;
     balanceToPay.value = totalAmount -

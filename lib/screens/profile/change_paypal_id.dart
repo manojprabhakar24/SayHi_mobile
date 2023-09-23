@@ -21,7 +21,7 @@ class _ChangePaypalIdState extends State<ChangePaypalId> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return AppScaffold(
       backgroundColor: AppColorConstants.backgroundColor,
       body: Column(
         children: [
@@ -36,8 +36,6 @@ class _ChangePaypalIdState extends State<ChangePaypalId> {
                 profileController.updatePaypalId(
                     paypalId: paypalId.text, );
               }),
-
-          divider().vP8,
           const SizedBox(
             height: 20,
           ),

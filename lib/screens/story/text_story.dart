@@ -50,7 +50,7 @@
 //     _textStoryMakerController.setBackgroundColor(Colors.black);
 //     _textStoryMakerController.setStrokeColor(Colors.white);
 //
-//     return Obx(() => Scaffold(
+//     return Obx(() => AppScaffold(
 //           backgroundColor:
 //               _textStoryMakerController.selectedBackgroundColor.value ??
 //                   ColorConstants.backgroundColor,
@@ -58,8 +58,8 @@
 //             children: [
 //               Obx(() {
 //                 return SizedBox(
-//                   height: MediaQuery.of(context).size.height,
-//                   width: MediaQuery.of(context).size.width,
+//                   height: Get.height,
+//                   width: Get.width,
 //                   child: Center(
 //                       child: TextField(
 //                     controller: inputText,
@@ -223,7 +223,7 @@
 //           child: const ThemeIconWidget(ThemeIcon.edit),
 //         ).borderWithRadius( value: 5, radius: 1).lP16,
 //         SizedBox(
-//           width: MediaQuery.of(context).size.width - 80,
+//           width: Get.width - 80,
 //           height: 50,
 //           child: ListView.builder(
 //               padding: const EdgeInsets.only(left: DesignConstants.horizontalPadding),
@@ -247,7 +247,7 @@
 //           color: Colors.white,
 //         ).borderWithRadius( value: 5, radius: 1).lP16,
 //         SizedBox(
-//           width: MediaQuery.of(context).size.width - 80,
+//           width: Get.width - 80,
 //           height: 50,
 //           child: ListView.builder(
 //               padding: const EdgeInsets.only(left: DesignConstants.horizontalPadding),

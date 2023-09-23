@@ -18,53 +18,9 @@ class OfferDetail extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Stack(
+    return AppScaffold(
+      body: Column(
         children: [
-          Column(
-            children: [
-              SizedBox(
-                height: Get.height * 0.4,
-                child: Stack(
-                  children: [
-                    CachedNetworkImage(
-                      imageUrl: offer.coverImage,
-                      width: double.infinity,
-                      height: double.infinity,
-                      fit: BoxFit.cover,
-                    )
-                  ],
-                ),
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              Expanded(
-                child: SizedBox(
-                  height: Get.height - (Get.height * 0.4),
-                  child: DefaultTabController(
-                      length: tabs.length,
-                      initialIndex: 0,
-                      child: Column(
-                        children: [
-                          SMTabBar(tabs: tabs,canScroll: false),
-                          const SizedBox(
-                            height: 20,
-                          ),
-                          Expanded(
-                            child: TabBarView(children: [
-                              AboutOffer(
-                                offer: offer,
-                              ).hp(DesignConstants.horizontalPadding),
-                              const OfferCommentsScreen(),
-                            ]),
-                          ),
-                        ],
-                      )),
-                ),
-              ),
-            ],
-          ),
           backNavigationBarWithTrailingWidget(
               title: '',
               widget: Obx(() => Container(
@@ -82,6 +38,46 @@ class OfferDetail extends StatelessWidget {
                     _offersController
                         .favUnFavOffer(_offersController.currentOffer.value!);
                   }))),
+          Expanded(
+            child: Column(
+              children: [
+                SizedBox(
+                  height: Get.height * 0.3,
+                  child: Stack(
+                    children: [
+                      CachedNetworkImage(
+                        imageUrl: offer.coverImage,
+                        width: double.infinity,
+                        height: double.infinity,
+                        fit: BoxFit.cover,
+                      )
+                    ],
+                  ),
+                ),
+                Expanded(
+                  child: SizedBox(
+                    height: Get.height - (Get.height * 0.4),
+                    child: DefaultTabController(
+                        length: tabs.length,
+                        initialIndex: 0,
+                        child: Column(
+                          children: [
+                            SMTabBar(tabs: tabs, canScroll: false),
+                            Expanded(
+                              child: TabBarView(children: [
+                                AboutOffer(
+                                  offer: offer,
+                                ).hp(DesignConstants.horizontalPadding),
+                                const OfferCommentsScreen(),
+                              ]),
+                            ),
+                          ],
+                        )),
+                  ),
+                ),
+              ],
+            ),
+          ),
         ],
       ),
     );

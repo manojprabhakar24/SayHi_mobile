@@ -49,7 +49,7 @@ import '../../model/post_gallery.dart';
 //
 //   @override
 //   Widget build(BuildContext context) {
-//     return Scaffold(
+//     return AppScaffold(
 //         backgroundColor: ColorConstants.backgroundColor,
 //         body: Column(
 //           children: [
@@ -153,7 +153,7 @@ class _PlayVideoControllerState extends State<PlayVideoController> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return AppScaffold(
       backgroundColor: AppColorConstants.backgroundColor,
       body: Column(
         children: [
@@ -219,9 +219,9 @@ class _PlayVideoControllerState extends State<PlayVideoController> {
                           top: 0,
                           child: Container(
                             height: min(
-                                (MediaQuery.of(context).size.width - 32) /
+                                (Get.width - 32) /
                                     videoPlayerController!.value.aspectRatio,
-                                MediaQuery.of(context).size.height * 0.5),
+                                Get.height * 0.5),
                             color: Colors.black38,
                             child: const ThemeIconWidget(
                               ThemeIcon.play,

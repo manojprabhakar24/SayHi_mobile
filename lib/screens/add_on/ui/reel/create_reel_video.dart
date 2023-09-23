@@ -1,14 +1,8 @@
 import 'package:camera/camera.dart';
-import 'package:flutter/material.dart';
-import 'package:foap/components/custom_texts.dart';
-import 'package:foap/helper/extension.dart';
-import 'package:foap/helper/localization_strings.dart';
 import 'package:foap/main.dart';
 import 'package:foap/screens/add_on/controller/reel/create_reel_controller.dart';
 import 'package:foap/screens/add_on/ui/reel/select_music.dart';
-import 'package:foap/theme/theme_icon.dart';
-import 'package:foap/util/app_config_constants.dart';
-import 'package:get/get.dart';
+import 'package:foap/helper/imports/common_import.dart';
 
 class CreateReelScreen extends StatefulWidget {
   const CreateReelScreen({Key? key}) : super(key: key);
@@ -88,7 +82,7 @@ class _CreateReelScreenState extends State<CreateReelScreen>
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return AppScaffold(
       backgroundColor: AppColorConstants.backgroundColor,
       body: Column(
         children: [
@@ -129,7 +123,7 @@ class _CreateReelScreenState extends State<CreateReelScreen>
                                     null)
                                   ThemeIconWidget(
                                     ThemeIcon.music,
-                                    color: AppColorConstants.grayscale900,
+                                    color: AppColorConstants.mainTextColor,
                                   ),
                                 BodyLargeText(
                                   _createReelController

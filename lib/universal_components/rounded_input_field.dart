@@ -69,20 +69,20 @@ class _InputFieldState extends State<InputField> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       height: widget.maxLines != null
           ? (min(widget.maxLines!, 10) * 20) + 45
           : widget.label != null
-          ? 70
-          : 60,
+              ? 70
+              : 60,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           (widget.label != null && widget.showLabelInNewLine == true)
               ? BodySmallText(
-            widget.label!,
-          ).bP8
+                  widget.label!,
+                ).bP8
               : Container(),
           Expanded(
             child: Container(
@@ -90,25 +90,25 @@ class _InputFieldState extends State<InputField> {
                 color: widget.isError == false
                     ? widget.backgroundColor
                     : (widget.showDivider == false &&
-                    widget.showBorder == false)
-                    ? AppColorConstants.red
-                    : widget.backgroundColor,
+                            widget.showBorder == false)
+                        ? AppColorConstants.red
+                        : widget.backgroundColor,
                 borderRadius: BorderRadius.circular(widget.cornerRadius!),
                 border: widget.showBorder == true
                     ? Border.all(
-                    width: 0.5,
-                    color: widget.isError == true
-                        ? AppColorConstants.red
-                        : widget.borderColor ??
-                        AppColorConstants.dividerColor)
+                        width: 0.5,
+                        color: widget.isError == true
+                            ? AppColorConstants.red
+                            : widget.borderColor ??
+                                AppColorConstants.dividerColor)
                     : null,
               ),
               child: Row(
                 children: [
                   (widget.label != null && widget.showLabelInNewLine == false)
                       ? BodySmallText(
-                    widget.label!,
-                  ).bP4
+                          widget.label!,
+                        ).bP4
                       : Container(),
                   widget.iconOnRightSide == false
                       ? iconView().lP16
@@ -155,21 +155,21 @@ class _InputFieldState extends State<InputField> {
   Widget line() {
     return widget.showDivider == true
         ? Container(
-        height: 0.5,
-        color: widget.startedEditing == true
-            ? AppColorConstants.themeColor
-            : widget.isError == true
-            ? AppColorConstants.red
-            : AppColorConstants.red)
+            height: 0.5,
+            color: widget.startedEditing == true
+                ? AppColorConstants.themeColor
+                : widget.isError == true
+                    ? AppColorConstants.red
+                    : AppColorConstants.red)
         : Container();
   }
 
   Widget iconView() {
     return widget.icon != null
         ? ThemeIconWidget(widget.icon!,
-        color: widget.iconColor ?? AppColorConstants.iconColor,
-        size: 20)
-        .rP16
+                color: widget.iconColor ?? AppColorConstants.iconColor,
+                size: 20)
+            .rP16
         : Container();
   }
 }
@@ -237,8 +237,8 @@ class _PasswordFieldState extends State<PasswordField> {
         children: [
           (widget.label != null && widget.showLabelInNewLine == true)
               ? BodySmallText(
-            widget.label!,
-          ).bP8
+                  widget.label!,
+                ).bP8
               : Container(),
           Expanded(
             child: Container(
@@ -246,51 +246,51 @@ class _PasswordFieldState extends State<PasswordField> {
                 color: widget.isError == false
                     ? widget.backgroundColor
                     : (widget.showDivider == false &&
-                    widget.showBorder == false)
-                    ? AppColorConstants.red
-                    : widget.backgroundColor,
+                            widget.showBorder == false)
+                        ? AppColorConstants.red
+                        : widget.backgroundColor,
                 borderRadius: BorderRadius.circular(widget.cornerRadius!),
                 border: widget.showBorder == true
                     ? Border.all(
-                    width: 0.5,
-                    color: widget.isError == true
-                        ? AppColorConstants.red
-                        : widget.borderColor ??
-                        AppColorConstants.dividerColor)
+                        width: 0.5,
+                        color: widget.isError == true
+                            ? AppColorConstants.red
+                            : widget.borderColor ??
+                                AppColorConstants.dividerColor)
                     : null,
               ),
               child: Row(
                 children: [
                   (widget.label != null && widget.showLabelInNewLine == false)
                       ? BodySmallText(
-                    widget.label!,
-                  ).bP4
+                          widget.label!,
+                        ).bP4
                       : Container(),
                   iconView().lP16,
                   Expanded(
                       child: Focus(
-                        child: TextField(
-                            style: TextStyle(
-                                fontSize: FontSizes.b3,
-                                color: AppColorConstants.inputFieldTextColor),
-                            controller: widget.controller,
-                            onChanged: widget.onChanged,
-                            cursorColor: AppColorConstants.themeColor,
-                            obscureText: !showPassword,
-                            decoration: InputDecoration(
-                              hintText: widget.hintText,
-                              hintStyle: TextStyle(
-                                  fontSize: FontSizes.b3,
-                                  color: AppColorConstants
-                                      .inputFieldPlaceholderTextColor),
-                              border: InputBorder.none,
-                              floatingLabelBehavior: FloatingLabelBehavior.never,
-                            )),
-                        onFocusChange: (hasFocus) {
-                          widget.startedEditing = hasFocus;
-                          setState(() {});
-                        },
-                      )),
+                    child: TextField(
+                        style: TextStyle(
+                            fontSize: FontSizes.b3,
+                            color: AppColorConstants.inputFieldTextColor),
+                        controller: widget.controller,
+                        onChanged: widget.onChanged,
+                        cursorColor: AppColorConstants.themeColor,
+                        obscureText: !showPassword,
+                        decoration: InputDecoration(
+                          hintText: widget.hintText,
+                          hintStyle: TextStyle(
+                              fontSize: FontSizes.b3,
+                              color: AppColorConstants
+                                  .inputFieldPlaceholderTextColor),
+                          border: InputBorder.none,
+                          floatingLabelBehavior: FloatingLabelBehavior.never,
+                        )),
+                    onFocusChange: (hasFocus) {
+                      widget.startedEditing = hasFocus;
+                      setState(() {});
+                    },
+                  )),
                   revealPasswordIcon()
                 ],
               ),
@@ -305,43 +305,43 @@ class _PasswordFieldState extends State<PasswordField> {
   Widget revealPasswordIcon() {
     return widget.showRevealPasswordIcon == true
         ? Row(
-      children: [
-        ThemeIconWidget(
-          showPassword == false ? ThemeIcon.showPwd : ThemeIcon.hide,
-          color: AppColorConstants.iconColor,
-          size: 20,
-        ).ripple(() {
-          setState(() {
-            showPassword = !showPassword;
-          });
-        }),
-        const SizedBox(
-          width: 16,
-        )
-      ],
-    )
+            children: [
+              ThemeIconWidget(
+                showPassword == false ? ThemeIcon.showPwd : ThemeIcon.hide,
+                color: AppColorConstants.iconColor,
+                size: 20,
+              ).ripple(() {
+                setState(() {
+                  showPassword = !showPassword;
+                });
+              }),
+              const SizedBox(
+                width: 16,
+              )
+            ],
+          )
         : Container();
   }
 
   Widget line() {
     return widget.showDivider == true
         ? Container(
-        height: 0.5,
-        color: widget.startedEditing == true
-            ? AppColorConstants.themeColor
-            : widget.isError == true
-            ? AppColorConstants.red
-            : AppColorConstants.dividerColor)
+            height: 0.5,
+            color: widget.startedEditing == true
+                ? AppColorConstants.themeColor
+                : widget.isError == true
+                    ? AppColorConstants.red
+                    : AppColorConstants.dividerColor)
         : Container();
   }
 
   Widget iconView() {
     return widget.icon != null
         ? ThemeIconWidget(
-      widget.icon!,
-      color: widget.iconColor ?? AppColorConstants.themeColor,
-      size: 20,
-    ).rP16
+            widget.icon!,
+            color: widget.iconColor ?? AppColorConstants.themeColor,
+            size: 20,
+          ).rP16
         : Container();
   }
 }
@@ -421,32 +421,32 @@ class _RoundedInputMobileNumberFieldState
       height: widget.maxLines != null
           ? (min(widget.maxLines!, 10) * 20) + 45
           : widget.label != null
-          ? 70
-          : 60,
+              ? 70
+              : 60,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           (widget.label != null && widget.showLabelInNewLine == true)
               ? BodySmallText(
-            widget.label!,
-          ).bP4
+                  widget.label!,
+                ).bP4
               : Container(),
           Container(
             decoration: BoxDecoration(
               color: widget.isError == false
                   ? widget.backgroundColor
                   : (widget.showDivider == false && widget.showBorder == false)
-                  ? AppColorConstants.red
-                  : widget.backgroundColor,
+                      ? AppColorConstants.red
+                      : widget.backgroundColor,
               borderRadius: BorderRadius.circular(widget.cornerRadius!),
               border: widget.showBorder == true
                   ? Border.all(
-                  width: 0.5,
-                  color: widget.isError == true
-                      ? AppColorConstants.red
-                      : widget.borderColor ??
-                      AppColorConstants.dividerColor)
+                      width: 0.5,
+                      color: widget.isError == true
+                          ? AppColorConstants.red
+                          : widget.borderColor ??
+                              AppColorConstants.dividerColor)
                   : null,
             ),
             child: Row(
@@ -464,7 +464,10 @@ class _RoundedInputMobileNumberFieldState
                               widget.countryCodeText ?? "+1",
                               // style: TextStyles.body,
                             ).lP8,
-                            const Icon(Icons.arrow_drop_down)
+                            Icon(
+                              Icons.arrow_drop_down,
+                              color: AppColorConstants.iconColor,
+                            )
                           ],
                         ),
                       ),
@@ -485,15 +488,15 @@ class _RoundedInputMobileNumberFieldState
                     )).rP16,
                 (widget.label != null && widget.showLabelInNewLine == false)
                     ? BodySmallText(
-                  widget.label!,
-                ).bP4
+                        widget.label!,
+                      ).bP4
                     : Container(),
                 widget.iconOnRightSide == false ? iconView().lP16 : Container(),
                 Expanded(
                   child: Focus(
                     child: TextField(
                       controller: widget.controller,
-                      keyboardType: TextInputType.text,
+                      keyboardType: TextInputType.phone,
                       textAlign: TextAlign.left,
                       style: TextStyle(
                           fontSize: FontSizes.b3,
@@ -530,21 +533,21 @@ class _RoundedInputMobileNumberFieldState
   Widget line() {
     return widget.showDivider == true
         ? Container(
-        height: 0.5,
-        color: widget.startedEditing == true
-            ? AppColorConstants.themeColor
-            : widget.isError == true
-            ? AppColorConstants.red
-            : AppColorConstants.red)
+            height: 0.5,
+            color: widget.startedEditing == true
+                ? AppColorConstants.themeColor
+                : widget.isError == true
+                    ? AppColorConstants.red
+                    : AppColorConstants.red)
         : Container();
   }
 
   Widget iconView() {
     return widget.icon != null
         ? ThemeIconWidget(widget.icon!,
-        color: widget.iconColor ?? AppColorConstants.iconColor,
-        size: 20)
-        .rP16
+                color: widget.iconColor ?? AppColorConstants.iconColor,
+                size: 20)
+            .rP16
         : Container();
   }
 }
@@ -571,7 +574,6 @@ class RoundedInputDateField extends StatefulWidget {
   final double? cornerRadius;
 
   final Color? cursorColor;
-  final TextStyle? textStyle;
 
   final DateTime? minDate;
   final DateTime? maxDate;
@@ -597,7 +599,6 @@ class RoundedInputDateField extends StatefulWidget {
     this.borderColor,
     this.cornerRadius = 12,
     this.cursorColor,
-    this.textStyle,
     this.minDate,
     this.maxDate,
   }) : super(key: key);
@@ -624,8 +625,8 @@ class _RoundedInputDateFieldState extends State<RoundedInputDateField> {
         children: [
           (widget.label != null && widget.showLabelInNewLine == true)
               ? BodySmallText(
-            widget.label!,
-          ).bP8
+                  widget.label!,
+                ).bP8
               : Container(),
           Container(
             decoration: BoxDecoration(
@@ -637,11 +638,11 @@ class _RoundedInputDateFieldState extends State<RoundedInputDateField> {
               borderRadius: BorderRadius.circular(widget.cornerRadius!),
               border: widget.showBorder == true
                   ? Border.all(
-                  width: 0.5,
-                  color: widget.isError == true
-                      ? AppColorConstants.red
-                      : widget.borderColor ??
-                      AppColorConstants.dividerColor)
+                      width: 0.5,
+                      color: widget.isError == true
+                          ? AppColorConstants.red
+                          : widget.borderColor ??
+                              AppColorConstants.dividerColor)
                   : null,
             ),
             child: Row(
@@ -655,11 +656,11 @@ class _RoundedInputDateFieldState extends State<RoundedInputDateField> {
                   iconView().lP16,
                 Expanded(
                   child: BodySmallText(
-                      widget.defaultText ?? widget.hintText ?? '',
-                      textAlign: TextAlign.center,
-                      color: widget.defaultText == null
-                          ? AppColorConstants.inputFieldPlaceholderTextColor
-                          : AppColorConstants.inputFieldTextColor)
+                          widget.defaultText ?? widget.hintText ?? '',
+                          textAlign: TextAlign.center,
+                          color: widget.defaultText == null
+                              ? AppColorConstants.inputFieldPlaceholderTextColor
+                              : AppColorConstants.inputFieldTextColor)
                       .ripple(() async {
                     TimeOfDay initialTime = TimeOfDay.now();
                     TimeOfDay? pickedTime = await showTimePicker(
@@ -689,21 +690,21 @@ class _RoundedInputDateFieldState extends State<RoundedInputDateField> {
   Widget line() {
     return widget.showDivider == true
         ? Container(
-        height: 0.5,
-        color: widget.startedEditing == true
-            ? AppColorConstants.themeColor
-            : widget.isError == true
-            ? AppColorConstants.red
-            : AppColorConstants.red)
+            height: 0.5,
+            color: widget.startedEditing == true
+                ? AppColorConstants.themeColor
+                : widget.isError == true
+                    ? AppColorConstants.red
+                    : AppColorConstants.red)
         : Container();
   }
 
   Widget iconView() {
     return widget.icon != null
         ? ThemeIconWidget(widget.icon!,
-        color: widget.iconColor ?? AppColorConstants.iconColor,
-        size: 20)
-        .rP16
+                color: widget.iconColor ?? AppColorConstants.iconColor,
+                size: 20)
+            .rP16
         : Container();
   }
 }
@@ -735,7 +736,6 @@ class RoundedInputPriceField extends StatefulWidget {
   final bool? disable;
 
   final Color? cursorColor;
-  final TextStyle? textStyle;
 
   RoundedInputPriceField({
     Key? key,
@@ -762,7 +762,6 @@ class RoundedInputPriceField extends StatefulWidget {
     this.borderColor,
     this.cornerRadius = 12,
     this.cursorColor,
-    this.textStyle,
   }) : super(key: key);
 
   @override
@@ -781,40 +780,40 @@ class _RoundedInputPriceFieldState extends State<RoundedInputPriceField> {
       height: widget.maxLines != null
           ? (min(widget.maxLines!, 10) * 20) + 45
           : widget.label != null
-          ? 70
-          : 60,
+              ? 70
+              : 60,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           (widget.label != null && widget.showLabelInNewLine == true)
               ? BodySmallText(
-            widget.label!,
-          ).bP8
+                  widget.label!,
+                ).bP8
               : Container(),
           Container(
             decoration: BoxDecoration(
               color: widget.isError == false
                   ? widget.backgroundColor
                   : (widget.showDivider == false && widget.showBorder == false)
-                  ? AppColorConstants.red
-                  : widget.backgroundColor,
+                      ? AppColorConstants.red
+                      : widget.backgroundColor,
               borderRadius: BorderRadius.circular(widget.cornerRadius!),
               border: widget.showBorder == true
                   ? Border.all(
-                  width: 0.5,
-                  color: widget.isError == true
-                      ? AppColorConstants.red
-                      : widget.borderColor ??
-                      AppColorConstants.dividerColor)
+                      width: 0.5,
+                      color: widget.isError == true
+                          ? AppColorConstants.red
+                          : widget.borderColor ??
+                              AppColorConstants.dividerColor)
                   : null,
             ),
             child: Row(
               children: [
                 (widget.label != null && widget.showLabelInNewLine == false)
                     ? BodySmallText(
-                  widget.label!,
-                ).bP4
+                        widget.label!,
+                      ).bP4
                     : Container(),
                 widget.iconOnRightSide == false ? iconView().lP16 : Container(),
                 SizedBox(
@@ -826,9 +825,11 @@ class _RoundedInputPriceFieldState extends State<RoundedInputPriceField> {
                     children: [
                       BodyMediumText(
                         widget.currency ?? "\$",
-                        // style: TextStyles.body,
                       ).lP8,
-                      const Icon(Icons.arrow_drop_down)
+                      Icon(
+                        Icons.arrow_drop_down,
+                        color: AppColorConstants.iconColor,
+                      )
                     ],
                   ).ripple(() {
                     if (widget.disable == false) {
@@ -850,14 +851,15 @@ class _RoundedInputPriceFieldState extends State<RoundedInputPriceField> {
                 Expanded(
                   child: TextField(
                     keyboardType: TextInputType.number,
-                    // style: TextStyles.body,
                     controller: widget.controller,
                     onChanged: widget.onChanged,
-                    // cursorColor: ThemeColors.PrimaryTextColor,
                     decoration: InputDecoration(
                       hintText: widget.hintText,
                       border: InputBorder.none,
                     ),
+                    style: TextStyle(
+                        fontSize: FontSizes.b3,
+                        color: AppColorConstants.inputFieldTextColor),
                   ),
                 ),
                 widget.iconOnRightSide == true ? iconView() : Container(),
@@ -873,21 +875,21 @@ class _RoundedInputPriceFieldState extends State<RoundedInputPriceField> {
   Widget line() {
     return widget.showDivider == true
         ? Container(
-        height: 0.5,
-        color: widget.startedEditing == true
-            ? AppColorConstants.themeColor
-            : widget.isError == true
-            ? AppColorConstants.red
-            : AppColorConstants.red)
+            height: 0.5,
+            color: widget.startedEditing == true
+                ? AppColorConstants.themeColor
+                : widget.isError == true
+                    ? AppColorConstants.red
+                    : AppColorConstants.red)
         : Container();
   }
 
   Widget iconView() {
     return widget.icon != null
         ? ThemeIconWidget(widget.icon!,
-        color: widget.iconColor ?? AppColorConstants.iconColor,
-        size: 20)
-        .rP16
+                color: widget.iconColor ?? AppColorConstants.iconColor,
+                size: 20)
+            .rP16
         : Container();
   }
 }
@@ -965,40 +967,40 @@ class _RoundedInputDateTimeFieldState extends State<RoundedInputDateTimeField> {
       height: widget.maxLines != null
           ? (min(widget.maxLines!, 10) * 20) + 45
           : widget.label != null
-          ? 70
-          : 60,
+              ? 70
+              : 60,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           (widget.label != null && widget.showLabelInNewLine == true)
               ? BodySmallText(
-            widget.label!,
-          ).bP8
+                  widget.label!,
+                ).bP8
               : Container(),
           Container(
             decoration: BoxDecoration(
               color: widget.isError == false
                   ? widget.backgroundColor
                   : (widget.showDivider == false && widget.showBorder == false)
-                  ? AppColorConstants.red
-                  : widget.backgroundColor,
+                      ? AppColorConstants.red
+                      : widget.backgroundColor,
               borderRadius: BorderRadius.circular(widget.cornerRadius!),
               border: widget.showBorder == true
                   ? Border.all(
-                  width: 0.5,
-                  color: widget.isError == true
-                      ? AppColorConstants.red
-                      : widget.borderColor ??
-                      AppColorConstants.dividerColor)
+                      width: 0.5,
+                      color: widget.isError == true
+                          ? AppColorConstants.red
+                          : widget.borderColor ??
+                              AppColorConstants.dividerColor)
                   : null,
             ),
             child: Row(
               children: [
                 (widget.label != null && widget.showLabelInNewLine == false)
                     ? BodySmallText(
-                  widget.label!,
-                ).bP4
+                        widget.label!,
+                      ).bP4
                     : Container(),
                 widget.iconOnRightSide == false ? iconView().lP16 : Container(),
                 Expanded(
@@ -1024,7 +1026,7 @@ class _RoundedInputDateTimeFieldState extends State<RoundedInputDateTimeField> {
                           widget.onChanged!(pickedDate);
                           setState(() {
                             String formattedDate =
-                            DateFormat('dd-MMM-yyyy').format(pickedDate);
+                                DateFormat('dd-MMM-yyyy').format(pickedDate);
                             widget.controller!.text =
                                 formattedDate; //set output date to TextField value.
                           });
@@ -1060,21 +1062,21 @@ class _RoundedInputDateTimeFieldState extends State<RoundedInputDateTimeField> {
   Widget line() {
     return widget.showDivider == true
         ? Container(
-        height: 0.5,
-        color: widget.startedEditing == true
-            ? AppColorConstants.themeColor
-            : widget.isError == true
-            ? AppColorConstants.red
-            : AppColorConstants.red)
+            height: 0.5,
+            color: widget.startedEditing == true
+                ? AppColorConstants.themeColor
+                : widget.isError == true
+                    ? AppColorConstants.red
+                    : AppColorConstants.red)
         : Container();
   }
 
   Widget iconView() {
     return widget.icon != null
         ? ThemeIconWidget(widget.icon!,
-        color: widget.iconColor ?? AppColorConstants.iconColor,
-        size: 20)
-        .rP16
+                color: widget.iconColor ?? AppColorConstants.iconColor,
+                size: 20)
+            .rP16
         : Container();
   }
 }
@@ -1101,23 +1103,23 @@ class RoundedDropdownField extends StatefulWidget {
 
   const RoundedDropdownField(
       {Key? key,
-        this.label,
-        this.showLabelInNewLine = true,
-        this.hintText,
-        this.value,
-        required this.onChanged,
-        this.icon,
-        this.showDivider = false,
-        this.iconColor,
-        this.isDisabled,
-        this.isError = false,
-        this.iconOnRightSide = false,
-        this.backgroundColor,
-        this.showBorder = false,
-        this.borderColor,
-        this.cornerRadius = 12,
-        this.textStyle,
-        required this.options})
+      this.label,
+      this.showLabelInNewLine = true,
+      this.hintText,
+      this.value,
+      required this.onChanged,
+      this.icon,
+      this.showDivider = false,
+      this.iconColor,
+      this.isDisabled,
+      this.isError = false,
+      this.iconOnRightSide = false,
+      this.backgroundColor,
+      this.showBorder = false,
+      this.borderColor,
+      this.cornerRadius = 12,
+      this.textStyle,
+      required this.options})
       : super(key: key);
 
   @override
@@ -1142,32 +1144,32 @@ class _RoundedDropdownFieldState extends State<RoundedDropdownField> {
         children: [
           (widget.label != null && widget.showLabelInNewLine == true)
               ? BodySmallText(
-            widget.label!,
-          ).bP8
+                  widget.label!,
+                ).bP8
               : Container(),
           Container(
             decoration: BoxDecoration(
               color: widget.isError == false
                   ? widget.backgroundColor
                   : (widget.showDivider == false && widget.showBorder == false)
-                  ? AppColorConstants.red
-                  : widget.backgroundColor,
+                      ? AppColorConstants.red
+                      : widget.backgroundColor,
               borderRadius: BorderRadius.circular(widget.cornerRadius!),
               border: widget.showBorder == true
                   ? Border.all(
-                  width: 0.5,
-                  color: widget.isError == true
-                      ? AppColorConstants.red
-                      : widget.borderColor ??
-                      AppColorConstants.dividerColor)
+                      width: 0.5,
+                      color: widget.isError == true
+                          ? AppColorConstants.red
+                          : widget.borderColor ??
+                              AppColorConstants.dividerColor)
                   : null,
             ),
             child: Row(
               children: [
                 (widget.label != null && widget.showLabelInNewLine == false)
                     ? BodySmallText(
-                  widget.label!,
-                ).bP4
+                        widget.label!,
+                      ).bP4
                     : Container(),
                 widget.iconOnRightSide == false ? iconView().lP16 : Container(),
                 Expanded(
@@ -1175,9 +1177,7 @@ class _RoundedDropdownFieldState extends State<RoundedDropdownField> {
                     dropdownColor: AppColorConstants.cardColor,
                     isExpanded: true,
                     hint: Text(
-                      widget.value ??
-                          widget.hintText ??
-                          selectString,
+                      widget.value ?? widget.hintText ?? selectString,
                       style: TextStyle(
                           fontSize: FontSizes.b3,
                           color: widget.value == null
@@ -1213,9 +1213,9 @@ class _RoundedDropdownFieldState extends State<RoundedDropdownField> {
   Widget iconView() {
     return widget.icon != null
         ? ThemeIconWidget(widget.icon!,
-        color: widget.iconColor ?? AppColorConstants.iconColor,
-        size: 20)
-        .rP16
+                color: widget.iconColor ?? AppColorConstants.iconColor,
+                size: 20)
+            .rP16
         : Container();
   }
 }
@@ -1236,17 +1236,17 @@ class DropdownBorderedField extends StatefulWidget {
 
   const DropdownBorderedField(
       {Key? key,
-        this.hintText,
-        this.controller,
-        this.icon,
-        this.iconColor,
-        this.iconOnRightSide = false,
-        this.backgroundColor,
-        this.showBorder = false,
-        this.borderColor,
-        this.cornerRadius = 0,
-        this.textStyle,
-        this.onTap})
+      this.hintText,
+      this.controller,
+      this.icon,
+      this.iconColor,
+      this.iconOnRightSide = false,
+      this.backgroundColor,
+      this.showBorder = false,
+      this.borderColor,
+      this.cornerRadius = 0,
+      this.textStyle,
+      this.onTap})
       : super(key: key);
 
   @override
@@ -1286,8 +1286,8 @@ class _DropdownBorderedState extends State<DropdownBorderedField> {
         borderRadius: BorderRadius.circular(cornerRadius ?? 0),
         border: showBorder == true
             ? Border.all(
-            width: 0.5,
-            color: borderColor ?? AppColorConstants.dividerColor)
+                width: 0.5,
+                color: borderColor ?? AppColorConstants.dividerColor)
             : null,
       ),
       height: 60,
@@ -1305,7 +1305,7 @@ class _DropdownBorderedState extends State<DropdownBorderedField> {
                 style: widget.textStyle ??
                     TextStyle(
                         fontSize: FontSizes.b3,
-                        color: AppColorConstants.grayscale900),
+                        color: AppColorConstants.mainTextColor),
                 decoration: InputDecoration(
                     floatingLabelBehavior: FloatingLabelBehavior.never,
                     border: InputBorder.none,
@@ -1314,11 +1314,11 @@ class _DropdownBorderedState extends State<DropdownBorderedField> {
                     // labelText: hintText,
                     labelStyle: TextStyle(
                         fontSize: FontSizes.b2,
-                        color: AppColorConstants.grayscale900),
+                        color: AppColorConstants.mainTextColor),
                     hintStyle: widget.textStyle ??
                         TextStyle(
                             fontSize: FontSizes.b3,
-                            color: AppColorConstants.grayscale900),
+                            color: AppColorConstants.mainTextColor),
                     hintText: hintText),
               )),
         ),
@@ -1332,8 +1332,8 @@ class _DropdownBorderedState extends State<DropdownBorderedField> {
   Widget iconView() {
     return icon != null
         ? ThemeIconWidget(icon!,
-        color: iconColor ?? AppColorConstants.themeColor, size: 20)
-        .rP16
+                color: iconColor ?? AppColorConstants.themeColor, size: 20)
+            .rP16
         : Container();
   }
 }

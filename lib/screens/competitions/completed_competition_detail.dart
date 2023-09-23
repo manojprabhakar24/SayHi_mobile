@@ -1,7 +1,7 @@
 import 'package:foap/helper/imports/common_import.dart';
 import 'package:foap/helper/imports/competition_imports.dart';
 import 'package:url_launcher/url_launcher.dart';
-import '../../apiHandler/apis/users_api.dart';
+import '../../api_handler/apis/users_api.dart';
 import '../home_feed/enlarge_image_view.dart';
 import '../post/single_post_detail.dart';
 import '../profile/other_user_profile.dart';
@@ -37,7 +37,7 @@ class CompletedCompetitionDetailState
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return AppScaffold(
       backgroundColor: AppColorConstants.backgroundColor,
       body: Column(
         children: [
@@ -73,7 +73,7 @@ class CompletedCompetitionDetailState
                                     child: CachedNetworkImage(
                                       imageUrl: competition.photo,
                                       fit: BoxFit.cover,
-                                      width: MediaQuery.of(context).size.width,
+                                      width: Get.width,
                                       placeholder: (context, url) =>
                                           AppUtil.addProgressIndicator(
                                               size: 100),
@@ -140,7 +140,7 @@ class CompletedCompetitionDetailState
                   .p16;
         } else {
           return SizedBox(
-              width: MediaQuery.of(context).size.width - 32,
+              width: Get.width - 32,
               child: Center(
                 child: Heading6Text('Loading...',
                         color: AppColorConstants.themeColor)
@@ -160,7 +160,7 @@ class CompletedCompetitionDetailState
       required UserModel winner,
       required CompetitionModel competition}) {
     return SizedBox(
-      width: MediaQuery.of(context).size.width - 32,
+      width: Get.width - 32,
       child: Row(
         // mainAxisAlignment: MainAxisAlignment.start,
         children: [
@@ -227,7 +227,7 @@ class CompletedCompetitionDetailState
           ? Heading4Text(
               submittedPhotosString.tr,
               weight: FontWeight.bold,
-              color: AppColorConstants.grayscale500,
+              color: AppColorConstants.subHeadingTextColor,
             ).tP25
           : Container(),
       competition.posts.isNotEmpty
@@ -300,7 +300,7 @@ class CompletedCompetitionDetailState
             }
           },
           child: Container(
-            width: MediaQuery.of(context).size.width,
+            width: Get.width,
             height: 60,
             color: AppColorConstants.themeColor,
             child: Center(

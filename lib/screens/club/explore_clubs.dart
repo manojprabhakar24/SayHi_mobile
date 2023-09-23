@@ -1,30 +1,21 @@
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:flutter/material.dart';
-import 'package:foap/components/top_navigation_bar.dart';
-import 'package:foap/helper/extension.dart';
 import 'package:foap/screens/club/search_club.dart';
-import 'package:get/get.dart';
 import '../../components/actionSheets/action_sheet1.dart';
-import '../../components/custom_texts.dart';
 import '../../components/group_avatars/group_avatar1.dart';
 import '../../components/group_avatars/group_avatar2.dart';
 import '../../components/line_dot_indicator.dart';
-import '../../components/shimmer_widgets.dart';
 import '../../controllers/clubs/clubs_controller.dart';
-import '../../helper/localization_strings.dart';
 import '../../model/category_model.dart';
 import '../../model/club_invitation.dart';
 import '../../model/club_model.dart';
 import '../../model/generic_item.dart';
 import '../../model/post_model.dart';
 import '../../segmentAndMenu/horizontal_menu.dart';
-import '../../theme/theme_icon.dart';
-import '../../util/app_config_constants.dart';
-import '../../util/app_util.dart';
 import '../reuseable_widgets/club_listing.dart';
 import 'categories_list.dart';
 import 'category_club_listing.dart';
 import 'club_detail.dart';
+import 'package:foap/helper/imports/common_import.dart';
 
 class ExploreClubs extends StatefulWidget {
   const ExploreClubs({Key? key}) : super(key: key);
@@ -45,7 +36,7 @@ class ExploreClubsState extends State<ExploreClubs> {
         bool isTop = _controller.position.pixels == 0;
         if (isTop) {
         } else {
-          if (!_clubsController.isLoadingInvitations.value) {
+          if (!_clubsController.invitationsDataWrapper.isLoading.value) {
             _clubsController.getClubInvitations();
           }
         }
@@ -77,7 +68,7 @@ class ExploreClubsState extends State<ExploreClubs> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return AppScaffold(
       backgroundColor: AppColorConstants.backgroundColor,
       floatingActionButton: Container(
         height: 50,
@@ -108,7 +99,6 @@ class ExploreClubsState extends State<ExploreClubs> {
             child: SingleChildScrollView(
               child: Column(
                 children: [
-
                   const SizedBox(
                     height: 10,
                   ),
@@ -119,7 +109,8 @@ class ExploreClubsState extends State<ExploreClubs> {
                   topClubs(),
                   links(),
                   Obx(() => _clubsController.segmentIndex.value == 3
-                      ? clubsInvitationsListingWidget(_clubsController.invitations)
+                      ? clubsInvitationsListingWidget(
+                          _clubsController.invitations)
                       : ClubListing())
                 ],
               ),
@@ -186,50 +177,54 @@ class ExploreClubsState extends State<ExploreClubs> {
   }
 
   Widget clubsInvitationsListingWidget(List<ClubInvitation> invitations) {
-    return _clubsController.isLoadingClubs.value
+    return _clubsController.clubsDataWrapper.isLoading.value
         ? const ClubsScreenShimmer()
-        : _clubsController.clubs.isEmpty
+        : invitations.isEmpty
             ? Container()
-            : ListView.separated(
-                controller: _controller,
-                padding: EdgeInsets.only(
-                    left: DesignConstants.horizontalPadding,
-                    right: DesignConstants.horizontalPadding,
-                    top: 20,
-                    bottom: 100),
-                itemCount: invitations.length,
-                // physics: const NeverScrollableScrollPhysics(),
-                itemBuilder: (BuildContext ctx, int index) {
-                  return ClubInvitationCard(
-                    invitation: invitations[index],
-                    acceptBtnClicked: () {
-                      _clubsController.acceptClubInvitation(invitations[index]);
+            : SizedBox(
+                height: 325 * (invitations.length + 1),
+                child: ListView.separated(
+                    controller: _controller,
+                    padding: EdgeInsets.only(
+                        left: DesignConstants.horizontalPadding,
+                        right: DesignConstants.horizontalPadding,
+                        top: 20,
+                        bottom: 100),
+                    itemCount: invitations.length,
+                    // physics: const NeverScrollableScrollPhysics(),
+                    itemBuilder: (BuildContext ctx, int index) {
+                      return ClubInvitationCard(
+                        invitation: invitations[index],
+                        acceptBtnClicked: () {
+                          _clubsController
+                              .acceptClubInvitation(invitations[index]);
+                        },
+                        declineBtnClicked: () {
+                          _clubsController
+                              .declineClubInvitation(invitations[index]);
+                        },
+                        previewBtnClicked: () {
+                          Get.to(() => ClubDetail(
+                                club: invitations[index].club!,
+                                needRefreshCallback: () {
+                                  _clubsController.getClubs();
+                                },
+                                deleteCallback: (club) {
+                                  _clubsController.clubDeleted(club);
+                                  AppUtil.showToast(
+                                      message: clubIsDeletedString.tr,
+                                      isSuccess: true);
+                                },
+                              ));
+                        },
+                      );
                     },
-                    declineBtnClicked: () {
-                      _clubsController
-                          .declineClubInvitation(invitations[index]);
-                    },
-                    previewBtnClicked: () {
-                      Get.to(() => ClubDetail(
-                            club: invitations[index].club!,
-                            needRefreshCallback: () {
-                              _clubsController.getClubs();
-                            },
-                            deleteCallback: (club) {
-                              _clubsController.clubDeleted(club);
-                              AppUtil.showToast(
-                                  message: clubIsDeletedString.tr,
-                                  isSuccess: true);
-                            },
-                          ));
-                    },
-                  );
-                },
-                separatorBuilder: (BuildContext ctx, int index) {
-                  return const SizedBox(
-                    height: 25,
-                  );
-                });
+                    separatorBuilder: (BuildContext ctx, int index) {
+                      return const SizedBox(
+                        height: 25,
+                      );
+                    }),
+              );
   }
 
   Widget topClubs() {
@@ -316,16 +311,15 @@ class ExploreClubsState extends State<ExploreClubs> {
         context: context,
         backgroundColor: Colors.transparent,
         builder: (context) => ActionSheet1(
-          items: [
-            GenericItem(
-                id: '1', title: shareString.tr, icon: ThemeIcon.share),
-            GenericItem(
-                id: '2', title: reportString.tr, icon: ThemeIcon.report),
-            GenericItem(
-                id: '3', title: hideString.tr, icon: ThemeIcon.hide),
-          ],
-          itemCallBack: (item) {},
-        ));
+              items: [
+                GenericItem(
+                    id: '1', title: shareString.tr, icon: ThemeIcon.share),
+                GenericItem(
+                    id: '2', title: reportString.tr, icon: ThemeIcon.report),
+                GenericItem(
+                    id: '3', title: hideString.tr, icon: ThemeIcon.hide),
+              ],
+              itemCallBack: (item) {},
+            ));
   }
-
 }

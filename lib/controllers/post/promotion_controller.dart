@@ -1,7 +1,7 @@
 import 'package:foap/screens/checkout/checkout.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart' as google_map;
-import '../../apiHandler/apis/promotion_api.dart';
+import '../../api_handler/apis/promotion_api.dart';
 import '../../helper/imports/common_import.dart';
 import '../../model/audience_model.dart';
 import '../../model/post_model.dart';
@@ -373,6 +373,7 @@ class PromotionController extends GetxController {
   createPostPromotionApi() {
     Get.lazyPut(() => CheckoutController());
     final CheckoutController checkoutController = Get.find();
+    final PromotionController promotionController = Get.find();
 
     Get.to(() => Checkout(
           amountToPay: order.grandTotalAmount,
@@ -383,8 +384,8 @@ class PromotionController extends GetxController {
             PromotionApi.createPromotion(
                 order: order,
                 completionHandler: (status) {
-                  print('createPromotion completed');
                   if (status) {
+                    promotionController.clear();
                     checkoutController.orderPlaced();
                   } else {
                     checkoutController.orderFailed();

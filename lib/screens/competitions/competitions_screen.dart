@@ -44,17 +44,15 @@ class CompetitionsState extends State<CompetitionsScreen> {
     return DefaultTabController(
       length: competitionsArr.length,
       initialIndex: 0,
-      child: Scaffold(
+      child: AppScaffold(
         backgroundColor: AppColorConstants.backgroundColor,
         body: Column(children: <Widget>[
-
           backNavigationBar(
             title: competitionString.tr,
           ),
-          divider().vP8,
           TabBar(
             labelColor: AppColorConstants.themeColor,
-            unselectedLabelColor: AppColorConstants.grayscale900,
+            unselectedLabelColor: AppColorConstants.mainTextColor,
             indicatorColor: AppColorConstants.themeColor,
             indicatorWeight: 2,
             unselectedLabelStyle: TextStyle(

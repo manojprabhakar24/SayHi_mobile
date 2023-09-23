@@ -1,20 +1,7 @@
-import 'package:foap/components/empty_states.dart';
-import 'package:foap/components/shimmer_widgets.dart';
-import 'package:foap/components/top_navigation_bar.dart';
 import 'package:foap/components/user_card.dart';
-import 'package:foap/helper/common_components.dart';
-import 'package:foap/helper/extension.dart';
-import 'package:foap/helper/localization_strings.dart';
-import 'package:foap/helper/user_profile_manager.dart';
-import 'package:foap/manager/service_locator.dart';
-import 'package:foap/model/user_model.dart';
-import 'package:foap/util/app_config_constants.dart';
-import 'package:get/get.dart';
+import 'package:foap/helper/imports/common_import.dart';
 import 'package:foap/helper/imports/event_imports.dart';
-import 'package:flutter/material.dart';
-
 import '../../../../controllers/misc/user_network_controller.dart';
-import 'buy_ticket.dart';
 
 class SelectUserToGiftEventTicket extends StatefulWidget {
   final EventModel event;
@@ -64,7 +51,7 @@ class SelectUserToGiftEventTicketState
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return AppScaffold(
         backgroundColor: AppColorConstants.backgroundColor,
         body: Column(
           children: [

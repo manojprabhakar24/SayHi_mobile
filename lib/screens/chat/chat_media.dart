@@ -23,7 +23,7 @@ class _ChatMediaListState extends State<ChatMediaList> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return AppScaffold(
       backgroundColor: AppColorConstants.backgroundColor,
       body: Column(
         children: [

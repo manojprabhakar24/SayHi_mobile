@@ -1,4 +1,5 @@
 import 'package:foap/helper/imports/common_import.dart';
+import 'package:foap/screens/login_sign_up/set_user_name.dart';
 import 'package:get/get.dart';
 import 'package:foap/helper/imports/login_signup_imports.dart';
 import '../../components/app_text_field.dart';
@@ -25,7 +26,7 @@ class PhoneLoginScreenState extends State<PhoneLoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return AppScaffold(
       backgroundColor: AppColorConstants.backgroundColor,
       body: SingleChildScrollView(
         child: GestureDetector(
@@ -33,22 +34,22 @@ class PhoneLoginScreenState extends State<PhoneLoginScreen> {
               FocusScope.of(context).requestFocus(FocusNode());
             },
             child: SizedBox(
-              height: MediaQuery.of(context).size.height,
+              height: Get.height,
               child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.08,
+                      height: Get.height * 0.08,
                     ),
                     Heading3Text(welcomeString.tr, weight: TextWeight.bold),
                     SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.01,
+                      height: Get.height * 0.01,
                     ),
                     Heading3Text(signInMessageString.tr,
                         weight: TextWeight.medium),
 
                     SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.1,
+                      height: Get.height * 0.1,
                     ),
                     AppMobileTextField(
                       controller: phone,
@@ -63,11 +64,11 @@ class PhoneLoginScreenState extends State<PhoneLoginScreen> {
                     ),
 
                     SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.04,
+                      height: Get.height * 0.04,
                     ),
                     addLoginBtn(),
                     SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.03,
+                      height: Get.height * 0.03,
                     ),
                     InkWell(
                       onTap: () {
@@ -82,14 +83,14 @@ class PhoneLoginScreenState extends State<PhoneLoginScreen> {
                       ),
                     ),
                     SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.05,
+                      height: Get.height * 0.05,
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Container(
                           height: 1,
-                          width: MediaQuery.of(context).size.width * 0.37,
+                          width: Get.width * 0.37,
                           color: AppColorConstants.themeColor,
                         ),
                         Heading6Text(
@@ -97,16 +98,17 @@ class PhoneLoginScreenState extends State<PhoneLoginScreen> {
                         ),
                         Container(
                           height: 1,
-                          width: MediaQuery.of(context).size.width * 0.37,
+                          width: Get.width * 0.37,
                           color: AppColorConstants.themeColor,
                         )
                       ],
                     ),
                     SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.04,
+                      height: Get.height * 0.04,
                     ),
-                    const SocialLogin(
+                    SocialLogin(
                       hidePhoneLogin: true,
+
                     ).setPadding(left: 65, right: 65),
                     const Spacer(),
                     Row(
@@ -120,12 +122,12 @@ class PhoneLoginScreenState extends State<PhoneLoginScreen> {
                           weight: TextWeight.medium,
                           color: AppColorConstants.themeColor,
                         ).ripple(() {
-                          Get.to(() => const SignUpScreen());
+                          Get.to(() => const SetUserName());
                         }),
                       ],
                     ),
                     SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.05,
+                      height: Get.height * 0.05,
                     ),
                     // bioMetricView(),
                     // const Spacer(),

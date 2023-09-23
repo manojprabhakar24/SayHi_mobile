@@ -24,7 +24,7 @@ class EventMemberTile extends StatelessWidget {
               size: 40,
             ),
             SizedBox(
-              width: MediaQuery.of(context).size.width - 200,
+              width: Get.width - 200,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [

@@ -41,7 +41,7 @@
 //
 //   @override
 //   Widget build(BuildContext context) {
-//     return Scaffold(
+//     return AppScaffold(
 //       backgroundColor: AppColorConstants.backgroundColor,
 //       body: Obx(() => _checkoutController.processingPayment.value != null
 //           ? statusView()

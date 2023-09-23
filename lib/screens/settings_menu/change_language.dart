@@ -20,7 +20,7 @@ class _ChangeLanguageState extends State<ChangeLanguage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return AppScaffold(
       backgroundColor: AppColorConstants.backgroundColor,
       body: Column(
         children: [

@@ -1,5 +1,6 @@
 import 'package:foap/controllers/coupons/near_by_offers.dart';
 import 'package:foap/controllers/fund_raising/fund_raising_controller.dart';
+import 'package:foap/controllers/shop/shop_controller.dart';
 import 'package:foap/helper/imports/common_import.dart';
 import 'package:foap/helper/imports/event_imports.dart';
 import 'package:foap/screens/add_on/ui/dating/dating_dashboard.dart';
@@ -7,9 +8,12 @@ import 'package:foap/screens/add_on/ui/dating/profile/upload_profile_picture.dar
 import 'package:foap/screens/add_on/ui/podcast/podcast_list_dashboard.dart';
 import 'package:foap/screens/chatgpt/chat_gpt.dart';
 import 'package:foap/screens/fund_raising/fund_raising_dashboard.dart';
+import 'package:foap/screens/home_feed/story_uploader.dart';
+import 'package:foap/screens/jobs_listing/job_listing_dashboard.dart';
 import 'package:foap/screens/live/live_users_screen.dart';
 import 'package:foap/screens/near_by_offers/offers_dashboard.dart';
 import '../../controllers/home/home_controller.dart';
+import '../../controllers/job/job_controller.dart';
 import '../add_on/ui/dating/profile/add_name.dart';
 import '../add_on/ui/dating/profile/allow_notifications.dart';
 import '../add_on/ui/podcast/podcast_dashboard.dart';
@@ -20,6 +24,7 @@ import '../club/explore_clubs.dart';
 import '../competitions/competitions_screen.dart';
 import '../highlights/choose_stories.dart';
 import '../live/checking_feasibility.dart';
+import '../shop_feature/home/shop_dashboard.dart';
 import '../story/choose_media_for_story.dart';
 import '../tvs/tv_dashboard.dart';
 
@@ -41,7 +46,9 @@ enum QuickLinkType {
   dating,
   chatGPT,
   fundRaising,
-  offers
+  offers,
+  shop,
+  job
 }
 
 class QuickLink {
@@ -122,7 +129,8 @@ class _QuickLinkWidgetState extends State<QuickLinkWidget> {
                           successCallbackHandler: () {},
                         ));
                   } else if (link.linkType == QuickLinkType.story) {
-                    Get.to(() => const ChooseMediaForStory());
+                    openStoryUploader();
+                    //Get.to(() => const ChooseMediaForStory());
                   } else if (link.linkType == QuickLinkType.highlights) {
                     Get.to(() => const ChooseStoryForHighlights());
                   } else if (link.linkType == QuickLinkType.tv) {
@@ -157,8 +165,19 @@ class _QuickLinkWidgetState extends State<QuickLinkWidget> {
                     });
                   } else if (link.linkType == QuickLinkType.offers) {
                     _nearByOffersController.initiate();
-                    Get.to(() => OffersDashboard())!.then((value){
+                    Get.to(() => OffersDashboard())!.then((value) {
                       _nearByOffersController.clear();
+                    });
+                  } else if (link.linkType == QuickLinkType.shop) {
+                    final ShopController shopController = Get.find();
+
+                    Get.to(() => ShopDashboard())!.then((value) {
+                      shopController.clear();
+                    });
+                  } else if (link.linkType == QuickLinkType.job) {
+                    final JobController jobController = Get.find();
+                    Get.to(() => JobDashboard())!.then((value) {
+                      jobController.clear();
                     });
                   }
                 })
@@ -196,24 +215,33 @@ class _QuickLinkWidgetState extends State<QuickLinkWidget> {
   Widget quickLinkView2(QuickLink link) {
     return Container(
       color: AppColorConstants.cardColor,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Image.asset(
-            link.icon,
-            height: 30,
-            width: 30,
+          Container(
+            height: double.infinity,
+            width: 60,
+            color: AppColorConstants.themeColor.withOpacity(0.2),
+            child: Center(
+              child: Image.asset(
+                link.icon,
+                height: 30,
+                width: 30,
+              ),
+            ),
           ),
           const SizedBox(
-            height: 10,
+            width: 10,
           ),
-          BodyMediumText(
-            link.heading.tr,
-            weight: TextWeight.semiBold,
+          Expanded(
+            child: BodyMediumText(
+              link.heading.tr,
+              weight: TextWeight.semiBold,
+            ),
           ),
         ],
-      ).hP16,
+      ),
     ).round(20);
   }
 }

@@ -486,7 +486,7 @@ class PostCardState extends State<PostCard> {
                         Get.to(() => PostPromotionScreen());
                       })
                 ],
-              ).hP16,
+              ).hp(DesignConstants.horizontalPadding),
             ),
           const SizedBox(
             height: 20,
@@ -506,8 +506,8 @@ class PostCardState extends State<PostCard> {
           widget.model.postPromotionData?.type == GoalType.website
               ? widget.model.postPromotionData?.urlText ?? ''
               : widget.model.postPromotionData?.type == GoalType.message
-                  ? sendMessage.tr
-                  : viewProfile.tr,
+                  ? sendMessagesString.tr
+                  : viewProfileString.tr,
           color: Colors.white,
           weight: TextWeight.semiBold,
         ),
@@ -579,7 +579,7 @@ class PostCardState extends State<PostCard> {
           return BodyMediumText(
             '$totalLikes $likesString',
             // weight: TextWeight.semiBold,
-            color: AppColorConstants.grayscale700,
+            color: AppColorConstants.mainTextColor,
           ).ripple(() {
             Get.to(() => LikedByUsers(
                   postId: widget.model.id,
@@ -590,17 +590,17 @@ class PostCardState extends State<PostCard> {
           BodyMediumText(
             '${widget.model.totalComment} $commentsString',
             // weight: TextWeight.semiBold,
-            color: AppColorConstants.grayscale700,
+            color: AppColorConstants.mainTextColor,
           ),
         BodyMediumText(
           '${widget.model.totalView} $viewsString',
           // weight: TextWeight.semiBold,
-          color: AppColorConstants.grayscale700,
+          color: AppColorConstants.mainTextColor,
         ),
         BodyMediumText(
           '${widget.model.totalShare} $sharesString',
           // weight: TextWeight.semiBold,
-          color: AppColorConstants.grayscale700,
+          color: AppColorConstants.mainTextColor,
         ),
       ],
     );
@@ -757,20 +757,29 @@ class PostCardState extends State<PostCard> {
   }
 
   void openComments() {
-    showModalBottomSheet(
-        backgroundColor: Colors.transparent,
-        context: Get.context!,
-        isScrollControlled: true,
-        builder: (context) => FractionallySizedBox(
-            heightFactor: 0.8,
-            child: CommentsScreen(
-              isPopup: true,
-              model: widget.model,
-              commentPostedCallback: () {
-                setState(() {
-                  widget.model.totalComment += 1;
-                });
-              },
-            ).round(40)));
+    Get.to(() => CommentsScreen(
+          isPopup: true,
+          model: widget.model,
+          commentPostedCallback: () {
+            setState(() {
+              widget.model.totalComment += 1;
+            });
+          },
+        ));
+    // showModalBottomSheet(
+    //     backgroundColor: Colors.transparent,
+    //     context: Get.context!,
+    //     isScrollControlled: true,
+    //     builder: (context) => FractionallySizedBox(
+    //         heightFactor: 0.8,
+    //         child: CommentsScreen(
+    //           isPopup: true,
+    //           model: widget.model,
+    //           commentPostedCallback: () {
+    //             setState(() {
+    //               widget.model.totalComment += 1;
+    //             });
+    //           },
+    //         ).round(40)));
   }
 }

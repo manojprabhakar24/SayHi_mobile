@@ -49,17 +49,17 @@ class AudioTile extends StatelessWidget {
                   BodySmallText(
                     audio.artists,
                     weight: TextWeight.medium,
-                    color: AppColorConstants.grayscale700,
+                    color: AppColorConstants.mainTextColor,
                   ),
                   Container(
                     height: 5,
                     width: 5,
-                    color: AppColorConstants.grayscale700,
+                    color: AppColorConstants.mainTextColor,
                   ).circular.hP8,
                   BodySmallText(
                     '${audio.numberOfReelsMade.formatNumber} ${reelsString.tr}',
                     weight: TextWeight.medium,
-                    color: AppColorConstants.grayscale700,
+                    color: AppColorConstants.mainTextColor,
                   ),
                   Container(
                     height: 5,
@@ -68,7 +68,7 @@ class AudioTile extends StatelessWidget {
                   ).circular.hP8,
                   BodySmallText(audio.duration.formatTime,
                       weight: TextWeight.medium,
-                      color: AppColorConstants.grayscale700),
+                      color: AppColorConstants.mainTextColor),
                 ],
               ),
             ],

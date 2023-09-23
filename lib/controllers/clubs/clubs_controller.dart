@@ -1,6 +1,7 @@
-import 'package:foap/apiHandler/apis/club_api.dart';
+import 'package:foap/api_handler/apis/club_api.dart';
 import 'package:foap/helper/imports/club_imports.dart';
 import 'package:foap/helper/imports/common_import.dart';
+import 'package:foap/model/data_wrapper.dart';
 import '../../model/category_model.dart';
 import 'package:foap/helper/list_extension.dart';
 
@@ -15,21 +16,13 @@ class ClubsController extends GetxController {
 
   RxBool isLoadingCategories = false.obs;
 
-  int clubsPage = 1;
-  bool canLoadMoreClubs = true;
-  RxBool isLoadingClubs = false.obs;
-
-  int topClubsPage = 1;
-  bool canLoadMoreTopClubs = true;
-  RxBool isLoadingTopClubs = false.obs;
+  DataWrapper clubsDataWrapper = DataWrapper();
+  DataWrapper topClubsDataWrapper = DataWrapper();
+  DataWrapper invitationsDataWrapper = DataWrapper();
 
   int trendingClubsPage = 1;
   bool canLoadMoreTrendingClubs = true;
   RxBool isLoadingTrendingClubs = false.obs;
-
-  int invitationsPage = 1;
-  bool canLoadMoreInvitations = true;
-  RxBool isLoadingInvitations = false.obs;
 
   int membersPage = 1;
   bool canLoadMoreMembers = true;
@@ -44,20 +37,16 @@ class ClubsController extends GetxController {
   int? _isJoined;
 
   clear() {
-    isLoadingClubs.value = false;
+    clubsDataWrapper = DataWrapper();
     clubs.clear();
-    clubsPage = 1;
-    canLoadMoreClubs = true;
 
-    invitationsPage = 1;
-    canLoadMoreInvitations = true;
-    isLoadingInvitations.value = false;
+    invitationsDataWrapper = DataWrapper();
     invitations.clear();
 
-    topClubsPage = 1;
-    canLoadMoreTopClubs = true;
-    isLoadingTopClubs.value = false;
-    topClubs.clear();
+    // topClubsPage = 1;
+    // canLoadMoreTopClubs = true;
+    // isLoadingTopClubs.value = false;
+    // topClubs.clear();
 
     trendingClubsPage = 1;
     canLoadMoreTrendingClubs = true;
@@ -115,7 +104,7 @@ class ClubsController extends GetxController {
   }
 
   selectedSegmentIndex({required int index}) {
-    if (isLoadingClubs.value == true) {
+    if (clubsDataWrapper.isLoading.value == true) {
       return;
     }
     update();
@@ -138,38 +127,32 @@ class ClubsController extends GetxController {
   }
 
   getClubs() {
-    if (canLoadMoreClubs) {
+    if (clubsDataWrapper.haveMoreData.value) {
       ClubApi.getClubs(
           name: _name,
           categoryId: _categoryId,
           userId: _userId,
           isJoined: _isJoined,
-          page: clubsPage,
+          page: clubsDataWrapper.page,
           resultCallback: (result, metadata) {
             clubs.addAll(result);
             clubs.unique((e) => e.id);
-            isLoadingClubs.value = false;
+            clubsDataWrapper.processCompletedWithData(metadata);
 
-            canLoadMoreClubs = result.length >= metadata.perPage;
-
-            clubsPage += 1;
             update();
           });
     }
   }
 
   getTopClubs() {
-    print('getTopClubs $canLoadMoreTopClubs');
-    if (canLoadMoreTopClubs) {
+    if (topClubsDataWrapper.haveMoreData.value) {
       ClubApi.getTopClubs(
-          page: topClubsPage,
+          page: topClubsDataWrapper.page,
           resultCallback: (result) {
             topClubs.addAll(result);
             topClubs.unique((e) => e.id);
-            print('topClubs == ${topClubs.length}');
-            isLoadingTopClubs.value = false;
-            // canLoadMoreTopClubs = result.length >= metadata.perPage;
-            // topClubsPage += 1;
+            // topClubsDataWrapper.processCompletedWithData(metaData);
+
             update();
           });
     }
@@ -187,24 +170,22 @@ class ClubsController extends GetxController {
             canLoadMoreTrendingClubs = result.length >= metadata.perPage;
 
             trendingClubsPage += 1;
+
             update();
           });
     }
   }
 
   getClubInvitations() {
-    if (canLoadMoreInvitations) {
-      isLoadingInvitations.value = true;
+    if (invitationsDataWrapper.haveMoreData.value) {
+      invitationsDataWrapper.isLoading.value = true;
       ClubApi.getClubInvitations(
-          page: invitationsPage,
+          page: invitationsDataWrapper.page,
           resultCallback: (result, metadata) {
             invitations.addAll(result);
             invitations.unique((e) => e.id);
 
-            isLoadingInvitations.value = false;
-
-            invitationsPage += 1;
-            canLoadMoreInvitations = result.length >= metadata.perPage;
+            invitationsDataWrapper.processCompletedWithData(metadata);
 
             update();
           });

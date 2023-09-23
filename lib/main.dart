@@ -4,8 +4,10 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
-import 'package:foap/apiHandler/apis/auth_api.dart';
+import 'package:foap/api_handler/apis/auth_api.dart';
 import 'package:foap/controllers/fund_raising/fund_raising_controller.dart';
+import 'package:foap/controllers/job/job_controller.dart';
+import 'package:foap/controllers/shop/shop_controller.dart';
 import 'package:foap/helper/imports/common_import.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:foap/screens/add_on/controller/dating/dating_controller.dart';
@@ -15,7 +17,6 @@ import 'package:foap/screens/add_on/controller/relationship/relationship_search_
 import 'package:foap/controllers/live/live_users_controller.dart';
 import 'package:foap/screens/dashboard/loading.dart';
 import 'package:foap/screens/settings_menu/help_support_contorller.dart';
-import 'package:foap/screens/settings_menu/mercadopago_payment_controller.dart';
 import 'components/giphy/src/l10n/l10n.dart';
 import 'controllers/post/post_gift_controller.dart';
 import 'controllers/clubs/clubs_controller.dart';
@@ -24,7 +25,6 @@ import 'controllers/misc/faq_controller.dart';
 import 'package:foap/screens/add_on/controller/reel/create_reel_controller.dart';
 import 'package:foap/screens/add_on/controller/reel/reels_controller.dart';
 import 'package:foap/screens/dashboard/dashboard_screen.dart';
-import 'package:foap/screens/login_sign_up/splash_screen.dart';
 import 'package:foap/screens/settings_menu/settings_controller.dart';
 import 'package:foap/util/constant_util.dart';
 import 'package:foap/util/shared_prefs.dart';
@@ -46,6 +46,7 @@ import 'controllers/chat_and_call/select_user_group_chat_controller.dart';
 import 'controllers/home/home_controller.dart';
 import 'controllers/live/live_history_controller.dart';
 import 'controllers/post/promotion_controller.dart';
+import 'controllers/post/saved_post_controller.dart';
 import 'controllers/story/story_controller.dart';
 import 'controllers/tv/live_tv_streaming_controller.dart';
 import 'controllers/auth/login_controller.dart';
@@ -126,7 +127,6 @@ Future<void> main() async {
   Get.put(RelationshipSearchController());
   Get.put(LiveUserController());
   Get.put(PostGiftController());
-  Get.put(MercadappagoPaymentController());
   Get.put(HelpSupportController());
   Get.put(PodcastStreamingController());
   Get.put(ReelsController());
@@ -136,6 +136,9 @@ Future<void> main() async {
   Get.put(NearByOffersController());
   Get.put(PromotionController());
   Get.put(AppStoryController());
+  Get.put(SavedPostController());
+  Get.put(ShopController());
+  Get.put(JobController());
 
   setupServiceLocator();
 

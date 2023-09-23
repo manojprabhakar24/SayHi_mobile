@@ -47,7 +47,7 @@ enum MessageContentType {
   gift
 }
 
-enum UploadMediaType { post, storyOrHighlights, chat, club, verification }
+enum UploadMediaType { shop, storyOrHighlights, chat, club, verification, uploadResume, }
 
 ///Media picker selection type
 enum GalleryMediaType {
@@ -123,10 +123,47 @@ enum NotificationType {
 }
 
 enum CommentType { text, image, video, gif }
-enum LiveBattleResultType { winner, draw }
-enum BattleStatus { none, accepted, started, completed }
-enum OfferSource { normal, fav }
-enum GoalType { profile, website, message }
-enum ItemViewSource { normal, promotion }
-enum UserViewSourceType { post, reel,story }
 
+enum LiveBattleResultType { winner, draw }
+
+enum BattleStatus { none, accepted, started, completed }
+
+enum OfferSource { normal, fav }
+
+enum GoalType { profile, website, message }
+
+enum ItemViewSource { normal, promotion }
+
+enum UserViewSourceType { post, reel, story }
+
+enum TransactionType {
+  credit,
+  debit,
+}
+
+enum PaymentType {
+  package,
+  award,
+  withdrawal,
+  withdrawalRefund,
+  liveTvSubscribe,
+  gift,
+  redeemCoin,
+  eventTicket,
+  eventTicketRefund,
+  datingSubscription,
+  promotion,
+  promotionRefund,
+  fundRaising,
+  featureAd,
+  bannerAd
+}
+
+enum PaymentMode {
+  inAppPurchase,
+  paypal,
+  wallet,
+  stripe,
+  razorpay,
+  flutterWave
+}

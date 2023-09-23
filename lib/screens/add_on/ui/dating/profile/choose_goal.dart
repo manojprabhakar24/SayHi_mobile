@@ -16,7 +16,7 @@ class _ChooseGoalState extends State<ChooseGoal> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return AppScaffold(
       backgroundColor: AppColorConstants.backgroundColor,
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -140,7 +140,7 @@ class _ChooseGoalState extends State<ChooseGoal> {
           Center(
             child: SizedBox(
                 height: 50,
-                width: MediaQuery.of(context).size.width - 50,
+                width: Get.width - 50,
                 child: AppThemeButton(
                     backgroundColor: Colors.white,
                     cornerRadius: 25,

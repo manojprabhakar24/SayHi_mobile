@@ -22,12 +22,12 @@ class _AcceptRejectInvitationState extends State<AcceptRejectInvitation> {
     List outputList = _relationshipController.relationshipNames
         .where((o) => o.id == id)
         .toList();
-    return outputList.isNotEmpty ? outputList[0].name : '';
+    return outputList.isNotEmpty ? outputList[0].userName : '';
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return AppScaffold(
       backgroundColor: AppColorConstants.backgroundColor,
       body: Column(
         children: [
@@ -55,8 +55,8 @@ class _AcceptRejectInvitationState extends State<AcceptRejectInvitation> {
                             );
                           })
                       : SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.5,
-                          width: MediaQuery.of(context).size.height * 0.5,
+                          height: Get.height * 0.5,
+                          width: Get.height * 0.5,
                           child: emptyUser(
                               title: noInvitationRequestString.tr,
                               subTitle: ''),
@@ -95,14 +95,14 @@ class _AcceptRejectInvitationState extends State<AcceptRejectInvitation> {
                     style: TextStyle(
                         fontSize: FontSizes.h6,
                         fontWeight: TextWeight.semiBold,
-                        color: AppColorConstants.grayscale100),
+                        color: AppColorConstants.subHeadingTextColor),
                   ),
                   Text(
                     "${claimsToBeString.tr} ${_relationshipController.myInvitations[i].relationShip?.name}",
                     style: TextStyle(
                         fontSize: FontSizes.h6,
                         fontWeight: TextWeight.regular,
-                        color: AppColorConstants.grayscale100),
+                        color: AppColorConstants.subHeadingTextColor),
                   )
                 ],
               )

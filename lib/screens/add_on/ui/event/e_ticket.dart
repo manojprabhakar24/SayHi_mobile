@@ -20,7 +20,7 @@ class _ETicketState extends State<ETicket> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return AppScaffold(
         backgroundColor: AppColorConstants.backgroundColor,
         body: Column(children: [
           backNavigationBar(

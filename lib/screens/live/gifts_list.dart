@@ -60,10 +60,10 @@ class _GiftsPageViewState extends State<GiftsPageView> {
                     const SizedBox(
                       width: 5,
                     ),
-                    BodyLargeText(
-                      _userProfileManager.user.value!.coins.toString(),
-                      color: Colors.white,
-                    ),
+                    Obx(() => BodyLargeText(
+                          _userProfileManager.user.value!.coins.toString(),
+                          color: Colors.white,
+                        )),
                   ],
                 ),
                 currentView == 0

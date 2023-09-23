@@ -13,13 +13,12 @@ class _SavedPostsState extends State<SavedPosts> {
 
   @override
   void initState() {
-    Get.put(SavedPostController());
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return AppScaffold(
       backgroundColor: AppColorConstants.backgroundColor,
       body: Column(
         children: [

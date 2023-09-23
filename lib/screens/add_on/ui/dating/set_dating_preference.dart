@@ -120,7 +120,7 @@ class SetDatingPreferenceState extends State<SetDatingPreference> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return AppScaffold(
       backgroundColor: AppColorConstants.backgroundColor,
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -236,7 +236,7 @@ class SetDatingPreferenceState extends State<SetDatingPreference> {
                         Center(
                           child: SizedBox(
                               height: 50,
-                              width: MediaQuery.of(context).size.width - 50,
+                              width: Get.width - 50,
                               child: AppThemeButton(
                                   cornerRadius: 25,
                                   text: setString.tr,

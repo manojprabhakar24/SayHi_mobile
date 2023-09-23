@@ -24,121 +24,92 @@ class _SettingsState extends State<Settings> {
 
   @override
   Widget build(BuildContext context) {
-    return Obx(() => Scaffold(
+    return Obx(() => AppScaffold(
           backgroundColor: AppColorConstants.backgroundColor,
           body: Column(
             children: [
               if (_settingsController.appearanceChanged!.value) Container(),
-              // const SizedBox(
-              //   height: 50,
-              // ),
               backNavigationBar(title: settingsString.tr),
-
               Expanded(
-                child: ListView(
-                  padding: EdgeInsets.zero,
-                  children: [
-                    Column(
-                      children: [
-                        addTileEvent(
-                            ThemeIcon.notification, notificationsString.tr, '',
-                            () {
-                          Get.to(() => const NotificationsScreen());
-                        }, true),
-                        addTileEvent(
-                            ThemeIcon.language, changeLanguageString.tr, '',
-                            () {
-                          Get.to(() => const ChangeLanguage());
-                        }, true),
-                        addTileEvent(
-                            ThemeIcon.wallet, paymentAndCoinsString.tr, '', () {
-                          Get.to(() => const PaymentAndCoins());
-                        }, true),
-                        addTileEvent(ThemeIcon.account, accountString.tr, '',
-                            () {
-                          Get.to(() => const AppAccount());
-                        }, true),
-                        addTileEvent(
-                            ThemeIcon.bookMark, savedPostsString.tr, '', () {
-                          Get.to(() => const SavedPosts());
-                        }, true),
-                        addTileEvent(
-                            ThemeIcon.privacyPolicy, privacyString.tr, '', () {
-                          Get.to(() => const PrivacyOptions());
-                        }, true),
-                        addTileEvent(
-                            ThemeIcon.setting,
-                            notificationSettingsString.tr,
-                            tuneSettingsString.tr, () {
-                          Get.to(() => const AppNotificationSettings());
-                        }, true),
-                        addTileEvent(
-                            ThemeIcon.info, faqString.tr, faqMessageString.tr,
-                            () {
-                          Get.to(() => const FaqList());
-                        }, true),
-                        addTileEvent(ThemeIcon.request, helpString.tr,
-                            faqMessageString.tr, () {
-                          Get.to(() => const HelpScreen());
-                        }, true),
-                        if (_settingsController
-                            .setting.value!.enableDarkLightModeSwitch)
-                          darkModeTile(),
-                        addTileEvent(ThemeIcon.share, shareString.tr,
-                            shareAppSubtitleString.tr, () {
-                          Share.share(
-                              '${installThisCoolAppString.tr} ${AppConfigConstants.liveAppLink}');
-                        }, false),
-                        addTileEvent(
-                            ThemeIcon.logout, logoutString.tr, exitAppString.tr,
-                            () {
-                          AppUtil.showConfirmationAlert(
-                              title: logoutString.tr,
-                              subTitle: logoutConfirmationString.tr,
-                              okHandler: () {
-                                _userProfileManager.logout();
-                              });
-                        }, false),
-                        addTileEvent(ThemeIcon.delete, deleteAccountString.tr,
-                            deleteAccountSubheadingString.tr, () {
-                          AppUtil.showConfirmationAlert(
-                              title: deleteAccountString.tr,
-                              subTitle: areYouSureToDeleteAccountString.tr,
-                              okHandler: () {
-                                _settingsController.deleteAccount();
-                              });
-                        }, false),
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 50,
-                    )
-                  ],
-                ),
+                child: Container(
+                  color: AppColorConstants.themeColor.withOpacity(0.05),
+                  child: ListView(
+                    padding: EdgeInsets.zero,
+                    children: [
+                      Column(
+                        children: [
+                          addTileEvent(notificationsString.tr, () {
+                            Get.to(() => const NotificationsScreen());
+                          }, true),
+                          addTileEvent(changeLanguageString.tr, () {
+                            Get.to(() => const ChangeLanguage());
+                          }, true),
+                          addTileEvent(paymentAndCoinsString.tr, () {
+                            Get.to(() => const PaymentAndCoins());
+                          }, true),
+                          addTileEvent(accountString.tr, () {
+                            Get.to(() => const AppAccount());
+                          }, true),
+                          addTileEvent(savedPostsString.tr, () {
+                            Get.to(() => const SavedPosts());
+                          }, true),
+                          addTileEvent(privacyString.tr, () {
+                            Get.to(() => const PrivacyOptions());
+                          }, true),
+                          addTileEvent(notificationSettingsString.tr, () {
+                            Get.to(() => const AppNotificationSettings());
+                          }, true),
+                          addTileEvent(faqString.tr, () {
+                            Get.to(() => const FaqList());
+                          }, true),
+                          addTileEvent(helpString.tr, () {
+                            Get.to(() => const HelpScreen());
+                          }, true),
+                          if (_settingsController
+                              .setting.value!.enableDarkLightModeSwitch)
+                            darkModeTile(),
+                          addTileEvent(shareString.tr, () {
+                            Share.share(
+                                '${installThisCoolAppString.tr} ${AppConfigConstants.liveAppLink}');
+                          }, false),
+                          addTileEvent(logoutString.tr, () {
+                            AppUtil.showConfirmationAlert(
+                                title: logoutString.tr,
+                                subTitle: logoutConfirmationString.tr,
+                                okHandler: () {
+                                  _userProfileManager.logout();
+                                });
+                          }, false),
+                          addTileEvent(deleteAccountString.tr, () {
+                            AppUtil.showConfirmationAlert(
+                                title: deleteAccountString.tr,
+                                subTitle: areYouSureToDeleteAccountString.tr,
+                                okHandler: () {
+                                  _settingsController.deleteAccount();
+                                });
+                          }, false),
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 50,
+                      )
+                    ],
+                  ),
+                ).round(20).p(DesignConstants.horizontalPadding),
               ),
             ],
           ),
         ));
   }
 
-  addTileEvent(ThemeIcon icon, String title, String subTitle,
-      VoidCallback action, bool showNextArrow) {
+  addTileEvent(String title, VoidCallback action, bool showNextArrow) {
     return InkWell(
         onTap: action,
         child: Column(
           children: [
             SizedBox(
-              height: 65,
+              height: 50,
               child: Row(children: [
-                Container(
-                        color: AppColorConstants.themeColor.withOpacity(0.2),
-                        child: ThemeIconWidget(
-                          icon,
-                          color: AppColorConstants.iconColor,
-                          size: 20,
-                        ).p8)
-                    .circular,
-                const SizedBox(width: 10),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -166,13 +137,8 @@ class _SettingsState extends State<Settings> {
     return Column(
       children: [
         SizedBox(
-          height: 65,
+          height: 50,
           child: Row(children: [
-            Container(
-                    color: AppColorConstants.themeColor.withOpacity(0.2),
-                    child: const ThemeIconWidget(ThemeIcon.darkMode).p8)
-                .circular,
-            const SizedBox(width: 10),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,

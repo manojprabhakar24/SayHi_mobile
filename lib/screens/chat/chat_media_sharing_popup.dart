@@ -375,7 +375,7 @@ class _ChatMediaSharingOptionPopupState
       Media media = Media();
       media.id = randomId();
       media.file = file;
-      media.mediaByte = data;
+      media.mainFileBytes = data;
       media.fileSize = sizeInBytes;
 
       // media.thumbnail = thumbnailData!;

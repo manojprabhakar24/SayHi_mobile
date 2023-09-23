@@ -64,7 +64,7 @@ class _DrawingScreenState extends State<DrawingScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return AppScaffold(
       backgroundColor: Colors.white,
       body: Column(
         children: [
@@ -186,7 +186,7 @@ class _DrawingScreenState extends State<DrawingScreen> {
           child: const ThemeIconWidget(ThemeIcon.edit),
         ).borderWithRadius(value: 5, radius: 1),
         SizedBox(
-          width: MediaQuery.of(context).size.width - 100,
+          width: Get.width - 100,
           height: 50,
           child: ListView.builder(
               padding: EdgeInsets.only(left: DesignConstants.horizontalPadding),
@@ -210,7 +210,7 @@ class _DrawingScreenState extends State<DrawingScreen> {
           color: Colors.white,
         ).borderWithRadius(value: 5, radius: 1),
         SizedBox(
-          width: MediaQuery.of(context).size.width - 100,
+          width: Get.width - 100,
           height: 50,
           child: ListView.builder(
               padding: EdgeInsets.only(left: DesignConstants.horizontalPadding),
@@ -369,7 +369,7 @@ class _DrawingScreenState extends State<DrawingScreen> {
           id: randomId(),
           file: file,
           fileSize: imageBytes.length,
-          mediaByte: imageBytes,
+          mainFileBytes: imageBytes,
           mediaType: GalleryMediaType.photo,
           creationTime: DateTime.now());
       if (widget.drawingCompleted != null) {

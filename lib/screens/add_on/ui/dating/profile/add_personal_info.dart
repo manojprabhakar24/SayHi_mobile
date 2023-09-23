@@ -51,7 +51,7 @@ class AddPersonalInfoState extends State<AddPersonalInfo> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return AppScaffold(
         backgroundColor: AppColorConstants.backgroundColor,
         body: Column(children: [
           // const SizedBox(height: 50),
@@ -87,7 +87,7 @@ class AddPersonalInfoState extends State<AddPersonalInfo> {
                     min: 121.0,
                     max: 243.0,
                     value: _valueForHeight,
-                    inactiveColor: AppColorConstants.grayscale400,
+                    inactiveColor: AppColorConstants.subHeadingTextColor,
                     activeColor: AppColorConstants.themeColor,
                     label: '${_valueForHeight.round()}',
                     divisions: 243,

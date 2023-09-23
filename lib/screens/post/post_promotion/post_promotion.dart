@@ -13,7 +13,7 @@ class PostPromotionScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return AppScaffold(
         backgroundColor: AppColorConstants.backgroundColor,
         body: GetBuilder<PromotionController>(
             init: _promotionController,
@@ -37,7 +37,7 @@ class PostPromotionScreen extends StatelessWidget {
                       currentStep: _promotionController.pageChanged.value + 1,
                       size: 2,
                       selectedColor: AppColorConstants.themeColor,
-                      unselectedColor: AppColorConstants.grayscale300,
+                      unselectedColor: AppColorConstants.subHeadingTextColor,
                     ),
                     Expanded(
                       child: PageView(

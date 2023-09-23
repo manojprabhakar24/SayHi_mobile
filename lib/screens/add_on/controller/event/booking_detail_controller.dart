@@ -1,6 +1,6 @@
 import 'dart:io';
 import 'dart:typed_data';
-import 'package:foap/apiHandler/apis/events_api.dart';
+import 'package:foap/api_handler/apis/events_api.dart';
 import 'package:foap/helper/imports/common_import.dart';
 import 'package:foap/helper/imports/event_imports.dart';
 import 'package:share_plus/share_plus.dart';

@@ -41,7 +41,7 @@ class _SelectMusicState extends State<SelectMusic> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return AppScaffold(
       backgroundColor: AppColorConstants.backgroundColor,
       body: KeyboardDismissOnTap(
           child: Column(
@@ -119,7 +119,7 @@ class _SelectMusicState extends State<SelectMusic> {
     return HorizontalMenuBar(
         padding:  EdgeInsets.only(left: DesignConstants.horizontalPadding),
         selectedIndex: _createReelController.selectedSegment,
-        // width: MediaQuery.of(context).size.width,
+        // width: Get.width,
         onSegmentChange: (segment) {
           _createReelController.segmentChanged(segment);
         },

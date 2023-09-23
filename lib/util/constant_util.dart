@@ -57,7 +57,7 @@ int messageTypeId(MessageContentType type) {
 
 int uploadMediaTypeId(UploadMediaType type) {
   switch (type) {
-    case UploadMediaType.post:
+    case UploadMediaType.shop:
       return 1;
     case UploadMediaType.storyOrHighlights:
       return 3;
@@ -67,5 +67,7 @@ int uploadMediaTypeId(UploadMediaType type) {
       return 5;
     case UploadMediaType.verification:
       return 12;
+    case UploadMediaType.uploadResume:
+      return 28;
   }
 }

@@ -78,9 +78,13 @@ class SettingModel {
   bool enableWatchTv;
   bool enablePodcasts;
   bool enableGift;
+
   bool enablePolls;
   bool enableFundRaising;
   bool enableOffers;
+  bool enableJobs;
+  bool enableShop;
+  bool enableLiveUserListing;
 
   String? themeColor;
   String? bgColorForLightTheme;
@@ -170,9 +174,12 @@ class SettingModel {
     required this.enablePolls,
     required this.enableDating,
     required this.enableFundRaising,
+    required this.enableOffers,
+    required this.enableJobs,
+    required this.enableShop,
+    required this.enableLiveUserListing,
     required this.chatGPTKey,
     required this.enableChatGPT,
-    required this.enableOffers,
     required this.font,
     required this.themeColor,
     required this.bgColorForLightTheme,
@@ -269,6 +276,9 @@ class SettingModel {
         enableChatGPT: json["is_chat_gpt"] == 1,
         enableFundRaising: json["is_fund_raising"] == 1,
         enableOffers: json["is_offers"] == 1,
+        enableJobs: json["is_job"] == 1,
+        enableLiveUserListing: json["is_live_user"] == 1,
+        enableShop: json["is_shop"] == 1,
 
         themeColor: json["theme_color"] ?? '4169e1',
         bgColorForLightTheme: json["theme_light_background_color"] ?? 'FFFFFF',

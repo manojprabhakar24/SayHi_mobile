@@ -1,5 +1,6 @@
 import 'package:flutter/services.dart';
 import 'package:foap/helper/imports/common_import.dart';
+import 'package:foap/helper/imports/login_signup_imports.dart';
 import 'package:get/get.dart';
 import 'package:local_auth/error_codes.dart' as auth_error;
 import 'package:local_auth/local_auth.dart';
@@ -35,15 +36,15 @@ class _LoadingScreenState extends State<LoadingScreen> {
     if (_userProfileManager.isLogin == true) {
       packageController.initiate();
 
-      if (_userProfileManager.user.value!.userName.isNotEmpty) {
-        Get.offAll(() => const DashboardScreen());
+      // if (_userProfileManager.user.value!.userName.isNotEmpty) {
+      Get.offAll(() => const DashboardScreen());
 
-        getIt<SocketManager>().connect();
-      } else {
-        Get.offAll(() => const SetUserName());
-      }
+      getIt<SocketManager>().connect();
+      // } else {
+      //   Get.offAll(() => const SetUserName());
+      // }
     } else {
-      Get.offAll(() => const TutorialScreen());
+      Get.offAll(() => const LoginScreen());
     }
   }
 
@@ -85,7 +86,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return AppScaffold(
         backgroundColor: AppColorConstants.backgroundColor,
         body: FutureBuilder<void>(
             future: checkBiometric(),

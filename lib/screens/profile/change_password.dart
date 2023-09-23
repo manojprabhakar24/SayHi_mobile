@@ -22,7 +22,7 @@ class ChangePasswordState extends State<ChangePassword> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return AppScaffold(
       backgroundColor: AppColorConstants.backgroundColor,
       body: GestureDetector(
         onTap: () {
@@ -43,7 +43,6 @@ class ChangePasswordState extends State<ChangePassword> {
                     confirmPassword: confirmPassword.text,
                    );
               }),
-          divider().vP8,
           const SizedBox(
             height: 20,
           ),

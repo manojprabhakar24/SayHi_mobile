@@ -8,9 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		1498D2341E8E89220040F4C2 /* GeneratedPluginRegistrant.m in Sources */ = {isa = PBXBuildFile; fileRef = 1498D2331E8E89220040F4C2 /* GeneratedPluginRegistrant.m */; };
+		18649A612ABECCA400AE19FE /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 18649A602ABECCA400AE19FE /* GoogleService-Info.plist */; };
 		1893861528B0B42E0099D738 /* ImageGallery.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1893861428B0B42E0099D738 /* ImageGallery.swift */; };
 		18A03D9628FFD278009E0119 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 18A03D9528FFD261009E0119 /* libsqlite3.tbd */; };
-		18CEA26227F073C50038307A /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 18CEA26127F073C50038307A /* GoogleService-Info.plist */; };
 		3B3967161E833CAA004F5970 /* AppFrameworkInfo.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3B3967151E833CAA004F5970 /* AppFrameworkInfo.plist */; };
 		509DA0E3D017FCF41E3AA7F3 /* Pods_Runner.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B602305585C0C63F934327A0 /* Pods_Runner.framework */; };
 		74858FAF1ED2DC5600515810 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74858FAE1ED2DC5600515810 /* AppDelegate.swift */; };
@@ -37,9 +37,9 @@
 		1498D2331E8E89220040F4C2 /* GeneratedPluginRegistrant.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GeneratedPluginRegistrant.m; sourceTree = "<group>"; };
 		1857E5BC28D8DA0500CBFBFF /* ar */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ar; path = ar.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
 		1857E5BD28D8DA7800CBFBFF /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
+		18649A602ABECCA400AE19FE /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		1893861428B0B42E0099D738 /* ImageGallery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageGallery.swift; sourceTree = "<group>"; };
 		18A03D9528FFD261009E0119 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
-		18CEA26127F073C50038307A /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		18F66DAB28520CBE00B3D922 /* Runner.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Runner.entitlements; sourceTree = "<group>"; };
 		3B3967151E833CAA004F5970 /* AppFrameworkInfo.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = AppFrameworkInfo.plist; path = Flutter/AppFrameworkInfo.plist; sourceTree = "<group>"; };
 		69287C5A674F0510D8336BA1 /* Pods-Runner.profile.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.profile.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.profile.xcconfig"; sourceTree = "<group>"; };
@@ -114,8 +114,8 @@
 		97C146F01CF9000F007C117D /* Runner */ = {
 			isa = PBXGroup;
 			children = (
+				18649A602ABECCA400AE19FE /* GoogleService-Info.plist */,
 				18F66DAB28520CBE00B3D922 /* Runner.entitlements */,
-				18CEA26127F073C50038307A /* GoogleService-Info.plist */,
 				97C146FA1CF9000F007C117D /* Main.storyboard */,
 				97C146FD1CF9000F007C117D /* Assets.xcassets */,
 				97C146FF1CF9000F007C117D /* LaunchScreen.storyboard */,
@@ -206,7 +206,7 @@
 			files = (
 				97C147011CF9000F007C117D /* LaunchScreen.storyboard in Resources */,
 				3B3967161E833CAA004F5970 /* AppFrameworkInfo.plist in Resources */,
-				18CEA26227F073C50038307A /* GoogleService-Info.plist in Resources */,
+				18649A612ABECCA400AE19FE /* GoogleService-Info.plist in Resources */,
 				97C146FE1CF9000F007C117D /* Assets.xcassets in Resources */,
 				97C146FC1CF9000F007C117D /* Main.storyboard in Resources */,
 			);
@@ -405,14 +405,14 @@
 				ENABLE_BITCODE = NO;
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = "i386 arm64";
 				INFOPLIST_FILE = Runner/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = JinnyYouity;
+				INFOPLIST_KEY_CFBundleDisplayName = "SayHi Social";
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.2;
-				PRODUCT_BUNDLE_IDENTIFIER = com.baljit.apptesting;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.jasspj.sayhi;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
@@ -546,14 +546,14 @@
 				ENABLE_BITCODE = NO;
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = "i386 arm64";
 				INFOPLIST_FILE = Runner/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = JinnyYouity;
+				INFOPLIST_KEY_CFBundleDisplayName = "SayHi Social";
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.2;
-				PRODUCT_BUNDLE_IDENTIFIER = com.baljit.apptesting;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.jasspj.sayhi;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
@@ -579,14 +579,14 @@
 				ENABLE_BITCODE = NO;
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = "i386 arm64";
 				INFOPLIST_FILE = Runner/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = JinnyYouity;
+				INFOPLIST_KEY_CFBundleDisplayName = "SayHi Social";
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.2;
-				PRODUCT_BUNDLE_IDENTIFIER = com.baljit.apptesting;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.jasspj.sayhi;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";

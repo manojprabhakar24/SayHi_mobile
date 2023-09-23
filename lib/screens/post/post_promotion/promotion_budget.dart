@@ -21,7 +21,7 @@ class PromotionBudgetScreen extends StatelessWidget {
                 BodySmallText(
                   totalSpend.tr,
                   weight: FontWeight.normal,
-                  color: AppColorConstants.grayscale600,
+                  color: AppColorConstants.subHeadingTextColor,
                 ),
                 Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                   Heading5Text(
@@ -77,9 +77,9 @@ class PromotionBudgetScreen extends StatelessWidget {
             trackHeight: 3.0,
             valueIndicatorColor: Colors.transparent,
             valueIndicatorTextStyle:
-                TextStyle(color: AppColorConstants.grayscale900),
+                TextStyle(color: AppColorConstants.mainTextColor),
             activeTrackColor: AppColorConstants.themeColor,
-            inactiveTrackColor: AppColorConstants.grayscale300,
+            inactiveTrackColor: AppColorConstants.subHeadingTextColor,
             thumbColor: AppColorConstants.themeColor,
             showValueIndicator: ShowValueIndicator.always),
         child: view);

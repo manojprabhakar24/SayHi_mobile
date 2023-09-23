@@ -23,7 +23,7 @@ class _ViewPostInsightsState extends State<ViewPostInsights> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return AppScaffold(
       backgroundColor: AppColorConstants.backgroundColor,
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

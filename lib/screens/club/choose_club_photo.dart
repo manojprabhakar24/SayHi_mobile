@@ -22,7 +22,7 @@ class ChooseClubCoverPhotoState extends State<ChooseClubCoverPhoto> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return AppScaffold(
       backgroundColor: AppColorConstants.backgroundColor,
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -43,7 +43,7 @@ class ChooseClubCoverPhotoState extends State<ChooseClubCoverPhoto> {
               ),
               BodyMediumText(
                 addClubPhotoSubHeadingString.tr,
-                color: AppColorConstants.grayscale500,
+                color: AppColorConstants.subHeadingTextColor,
               ),
               const SizedBox(
                 height: 20,

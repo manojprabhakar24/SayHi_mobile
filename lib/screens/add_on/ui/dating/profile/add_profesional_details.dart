@@ -46,7 +46,7 @@ class AddProfessionalDetailsState extends State<AddProfessionalDetails> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return AppScaffold(
         backgroundColor: AppColorConstants.backgroundColor,
         body: Column(children: [
           backNavigationBar(
@@ -90,7 +90,7 @@ class AddProfessionalDetailsState extends State<AddProfessionalDetails> {
                 const Spacer(),
                 SizedBox(
                     height: 50,
-                    width: MediaQuery.of(context).size.width - 50,
+                    width: Get.width - 50,
                     child: AppThemeButton(
                         cornerRadius: 25,
                         text: submitString.tr,

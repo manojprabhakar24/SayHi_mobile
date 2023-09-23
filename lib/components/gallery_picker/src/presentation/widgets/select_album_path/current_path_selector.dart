@@ -82,7 +82,7 @@ class SelectedPathDropdownButton extends StatelessWidget {
 
           /// top custom widget
           Container(
-            width: MediaQuery.of(context).size.width / 2,
+            width: Get.width / 2,
             alignment: Alignment.bottomLeft,
             child: appBarLeadingWidget ?? Container(),
           )
@@ -123,7 +123,7 @@ class SelectedPathDropdownButton extends StatelessWidget {
           children: [
             /// current album name
             SizedBox(
-              width: MediaQuery.of(context).size.width * 0.28,
+              width: Get.width * 0.28,
               child: Heading6Text(
                 provider.currentAlbum!.name,
                 // overflow: TextOverflow.ellipsis,

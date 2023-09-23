@@ -1,5 +1,6 @@
 import 'package:foap/helper/imports/common_import.dart';
 import 'package:foap/helper/imports/login_signup_imports.dart';
+import 'package:foap/screens/login_sign_up/set_user_name.dart';
 import 'package:lottie/lottie.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -24,7 +25,7 @@ class LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return AppScaffold(
       backgroundColor: AppColorConstants.backgroundColor,
       body: SingleChildScrollView(
         child: GestureDetector(
@@ -38,13 +39,13 @@ class LoginScreenState extends State<LoginScreen> {
                 SizedBox(
                   height: Get.height * 0.1,
                 ),
-                const Align(
-                  alignment: Alignment.centerLeft,
-                  child: AppThemeBackButton(),
-                ),
-                SizedBox(
-                  height: Get.height * 0.05,
-                ),
+                // const Align(
+                //   alignment: Alignment.centerLeft,
+                //   child: AppThemeBackButton(),
+                // ),
+                // SizedBox(
+                //   height: Get.height * 0.05,
+                // ),
                 SizedBox(
                     height: Get.height * 0.12,
                     child: Stack(
@@ -111,7 +112,7 @@ class LoginScreenState extends State<LoginScreen> {
                     ),
                   ],
                 ).ripple(() {
-                  Get.to(() => const SignUpScreen());
+                  Get.to(() => const SetUserName());
                 }),
                 divider(height: 1).vp(40),
                 BodyMediumText(continueWithAccountsString),

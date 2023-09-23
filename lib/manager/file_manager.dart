@@ -120,32 +120,32 @@ class FileManager {
 
     if (media.mediaType == GalleryMediaType.photo) {
       extension = '.png';
-      if (media.mediaByte == null) {
+      if (media.mainFileBytes == null) {
         mainFileData = await media.file!.compress();
       } else {
-        mainFileData = media.mediaByte!;
+        mainFileData = media.mainFileBytes!;
       }
     } else if (media.mediaType == GalleryMediaType.video) {
       extension = '.mp4';
 
-      if (media.mediaByte == null) {
+      if (media.mainFileBytes == null) {
         mainFileData = media.file!.readAsBytesSync();
       } else {
-        mainFileData = media.mediaByte!;
+        mainFileData = media.mainFileBytes!;
       }
     } else if (media.mediaType == GalleryMediaType.audio) {
       extension = '.mp3';
 
-      if (media.mediaByte == null) {
+      if (media.mainFileBytes == null) {
         mainFileData = media.file!.readAsBytesSync();
       } else {
-        mainFileData = media.mediaByte!;
+        mainFileData = media.mainFileBytes!;
       }
     } else {
-      if (media.mediaByte == null) {
+      if (media.mainFileBytes == null) {
         mainFileData = media.file!.readAsBytesSync();
       } else {
-        mainFileData = media.mediaByte!;
+        mainFileData = media.mainFileBytes!;
       }
       // file
       extension = p.extension(media.file!.path);

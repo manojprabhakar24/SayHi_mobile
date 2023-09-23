@@ -1,6 +1,6 @@
 import 'dart:ui';
 
-import 'package:foap/apiHandler/apis/podcast_api.dart';
+import 'package:foap/api_handler/apis/podcast_api.dart';
 import 'package:foap/components/loader.dart';
 import 'package:foap/helper/imports/event_imports.dart';
 import 'package:foap/helper/list_extension.dart';

@@ -101,7 +101,6 @@ class EventBookingCard extends StatelessWidget {
             ).round(10)
           ],
         ).p16,
-        divider().vP8,
         Row(
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [

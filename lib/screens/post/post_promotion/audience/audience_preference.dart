@@ -7,7 +7,7 @@ class AudiencePreferenceScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return AppScaffold(
         backgroundColor: AppColorConstants.backgroundColor,
         body: GetBuilder<PromotionController>(
         init: _promotionController,
@@ -29,14 +29,14 @@ class AudiencePreferenceScreen extends StatelessWidget {
                         trackHeight: 3.0,
                         valueIndicatorColor: Colors.transparent,
                         valueIndicatorTextStyle:
-                            TextStyle(color: AppColorConstants.grayscale900),
+                            TextStyle(color: AppColorConstants.mainTextColor),
                         showValueIndicator: ShowValueIndicator.always),
                     child: RangeSlider(
                       values: _promotionController.ageRange.value,
                       min: 0.0,
                       max: 100.0,
                       activeColor: AppColorConstants.themeColor,
-                      inactiveColor: AppColorConstants.grayscale300,
+                      inactiveColor: AppColorConstants.subHeadingTextColor,
                       labels: RangeLabels(
                           '${_promotionController.ageRange.value.start.toInt()}',
                           '${_promotionController.ageRange.value.end.toInt()}'),

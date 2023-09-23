@@ -3,7 +3,7 @@ import 'package:camera/camera.dart';
 import 'package:ffmpeg_kit_flutter/ffmpeg_kit.dart';
 import 'package:ffmpeg_kit_flutter/ffmpeg_kit_config.dart';
 import 'package:ffmpeg_kit_flutter/return_code.dart';
-import 'package:foap/apiHandler/apis/reel_api.dart';
+import 'package:foap/api_handler/apis/reel_api.dart';
 import 'package:foap/helper/imports/common_import.dart';
 import 'package:foap/manager/player_manager.dart';
 import 'package:foap/model/category_model.dart';

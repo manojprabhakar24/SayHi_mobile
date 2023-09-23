@@ -43,7 +43,7 @@ class OfferCard extends StatelessWidget {
           BodyLargeText(
             offer.name,
             weight: TextWeight.regular,
-            color: AppColorConstants.grayscale700,
+            color: AppColorConstants.mainTextColor,
           ),
           const SizedBox(
             height: 20,

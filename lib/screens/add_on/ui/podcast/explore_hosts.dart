@@ -41,7 +41,7 @@ class _ExploreHostsState extends State<ExploreHosts> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return AppScaffold(
         backgroundColor: AppColorConstants.backgroundColor,
         body: GestureDetector(
             onTap: () {

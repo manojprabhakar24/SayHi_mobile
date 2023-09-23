@@ -1,6 +1,6 @@
 import 'package:foap/helper/imports/common_import.dart';
 import 'package:get/get.dart';
-import '../../apiHandler/apis/misc_api.dart';
+import '../../api_handler/apis/misc_api.dart';
 
 class NotificationSettingController extends GetxController {
   final UserProfileManager _userProfileManager = Get.find();

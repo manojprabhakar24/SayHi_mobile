@@ -25,7 +25,7 @@ class _RequestVerificationState extends State<RequestVerification> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return AppScaffold(
       backgroundColor: AppColorConstants.backgroundColor,
       body: GestureDetector(
           onTap: () {

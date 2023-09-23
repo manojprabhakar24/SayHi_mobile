@@ -22,7 +22,7 @@ class _EnterGroupInfoState extends State<EnterGroupInfo> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return AppScaffold(
       backgroundColor: AppColorConstants.backgroundColor,
       body: Column(
         children: [

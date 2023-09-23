@@ -29,7 +29,7 @@
 //
 //   @override
 //   Widget build(BuildContext context) {
-//     return Scaffold(
+//     return AppScaffold(
 //         backgroundColor: AppColorConstants.backgroundColor,
 //         appBar: AppBar(
 //             backgroundColor: AppColorConstants.themeColor,
@@ -37,7 +37,7 @@
 //             elevation: 0.0,
 //             title: Heading5Text(
 //               header,
-//               color: AppColorConstants.grayscale100,
+//               color: AppColorConstants.subHeadingTextColor,
 //             ),
 //             leading: InkWell(
 //                 onTap: () => Get.back(),

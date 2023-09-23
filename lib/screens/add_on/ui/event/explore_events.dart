@@ -1,16 +1,5 @@
-import 'package:foap/components/custom_texts.dart';
-import 'package:foap/components/empty_states.dart';
-import 'package:foap/components/group_avatars/group_avatar1.dart';
-import 'package:foap/components/shimmer_widgets.dart';
-import 'package:foap/components/top_navigation_bar.dart';
-import 'package:foap/helper/common_components.dart';
-import 'package:foap/helper/extension.dart';
-import 'package:foap/helper/localization_strings.dart';
-import 'package:foap/theme/theme_icon.dart';
-import 'package:foap/util/app_config_constants.dart';
-import 'package:get/get.dart';
+import 'package:foap/helper/imports/common_import.dart';
 import 'package:foap/helper/imports/event_imports.dart';
-import 'package:flutter/material.dart';
 
 class ExploreEvents extends StatefulWidget {
   const ExploreEvents({Key? key}) : super(key: key);
@@ -26,8 +15,6 @@ class ExploreEventsState extends State<ExploreEvents> {
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _eventsController.getCategories();
-      // _eventsController.getEvents();
-      // _eventsController.selectedSegmentIndex(0);
     });
 
     super.initState();
@@ -48,7 +35,7 @@ class ExploreEventsState extends State<ExploreEvents> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return AppScaffold(
       backgroundColor: AppColorConstants.backgroundColor,
       body: Column(
         children: [
@@ -66,45 +53,6 @@ class ExploreEventsState extends State<ExploreEvents> {
                     )
                   : Column(
                       children: [
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        // _eventsController.isLoadingCategories.value
-                        //     ? const EventCategoriesScreenShimmer()
-                        //     : SizedBox(
-                        //         height: 40,
-                        //         child: ListView.separated(
-                        //             padding: EdgeInsets.only(
-                        //                 left:
-                        //                     DesignConstants.horizontalPadding),
-                        //             scrollDirection: Axis.horizontal,
-                        //             itemCount: categories.length,
-                        //             itemBuilder: (BuildContext ctx, int index) {
-                        //               EventCategoryModel category =
-                        //                   categories[index];
-                        //               return CategoryAvatarType2(
-                        //                       category: category)
-                        //                   .ripple(() {
-                        //                 _eventsController
-                        //                     .setCategoryId(category.id);
-                        //                 _eventsController.getEvents();
-                        //                 Get.to(() => CategoryEventsListing(
-                        //                         category: category))!
-                        //                     .then((value) {
-                        //                   loadEvents();
-                        //                 });
-                        //               });
-                        //             },
-                        //             separatorBuilder:
-                        //                 (BuildContext ctx, int index) {
-                        //               return const SizedBox(
-                        //                 width: 10,
-                        //               );
-                        //             }),
-                        //       ),
-                        // const SizedBox(
-                        //   height: 30,
-                        // ),
                         Expanded(
                           child: GetBuilder<EventsController>(
                               init: _eventsController,
@@ -181,7 +129,8 @@ class ExploreEventsState extends State<ExploreEvents> {
                                                   joinBtnClicked: () {},
                                                   leaveBtnClicked: () {},
                                                   previewBtnClicked: () {
-                                                    Get.put(CheckoutController());
+                                                    Get.put(
+                                                        CheckoutController());
 
                                                     Get.to(() => EventDetail(
                                                         event: event,

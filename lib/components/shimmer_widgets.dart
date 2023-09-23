@@ -437,7 +437,7 @@ class PostBoxShimmer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
+    return ListView.separated(
       itemCount: 50,
       physics: const NeverScrollableScrollPhysics(),
       shrinkWrap: true,
@@ -452,6 +452,9 @@ class PostBoxShimmer extends StatelessWidget {
         child: Container(
           color: AppColorConstants.red,
         ).round(10).addShimmer(),
+      ),
+      separatorBuilder: (ctx, index) => const SizedBox(
+        height: 20,
       ),
     ).hp(DesignConstants.horizontalPadding);
   }
@@ -514,7 +517,6 @@ class _EventBookingShimmerWidgetState extends State<EventBookingShimmerWidget> {
                   ).round(10)
                 ],
               ).p16,
-              divider().vP8,
               Row(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
@@ -600,8 +602,8 @@ class _CardsStackShimmerWidgetState extends State<CardsStackShimmerWidget> {
       clipBehavior: Clip.none,
       children: [
         SizedBox(
-          height: MediaQuery.of(context).size.height - 270,
-          width: MediaQuery.of(context).size.width - 40,
+          height: Get.height - 270,
+          width: Get.width - 40,
           child: Stack(
             children: [
               Positioned.fill(
@@ -614,7 +616,7 @@ class _CardsStackShimmerWidgetState extends State<CardsStackShimmerWidget> {
                 bottom: 0,
                 child: Container(
                   height: 80,
-                  width: MediaQuery.of(context).size.width - 40,
+                  width: Get.width - 40,
                   decoration: ShapeDecoration(
                     color: Colors.white,
                     shape: RoundedRectangleBorder(
@@ -633,11 +635,11 @@ class _CardsStackShimmerWidgetState extends State<CardsStackShimmerWidget> {
                     children: [
                       Heading3Text(
                         'David',
-                        color: AppColorConstants.grayscale900,
+                        color: AppColorConstants.mainTextColor,
                       ),
                       Heading5Text(
                         '101 Km',
-                        color: AppColorConstants.grayscale500,
+                        color: AppColorConstants.subHeadingTextColor,
                       ),
                     ],
                   ).setPadding(left: 20),
@@ -694,7 +696,7 @@ class ShimmerMatchedList extends StatelessWidget {
           return Container(
                   color: AppColorConstants.cardColor,
                   height: 210,
-                  width: (MediaQuery.of(context).size.width - 75) / 2)
+                  width: (Get.width - 75) / 2)
               .round(10);
         }).addShimmer();
   }

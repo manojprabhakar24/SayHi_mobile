@@ -246,10 +246,10 @@ class AppUtil {
                     }),
                     BodyLargeText(
                       okString,
-                      color: AppColorConstants.grayscale100,
+                      color: AppColorConstants.themeColor,
                     )
                         .makeChip(
-                            backGroundColor: AppColorConstants.grayscale900)
+                            backGroundColor: AppColorConstants.mainTextColor)
                         .ripple(() {
                       Get.back(closeOverlays: true);
                       okHandler();
@@ -332,10 +332,10 @@ class AppUtil {
                   children: [
                     BodyLargeText(
                       acceptString,
-                      color: AppColorConstants.grayscale100,
+                      color: AppColorConstants.subHeadingTextColor,
                     )
                         .makeChip(
-                            backGroundColor: AppColorConstants.grayscale900)
+                            backGroundColor: AppColorConstants.mainTextColor)
                         .ripple(() {
                       Get.back(closeOverlays: true);
                       okHandler();

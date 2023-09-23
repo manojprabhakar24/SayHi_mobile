@@ -15,7 +15,7 @@ class _SupportRequestViewState extends State<SupportRequestView> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return AppScaffold(
       backgroundColor: AppColorConstants.backgroundColor,
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -33,18 +33,18 @@ class _SupportRequestViewState extends State<SupportRequestView> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.02,
+                    height: Get.height * 0.02,
                   ),
                   const BodyLargeText('Your Message', weight: FontWeight.bold),
                   SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.015,
+                    height: Get.height * 0.015,
                   ),
                   BodyLargeText(
                     item.requestMessage ?? '',
                     weight: TextWeight.regular,
                   ),
                   SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.1,
+                    height: Get.height * 0.1,
                   ),
                   if (item.replyMessage != null)
                     const BodyLargeText(
@@ -52,7 +52,7 @@ class _SupportRequestViewState extends State<SupportRequestView> {
                       weight: FontWeight.bold,
                     ),
                   SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.015,
+                    height: Get.height * 0.015,
                   ),
                   BodyLargeText(
                     item.replyMessage ?? '',

@@ -1,9 +1,10 @@
+import 'package:foap/helper/enum_linking.dart';
 import 'package:foap/helper/imports/common_import.dart';
 
 import '../model/payment_model.dart';
 
 class TransactionTile extends StatelessWidget {
-  final PaymentModel model;
+  final TransactionModel model;
 
   const TransactionTile({Key? key, required this.model}) : super(key: key);
 
@@ -28,7 +29,7 @@ class TransactionTile extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   BodyLargeText(
-                    withdrawalString.tr,
+                    paymentTypeStringFromId(model.paymentType),
                     color: AppColorConstants.themeColor,
                   ),
                   const SizedBox(height: 5),
@@ -43,7 +44,9 @@ class TransactionTile extends StatelessWidget {
                 children: [
                   BodyLargeText('\$${model.amount}',
                           weight: TextWeight.bold,
-                          color: AppColorConstants.themeColor)
+                          color: model.transactionType == TransactionType.credit
+                              ? AppColorConstants.red
+                              : AppColorConstants.green)
                       .bP4,
                   BodyMediumText(
                     model.status == 1

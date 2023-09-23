@@ -3,7 +3,7 @@ import 'package:foap/helper/imports/common_import.dart';
 import 'package:foap/model/post_model.dart';
 import 'package:foap/model/post_search_query.dart';
 import 'package:get/get.dart';
-import '../../../../apiHandler/apis/post_api.dart';
+import '../../../../api_handler/apis/post_api.dart';
 import 'package:foap/helper/list_extension.dart';
 
 class ReelsController extends GetxController {

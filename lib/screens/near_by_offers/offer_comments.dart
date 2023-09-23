@@ -97,12 +97,12 @@ class OfferCommentsScreenState extends State<OfferCommentsScreen> {
                   hintText: writeCommentString.tr,
                   hintStyle: TextStyle(
                       fontSize: FontSizes.b2,
-                      color: AppColorConstants.grayscale700),
+                      color: AppColorConstants.mainTextColor),
                 ),
                 textInputAction: TextInputAction.send,
                 style: TextStyle(
                     fontSize: FontSizes.b2,
-                    color: AppColorConstants.grayscale900),
+                    color: AppColorConstants.mainTextColor),
                 onSubmitted: (_) {
                   addNewMessage();
                 },
@@ -119,7 +119,7 @@ class OfferCommentsScreenState extends State<OfferCommentsScreen> {
           Container(
             width: 45,
             height: 45,
-            color: AppColorConstants.grayscale900,
+            color: AppColorConstants.mainTextColor,
             child: InkWell(
               onTap: addNewMessage,
               child: Icon(

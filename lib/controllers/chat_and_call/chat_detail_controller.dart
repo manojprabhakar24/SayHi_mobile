@@ -2,9 +2,9 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'package:flutter_contacts/contact.dart';
-import 'package:foap/apiHandler/apis/chat_api.dart';
-import 'package:foap/apiHandler/apis/misc_api.dart';
-import 'package:foap/apiHandler/apis/users_api.dart';
+import 'package:foap/api_handler/apis/chat_api.dart';
+import 'package:foap/api_handler/apis/misc_api.dart';
+import 'package:foap/api_handler/apis/users_api.dart';
 import 'package:foap/helper/imports/common_import.dart';
 import 'package:foap/helper/imports/chat_imports.dart';
 import 'package:foap/helper/string_extension.dart';
@@ -1420,7 +1420,7 @@ class ChatDetailController extends GetxController {
   messageUpdateReceived(Map<String, dynamic> updatedData) async {
     int roomId = updatedData['room'];
     int status = updatedData['status'];
-    int messageId = updatedData['id'];
+    int messageId = updatedData['id'] ?? updatedData['messageId'];
     int userId = updatedData['userId'];
 
     if (chatRoom.value?.id == roomId) {
@@ -1434,7 +1434,6 @@ class ChatDetailController extends GetxController {
             .toList();
         if (usersFromNotification.isNotEmpty) {
           usersFromNotification.first.status = status;
-          print('update status $status');
         }
 
         messages.refresh();

@@ -72,7 +72,7 @@ class PromotionReviewScreen extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
                         AppThemeButton(
-                            text: makePayment.tr,
+                            text: makePaymentString.tr,
                             onPress: () {
                               //Create post promotion api
                               _promotionController.createPostPromotionApi();
@@ -96,7 +96,7 @@ class PromotionReviewScreen extends StatelessWidget {
             : BodyMediumText(
                 subTitle,
                 weight: FontWeight.normal,
-                color: AppColorConstants.grayscale600,
+                color: AppColorConstants.subHeadingTextColor,
               ).tP4
       ],
     ).vP16;
@@ -114,7 +114,7 @@ class PromotionReviewScreen extends StatelessWidget {
         BodyMediumText(
           subTitle,
           weight: FontWeight.normal,
-          color: AppColorConstants.grayscale600,
+          color: AppColorConstants.subHeadingTextColor,
         )
       ],
     ).vP16;

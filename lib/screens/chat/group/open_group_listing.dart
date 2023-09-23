@@ -43,7 +43,7 @@ class OpenGroupListing extends StatelessWidget {
                     crossAxisSpacing: 10,
                     childAspectRatio: 0.8),
                 controller: _controller,
-                physics: const NeverScrollableScrollPhysics(),
+                // physics: const NeverScrollableScrollPhysics(),
                 padding: EdgeInsets.only(
                     left: DesignConstants.horizontalPadding,
                     right: DesignConstants.horizontalPadding,

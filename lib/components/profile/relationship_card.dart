@@ -16,7 +16,7 @@ class RelationshipCard extends StatelessWidget {
     List outputList = relationshipController.relationshipNames
         .where((o) => o.id == id)
         .toList();
-    return outputList.isNotEmpty ? outputList[0].name : '';
+    return outputList.isNotEmpty ? outputList[0].userName : '';
   }
 
   @override

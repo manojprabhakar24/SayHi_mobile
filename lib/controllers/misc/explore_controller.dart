@@ -1,4 +1,4 @@
-import 'package:foap/apiHandler/apis/misc_api.dart';
+import 'package:foap/api_handler/apis/misc_api.dart';
 import 'package:foap/controllers/misc/users_controller.dart';
 import 'package:foap/controllers/post/post_controller.dart';
 import 'package:get/get.dart';

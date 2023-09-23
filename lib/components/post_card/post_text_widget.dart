@@ -1,5 +1,4 @@
 import 'package:flutter/gestures.dart';
-
 import '../../controllers/post/post_controller.dart';
 import '../../helper/imports/common_import.dart';
 import '../../model/post_model.dart';
@@ -56,7 +55,7 @@ class RichTextPostTitle extends StatelessWidget {
                         : TextSpan(
                             text: '$text ',
                             style: TextStyle(
-                                color: AppColorConstants.grayscale900,
+                                color: AppColorConstants.mainTextColor,
                                 fontSize: FontSizes.b3,
                                 fontWeight: FontWeight.w400))
             ])),
@@ -72,7 +71,9 @@ class RichTextPostTitle extends StatelessWidget {
       query.hashTag = text.replaceAll('#', '');
       postController.setPostSearchQuery(query: query, callback: () {});
 
-      Get.to(() => const Posts());
+      Get.to(() => Posts(
+            title: text,
+          ));
       // _postController.getPosts();
     } else {
       String userTag = text.replaceAll('@', '');

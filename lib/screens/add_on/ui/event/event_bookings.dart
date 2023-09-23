@@ -21,7 +21,7 @@ class _EventBookingScreenState extends State<EventBookingScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return AppScaffold(
         backgroundColor: AppColorConstants.backgroundColor,
         body: Column(children: [
           backNavigationBar(
@@ -81,7 +81,7 @@ class _EventBookingScreenState extends State<EventBookingScreen> {
 
   Widget segmentView() {
     return HorizontalSegmentBar(
-        width: MediaQuery.of(context).size.width,
+        width: Get.width,
         hideHighlightIndicator: false,
         onSegmentChange: (segment) {
           _eventBookingsController.changeSegment(segment);

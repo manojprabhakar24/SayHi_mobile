@@ -19,7 +19,7 @@ class _GroupChatRoomDetailState extends State<GroupChatRoomDetail> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return AppScaffold(
         backgroundColor: AppColorConstants.backgroundColor,
         body: Column(
           children: [
@@ -46,7 +46,6 @@ class _GroupChatRoomDetailState extends State<GroupChatRoomDetail> {
                 )
               ],
             ).hp(DesignConstants.horizontalPadding),
-            divider().vP8,
             Expanded(
               child: ListView(
                 padding: EdgeInsets.zero,
