@@ -1,7 +1,6 @@
 import 'package:foap/helper/imports/common_import.dart';
 import 'package:foap/helper/string_extension.dart';
 import 'package:foap/screens/add_on/controller/dating/dating_controller.dart';
-import 'package:get/get.dart';
 
 class DatingCard extends StatefulWidget {
   const DatingCard({Key? key}) : super(key: key);
@@ -449,7 +448,7 @@ class ProfileCard extends StatelessWidget {
               width: Get.width - 40,
               decoration: ShapeDecoration(
                 color: AppColorConstants.cardColor.darken(),
-                shape: RoundedRectangleBorder(
+                shape: const RoundedRectangleBorder(
                     // borderRadius: BorderRadius.circular(10),
                     ),
                 shadows: <BoxShadow>[

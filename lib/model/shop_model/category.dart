@@ -11,9 +11,9 @@ class ShopCategoryModel {
       required this.subCategories});
 
   factory ShopCategoryModel.fromJson(Map<String, dynamic> json) => ShopCategoryModel(
-        id: json["id"] == null ? null : json["id"],
-        name: json["name"] == null ? null : json["name"],
-        picture: json["imageUrl"] == null ? null : json["imageUrl"],
+        id: json["id"],
+        name: json["name"],
+        picture: json["imageUrl"],
         subCategories: json["subCategory"] == null
             ? []
             : (json["subCategory"] as List<dynamic>)

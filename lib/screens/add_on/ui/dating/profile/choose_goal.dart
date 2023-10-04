@@ -1,5 +1,4 @@
 import 'package:foap/screens/add_on/ui/dating/profile/what_you_hope.dart';
-import 'package:get/get.dart';
 import 'package:foap/helper/imports/common_import.dart';
 
 class ChooseGoal extends StatefulWidget {

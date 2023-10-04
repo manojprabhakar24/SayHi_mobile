@@ -64,7 +64,7 @@ class _ChooseProfileCategoryState extends State<ChooseProfileCategory> {
                         BodyLargeText(
                           category.name,
                         ),
-                        const ThemeIconWidget(ThemeIcon.nextArrow)
+                        ThemeIconWidget(ThemeIcon.nextArrow)
                       ],
                     ).ripple(() {
                       Get.to(() => FindRandomUser(

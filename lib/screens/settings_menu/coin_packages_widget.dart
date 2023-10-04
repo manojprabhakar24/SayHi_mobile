@@ -23,8 +23,6 @@ class _CoinPackagesWidgetState extends State<CoinPackagesWidget> {
       child: GetBuilder<SubscriptionPackageController>(
           init: packageController,
           builder: (ctx) {
-            print(
-                'packageController.packages ${packageController.packages.length}');
             return ListView.separated(
                 padding: const EdgeInsets.only(top: 20, bottom: 70),
                 itemBuilder: (ctx, index) {

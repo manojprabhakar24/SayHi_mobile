@@ -26,7 +26,7 @@ class EventDetailController extends GetxController {
           event.value = result;
           isLoading.value = false;
 
-          List<EventTicketType> ticketTypes = event.value!.tickets;
+          List<EventTicketType> ticketTypes = event.value!.ticketType;
           ticketTypes.sort((a, b) => a.price.compareTo(b.price));
 
           if (!event.value!.isFree) {

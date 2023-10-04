@@ -8,12 +8,12 @@ class AdvertisementCard extends StatefulWidget {
   final Advertisement advertisement;
   final VoidCallback pressed;
 
-  AdvertisementCard(
+  const AdvertisementCard(
       {Key? key, required this.advertisement, required this.pressed})
       : super(key: key);
 
   @override
-  _AdvertisementCardState createState() => _AdvertisementCardState();
+  State<AdvertisementCard> createState() => _AdvertisementCardState();
 }
 
 class _AdvertisementCardState extends State<AdvertisementCard> {
@@ -21,7 +21,7 @@ class _AdvertisementCardState extends State<AdvertisementCard> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () => widget.pressed(),
-      child: Container(
+      child: SizedBox(
           width: double.infinity,
           child: Stack(
             children: [
@@ -30,11 +30,11 @@ class _AdvertisementCardState extends State<AdvertisementCard> {
                   imageUrl: widget.advertisement.image,
                   fit: BoxFit.cover,
                   placeholder: (context, url) => AppUtil.addProgressIndicator(),
-                  errorWidget: (context, url, error) => Icon(Icons.error),
+                  errorWidget: (context, url, error) => const Icon(Icons.error),
                 ),
               ),
               widget.advertisement.isVideoAd() == true
-                  ? Container(
+                  ? const SizedBox(
                       height: double.infinity,
                       width: double.infinity,
                       child: Icon(Icons.play_circle_fill,

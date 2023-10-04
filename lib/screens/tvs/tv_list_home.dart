@@ -1,6 +1,5 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:foap/helper/imports/common_import.dart';
-import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import '../../controllers/misc/rating_controller.dart';
 import '../../model/category_model.dart';
@@ -199,7 +198,7 @@ class _TvListHomeState extends State<TvListHome> {
           Heading6Text(model.name, weight: TextWeight.medium)
               .setPadding(top: 20, bottom: 8, left: DesignConstants.horizontalPadding, right: 0),
           const Spacer(),
-          const ThemeIconWidget(
+          ThemeIconWidget(
             ThemeIcon.nextArrow,
             size: 15,
           ).rP16.ripple(() {

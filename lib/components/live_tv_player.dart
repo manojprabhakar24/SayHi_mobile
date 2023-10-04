@@ -208,7 +208,7 @@ class _SocialifiedVideoPlayerState extends State<SocialifiedVideoPlayer> {
       videoPlayerController!.pause();
     }
 
-    videoPlayerController = VideoPlayerController.network(url);
+    videoPlayerController = VideoPlayerController.networkUrl(Uri.parse(url));
 
     initializeVideoPlayerFuture = videoPlayerController!.initialize().then((_) {
       setState(() {});

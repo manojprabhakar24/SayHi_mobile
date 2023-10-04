@@ -8,6 +8,7 @@ import '../../controllers/post/post_gift_controller.dart';
 import '../../components/user_card.dart';
 import '../../helper/localization_strings.dart';
 
+//ignore: must_be_immutable
 class ReceivedGiftsList extends StatelessWidget {
   int postId;
   final PostGiftController _postGiftController = Get.find();

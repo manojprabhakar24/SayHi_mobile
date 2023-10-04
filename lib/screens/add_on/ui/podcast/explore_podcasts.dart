@@ -1,15 +1,10 @@
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:foap/helper/imports/common_import.dart';
 import 'package:foap/helper/imports/event_imports.dart';
-import 'package:foap/screens/add_on/ui/podcast/host_list.dart';
-import 'package:foap/screens/add_on/ui/podcast/podcast_detail.dart';
-import 'package:foap/screens/add_on/ui/podcast/podcast_host_detail.dart';
 import 'package:foap/screens/add_on/ui/podcast/podcast_list.dart';
 import '../../../../components/category_slider.dart';
 import '../../../../components/paging_scrollview.dart';
 import '../../../../components/search_bar.dart';
 import '../../../../controllers/podcast/podcast_streaming_controller.dart';
-import '../../model/podcast_banner_model.dart';
 
 class ExplorePodcasts extends StatefulWidget {
   final bool addBackBtn;

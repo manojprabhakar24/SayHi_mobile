@@ -1,7 +1,8 @@
 import 'dart:io';
+import 'package:flutter_video_info/flutter_video_info.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:video_thumbnail/video_thumbnail.dart';
-import '../../components/giphy/giphy_get.dart';
+import 'package:giphy_get/giphy_get.dart';
 import '../../helper/imports/common_import.dart';
 import '../../util/constant_util.dart';
 import '../chat/drawing_screen.dart';
@@ -160,7 +161,7 @@ class PostOptionsPopup extends StatelessWidget {
         context: Get.context!,
         // isDismissible: false,
         isScrollControlled: true,
-        enableDrag: false,
+        // enableDrag: false,
         builder: (context) => FractionallySizedBox(
             heightFactor: 0.9,
             child: DrawingScreen(
@@ -206,14 +207,19 @@ class PostOptionsPopup extends StatelessWidget {
   convertToMedias(
       {required List<XFile> files, required GalleryMediaType mediaType}) async {
     List<Media> medias = [];
-    for (XFile imageFile in files) {
+    for (XFile mediaFile in files) {
       Media media = Media();
       media.mediaType = mediaType;
-      File file = File(imageFile.path);
+      File file = File(mediaFile.path);
       media.file = file;
+
       if (mediaType == GalleryMediaType.video) {
+        final videoInfo = await FlutterVideoInfo().getVideoInfo(mediaFile.path);
+        media.size =
+            Size(videoInfo!.width!.toDouble(), videoInfo.height!.toDouble());
+
         media.thumbnail = await VideoThumbnail.thumbnailData(
-          video: imageFile.path,
+          video: mediaFile.path,
           imageFormat: ImageFormat.JPEG,
           maxWidth: 500,
           // specify the width of the thumbnail, let the height auto-scaled to keep the source aspect ratio

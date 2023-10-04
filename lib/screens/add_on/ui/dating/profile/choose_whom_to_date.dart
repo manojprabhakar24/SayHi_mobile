@@ -1,4 +1,3 @@
-import 'package:get/get.dart';
 import 'package:foap/helper/imports/common_import.dart';
 import 'add_personal_info.dart';
 
@@ -26,7 +25,6 @@ class _ChooseWhomToDateState extends State<ChooseWhomToDate> {
           children: [
             Heading3Text(
               whomToDateString.tr,
-
             ).setPadding(top: 100),
             Heading4Text(
               youCanChooseMoreThanOneAnswerString.tr,

@@ -1,6 +1,5 @@
 import 'dart:io';
 import 'package:foap/helper/imports/common_import.dart';
-import 'package:get/get.dart';
 import 'package:foap/helper/imports/highlights_imports.dart';
 import 'package:image_picker/image_picker.dart';
 

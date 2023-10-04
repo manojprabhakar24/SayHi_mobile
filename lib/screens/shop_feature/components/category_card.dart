@@ -4,6 +4,7 @@ import 'package:foap/components/custom_texts.dart';
 import 'package:foap/helper/extension.dart';
 import 'package:foap/model/shop_model/category.dart';
 
+//ignore: must_be_immutable
 class CategoryCard extends StatelessWidget {
   ShopCategoryModel category;
   VoidCallback? callback;

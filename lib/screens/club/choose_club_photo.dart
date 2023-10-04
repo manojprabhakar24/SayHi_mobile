@@ -1,5 +1,4 @@
 import 'package:foap/helper/imports/common_import.dart';
-import 'package:get/get.dart';
 import 'package:foap/helper/imports/club_imports.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -61,7 +60,7 @@ class ChooseClubCoverPhotoState extends State<ChooseClubCoverPhoto> {
                     _createClubsController.imageFile.value == null
                         ? widget.club.image == null
                             ? Container(
-                                child: const ThemeIconWidget(
+                                child: ThemeIconWidget(
                                   ThemeIcon.gallery,
                                   size: 100,
                                 ).round(5),

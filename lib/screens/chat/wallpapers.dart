@@ -79,7 +79,7 @@ class _WallpaperForChatBackgroundState
                               height: double.infinity,
                               width: double.infinity,
                               color: Colors.black38,
-                              child: const ThemeIconWidget(
+                              child: ThemeIconWidget(
                                 ThemeIcon.checkMark,
                                 size: 50,
                                 color: Colors.white,

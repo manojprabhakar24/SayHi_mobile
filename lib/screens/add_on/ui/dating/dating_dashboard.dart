@@ -1,5 +1,4 @@
 import 'package:foap/helper/imports/common_import.dart';
-import 'package:get/get.dart';
 import 'dating_card.dart';
 import 'like_list.dart';
 import 'matched_list.dart';

@@ -1,4 +1,3 @@
-import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:foap/components/payment_method_tile.dart';
 import 'package:foap/controllers/profile/profile_controller.dart';
 import 'package:foap/helper/imports/common_import.dart';
@@ -204,65 +203,36 @@ class _CheckoutState extends State<Checkout> {
               const SizedBox(
                 height: 20,
               ),
+
+              // Obx(() => _checkoutController.googlePaySupported.value == true
+              //     ? PaymentMethodTile(
+              //         text: googlePayString.tr,
+              //         icon: "assets/google-pay.png",
+              //         price: '\$${_checkoutController.balanceToPay.value}',
+              //         isSelected:
+              //             _checkoutController.selectedPaymentGateway.value ==
+              //                 PaymentGateway.googlePay,
+              //         press: () {
+              //           _checkoutController
+              //               .selectPaymentGateway(PaymentGateway.googlePay);
+              //           checkout();
+              //         },
+              //       )
+              //     : Container()),
               // PaymentMethodTile(
-              //   text: creditCard,
-              //   icon: "assets/credit-card.png",
+              //   text: paypalString.tr,
+              //   icon: "assets/paypal.png",
               //   price: '\$${_checkoutController.balanceToPay.value}',
               //   isSelected: _checkoutController.selectedPaymentGateway.value ==
-              //       PaymentGateway.creditCard,
+              //       PaymentGateway.paypal,
               //   press: () {
+              //     log('PaymentMethodTile paypal');
+              //
               //     _checkoutController
-              //         .selectPaymentGateway(PaymentGateway.creditCard);
-              //     // Get.to(() => NewCreditCardPayment(booking: booking));
+              //         .selectPaymentGateway(PaymentGateway.paypal);
+              //     checkout();
               //   },
               // ),
-              if (Stripe.instance.isApplePaySupported.value)
-                PaymentMethodTile(
-                  text: applePayString.tr,
-                  icon: _settingsController.darkMode.value
-                      ? "assets/apple_pay.png"
-                      : "assets/apple_pay_light.png",
-                  price: '\$${_checkoutController.balanceToPay.value}',
-                  isSelected:
-                      _checkoutController.selectedPaymentGateway.value ==
-                          PaymentGateway.applePay,
-                  press: () {
-                    // _checkoutController.applePay();
-                    _checkoutController
-                        .selectPaymentGateway(PaymentGateway.applePay);
-                    checkout();
-                  },
-                ),
-
-              Obx(() => _checkoutController.googlePaySupported.value == true
-                  ? PaymentMethodTile(
-                      text: googlePayString.tr,
-                      icon: "assets/google-pay.png",
-                      price: '\$${_checkoutController.balanceToPay.value}',
-                      isSelected:
-                          _checkoutController.selectedPaymentGateway.value ==
-                              PaymentGateway.googlePay,
-                      press: () {
-                        // _checkoutController.applePay();
-                        _checkoutController
-                            .selectPaymentGateway(PaymentGateway.googlePay);
-                        checkout();
-                      },
-                    )
-                  : Container()),
-              PaymentMethodTile(
-                text: paypalString.tr,
-                icon: "assets/paypal.png",
-                price: '\$${_checkoutController.balanceToPay.value}',
-                isSelected: _checkoutController.selectedPaymentGateway.value ==
-                    PaymentGateway.paypal,
-                press: () {
-                  // _checkoutController.launchBrainTree();
-                  _checkoutController
-                      .selectPaymentGateway(PaymentGateway.paypal);
-                  checkout();
-                },
-              ),
               PaymentMethodTile(
                 text: stripeString.tr,
                 icon: "assets/stripe.png",
@@ -270,6 +240,7 @@ class _CheckoutState extends State<Checkout> {
                 isSelected: _checkoutController.selectedPaymentGateway.value ==
                     PaymentGateway.stripe,
                 press: () {
+
                   // _checkoutController.launchRazorpayPayment();
                   _checkoutController
                       .selectPaymentGateway(PaymentGateway.stripe);
@@ -283,9 +254,9 @@ class _CheckoutState extends State<Checkout> {
                 isSelected: _checkoutController.selectedPaymentGateway.value ==
                     PaymentGateway.razorpay,
                 press: () {
-                  _checkoutController
-                      .selectPaymentGateway(PaymentGateway.razorpay);
-                  checkout();
+                  // _checkoutController
+                  //     .selectPaymentGateway(PaymentGateway.razorpay);
+                  // checkout();
                 },
               ),
               // PaymentMethodTile(
@@ -397,7 +368,7 @@ class _CheckoutState extends State<Checkout> {
             height: 40,
           ),
           Heading3Text(
-            bookingConfirmedString.tr,
+            transactionCompletedString.tr,
             weight: TextWeight.semiBold,
             textAlign: TextAlign.center,
           ),

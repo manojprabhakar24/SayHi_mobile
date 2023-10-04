@@ -4,7 +4,7 @@ class PollsModel {
   int? totalVoteCount;
   int? isVote;
 
-  List<PollOption>? pollOptions;
+  List<SayHiPollOption>? pollOptions;
 
   PollsModel(
       {this.id,
@@ -20,9 +20,9 @@ class PollsModel {
     isVote = json['is_vote'];
 
     if (json['pollOptions'] != null) {
-      pollOptions = <PollOption>[];
+      pollOptions = <SayHiPollOption>[];
       json['pollOptions'].forEach((v) {
-        pollOptions!.add(PollOption.fromJson(v));
+        pollOptions!.add(SayHiPollOption.fromJson(v));
       });
     }
   }
@@ -41,14 +41,14 @@ class PollsModel {
   }
 }
 
-class PollOption {
+class SayHiPollOption {
   int? id;
   String? title;
   int? totalOptionVoteCount;
 
-  PollOption({this.id, this.title, this.totalOptionVoteCount});
+  SayHiPollOption({this.id, this.title, this.totalOptionVoteCount});
 
-  PollOption.fromJson(Map<String, dynamic> json) {
+  SayHiPollOption.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     title = json['title'];
     totalOptionVoteCount = json['total_option_vote_count'];

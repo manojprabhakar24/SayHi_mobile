@@ -1,10 +1,8 @@
 import 'package:foap/screens/fund_raising/explore_campaigns.dart';
-
 import '../../components/group_avatars/group_avatar1.dart';
 import '../../controllers/fund_raising/fund_raising_controller.dart';
 import '../../helper/imports/common_import.dart';
 import '../../model/category_model.dart';
-import 'fund_raising_campaigns_list.dart';
 
 class FundRaisingCategories extends StatelessWidget {
   final FundRaisingController _fundRaisingController = Get.find();

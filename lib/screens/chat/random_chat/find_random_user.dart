@@ -1,6 +1,5 @@
 import 'package:foap/helper/imports/chat_imports.dart';
 import 'package:foap/helper/imports/common_import.dart';
-import 'package:get/get.dart';
 import 'package:ripple_wave/ripple_wave.dart';
 
 class FindRandomUser extends StatefulWidget {
@@ -122,7 +121,7 @@ class _FindRandomUserState extends State<FindRandomUser> {
         Container(
           child: Column(
             children: [
-              const ThemeIconWidget(
+              ThemeIconWidget(
                 ThemeIcon.mobile,
                 size: 20,
               ),
@@ -144,7 +143,7 @@ class _FindRandomUserState extends State<FindRandomUser> {
         Container(
           child: Column(
             children: [
-              const ThemeIconWidget(
+              ThemeIconWidget(
                 ThemeIcon.videoCamera,
                 size: 20,
               ),

@@ -1,7 +1,4 @@
 import 'package:foap/helper/imports/common_import.dart';
-import 'package:foap/screens/post/view_post_insight.dart';
-import 'package:get/get.dart';
-
 import '../../components/post_card/post_card.dart';
 import '../../controllers/post/single_post_detail_controller.dart';
 

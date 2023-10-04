@@ -18,7 +18,7 @@ class UsersList extends StatelessWidget {
       if (scrollController.position.maxScrollExtent ==
           scrollController.position.pixels) {
         if (!_usersController.accountsIsLoading.value) {
-          _usersController.loadUsers();
+          _usersController.loadUsers((){});
         }
       }
     });

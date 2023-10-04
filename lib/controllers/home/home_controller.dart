@@ -34,7 +34,7 @@ class HomeController extends GetxController {
   RxList<BannerAd> bannerAds = <BannerAd>[].obs;
 
   RxInt currentVisibleVideoId = 0.obs;
-  Map<int, double> _mediaVisibilityInfo = {};
+  final Map<int, double> _mediaVisibilityInfo = {};
   PostSearchQuery postSearchQuery = PostSearchQuery();
 
   RxBool isRefreshingPosts = false.obs;
@@ -94,7 +94,6 @@ class HomeController extends GetxController {
           subHeading: highlightsString.tr,
           linkType: QuickLinkType.highlights));
     }
-
     if (_settingsController.setting.value!.enableLiveUserListing) {
       quickLinks.add(QuickLink(
           icon: 'assets/explore/live_users.png',
@@ -102,7 +101,6 @@ class HomeController extends GetxController {
           subHeading: liveUsersString.tr,
           linkType: QuickLinkType.liveUsers));
     }
-
     if (_settingsController.setting.value!.enableLive) {
       quickLinks.add(QuickLink(
           icon: 'assets/explore/live.png',
@@ -124,7 +122,6 @@ class HomeController extends GetxController {
           subHeading: placeForPeopleOfCommonInterestString.tr,
           linkType: QuickLinkType.clubs));
     }
-
     if (_settingsController.setting.value!.enableStrangerChat) {
       quickLinks.add(QuickLink(
           icon: 'assets/explore/chat_colored.png',
@@ -132,7 +129,6 @@ class HomeController extends GetxController {
           subHeading: haveFunByRandomChattingString.tr,
           linkType: QuickLinkType.randomChat));
     }
-
     if (_settingsController.setting.value!.enableWatchTv) {
       quickLinks.add(QuickLink(
           icon: 'assets/explore/movie.png',
@@ -147,7 +143,6 @@ class HomeController extends GetxController {
           subHeading: podcastString.tr,
           linkType: QuickLinkType.podcast));
     }
-
     if (_settingsController.setting.value!.enableReel) {
       quickLinks.add(QuickLink(
           icon: 'assets/explore/reel.png',
@@ -169,7 +164,6 @@ class HomeController extends GetxController {
           subHeading: datingString.tr,
           linkType: QuickLinkType.dating));
     }
-
     if (_settingsController.setting.value!.enableChatGPT) {
       quickLinks.add(QuickLink(
           icon: 'assets/explore/chatGPT.png',
@@ -177,7 +171,6 @@ class HomeController extends GetxController {
           subHeading: eventString.tr,
           linkType: QuickLinkType.chatGPT));
     }
-
     if (_settingsController.setting.value!.enableFundRaising) {
       quickLinks.add(QuickLink(
           icon: 'assets/explore/donation.png',
@@ -192,7 +185,6 @@ class HomeController extends GetxController {
           subHeading: offers.tr,
           linkType: QuickLinkType.offers));
     }
-
     if (_settingsController.setting.value!.enableShop) {
       quickLinks.add(QuickLink(
           icon: 'assets/explore/shop.png',
@@ -234,7 +226,6 @@ class HomeController extends GetxController {
   void postPollAnswer(int pollId, int questionOptionId) async {
     MiscApi.postPollAnswer(
         pollId: pollId,
-        // pollQuestionId: pollQuestionId,
         questionOptionId: questionOptionId,
         resultCallback: (result) {
           polls.addAll(result);
@@ -323,6 +314,7 @@ class HomeController extends GetxController {
 
   setCurrentVisibleVideo(
       {required PostGallery media, required double visibility}) {
+
     _mediaVisibilityInfo[media.id] = visibility;
     double maxVisibility =
         _mediaVisibilityInfo[_mediaVisibilityInfo.keys.first] ?? 0;
@@ -343,6 +335,7 @@ class HomeController extends GetxController {
     } else if (maxVisibility <= 20) {
       currentVisibleVideoId.value = -1;
     }
+
   }
 
   void reportPost(int postId) {

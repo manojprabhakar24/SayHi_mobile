@@ -42,7 +42,7 @@ class CompletedCompetitionDetailState
       body: Column(
         children: [
           backNavigationBarWithTrailingWidget(
-            widget: const ThemeIconWidget(ThemeIcon.privacyPolicy).ripple(() async {
+            widget: ThemeIconWidget(ThemeIcon.privacyPolicy).ripple(() async {
               if (await canLaunchUrl(Uri.parse(
                   settingsController.setting.value!.disclaimerUrl!))) {
                 await launchUrl(Uri.parse(
@@ -266,7 +266,7 @@ class CompletedCompetitionDetailState
               // staggeredTileBuilder: (int index) => new StaggeredTile.count(1, 1),
             )
           : Container(),
-      const SizedBox(height: 65)
+      const SizedBox(height: 150)
     ]);
   }
 

@@ -87,7 +87,7 @@ class _UploadProductImagesState extends State<UploadProductImages> {
                       height: double.infinity,
                       width: double.infinity,
                       child: index == (widget.adModel!.images).length
-                          ? const Center(
+                          ? Center(
                               child: ThemeIconWidget(
                               ThemeIcon.plus,
                               size: 50,
@@ -104,7 +104,7 @@ class _UploadProductImagesState extends State<UploadProductImages> {
                                     right: 10,
                                     child: Container(
                                       color: AppColorConstants.themeColor,
-                                      child: const ThemeIconWidget(
+                                      child: ThemeIconWidget(
                                         ThemeIcon.delete,
                                         color: Colors.white,
                                       ).p8,
@@ -134,21 +134,20 @@ class _UploadProductImagesState extends State<UploadProductImages> {
                         weight: TextWeight.semiBold,
                       )),
                   ListTile(
-                      leading: const ThemeIconWidget(ThemeIcon.camera),
+                      leading: ThemeIconWidget(ThemeIcon.camera),
                       title: BodyLargeText(cameraString.tr),
                       onTap: () async {
                         Navigator.of(context).pop();
                         final pickedFile =
                             await picker.pickImage(source: ImageSource.camera);
                         if (pickedFile != null) {
-                          widget.adModel!.pickedImages.add(pickedFile);
+                          uploadAdImagesApi();
                           setState(() {});
                         } else {
-                          print('No image selected.');
                         }
                       }),
                   ListTile(
-                      leading: const ThemeIconWidget(ThemeIcon.gallery),
+                      leading: ThemeIconWidget(ThemeIcon.gallery),
                       title: BodyLargeText(galleryString.tr),
                       onTap: () async {
                         Navigator.of(context).pop();
@@ -159,11 +158,10 @@ class _UploadProductImagesState extends State<UploadProductImages> {
                           pickedImage = pickedFile;
                           uploadAdImagesApi();
                         } else {
-                          print('No image selected.');
                         }
                       }),
                   ListTile(
-                      leading: const ThemeIconWidget(ThemeIcon.close),
+                      leading: ThemeIconWidget(ThemeIcon.close),
                       title: BodyLargeText(cancelString.tr),
                       onTap: () => Navigator.of(context).pop()),
                 ],

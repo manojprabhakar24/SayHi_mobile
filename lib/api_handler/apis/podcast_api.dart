@@ -30,7 +30,6 @@ class PodcastApi {
       if (result?.success == true) {}
       var items = result!.data['category'] as List;
 
-      print('podcast categories = ${items.length}');
       resultCallback(List<PodcastCategoryModel>.from(
           items.map((x) => PodcastCategoryModel.fromJson(x))));
     });

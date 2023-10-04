@@ -1,13 +1,10 @@
 import 'dart:async';
-import 'package:flutter/animation.dart';
 import 'package:foap/api_handler/apis/chat_api.dart';
 import 'package:foap/helper/date_extension.dart';
 import 'package:foap/helper/imports/chat_imports.dart';
 import 'package:foap/helper/imports/common_import.dart';
 import 'package:foap/helper/list_extension.dart';
 import 'package:foap/model/data_wrapper.dart';
-import 'package:get/get.dart';
-import '../../helper/localization_strings.dart';
 import '../../manager/db_manager_realm.dart';
 import '../../screens/dashboard/dashboard_screen.dart';
 
@@ -32,19 +29,14 @@ class ChatHistoryController extends GetxController {
     _searchedRooms.value = allRooms;
     update();
 
-    // if (allRooms.isEmpty) {
     ChatApi.getChatRooms(resultCallback: (result) async {
       allRooms = result;
       await getIt<RealmDBManager>().saveRooms(result);
 
-      // allRooms = await getIt<RealmDBManager>().getAllRooms();
       _searchedRooms.value = allRooms;
       groupRooms();
       update();
     });
-    // } else {
-    //   isLoading = false;
-    // }
   }
 
   refreshPublicGroups(VoidCallback callback) {

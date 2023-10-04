@@ -3,7 +3,7 @@ import 'package:foap/model/shop_model/category.dart';
 import 'package:foap/screens/shop_feature/post_ad/enter_ad_detail.dart';
 import 'package:foap/controllers/shop/shop_controller.dart';
 import '../../../model/shop_model/ad_model.dart';
-import '../components/categoryCard.dart';
+import '../components/category_card.dart';
 
 class ChooseListingSubCategory extends StatefulWidget {
   final ShopCategoryModel? category;

@@ -12,7 +12,6 @@ import '../add_on/ui/reel/reels.dart';
 import '../chat/chat_detail.dart';
 import '../dashboard/mentions.dart';
 import '../dashboard/posts.dart';
-import '../highlights/choose_stories.dart';
 import '../highlights/hightlights_viewer.dart';
 import '../live/gifts_list.dart';
 import '../settings_menu/settings_controller.dart';
@@ -51,8 +50,9 @@ class OtherUserProfileState extends State<OtherUserProfile>
 
   initialLoad() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      _profileController.setUser(widget.user!);
-
+      if (widget.user != null) {
+        _profileController.setUser(widget.user!);
+      }
       _profileController.clear();
       loadData();
     });
@@ -96,7 +96,10 @@ class OtherUserProfileState extends State<OtherUserProfile>
                   ),
                   addProfileView(),
                   addHighlightsView().bP25,
-                  contentWidget()
+                  contentWidget(),
+                  const SizedBox(
+                    height: 20,
+                  )
                 ]),
               ),
               Positioned(top: 0, left: 0, right: 0, child: appBar())
@@ -194,7 +197,6 @@ class OtherUserProfileState extends State<OtherUserProfile>
                 height: 250,
                 fit: BoxFit.cover,
                 imageUrl: _profileController.user.value!.coverImage!)
-            // .overlay(Colors.black26)
             .bottomRounded(20)
         : SizedBox(
             width: Get.width,
@@ -359,7 +361,7 @@ class OtherUserProfileState extends State<OtherUserProfile>
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          const SizedBox(
+           SizedBox(
               width: 50,
               child: Align(
                 alignment: Alignment.centerLeft,
@@ -370,7 +372,7 @@ class OtherUserProfileState extends State<OtherUserProfile>
               )).ripple(() {
             Get.back();
           }),
-          const ThemeIconWidget(
+          ThemeIconWidget(
             ThemeIcon.more,
           ).ripple(() {
             openActionPopup();
@@ -420,7 +422,7 @@ class OtherUserProfileState extends State<OtherUserProfile>
     return GetBuilder<HighlightsController>(
         init: _highlightsController,
         builder: (ctx) {
-          return _highlightsController.isLoading == true
+          return _highlightsController.isLoading.value == true
               ? const StoryAndHighlightsShimmer()
               : _highlightsController.highlights.isEmpty
                   ? Container()
@@ -451,14 +453,14 @@ class OtherUserProfileState extends State<OtherUserProfile>
                             5) /
                         2,
                     height: 100,
-                    color: AppColorConstants.themeColor.withOpacity(0.1),
+                    color: AppColorConstants.cardColor,
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         ThemeIconWidget(
                           ThemeIcon.gallery,
                           size: 30,
-                          color: AppColorConstants.themeColor,
+                          // color: AppColorConstants.themeColor,
                         ),
                         const SizedBox(
                           width: 20,
@@ -499,14 +501,14 @@ class OtherUserProfileState extends State<OtherUserProfile>
                             5) /
                         2,
                     height: 100,
-                    color: AppColorConstants.themeColor.withOpacity(0.1),
+                    color: AppColorConstants.cardColor,
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         ThemeIconWidget(
                           ThemeIcon.videoCamera,
                           size: 30,
-                          color: AppColorConstants.themeColor,
+                          // color: AppColorConstants.themeColor,
                         ),
                         const SizedBox(
                           width: 20,
@@ -556,14 +558,14 @@ class OtherUserProfileState extends State<OtherUserProfile>
                             5) /
                         2,
                     height: 100,
-                    color: AppColorConstants.themeColor.withOpacity(0.1),
+                    color: AppColorConstants.cardColor,
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         ThemeIconWidget(
                           ThemeIcon.mention,
                           size: 30,
-                          color: AppColorConstants.themeColor,
+                          // color: AppColorConstants.themeColor,
                         ),
                         const SizedBox(
                           width: 20,
@@ -602,14 +604,14 @@ class OtherUserProfileState extends State<OtherUserProfile>
                             5) /
                         2,
                     height: 100,
-                    color: AppColorConstants.themeColor.withOpacity(0.1),
+                    color: AppColorConstants.cardColor,
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         ThemeIconWidget(
                           ThemeIcon.group,
                           size: 30,
-                          color: AppColorConstants.themeColor,
+                          // color: AppColorConstants.themeColor,
                         ),
                         const SizedBox(
                           width: 20,

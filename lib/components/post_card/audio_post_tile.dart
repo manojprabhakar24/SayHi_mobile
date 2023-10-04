@@ -46,14 +46,14 @@
 //               _playerManager.currentlyPlayingAudio.value?.id ==
 //                   widget.post.gallery.first.id.toString() &&
 //                   _playerManager.isPlaying.value
-//                   ? const ThemeIconWidget(
+//                   ? ThemeIconWidget(
 //                 ThemeIcon.pause,
 //                 // color: Colors.white,
 //                 size: 30,
 //               ).ripple(() {
 //                 pauseAudio();
 //               })
-//                   : const ThemeIconWidget(
+//                   : ThemeIconWidget(
 //                 ThemeIcon.play,
 //                 // color: Colors.white,
 //                 size: 30,

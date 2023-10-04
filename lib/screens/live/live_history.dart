@@ -1,7 +1,5 @@
 import 'package:foap/helper/imports/common_import.dart';
 import 'package:foap/helper/number_extension.dart';
-import 'package:get/get.dart';
-
 import '../../controllers/live/live_history_controller.dart';
 import '../../model/live_model.dart';
 

@@ -2,7 +2,7 @@ import 'package:foap/components/thumbnail_view.dart';
 import 'package:foap/helper/imports/common_import.dart';
 import 'package:foap/helper/imports/story_imports.dart';
 
-double storyCircleSize = 70;
+double storyCircleSize = 50;
 
 class StoryUpdatesBar extends StatelessWidget {
   final List<StoryModel> stories;

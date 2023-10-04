@@ -15,8 +15,6 @@ class TagUsersView extends StatelessWidget {
 
   final RefreshController _usersRefreshController =
       RefreshController(initialRefresh: false);
-  final RefreshController _hashtagRefreshController =
-      RefreshController(initialRefresh: false);
 
   @override
   Widget build(BuildContext context) {
@@ -43,11 +41,10 @@ class TagUsersView extends StatelessWidget {
         refreshController: _usersRefreshController,
         onRefresh: () {},
         onLoading: () {
-          addPostController.searchUsers(
-              text: addPostController.currentUserTag.value,
-              callBackHandler: () {
-                _usersRefreshController.loadComplete();
-              });
+          _usersController
+              .setSearchTextFilter(addPostController.currentUserTag.value, () {
+            _usersRefreshController.loadComplete();
+          });
         },
         enablePullUp: true,
         enablePullDown: false));

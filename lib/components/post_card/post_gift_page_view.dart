@@ -79,7 +79,7 @@ class _PostGiftPageViewState extends State<PostGiftPageView> {
                           currentView = 1;
                         });
                       })
-                    : const ThemeIconWidget(
+                    : ThemeIconWidget(
                         ThemeIcon.close,
                         size: 20,
                       ).ripple(() {

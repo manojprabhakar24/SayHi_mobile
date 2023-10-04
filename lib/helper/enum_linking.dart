@@ -1,4 +1,3 @@
-import 'package:foap/helper/enum.dart';
 import 'package:foap/helper/imports/common_import.dart';
 
 int postTypeValueFrom(PostType postType) {
@@ -37,8 +36,9 @@ int mediaTypeIdFromMediaType(GalleryMediaType type) {
       return 3;
     case GalleryMediaType.gif:
       return 4;
+    default:
+      return 1;
   }
-  return 1;
 }
 
 int itemViewSourceToId(ItemViewSource source) {

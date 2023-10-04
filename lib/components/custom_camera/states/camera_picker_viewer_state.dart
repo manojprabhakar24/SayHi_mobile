@@ -1,15 +1,11 @@
 // Copyright 2019 The FlutterCandies author. All rights reserved.
 // Use of this source code is governed by an Apache license that can be found
 // in the LICENSE file.
-
 import 'dart:io';
-
 import 'package:flutter/semantics.dart';
 import 'package:foap/helper/imports/common_import.dart';
-import 'package:get/get.dart';
 import 'package:path/path.dart' as path;
 import 'package:video_player/video_player.dart';
-
 import '../constants/constants.dart';
 import '../constants/enums.dart';
 import '../constants/styles.dart';

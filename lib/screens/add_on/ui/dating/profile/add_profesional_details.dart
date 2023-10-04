@@ -1,6 +1,4 @@
-import 'package:foap/manager/socket_manager.dart';
 import 'package:foap/screens/add_on/controller/dating/dating_controller.dart';
-import 'package:foap/screens/dashboard/dashboard_screen.dart';
 import 'package:foap/helper/imports/common_import.dart';
 import '../../../model/preference_model.dart';
 import '../dating_dashboard.dart';
@@ -53,89 +51,97 @@ class AddProfessionalDetailsState extends State<AddProfessionalDetails> {
             title: professionalString.tr,
           ),
           Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Heading2Text(
-                  addProfessionalDetailString.tr,
-                ).vP25,
-                AppTextField(
-                  label: qualificationString.tr,
-                  hintText: 'Master in computer',
-                  controller: qualificationController,
-                ).bP25,
-                AppTextField(
-                  hintText: 'Entrepreneur',
-                  label: occupationString.tr,
-                  controller: occupationController,
-                ).bP25,
-                Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Flexible(
-                        child: AppTextField(
-                          hintText: 'Years',
-                          label: workExperienceString.tr,
-                          controller: experienceYearController,
-                        ).rp(4),
-                      ),
-                      Flexible(
-                        child: AppTextField(
-                          hintText: 'Months',
-                          controller: experienceMonthController,
-                        ).lp(4),
-                      ),
-                    ]),
-                const Spacer(),
-                SizedBox(
-                    height: 50,
-                    width: Get.width - 50,
-                    child: AppThemeButton(
-                        cornerRadius: 25,
-                        text: submitString.tr,
-                        onPress: () {
-                          AddDatingDataModel dataModel = AddDatingDataModel();
-                          if (qualificationController.text.isNotEmpty) {
-                            dataModel.qualification =
-                                qualificationController.text;
-                            _userProfileManager.user.value!.qualification =
-                                dataModel.qualification;
-                          }
-                          if (occupationController.text.isNotEmpty) {
-                            dataModel.occupation = occupationController.text;
-                            _userProfileManager.user.value!.occupation =
-                                dataModel.occupation;
-                          }
-                          if (experienceMonthController.text.isNotEmpty) {
-                            dataModel.experienceMonth =
-                                experienceMonthController.text;
-                            _userProfileManager.user.value!.experienceMonth =
-                                int.parse(dataModel.experienceMonth ?? '0');
-                          }
-                          if (experienceYearController.text.isNotEmpty) {
-                            dataModel.experienceYear =
-                                experienceYearController.text;
-                            _userProfileManager.user.value!.experienceYear =
-                                int.parse(dataModel.experienceYear ?? '0');
-                          }
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Heading3Text(
+                    addProfessionalDetailString.tr,
+                  ).vP25,
+                  AppTextField(
+                    label: qualificationString.tr,
+                    hintText: 'Master in computer',
+                    controller: qualificationController,
+                  ).bP25,
+                  AppTextField(
+                    hintText: 'Entrepreneur',
+                    label: occupationString.tr,
+                    controller: occupationController,
+                  ).bP25,
+                  BodySmallText(
+                    workExperienceString.tr,
+                  ).bP8,
+                  Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Flexible(
+                          child: AppTextField(
+                            hintText: yearString.tr,
+                            controller: experienceYearController,
+                          ).rp(4),
+                        ),
+                        Flexible(
+                          child: AppTextField(
+                            hintText: monthString.tr,
+                            controller: experienceMonthController,
+                          ).lp(4),
+                        ),
+                      ]),
+                  // const Spacer(),
+                  const SizedBox(
+                    height: 25,
+                  ),
+                  SizedBox(
+                      height: 50,
+                      width: Get.width - 50,
+                      child: AppThemeButton(
+                          cornerRadius: 25,
+                          text: submitString.tr,
+                          onPress: () {
+                            AddDatingDataModel dataModel = AddDatingDataModel();
+                            if (qualificationController.text.isNotEmpty) {
+                              dataModel.qualification =
+                                  qualificationController.text;
+                              _userProfileManager.user.value!.qualification =
+                                  dataModel.qualification;
+                            }
+                            if (occupationController.text.isNotEmpty) {
+                              dataModel.occupation = occupationController.text;
+                              _userProfileManager.user.value!.occupation =
+                                  dataModel.occupation;
+                            }
+                            if (experienceMonthController.text.isNotEmpty) {
+                              dataModel.experienceMonth =
+                                  experienceMonthController.text;
+                              _userProfileManager.user.value!.experienceMonth =
+                                  int.parse(dataModel.experienceMonth ?? '0');
+                            }
+                            if (experienceYearController.text.isNotEmpty) {
+                              dataModel.experienceYear =
+                                  experienceYearController.text;
+                              _userProfileManager.user.value!.experienceYear =
+                                  int.parse(dataModel.experienceYear ?? '0');
+                            }
 
-                          if (qualificationController.text.isNotEmpty ||
-                              occupationController.text.isNotEmpty ||
-                              experienceMonthController.text.isNotEmpty ||
-                              experienceYearController.text.isNotEmpty) {
-                            datingController.updateDatingProfile(dataModel, () {
-                              if (widget.isSettingProfile) {
-                                Get.close(7);
-                                Get.to(() => const DatingDashboard());
-                              } else {
-                                Get.back();
-                              }
-                            });
-                          }
-                        })),
-              ],
-            ).hp(DesignConstants.horizontalPadding),
+                            if (qualificationController.text.isNotEmpty ||
+                                occupationController.text.isNotEmpty ||
+                                experienceMonthController.text.isNotEmpty ||
+                                experienceYearController.text.isNotEmpty) {
+                              datingController.updateDatingProfile(dataModel,
+                                  () {
+                                if (widget.isSettingProfile) {
+                                  Get.close(7);
+                                  Get.to(() => const DatingDashboard());
+                                } else {
+                                  Get.back();
+                                }
+                              });
+                            }
+                          })),
+                ],
+              ).hp(DesignConstants.horizontalPadding),
+            ),
           ),
           const SizedBox(
             height: 20,

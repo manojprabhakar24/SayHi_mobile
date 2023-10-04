@@ -24,33 +24,36 @@ class JobCard extends StatelessWidget {
               const SizedBox(
                 width: 10,
               ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  BodyLargeText(
-                    job.postedBy!.name!,
-                    weight: TextWeight.bold,
-                  ),
-                  const SizedBox(
-                    height: 8,
-                  ),
-                  BodyLargeText(
-                    job.title,
-                    weight: TextWeight.semiBold,
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  BodyMediumText(
-                    '\$${job.minSalary} - \$${job.maxSalary}',
-                    weight: TextWeight.bold,
-                    maxLines: 4,
-                    color: AppColorConstants.themeColor,
-                  ),
-                ],
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    BodyLargeText(
+                      job.postedBy!.name!,
+                      weight: TextWeight.bold,
+                    ),
+                    const SizedBox(
+                      height: 8,
+                    ),
+                    BodyMediumText(
+                      job.title,
+                      weight: TextWeight.regular,
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+
+                    BodyMediumText(
+                      '\$${job.minSalary} - \$${job.maxSalary}',
+                      weight: TextWeight.bold,
+                      maxLines: 4,
+                      color: AppColorConstants.themeColor,
+                    ),
+                  ],
+                ),
               ),
             ],
           ).hP8,

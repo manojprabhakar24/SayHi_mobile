@@ -10,9 +10,11 @@ class SavedPosts extends StatefulWidget {
 }
 
 class _SavedPostsState extends State<SavedPosts> {
+  final SavedPostController _postController = Get.find();
 
   @override
   void initState() {
+    _postController.getPosts(() {});
     super.initState();
   }
 

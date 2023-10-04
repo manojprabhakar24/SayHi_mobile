@@ -96,7 +96,7 @@ class _CheckingLiveFeasibilityState extends State<CheckingLiveFeasibility> {
                           width: 200,
                           color: AppColorConstants.red
                               .withOpacity(0.5),
-                          child: const ThemeIconWidget(
+                          child: ThemeIconWidget(
                             ThemeIcon.camera,
                             size: 100,
                           ),

@@ -22,8 +22,7 @@ class NetworkConstantsUtil {
   static String updatedDeviceToken = 'users/update-token';
   static String register = 'users/register';
   static String checkUserName = 'users/check-username';
-  static String otherUser =
-      'users/{{id}}?expand=isFollowing,isFollower,totalFollowing,totalFollower,totalPost,totalWinnerPost,totalReel,totalClub,totalMention,userLiveDetail,giftSummary,userSetting';
+  static String otherUser = 'users/{{id}}?expand=isFollowing,isFollower,totalFollowing,totalFollower,totalPost,totalWinnerPost,totalReel,totalClub,totalMention,userLiveDetail,giftSummary,userSetting';
 
   static String getMyProfile =
       'users/profile?expand=totalFollowing,totalFollower,totalActivePost,totalReel,totalClub,totalMention,userLiveDetail,giftSummary,userSetting,interest,language';

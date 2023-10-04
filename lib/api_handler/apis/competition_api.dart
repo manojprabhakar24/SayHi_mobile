@@ -1,9 +1,7 @@
 import 'package:foap/api_handler/api_wrapper.dart';
 import 'package:foap/helper/imports/common_import.dart';
-import 'package:get/get.dart';
 import '../../model/api_meta_data.dart';
 import '../../model/competition_model.dart';
-import 'package:foap/components/loader.dart';
 
 class CompetitionApi {
   static getCompetitions(

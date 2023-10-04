@@ -2,7 +2,6 @@ import 'dart:io';
 import 'package:foap/helper/imports/common_import.dart';
 import 'package:foap/helper/imports/chat_imports.dart';
 import 'package:image_picker/image_picker.dart';
-import '../../../components/user_card.dart';
 
 class EnterGroupInfo extends StatefulWidget {
   const EnterGroupInfo({Key? key}) : super(key: key);
@@ -37,7 +36,7 @@ class _EnterGroupInfoState extends State<EnterGroupInfo> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    const ThemeIconWidget(
+                    ThemeIconWidget(
                       ThemeIcon.close,
                       size: 20,
                     ).ripple(() {
@@ -74,7 +73,7 @@ class _EnterGroupInfoState extends State<EnterGroupInfo> {
                           width: 50,
                           color: AppColorConstants.cardColor.darken(),
                           child: enterGroupInfoController.groupImagePath.isEmpty
-                              ? const ThemeIconWidget(
+                              ? ThemeIconWidget(
                                   ThemeIcon.camera,
                                   size: 15,
                                 )

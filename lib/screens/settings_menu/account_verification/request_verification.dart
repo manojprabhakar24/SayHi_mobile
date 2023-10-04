@@ -38,7 +38,7 @@ class _RequestVerificationState extends State<RequestVerification> {
                     children: [
                       backNavigationBarWithTrailingWidget(
                         title: requestVerificationString.tr,
-                        widget: const ThemeIconWidget(ThemeIcon.bookMark)
+                        widget: ThemeIconWidget(ThemeIcon.bookMark)
                             .ripple(() {
                           if (_requestVerificationController
                               .verificationRequests.isNotEmpty) {
@@ -278,7 +278,7 @@ class _RequestVerificationState extends State<RequestVerification> {
                                   child: Container(
                                     color: AppColorConstants.themeColor,
                                     child:
-                                        const ThemeIconWidget(ThemeIcon.delete)
+                                        ThemeIconWidget(ThemeIcon.delete)
                                             .p4,
                                   ).circular.ripple(() {
                                     _requestVerificationController

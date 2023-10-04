@@ -1,5 +1,4 @@
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:foap/controllers/chat_and_call/chat_detail_controller.dart';
 import 'package:foap/controllers/shop/shop_controller.dart';
 import 'package:foap/helper/imports/chat_imports.dart';
 import 'package:foap/helper/imports/common_import.dart';
@@ -18,7 +17,7 @@ class AdDetailScreen extends StatefulWidget {
 
 class AdDetailState extends State<AdDetailScreen> {
   ShopController shopController = Get.find();
-  ChatDetailController _chatDetailController = Get.find();
+  final ChatDetailController _chatDetailController = Get.find();
 
   int _current = 0;
 

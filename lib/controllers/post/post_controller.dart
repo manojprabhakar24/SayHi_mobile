@@ -28,14 +28,18 @@ class PostController extends GetxController {
   clear() {
     totalPages = 100;
     postDataWrapper = DataWrapper();
-    mentionsDataWrapper = DataWrapper();
 
     posts.value = [];
-    mentions.value = [];
 
     clearVideos();
+    clearMentions();
     clearPostLikedByUsers();
     update();
+  }
+
+  clearMentions() {
+    mentions.value = [];
+    mentionsDataWrapper = DataWrapper();
   }
 
   clearVideos() {
@@ -112,7 +116,6 @@ class PostController extends GetxController {
             postDataWrapper.processCompletedWithData(metadata);
 
             callback();
-
             update();
           });
     } else {
@@ -154,13 +157,12 @@ class PostController extends GetxController {
   void getMyMentions() {
     if (mentionsDataWrapper.haveMoreData.value) {
       PostApi.getMentionedPosts(
+          page: mentionsDataWrapper.page,
           userId: mentionedPostSearchQuery!.userId,
           resultCallback: (result, metadata) {
-            mentions.addAll(result.reversed.toList());
+            mentions.addAll(result);
             mentions.unique((e) => e.id);
-
             mentionsDataWrapper.processCompletedWithData(metadata);
-
             update();
           });
     }

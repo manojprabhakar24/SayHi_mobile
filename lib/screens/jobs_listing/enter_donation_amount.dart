@@ -1,9 +1,7 @@
 import 'package:foap/helper/imports/event_imports.dart';
-
 import '../../controllers/fund_raising/fund_raising_controller.dart';
 import '../../helper/imports/common_import.dart';
 import '../../model/fund_raising_campaign.dart';
-import '../checkout/checkout.dart';
 
 class EnterDonationAmount extends StatelessWidget {
   final FundRaisingController fundRaisingController = Get.find();

@@ -1,9 +1,6 @@
-import 'package:foap/api_handler/apis/misc_api.dart';
 import 'package:foap/controllers/misc/users_controller.dart';
 import 'package:foap/controllers/post/post_controller.dart';
 import 'package:get/get.dart';
-
-import '../../model/hash_tag.dart';
 import '../../model/location.dart';
 import '../../model/post_search_query.dart';
 import '../../screens/add_on/controller/event/event_controller.dart';
@@ -53,7 +50,7 @@ class ExploreController extends GetxController {
       PostSearchQuery query = PostSearchQuery();
       query.title = searchText.value;
       _postController.setPostSearchQuery(query: query, callback: () {});
-      _usersController.setSearchTextFilter(searchText.value);
+      _usersController.setSearchTextFilter(searchText.value,(){});
       _miscController.searchHashTags(searchText.value);
       _eventsController.searchEvents(searchText.value);
       _clubsController.setSearchText(searchText.value);

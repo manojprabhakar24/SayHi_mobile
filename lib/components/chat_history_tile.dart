@@ -27,7 +27,7 @@ class ChatHistoryTile extends StatelessWidget {
                           width: 45,
                           child:
                               model.image == null || (model.image ?? '').isEmpty
-                                  ? const ThemeIconWidget(
+                                  ? ThemeIconWidget(
                                       ThemeIcon.group,
                                       color: Colors.white,
                                       size: 35,

@@ -85,13 +85,12 @@ class BattleDetail {
   List<LiveCallHostUser> battleUsers = [];
   BattleStatus battleStatus = BattleStatus.none;
 
-  BattleDetail({
-    required this.id,
-    required this.mainHostId,
-    required this.opponentHostId,
-    required this.timeRemainingInBattle,
-    required this.totalBattleTime
-  });
+  BattleDetail(
+      {required this.id,
+      required this.mainHostId,
+      required this.opponentHostId,
+      required this.timeRemainingInBattle,
+      required this.totalBattleTime});
 
   factory BattleDetail.fromJson(Map<String, dynamic> json) => BattleDetail(
       id: json["id"],
@@ -116,7 +115,6 @@ class BattleDetail {
   }
 
   LiveCallHostUser get mainHost {
-    print('battleUsers ${battleUsers.map((e) => e.isMainHost)}');
     return battleUsers.where((element) => element.isMainHost == true).first;
   }
 
@@ -150,13 +148,14 @@ class BattleDetail {
 
   double percentageOfCoinsFor(LiveCallHostUser host) {
     if (battleUsers.isEmpty) {
-      return 0.5;
+      return 0.46;
     }
     LiveCallHostUser otherHost = battleUsers
         .where((element) => element.userDetail.id != host.userDetail.id)
         .first;
-    if (host.totalCoins == 0 && otherHost.totalCoins == 0) {
-      return 0.5;
+    if ((host.totalCoins == 0 && otherHost.totalCoins == 0) ||
+        host.totalCoins == otherHost.totalCoins) {
+      return 0.46;
     }
 
     return (host.totalCoins / (host.totalCoins + otherHost.totalCoins));

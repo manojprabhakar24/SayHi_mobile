@@ -37,7 +37,7 @@ class InviteUsersToClubState extends State<InviteUsersToClub> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  const ThemeIconWidget(
+                  ThemeIconWidget(
                     ThemeIcon.close,
                     size: 20,
                   ).ripple(() {
@@ -111,7 +111,7 @@ class InviteUsersToClubState extends State<InviteUsersToClub> {
                                     height: 25,
                                     width: 25,
                                     color: AppColorConstants.cardColor,
-                                    child: const ThemeIconWidget(
+                                    child: ThemeIconWidget(
                                       ThemeIcon.close,
                                       size: 20,
                                     )).circular.ripple(() {

@@ -14,7 +14,6 @@ class BusinessList extends StatelessWidget {
     return GetBuilder<NearByOffersController>(
         init: _nearByOffersController,
         builder: (ctx) {
-          print(' _nearByOffersController.businessList ${ _nearByOffersController.businessList.length}');
           return SizedBox(
             height: _nearByOffersController.businessList.length * 270,
             child: ListView.separated(

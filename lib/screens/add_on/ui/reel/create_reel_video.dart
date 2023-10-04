@@ -109,7 +109,7 @@ class _CreateReelScreenState extends State<CreateReelScreen>
                         Container(
                             color: AppColorConstants.themeColor,
                             child:
-                            const ThemeIconWidget(ThemeIcon.close).p4)
+                            ThemeIconWidget(ThemeIcon.close).p4)
                             .circular
                             .ripple(() {
                           Get.back();

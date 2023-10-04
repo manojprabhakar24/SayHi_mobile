@@ -37,7 +37,7 @@ class _ChatHistoryState extends State<ChatHistory> {
         height: 50,
         width: 50,
         color: AppColorConstants.themeColor,
-        child: const ThemeIconWidget(
+        child: ThemeIconWidget(
           ThemeIcon.edit,
           size: 25,
           color: Colors.white,
@@ -56,7 +56,7 @@ class _ChatHistoryState extends State<ChatHistory> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const ThemeIconWidget(
+                      ThemeIconWidget(
                         ThemeIcon.backArrow,
                       ).ripple(() {
                         Get.back();

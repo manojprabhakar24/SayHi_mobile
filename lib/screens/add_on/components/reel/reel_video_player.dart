@@ -164,7 +164,7 @@ class _ReelVideoPlayerState extends State<ReelVideoPlayer> {
                     height: 25,
                     child: Row(
                       children: [
-                        const ThemeIconWidget(
+                        ThemeIconWidget(
                           ThemeIcon.music,
                           size: 15,
                           color: Colors.white,
@@ -186,8 +186,8 @@ class _ReelVideoPlayerState extends State<ReelVideoPlayer> {
                     ).ripple(() {
                       if (widget.reel.audio != null) {
                         Get.to(() => ReelAudioDetail(
-                          audio: widget.reel.audio!,
-                        ));
+                              audio: widget.reel.audio!,
+                            ));
                       }
                     }))
               ],
@@ -199,59 +199,60 @@ class _ReelVideoPlayerState extends State<ReelVideoPlayer> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Obx(() => Column(
-                  children: [
-                    InkWell(
-                        onTap: () {
-                          _reelsController.likeUnlikeReel(
-                              post: widget.reel);
-                          // widget.likeTapHandler();
-                        },
-                        child: ThemeIconWidget(
-                          _reelsController.likedReels
-                              .contains(widget.reel) ||
-                              widget.reel.isLike
-                              ? ThemeIcon.favFilled
-                              : ThemeIcon.fav,
-                          color: _reelsController.likedReels
-                              .contains(widget.reel) ||
-                              widget.reel.isLike
-                              ? AppColorConstants.red
-                              : Colors.white,
-                        )),
-                    const SizedBox(
-                      height: 5,
-                    ),
-                    BodyMediumText(
-                        '${_reelsController.currentViewingReel.value?.totalLike}',
-                        color: Colors.white)
-                    // }),
-                  ],
-                )),
+                      children: [
+                        InkWell(
+                            onTap: () {
+                              _reelsController.likeUnlikeReel(
+                                  post: widget.reel);
+                              // widget.likeTapHandler();
+                            },
+                            child: ThemeIconWidget(
+                              _reelsController.likedReels
+                                          .contains(widget.reel) ||
+                                      widget.reel.isLike
+                                  ? ThemeIcon.favFilled
+                                  : ThemeIcon.fav,
+                              color: _reelsController.likedReels
+                                          .contains(widget.reel) ||
+                                      widget.reel.isLike
+                                  ? AppColorConstants.red
+                                  : Colors.white,
+                            )),
+                        const SizedBox(
+                          height: 5,
+                        ),
+                        BodyMediumText(
+                            '${_reelsController.currentViewingReel.value?.totalLike}',
+                            color: Colors.white)
+                        // }),
+                      ],
+                    )),
                 const SizedBox(
                   height: 20,
                 ),
-                Column(
-                  children: [
-                    const ThemeIconWidget(
-                      ThemeIcon.message,
-                      size: 25,
-                      color: Colors.white,
-                    ),
-                    const SizedBox(
-                      height: 5,
-                    ),
-                    BodyMediumText(
-                      widget.reel.totalComment.formatNumber,
-                      color: Colors.white,
-                    )
-                  ],
-                ).ripple(() {
-                  openComments();
-                }),
+                if (widget.reel.commentsEnabled)
+                  Column(
+                    children: [
+                      ThemeIconWidget(
+                        ThemeIcon.message,
+                        size: 25,
+                        color: Colors.white,
+                      ),
+                      const SizedBox(
+                        height: 5,
+                      ),
+                      BodyMediumText(
+                        widget.reel.totalComment.formatNumber,
+                        color: Colors.white,
+                      )
+                    ],
+                  ).ripple(() {
+                    openComments();
+                  }),
                 const SizedBox(
                   height: 20,
                 ),
-                // const ThemeIconWidget(
+                // ThemeIconWidget(
                 //   ThemeIcon.send,
                 //   size: 20,
                 // ),
@@ -260,9 +261,9 @@ class _ReelVideoPlayerState extends State<ReelVideoPlayer> {
                 // ),
                 if (widget.reel.audio != null)
                   CachedNetworkImage(
-                      height: 25,
-                      width: 25,
-                      imageUrl: widget.reel.audio!.thumbnail)
+                          height: 25,
+                          width: 25,
+                          imageUrl: widget.reel.audio!.thumbnail)
                       .borderWithRadius(value: 1, radius: 5)
                       .ripple(() {
                     if (widget.reel.audio != null) {
@@ -272,7 +273,7 @@ class _ReelVideoPlayerState extends State<ReelVideoPlayer> {
                 const SizedBox(
                   height: 20,
                 ),
-                const ThemeIconWidget(
+                ThemeIconWidget(
                   ThemeIcon.moreVertical,
                   size: 25,
                   color: Colors.white,
@@ -307,8 +308,8 @@ class _ReelVideoPlayerState extends State<ReelVideoPlayer> {
 
   play() {
     videoPlayerController!.play().then((value) => {
-      // videoPlayerController!.addListener(checkVideoProgress)
-    });
+          // videoPlayerController!.addListener(checkVideoProgress)
+        });
   }
 
   openComments() {
@@ -343,85 +344,89 @@ class _ReelVideoPlayerState extends State<ReelVideoPlayer> {
       color: AppColorConstants.cardColor.darken(),
       child: widget.reel.user.isMe
           ? Wrap(
-        children: [
-          // ListTile(
-          //     title: Center(
-          //         child: Heading6Text(
-          //           editPostString.tr,
-          //           weight: TextWeight.semiBold,
-          //         )),
-          //     onTap: () async {
-          //       Get.back();
-          //       Get.to(() => EditPostScreen(post: widget.reel));
-          //     }),
-          // divider(),
-          ListTile(
-              title: Center(
-                  child: Heading6Text(
-                    deleteString.tr,
-                    weight: TextWeight.semiBold,
-                  )),
-              onTap: () async {
-                Get.back();
-                _reelsController.deletePost(
-                  post: widget.reel,
-                );
-              }),
-          divider(),
-          ListTile(
-              title: Center(
-                  child: Heading6Text(
-                    shareString.tr,
-                    weight: TextWeight.semiBold,
-                  )),
-              onTap: () async {
-                Get.back();
-                _reelsController.sharePost(
-                  post: widget.reel,
-                );
-              }),
-          divider(),
-          ListTile(
-              title: Center(
-                  child: BodyLargeText(
-                    cancelString.tr,
-                    weight: TextWeight.semiBold,
-                    color: AppColorConstants.red,
-                  )),
-              onTap: () => Get.back()),
-        ],
-      )
+              children: [
+                // ListTile(
+                //     title: Center(
+                //         child: Heading6Text(
+                //           editPostString.tr,
+                //           weight: TextWeight.semiBold,
+                //         )),
+                //     onTap: () async {
+                //       Get.back();
+                //       Get.to(() => EditPostScreen(post: widget.reel));
+                //     }),
+                // divider(),
+                ListTile(
+                    title: Center(
+                        child: Heading6Text(
+                      deleteString.tr,
+                      weight: TextWeight.semiBold,
+                    )),
+                    onTap: () async {
+                      Get.back();
+                      _reelsController.deletePost(
+                        post: widget.reel,
+                      );
+                    }),
+                divider(),
+                // ListTile(
+                //     title: Center(
+                //         child: Heading6Text(
+                //       shareString.tr,
+                //       weight: TextWeight.semiBold,
+                //     )),
+                //     onTap: () async {
+                //       Get.back();
+                //       _reelsController.sharePost(
+                //         post: widget.reel,
+                //       );
+                //     }),
+                // divider(),
+                ListTile(
+                    title: Center(
+                        child: BodyLargeText(
+                      cancelString.tr,
+                      weight: TextWeight.semiBold,
+                      color: AppColorConstants.red,
+                    )),
+                    onTap: () => Get.back()),
+              ],
+            )
           : Wrap(
-        children: [
-          ListTile(
-              title: Center(
-                  child: Heading6Text(blockUserString.tr,
-                      weight: TextWeight.bold)),
-              onTap: () async {
-                Get.back();
-                AppUtil.showConfirmationAlert(
-                    title: blockString.tr,
-                    subTitle: areYouSureToBlockUserString.tr,
-                    okHandler: () {
-                      _reelsController.blockUser(
-                          userId: widget.reel.user.id, callback: () {});
-                    });
-              }),
-          divider(),
-          ListTile(
-              title: Center(
-                child: Heading6Text(
-                  cancelString.tr,
-                  weight: TextWeight.regular,
-                  color: AppColorConstants.red,
-                ),
-              ),
-              onTap: () => Get.back()),
-          const SizedBox(
-            height: 25,
-          )
-        ],
-      ),
+              children: [
+                ListTile(
+                    title: Center(
+                        child: Heading6Text(blockUserString.tr,
+                            weight: TextWeight.bold)),
+                    onTap: () async {
+                      Get.back();
+                      AppUtil.showNewConfirmationAlert(
+                        title: blockString.tr,
+                        subTitle: areYouSureToBlockUserString.tr,
+                        okHandler: () {
+                          _reelsController.blockUser(
+                              userId: widget.reel.user.id, callback: () {});
+                        },
+                        cancelHandler: () {
+                          Get.back();
+                        },
+                      );
+                    }),
+                divider(),
+                ListTile(
+                    title: Center(
+                      child: Heading6Text(
+                        cancelString.tr,
+                        weight: TextWeight.regular,
+                        color: AppColorConstants.red,
+                      ),
+                    ),
+                    onTap: () => Get.back()),
+                const SizedBox(
+                  height: 25,
+                )
+              ],
+            ),
     ).round(40));
   }
 }

@@ -22,7 +22,6 @@ import '../../model/post_model.dart';
 import '../../util/constant_util.dart';
 import '../../util/shared_prefs.dart';
 import 'agora_call_controller.dart';
-import 'package:path_provider/path_provider.dart';
 
 class ChatDetailController extends GetxController {
   final AgoraCallController agoraCallController = Get.find();

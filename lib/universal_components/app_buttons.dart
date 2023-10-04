@@ -17,7 +17,7 @@ class AppThemeBackButton extends StatelessWidget {
       height: 40,
       width: 40,
       color: AppColorConstants.cardColor,
-      child: const ThemeIconWidget(ThemeIcon.backArrow).lP8,
+      child: ThemeIconWidget(ThemeIcon.backArrow).lP8,
     ).round(10).shadowWithBorder(borderWidth: 0).ripple(() {
       Get.back();
     });
@@ -52,7 +52,7 @@ class AppThemeButton extends StatelessWidget {
     return Container(
       width: width,
       height: height ?? 45,
-      color: backgroundColor ?? AppColorConstants.themeColor,
+      color: backgroundColor ?? AppColorConstants.themeColor.darken(),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [

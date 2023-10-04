@@ -89,7 +89,7 @@ class _PreviewReelsState extends State<PreviewReelsScreen> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const ThemeIconWidget(
+                  ThemeIconWidget(
                     ThemeIcon.backArrow,
                     size: 25,
                   ).circular.ripple(() {

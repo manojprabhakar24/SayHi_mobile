@@ -4,6 +4,7 @@ import 'package:foap/helper/imports/models.dart';
 import 'package:latlng/latlng.dart';
 import 'package:foap/api_handler/api_wrapper.dart';
 import '../../helper/imports/common_import.dart';
+import 'package:foap/model/verification_request_model.dart';
 
 class ProfileApi {
   static getMyProfile({required Function(UserModel) resultCallback}) async {

@@ -14,13 +14,6 @@ class SavedPostController extends GetxController {
     update();
   }
 
-  @override
-  void onInit() {
-    super.onInit();
-    debugPrint("Hello222");
-    refreshData(() {});
-  }
-
   refreshData(VoidCallback callback) {
     clear();
     getPosts(callback);

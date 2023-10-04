@@ -119,6 +119,8 @@ class PostMediaTile extends StatelessWidget {
         // }
       },
       child: Obx(() => VideoPostTile(
+            media: media,
+            aspectRatio: media.width / media.height,
             url: media.filePath,
             isLocalFile: false,
             play: homeController.currentVisibleVideoId.value == media.id,
@@ -336,16 +338,20 @@ class PostContent extends StatelessWidget {
                     onTap: () async {
                       Get.back();
 
-                      AppUtil.showConfirmationAlert(
-                          title: reportString.tr,
-                          subTitle: areYouSureToReportPostString.tr,
-                          okHandler: () {
-                            postCardController.reportPost(
-                                post: model,
-                                callback: () {
-                                  removePostHandler();
-                                });
-                          });
+                      AppUtil.showNewConfirmationAlert(
+                        title: reportString.tr,
+                        subTitle: areYouSureToReportPostString.tr,
+                        okHandler: () {
+                          postCardController.reportPost(
+                              post: model,
+                              callback: () {
+                                removePostHandler();
+                              });
+                        },
+                        cancelHandler: () {
+                          Get.back();
+                        },
+                      );
                     }),
                 divider(),
                 ListTile(
@@ -354,16 +360,20 @@ class PostContent extends StatelessWidget {
                             weight: TextWeight.bold)),
                     onTap: () async {
                       Get.back();
-                      AppUtil.showConfirmationAlert(
-                          title: blockString.tr,
-                          subTitle: areYouSureToBlockUserString.tr,
-                          okHandler: () {
-                            postCardController.blockUser(
-                                userId: model.user.id,
-                                callback: () {
-                                  blockUserHandler();
-                                });
-                          });
+                      AppUtil.showNewConfirmationAlert(
+                        title: blockString.tr,
+                        subTitle: areYouSureToBlockUserString.tr,
+                        okHandler: () {
+                          postCardController.blockUser(
+                              userId: model.user.id,
+                              callback: () {
+                                blockUserHandler();
+                              });
+                        },
+                        cancelHandler: () {
+                          Get.back();
+                        },
+                      );
                     }),
                 divider(),
                 if (!model.isSharePost)
@@ -488,10 +498,11 @@ class PostCardState extends State<PostCard> {
                 ],
               ).hp(DesignConstants.horizontalPadding),
             ),
+
           const SizedBox(
             height: 20,
           ),
-          if (widget.model.postPromotionData != null) sponsoredPostView(),
+          if (widget.model.postPromotionData != null) sponsoredPostView().bP16,
           commentsCountWidget().hp(DesignConstants.horizontalPadding),
           divider(height: 0.8).vP16,
           commentAndLikeWidget().hp(DesignConstants.horizontalPadding),
@@ -511,7 +522,7 @@ class PostCardState extends State<PostCard> {
           color: Colors.white,
           weight: TextWeight.semiBold,
         ),
-        const ThemeIconWidget(ThemeIcon.nextArrow,
+        ThemeIconWidget(ThemeIcon.nextArrow,
             size: 25, color: Colors.white)
       ]).p8.ripple(() {
         widget.model.postPromotionData?.type == GoalType.website
@@ -635,7 +646,7 @@ class PostCardState extends State<PostCard> {
       if (widget.model.commentsEnabled)
         Row(
           children: [
-            const ThemeIconWidget(
+            ThemeIconWidget(
               ThemeIcon.message,
               size: 15,
             ),
@@ -650,7 +661,7 @@ class PostCardState extends State<PostCard> {
 
       Row(
         children: [
-          const ThemeIconWidget(
+          ThemeIconWidget(
             ThemeIcon.share,
             size: 15,
           ),
@@ -672,7 +683,7 @@ class PostCardState extends State<PostCard> {
       if (!widget.model.isMyPost)
         Row(
           children: [
-            const ThemeIconWidget(
+            ThemeIconWidget(
               ThemeIcon.gift,
               size: 15,
             ),

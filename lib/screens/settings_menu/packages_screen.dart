@@ -1,7 +1,5 @@
 import 'package:foap/helper/imports/common_import.dart';
-import 'package:get/get.dart';
 import 'package:foap/helper/imports/setting_imports.dart';
-
 import '../../controllers/misc/subscription_packages_controller.dart';
 
 class PackagesScreen extends StatefulWidget {

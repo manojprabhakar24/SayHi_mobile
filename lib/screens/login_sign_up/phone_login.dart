@@ -1,9 +1,6 @@
 import 'package:foap/helper/imports/common_import.dart';
 import 'package:foap/screens/login_sign_up/set_user_name.dart';
-import 'package:get/get.dart';
 import 'package:foap/helper/imports/login_signup_imports.dart';
-import '../../components/app_text_field.dart';
-import '../../universal_components/rounded_input_field.dart';
 
 class PhoneLoginScreen extends StatefulWidget {
   const PhoneLoginScreen({Key? key}) : super(key: key);
@@ -106,7 +103,7 @@ class PhoneLoginScreenState extends State<PhoneLoginScreen> {
                     SizedBox(
                       height: Get.height * 0.04,
                     ),
-                    SocialLogin(
+                    const SocialLogin(
                       hidePhoneLogin: true,
 
                     ).setPadding(left: 65, right: 65),

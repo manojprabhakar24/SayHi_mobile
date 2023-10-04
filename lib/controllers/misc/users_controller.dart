@@ -21,26 +21,26 @@ class UsersController extends GetxController {
 
   setIsOnlineFilter() {
     searchModel.isOnline = 1;
-    loadUsers();
+    loadUsers((){});
   }
 
   setSearchFromParam(SearchFrom source) {
     searchModel.searchFrom = source;
-    loadUsers();
+    loadUsers((){});
   }
 
   setIsExactMatchFilter() {
     searchModel.isExactMatch = 1;
-    loadUsers();
+    loadUsers((){});
   }
 
-  setSearchTextFilter(String text) {
+  setSearchTextFilter(String text, VoidCallback callback) {
     if (text != searchText) {
       searchText = text;
       searchModel.searchText = text;
 
       clearPagingInfo();
-      loadUsers();
+      loadUsers(callback);
     }
   }
 
@@ -51,7 +51,7 @@ class UsersController extends GetxController {
     accountsIsLoading.value = false;
   }
 
-  loadUsers() {
+  loadUsers(VoidCallback callback) {
     if (canLoadMoreAccounts) {
       accountsIsLoading.value = true;
 
@@ -65,9 +65,13 @@ class UsersController extends GetxController {
 
             canLoadMoreAccounts = result.length >= metadata.perPage;
             accountsPage += 1;
+            callback();
 
             update();
           });
+    }
+    else{
+      callback();
     }
   }
 

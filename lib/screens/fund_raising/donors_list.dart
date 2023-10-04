@@ -1,13 +1,6 @@
-import 'package:flutter/material.dart';
 import 'package:foap/helper/imports/common_import.dart';
-import 'package:foap/screens/fund_raising/fund_raising_dashboard.dart';
-import 'package:get/get.dart';
-import '../../components/empty_states.dart';
-import '../../components/shimmer_widgets.dart';
 import '../../components/user_card.dart';
 import '../../controllers/fund_raising/fund_raising_controller.dart';
-import '../../controllers/misc/users_controller.dart';
-import '../../helper/localization_strings.dart';
 
 class DonorsList extends StatelessWidget {
   final FundRaisingController fundRaisingController = Get.find();

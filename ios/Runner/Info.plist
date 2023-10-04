@@ -19,7 +19,7 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.0</string>
+	<string>1.2</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleURLTypes</key>
@@ -29,8 +29,7 @@
 			<string>Editor</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>socialifiedstripe</string>
-				<string>com.googleusercontent.apps.258656413911-5bqj5jcr6oqledsen49qf9oba5l8tcm8</string>
+				<string>com.googleusercontent.apps.787780064793-nqjbtv3f2no80jm578dmnaefgtf0cnbp</string>
 			</array>
 		</dict>
 		<dict>

@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'package:image_picker/image_picker.dart';
 import '../user_model.dart';
 
@@ -118,7 +117,7 @@ class AdModel {
         ],
         "images": List<dynamic>.from((images).map((x) => x.split('/').last)),
         "phone": phone,
-        "featured": featured.toString() ?? '0',
+        "featured": featured.toString() ,
         "currency": currency,
       };
 

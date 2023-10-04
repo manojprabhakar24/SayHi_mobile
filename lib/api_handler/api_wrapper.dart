@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'dart:typed_data';
 
 import 'package:get/get.dart';
@@ -71,15 +72,12 @@ class ApiWrapper {
     String? authKey = await SharedPrefs().getAuthorizationKey();
     String urlString = '${NetworkConstantsUtil.baseUrl}$url';
 
-    print('authKey $authKey');
-    print('urlString $urlString');
-
     return http.get(Uri.parse(urlString), headers: {
       "Authorization": "Bearer ${authKey!}"
     }).then((http.Response response) async {
       dynamic data = _decoder.convert(response.body);
       Loader.dismiss();
-      // log(data.toString());
+      log(data.toString());
       if (data['status'] == 401 && data['data'] == null) {
         //Get.offAll(() => LoginForExpiredToken());
       } else {
@@ -95,16 +93,15 @@ class ApiWrapper {
 
     String urlString = '${NetworkConstantsUtil.baseUrl}$url';
 
-    print('urlString $urlString');
-    print('param $param');
+    log('urlString $urlString');
+    log('param $param');
 
     return http.post(Uri.parse(urlString), body: jsonEncode(param), headers: {
       "Authorization": "Bearer ${authKey!}",
       'Content-Type': 'application/json'
     }).then((http.Response response) async {
       dynamic data = _decoder.convert(response.body);
-      // print('data $data');
-
+      log('data $data');
       // Loader.dismiss();
       if (data['status'] == 401 && data['data'] == null) {
         // Get.offAll(() => LoginForExpiredToken());
@@ -119,11 +116,7 @@ class ApiWrapper {
       {required String url, required dynamic param}) async {
     String? authKey = await SharedPrefs().getAuthorizationKey();
     Loader.show(status: loadingString.tr);
-
-    // print(url);
-    print(param);
-    // print("Bearer ${authKey!}");
-
+    
     return http.put(Uri.parse('${NetworkConstantsUtil.baseUrl}$url'),
         body: jsonEncode(param),
         headers: {
@@ -152,7 +145,6 @@ class ApiWrapper {
           'Content-Type': 'application/json'
         }).then((http.Response response) async {
       dynamic data = _decoder.convert(response.body);
-      print(data);
       Loader.dismiss();
       if (data['status'] == 401 && data['data'] == null) {
         // Get.offAll(() => LoginForExpiredToken());
@@ -200,13 +192,11 @@ class ApiWrapper {
       Loader.dismiss();
 
       dynamic data = _decoder.convert(respStr);
-
-      print('data $data');
-      if (data['status'] == 401 && data['data'] == null) {
-        // Get.offAll(() => LoginForExpiredToken());
-      } else {
+      // if (data['status'] == 401 && data['data'] == null) {
+      //   // Get.offAll(() => LoginForExpiredToken());
+      // } else {
         return ApiResponse.fromJson(data);
-      }
+      // }
     });
   }
 
@@ -225,6 +215,9 @@ class ApiWrapper {
     if (mediaType == GalleryMediaType.video) {
       request.files.add(await http.MultipartFile.fromPath('mediaFile', file,
           contentType: MediaType('video', 'mp4')));
+    } else if (mediaType == GalleryMediaType.audio) {
+      request.files.add(await http.MultipartFile.fromPath('mediaFile', file,
+          contentType: MediaType('audio', 'mp3')));
     } else {
       request.files.add(await http.MultipartFile.fromPath('mediaFile', file));
     }
@@ -244,14 +237,29 @@ class ApiWrapper {
   }
 
   Future<ApiResponse?> uploadPostFile(
-      {required String file, required String url}) async {
+      {required String file,
+      required GalleryMediaType mediaType,
+      required String url}) async {
     Loader.show(status: loadingString.tr);
 
     var request = http.MultipartRequest(
         'POST', Uri.parse('${NetworkConstantsUtil.baseUrl}$url'));
     String? authKey = await SharedPrefs().getAuthorizationKey();
     request.headers.addAll({"Authorization": "Bearer ${authKey!}"});
-    request.files.add(await http.MultipartFile.fromPath('filenameFile', file));
+
+    // request.files.add(await http.MultipartFile.fromPath('filenameFile', file));
+
+    if (mediaType == GalleryMediaType.video) {
+      request.files.add(await http.MultipartFile.fromPath('filenameFile', file,
+          contentType: MediaType('video', 'mp4')));
+    } else if (mediaType == GalleryMediaType.audio) {
+      request.files.add(await http.MultipartFile.fromPath('filenameFile', file,
+          contentType: MediaType('audio', 'mp3')));
+    } else {
+      request.files.add(await http.MultipartFile.fromPath('filenameFile', file,
+          contentType: MediaType('image', 'png')));
+    }
+
     var res = await request.send();
     var responseData = await res.stream.toBytes();
     var responseString = String.fromCharCodes(responseData);

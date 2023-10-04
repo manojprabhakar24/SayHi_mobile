@@ -89,6 +89,7 @@ class MyProfileState extends State<MyProfile>
                   addProfileView(),
                   addHighlightsView(),
                   contentWidget(),
+                  const SizedBox(height: 20,)
                 ]),
               ),
               Positioned(top: 0, left: 0, right: 0, child: appBar())
@@ -185,7 +186,7 @@ class MyProfileState extends State<MyProfile>
 
   Widget statsView() {
     return Container(
-      color: AppColorConstants.cardColor.darken(),
+      color: AppColorConstants.cardColor,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
@@ -262,22 +263,20 @@ class MyProfileState extends State<MyProfile>
     return GetBuilder<HighlightsController>(
         init: _highlightsController,
         builder: (ctx) {
-          return _highlightsController.isLoading == true
+          return _highlightsController.isLoading.value == true
               ? const StoryAndHighlightsShimmer()
-              : _highlightsController.highlights.isEmpty
-                  ? Container()
-                  : HighlightsBar(
-                      highlights: _highlightsController.highlights,
-                      addHighlightCallback: () {
-                        Get.to(() => const ChooseStoryForHighlights());
-                      },
-                      viewHighlightCallback: (highlight) {
-                        Get.to(() => HighlightViewer(highlight: highlight))!
-                            .then((value) {
-                          loadData();
-                        });
-                      },
-                    ).vP25;
+              : HighlightsBar(
+                  highlights: _highlightsController.highlights,
+                  addHighlightCallback: () {
+                    Get.to(() => const ChooseStoryForHighlights());
+                  },
+                  viewHighlightCallback: (highlight) {
+                    Get.to(() => HighlightViewer(highlight: highlight))!
+                        .then((value) {
+                      loadData();
+                    });
+                  },
+                ).vP25;
         });
   }
 
@@ -316,14 +315,14 @@ class MyProfileState extends State<MyProfile>
               width:
                   (Get.width - (2 * DesignConstants.horizontalPadding) - 5) / 2,
               height: 100,
-              color: AppColorConstants.themeColor.withOpacity(0.1),
+              color: AppColorConstants.cardColor,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   ThemeIconWidget(
                     ThemeIcon.gallery,
                     size: 30,
-                    color: AppColorConstants.themeColor,
+                    // color: AppColorConstants.themeColor,
                   ),
                   const SizedBox(
                     width: 20,
@@ -359,14 +358,14 @@ class MyProfileState extends State<MyProfile>
               width:
                   (Get.width - (2 * DesignConstants.horizontalPadding) - 5) / 2,
               height: 100,
-              color: AppColorConstants.themeColor.withOpacity(0.1),
+              color: AppColorConstants.cardColor,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   ThemeIconWidget(
                     ThemeIcon.videoCamera,
                     size: 30,
-                    color: AppColorConstants.themeColor,
+                    // color: AppColorConstants.themeColor,
                   ),
                   const SizedBox(
                     width: 20,
@@ -411,14 +410,14 @@ class MyProfileState extends State<MyProfile>
               width:
                   (Get.width - (2 * DesignConstants.horizontalPadding) - 5) / 2,
               height: 100,
-              color: AppColorConstants.themeColor.withOpacity(0.1),
+              color: AppColorConstants.cardColor,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   ThemeIconWidget(
                     ThemeIcon.mention,
                     size: 30,
-                    color: AppColorConstants.themeColor,
+                    // color: AppColorConstants.themeColor,
                   ),
                   const SizedBox(
                     width: 20,
@@ -452,14 +451,14 @@ class MyProfileState extends State<MyProfile>
               width:
                   (Get.width - (2 * DesignConstants.horizontalPadding) - 5) / 2,
               height: 100,
-              color: AppColorConstants.themeColor.withOpacity(0.1),
+              color: AppColorConstants.cardColor,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   ThemeIconWidget(
                     ThemeIcon.group,
                     size: 30,
-                    color: AppColorConstants.themeColor,
+                    // color: AppColorConstants.themeColor,
                   ),
                   const SizedBox(
                     width: 20,

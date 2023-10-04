@@ -272,7 +272,6 @@ class AgoraLiveController extends GetxController {
         });
         // onToggleCamera();
       } else {
-        print('by pass it');
       }
 
       liveStartTime = DateTime.now();
@@ -316,7 +315,6 @@ class AgoraLiveController extends GetxController {
             "local user ${connection.localUid} joined , on channel ${connection.channelId}");
         update();
       }, onLeaveChannel: (RtcConnection connection, RtcStats status) {
-        print('user leave from channel');
       }, onUserJoined: (RtcConnection connection, int remoteUid, int elapsed) {
         debugPrint("remote user $remoteUid joined");
         remoteJoinedUsers.add(remoteUid);
@@ -334,15 +332,12 @@ class AgoraLiveController extends GetxController {
               ConnectionStateType state,
               ConnectionChangedReasonType reason) async {
         if (state == ConnectionStateType.connectionStateConnected) {
-          print('its connected');
         } else if (state == ConnectionStateType.connectionStateReconnecting ||
             state == ConnectionStateType.connectionStateConnecting) {
           // reConnectingRemoteView.value = true;
-          print('its reconnecting $state reason = $reason');
         }
       }, onFirstRemoteVideoFrame: (RtcConnection connection, int remoteUid,
               int width, int height, int elapsed) {
-        print('onFirstRemoteVideoFrame');
       }, onRemoteVideoStateChanged: (RtcConnection connection,
               int remoteUid,
               RemoteVideoState state,
@@ -361,22 +356,17 @@ class AgoraLiveController extends GetxController {
         }
       }, onLocalVideoStateChanged: (VideoSourceType source,
               LocalVideoStreamState state, LocalVideoStreamError error) {
-        print('onLocalVideoStateChanged $state');
       }, onCameraReady: () {
-        print('camera is ready now');
       }, onVideoDeviceStateChanged: (String deviceId,
               MediaDeviceType deviceType, MediaDeviceStateType deviceState) {
-        print('onVideoDeviceStateChanged $deviceState');
       }, onLocalVideoStats:
               (VideoSourceType sourceType, LocalVideoStats stats) {
         // print('onLocalVideoStats $stats');
       }, onFirstLocalVideoFrame:
               (VideoSourceType source, int width, int height, int elapsed) {
-        print('onFirstLocalVideoFrame');
         cameraInitiated = true;
       }, onFirstLocalVideoFramePublished:
               (VideoSourceType sourceType, int elapsed) {
-        print('onFirstLocalVideoFramePublished');
       }),
     );
   }
@@ -384,16 +374,12 @@ class AgoraLiveController extends GetxController {
   //Use This Method To End Call
   void onCallEnd({required bool isHost}) async {
     engine?.leaveChannel();
-    // engine.destroy();
     WakelockPlus.disable(); // Turn off wakelock feature after call end
-    // Emit End live Event Into Socket
 
     if (isHost) {
       leaveFromLiveAsHost();
       clearGiftData();
       loadGiftsReceived(liveId: live.value!.id);
-
-      // Get.back();
     } else {
       leaveFromLiveAsAudience();
     }
@@ -405,7 +391,6 @@ class AgoraLiveController extends GetxController {
   closeLive() {
     Get.back();
     Timer(const Duration(seconds: 1), () {
-      print('clearing data from here ==== 1');
       clear();
     });
   }
@@ -440,7 +425,6 @@ class AgoraLiveController extends GetxController {
           'liveCallId': live.value?.id
         }));
 
-    print('clearing data from here ==== 2');
     clear();
     Get.back();
     InterstitialAds().show();
@@ -520,7 +504,6 @@ class AgoraLiveController extends GetxController {
     messages.add(localMessageModel);
     messageTf.value.text = '';
     update();
-
   }
 
   sendGift({required GiftModel gift, LiveCallHostUser? host}) {
@@ -974,7 +957,6 @@ class AgoraLiveController extends GetxController {
   showLiveStreaming() {
     startLiveStreaming.value = 2;
     startLiveStreaming.refresh();
-    print('showLiveStreaming');
   }
 
   // gifts

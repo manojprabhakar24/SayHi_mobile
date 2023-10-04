@@ -3,7 +3,6 @@ import 'package:foap/helper/number_extension.dart';
 import 'package:progress_state_button/iconed_button.dart';
 import 'package:progress_state_button/progress_button.dart';
 import '../controllers/live/agora_live_controller.dart';
-import '../controllers/profile/profile_controller.dart';
 import '../model/call_model.dart';
 import '../model/club_join_request.dart';
 import '../model/club_member_model.dart';
@@ -163,21 +162,21 @@ class UserTile extends StatelessWidget {
           Row(
             children: [
               if (settingsController.setting.value!.enableChat)
-                const ThemeIconWidget(
+                ThemeIconWidget(
                   ThemeIcon.chat,
                   size: 20,
                 ).rP16.ripple(() {
                   chatCallback!();
                 }),
               if (settingsController.setting.value!.enableAudioCalling)
-                const ThemeIconWidget(
+                ThemeIconWidget(
                   ThemeIcon.mobile,
                   size: 20,
                 ).rP16.ripple(() {
                   audioCallCallback!();
                 }),
               if (settingsController.setting.value!.enableVideoCalling)
-                const ThemeIconWidget(
+                ThemeIconWidget(
                   ThemeIcon.videoCamera,
                   size: 20,
                 ).ripple(() {
@@ -278,7 +277,7 @@ class UserCard extends StatelessWidget {
                       height: 40,
                       width: 40,
                       color: AppColorConstants.themeColor,
-                      child: const ThemeIconWidget(
+                      child: ThemeIconWidget(
                         ThemeIcon.checkMark,
                         color: Colors.white,
                         size: 25,
@@ -292,7 +291,7 @@ class UserCard extends StatelessWidget {
                       height: 40,
                       width: 40,
                       color: AppColorConstants.cardColor,
-                      child: const ThemeIconWidget(
+                      child: ThemeIconWidget(
                         ThemeIcon.plus,
                         size: 25,
                         // color: Colors.white,
@@ -352,7 +351,7 @@ class SelectableUserCardState extends State<SelectableUserCard> {
                       height: 50,
                       width: 50,
                       color: Colors.black45,
-                      child: const Center(
+                      child:  Center(
                         child: ThemeIconWidget(
                           ThemeIcon.checkMark,
                           color: Colors.white,
@@ -832,7 +831,7 @@ class GifterUserTile extends StatelessWidget {
         const SizedBox(
           width: 5,
         ),
-        const ThemeIconWidget(
+        ThemeIconWidget(
           ThemeIcon.diamond,
           color: Colors.yellow,
           size: 18,

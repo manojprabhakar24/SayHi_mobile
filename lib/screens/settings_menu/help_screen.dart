@@ -25,11 +25,10 @@ class _HelpScreenState extends State<HelpScreen> {
           children: [
             backNavigationBarWithTrailingWidget(
               title: helpString.tr,
-              widget: const ThemeIconWidget(ThemeIcon.card).ripple(() {
+              widget: ThemeIconWidget(ThemeIcon.card).ripple(() {
                 Get.to(() => const SupportRequestsScreen());
               }),
             ),
-
             SingleChildScrollView(
               child: GestureDetector(
                 onTap: () {
@@ -89,6 +88,11 @@ class _HelpScreenState extends State<HelpScreen> {
             email: emailController.text,
             phone: phoneController.text,
             message: messageController.text);
+
+        nameController.text = '';
+        emailController.text = '';
+        phoneController.text = '';
+        messageController.text = '';
       },
       text: submitString.tr,
     );

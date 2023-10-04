@@ -1,5 +1,4 @@
 import 'package:foap/helper/imports/common_import.dart';
-import '../../universal_components/rounded_input_field.dart';
 
 class ClubDescription extends StatefulWidget {
   const ClubDescription({Key? key}) : super(key: key);

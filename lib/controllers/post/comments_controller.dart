@@ -12,7 +12,7 @@ import '../../model/hash_tag.dart';
 import '../../screens/settings_menu/settings_controller.dart';
 import '../../util/constant_util.dart';
 import '../misc/users_controller.dart';
-import '../../components/giphy/giphy_get.dart';
+import 'package:giphy_get/giphy_get.dart';
 
 class CommentsController extends GetxController {
   final UserProfileManager _userProfileManager = Get.find();
@@ -135,7 +135,7 @@ class CommentsController extends GetxController {
                 .create();
         file.writeAsBytesSync(mainFileData);
 
-        await PostApi.uploadFile(file.path,
+        await PostApi.uploadFile(file.path, mediaType: media.mediaType!,
             resultCallback: (fileName, filePath) async {
           imagePath = fileName;
           await file.delete();
@@ -216,7 +216,7 @@ class CommentsController extends GetxController {
   }
 
   searchUsers({required String text, VoidCallback? callback}) {
-    _usersController.setSearchTextFilter(text);
+    _usersController.setSearchTextFilter(text,(){});
   }
 
   textChanged(String text, int position) {

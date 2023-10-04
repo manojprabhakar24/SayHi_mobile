@@ -59,7 +59,7 @@ import '../../model/post_gallery.dart';
 //             Row(
 //               mainAxisAlignment: MainAxisAlignment.spaceBetween,
 //               children: [
-//                 const ThemeIconWidget(
+//                 ThemeIconWidget(
 //                   ThemeIcon.backArrow,
 //                   size: 20,
 //                 ).ripple(() {
@@ -223,7 +223,7 @@ class _PlayVideoControllerState extends State<PlayVideoController> {
                                     videoPlayerController!.value.aspectRatio,
                                 Get.height * 0.5),
                             color: Colors.black38,
-                            child: const ThemeIconWidget(
+                            child: ThemeIconWidget(
                               ThemeIcon.play,
                               size: 50,
                               color: Colors.white,
@@ -239,7 +239,7 @@ class _PlayVideoControllerState extends State<PlayVideoController> {
                   //       height: 25,
                   //       width: 25,
                   //       color: Colors.black38,
-                  //       child: const ThemeIconWidget(
+                  //       child: ThemeIconWidget(
                   //         ThemeIcon.fullScreen,
                   //         size: 15,
                   //         color: Colors.white,
@@ -285,7 +285,7 @@ class _PlayVideoControllerState extends State<PlayVideoController> {
     if (isLocalFile) {
       videoPlayerController = VideoPlayerController.file(File(url));
     } else {
-      videoPlayerController = VideoPlayerController.network(url);
+      videoPlayerController = VideoPlayerController.networkUrl(Uri.parse(url));
     }
 
     initializeVideoPlayerFuture = videoPlayerController!.initialize().then((_) {

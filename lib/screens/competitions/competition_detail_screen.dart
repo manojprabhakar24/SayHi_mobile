@@ -1,10 +1,7 @@
 import 'package:foap/helper/imports/common_import.dart';
 import 'package:foap/helper/imports/competition_imports.dart';
-import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher.dart';
-
 import '../settings_menu/settings_controller.dart';
-import '../settings_menu/web_view_screen.dart';
 
 class CompetitionDetailScreen extends StatefulWidget {
   final int competitionId;
@@ -53,7 +50,7 @@ class CompetitionDetailState extends State<CompetitionDetailScreen> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const ThemeIconWidget(
+                  ThemeIconWidget(
                     ThemeIcon.backArrow,
                     size: 20,
                   ).ripple(() {
@@ -196,7 +193,7 @@ class CompetitionDetailState extends State<CompetitionDetailScreen> {
             ).round(10)),
         // staggeredTileBuilder: (int index) => new StaggeredTile.count(1, 1),
       ),
-      const SizedBox(height: 65)
+      const SizedBox(height: 155)
     ]);
   }
 

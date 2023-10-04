@@ -1,5 +1,4 @@
 import 'package:foap/helper/imports/common_import.dart';
-import 'package:get/get.dart';
 
 import '../../controllers/misc/gift_controller.dart';
 import '../../model/gift_model.dart';
@@ -52,7 +51,7 @@ class _GiftsPageViewState extends State<GiftsPageView> {
                       weight: TextWeight.medium,
                       color: Colors.white,
                     ),
-                    const ThemeIconWidget(
+                    ThemeIconWidget(
                       ThemeIcon.diamond,
                       size: 20,
                       color: Colors.white,
@@ -79,7 +78,7 @@ class _GiftsPageViewState extends State<GiftsPageView> {
                           currentView = 1;
                         });
                       })
-                    : const ThemeIconWidget(
+                    : ThemeIconWidget(
                         ThemeIcon.close,
                         size: 20,
                         color: Colors.white,

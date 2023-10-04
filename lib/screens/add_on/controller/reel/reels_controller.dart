@@ -2,7 +2,7 @@ import 'package:foap/components/post_card_controller.dart';
 import 'package:foap/helper/imports/common_import.dart';
 import 'package:foap/model/post_model.dart';
 import 'package:foap/model/post_search_query.dart';
-import 'package:get/get.dart';
+
 import '../../../../api_handler/apis/post_api.dart';
 import 'package:foap/helper/list_extension.dart';
 
@@ -46,8 +46,6 @@ class ReelsController extends GetxController {
 
   currentPageChanged(int index, PostModel reel) {
     setCurrentViewingReel(reel);
-    // currentPage.value = index;
-    // currentPage.refresh();
   }
 
   addReels(List<PostModel> reelsList, int? startPage) {

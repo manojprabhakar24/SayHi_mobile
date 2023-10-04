@@ -40,15 +40,11 @@ class JobCategories extends StatelessWidget {
                               jobController.categories[index];
                           return CategoryAvatarType1(category: category)
                               .ripple(() {
-                            print('hello CategoryAvatarType1');
-
                             jobController.setCategoryId(category.id);
                             Get.to(() => JobsByCategory(
                                       category: category,
                                     ))!
                                 .then((value) {
-                              print('hello JobsByCategory');
-
                               jobController.setCategoryId(null);
                             });
                           });

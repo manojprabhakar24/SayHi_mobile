@@ -2,7 +2,6 @@ import 'package:foap/components/segmented_control.dart';
 import 'package:foap/screens/add_on/controller/dating/dating_controller.dart';
 import 'package:foap/screens/add_on/model/preference_model.dart';
 import 'package:foap/universal_components/rounded_input_field.dart';
-import 'package:get/get.dart';
 import 'package:foap/helper/imports/common_import.dart';
 import 'add_interests.dart';
 
@@ -69,7 +68,7 @@ class AddPersonalInfoState extends State<AddPersonalInfo> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  Heading2Text(
+                  Heading3Text(
                     weNeedToKnowMoreString.tr,
                   ).setPadding(top: 20),
                   Heading6Text(
@@ -182,10 +181,8 @@ class AddPersonalInfoState extends State<AddPersonalInfo> {
   submitDetail() {
     AddDatingDataModel dataModel = AddDatingDataModel();
 
-    if (selectedColor != null) {
-      dataModel.selectedColor = colors[selectedColor!];
-      _userProfileManager.user.value!.color = dataModel.selectedColor;
-    }
+    dataModel.selectedColor = colors[selectedColor];
+    _userProfileManager.user.value!.color = dataModel.selectedColor;
 
     dataModel.height = _valueForHeight.toInt();
     _userProfileManager.user.value!.height = dataModel.height.toString();

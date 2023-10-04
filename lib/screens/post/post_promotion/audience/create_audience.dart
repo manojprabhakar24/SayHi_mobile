@@ -61,7 +61,7 @@ class CreateAudienceScreen extends StatelessWidget {
                         Get.to(() => AudiencePreferenceScreen());
                       }),
                       divider(height: 1, color: AppColorConstants.dividerColor),
-                    ]).hP16,
+                    ]).hp(DesignConstants.horizontalPadding),
                 const SizedBox(
                   height: 50,
                 ),

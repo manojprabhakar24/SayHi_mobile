@@ -40,7 +40,7 @@ class EnlargeImageViewState extends State<EnlargeImageViewScreen> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const ThemeIconWidget(
+                    ThemeIconWidget(
                       ThemeIcon.backArrow,
                       size: 20,
                     ).ripple(() {
@@ -116,7 +116,7 @@ class EnlargeImageViewState extends State<EnlargeImageViewScreen> {
                                   children: [
                                     InkWell(
                                         onTap: () => openComments(),
-                                        child: const ThemeIconWidget(
+                                        child: ThemeIconWidget(
                                             ThemeIcon.message)),
                                     InkWell(
                                       onTap: () => openComments(),
@@ -145,7 +145,7 @@ class EnlargeImageViewState extends State<EnlargeImageViewScreen> {
                           weight: TextWeight.semiBold)
                       .p16,
                   ListTile(
-                      leading: const ThemeIconWidget(ThemeIcon.camera),
+                      leading: ThemeIconWidget(ThemeIcon.camera),
                       title: Heading4Text(reportString.tr,
                           weight: TextWeight.regular),
                       onTap: () async {
@@ -154,7 +154,7 @@ class EnlargeImageViewState extends State<EnlargeImageViewScreen> {
                       }),
                   divider(),
                   ListTile(
-                      leading: const ThemeIconWidget(ThemeIcon.close),
+                      leading: ThemeIconWidget(ThemeIcon.close),
                       title: Heading4Text(cancelString.tr,
                           weight: TextWeight.regular),
                       onTap: () => Navigator.of(context).pop()),

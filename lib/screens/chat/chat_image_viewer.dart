@@ -1,5 +1,4 @@
 import 'package:foap/helper/imports/common_import.dart';
-import 'package:get/get.dart';
 import 'package:foap/helper/imports/chat_imports.dart';
 
 class ChatImageViewer extends StatefulWidget {
@@ -31,7 +30,7 @@ class EnlargeImageViewState extends State<ChatImageViewer> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const ThemeIconWidget(
+                ThemeIconWidget(
                   ThemeIcon.backArrow,
                   size: 20,
                   color: Colors.white,

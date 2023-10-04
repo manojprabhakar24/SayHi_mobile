@@ -1,4 +1,3 @@
-import 'package:avatar_glow/avatar_glow.dart';
 import 'package:foap/helper/imports/common_import.dart';
 
 class AvatarView extends StatelessWidget {
@@ -20,7 +19,6 @@ class AvatarView extends StatelessWidget {
   Widget build(BuildContext context) {
     String initials = '';
 
-    print('name $name');
     if (name != null) {
       List<String> nameParts = name!.trim().split(' ');
       initials = '';

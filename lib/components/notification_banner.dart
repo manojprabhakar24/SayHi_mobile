@@ -19,38 +19,45 @@ showNewMessageBanner(ChatMessageModel message, int roomId) async {
 
 showNotification(ChatMessageModel message, ChatRoomModel room) {
   showOverlayNotification((context) {
-    return Container(
-      color: Colors.transparent,
+    return Material(
       child: Container(
-        color: AppColorConstants.cardColor.lighten(),
-        child: ListTile(
-          leading: AvatarView(
-            size: 40,
-            url: room.isGroupChat == true
-                ? room.image
-                : room.memberById(message.senderId).userDetail.picture,
-            name: room.isGroupChat == true
-                ? room.name
-                : room.memberById(message.senderId).userDetail.userName,
-          ),
-          title: Heading5Text(
-            room.isGroupChat == true
-                ? '(${room.name}) ${room.memberById(message.senderId).userDetail.userName}'
-                : room.memberById(message.senderId).userDetail.userName,
-            weight: TextWeight.bold,
-            color: AppColorConstants.themeColor,
-          ),
-          subtitle: Heading6Text(
-            message.shortInfoForNotification,
-          ),
-        ).setPadding(top: 60, left: DesignConstants.horizontalPadding, right: DesignConstants.horizontalPadding).ripple(() {
-          OverlaySupportEntry.of(context)!.dismiss();
+        color: Colors.transparent,
+        child: Container(
+          color: AppColorConstants.cardColor.lighten(),
+          child: ListTile(
+            leading: AvatarView(
+              size: 40,
+              url: room.isGroupChat == true
+                  ? room.image
+                  : room.memberById(message.senderId).userDetail.picture,
+              name: room.isGroupChat == true
+                  ? room.name
+                  : room.memberById(message.senderId).userDetail.userName,
+            ),
+            title: Heading5Text(
+              room.isGroupChat == true
+                  ? '(${room.name}) ${room.memberById(message.senderId).userDetail.userName}'
+                  : room.memberById(message.senderId).userDetail.userName,
+              weight: TextWeight.bold,
+              color: AppColorConstants.themeColor,
+            ),
+            subtitle: Heading6Text(
+              message.shortInfoForNotification,
+            ),
+          )
+              .setPadding(
+                  top: 60,
+                  left: DesignConstants.horizontalPadding,
+                  right: DesignConstants.horizontalPadding)
+              .ripple(() {
+            OverlaySupportEntry.of(context)!.dismiss();
 
-          Get.to(() => ChatDetail(
-                chatRoom: room,
-              ));
-        }),
-      ).bottomRounded(15),
+            Get.to(() => ChatDetail(
+                  chatRoom: room,
+                ));
+          }),
+        ).bottomRounded(15),
+      ),
     );
   }, duration: const Duration(milliseconds: 4000));
 }

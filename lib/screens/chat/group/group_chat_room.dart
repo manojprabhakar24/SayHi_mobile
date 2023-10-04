@@ -1,5 +1,4 @@
 import 'package:foap/helper/imports/common_import.dart';
-import 'package:get/get.dart';
 import 'package:foap/helper/imports/chat_imports.dart';
 import '../../../components/user_card.dart';
 
@@ -90,7 +89,7 @@ class _GroupChatRoomDetailState extends State<GroupChatRoomDetail> {
                 children: [
                   Container(
                     color: AppColorConstants.themeColor,
-                    child: const ThemeIconWidget(
+                    child: ThemeIconWidget(
                       ThemeIcon.gallery,
                       color: Colors.white,
                     ).p4,
@@ -125,7 +124,7 @@ class _GroupChatRoomDetailState extends State<GroupChatRoomDetail> {
                 children: [
                   Container(
                     color: AppColorConstants.themeColor,
-                    child: const ThemeIconWidget(
+                    child: ThemeIconWidget(
                       ThemeIcon.wallpaper,
                       color: Colors.white,
                     ).p4,
@@ -198,7 +197,7 @@ class _GroupChatRoomDetailState extends State<GroupChatRoomDetail> {
         Container(
           child: Column(
             children: [
-              const ThemeIconWidget(
+              ThemeIconWidget(
                 ThemeIcon.mobile,
                 size: 20,
               ),
@@ -218,7 +217,7 @@ class _GroupChatRoomDetailState extends State<GroupChatRoomDetail> {
         Container(
           child: Column(
             children: [
-              const ThemeIconWidget(
+              ThemeIconWidget(
                 ThemeIcon.videoCamera,
                 size: 20,
               ),

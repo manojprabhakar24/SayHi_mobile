@@ -1,7 +1,5 @@
-import 'package:get/get.dart';
 import 'package:foap/helper/imports/common_import.dart';
 import '../../model/support_request_response.dart';
-import '../../universal_components/rounded_input_field.dart';
 
 class SupportRequestView extends StatefulWidget {
   const SupportRequestView({Key? key}) : super(key: key);

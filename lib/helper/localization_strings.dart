@@ -486,6 +486,8 @@ String faqMessageString = "Frequently asked questions by customers";
 
 String supportRequestsString = "Support requests";
 String createSupportRequestString = "Create support requests";
+String supportMessageSentString = 'Support message is sent';
+
 String fillFormString = "Please fill all the fields";
 
 String findFriendsString = "Find Friends";
@@ -984,6 +986,7 @@ String doNotCloseAppString =
     'Do not close or refresh the app until the process is completed';
 String bookingConfirmedString = 'Your booking is confirmed';
 String bookMoreTicketsString = 'Book more';
+String transactionCompletedString = 'Your transaction is completed';
 
 String errorInBookingString = 'Error in booking..';
 String pleaseTryAgainString = 'Please try again later';
@@ -1340,3 +1343,5 @@ String pleaseSelectExperienceString = 'Please select experience.';
 String pleaseEnterEducationString = 'Please enter education.';
 String pleaseEnterCoverLetterString = 'Please enter cover letter.';
 String appliedSuccessfully = 'Your have applied for this job successfully';
+
+String tapToEditString = 'Tap to edit';

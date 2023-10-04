@@ -76,47 +76,50 @@ class _TVShowDetailState extends State<TVShowDetail> {
       return KeyboardVisibilityBuilder(builder: (context, isKeyboardVisible) {
         return AppScaffold(
           backgroundColor: AppColorConstants.backgroundColor,
-          body: Column(
-            children: [
-              if (orientation == Orientation.portrait)
-                Column(
-                  children: [
-                    backNavigationBar(
-                      title: widget.showModel.name!,
-                    ),
-                  ],
-                ),
-              Obx(() {
-                return _liveTvStreamingController.selectedEpisode.value != null
-                    ? SocialifiedVideoPlayer(
-                        tvModel: widget.tvModel,
-                        url: _liveTvStreamingController
-                            .selectedEpisode.value!.videoUrl!,
-                        play: false,
-                        orientation: orientation,
+          body: SingleChildScrollView(
+            child: Column(
+              children: [
+                if (orientation == Orientation.portrait)
+                  Column(
+                    children: [
+                      backNavigationBar(
+                        title: widget.showModel.name!,
+                      ),
+                    ],
+                  ),
+                Obx(() {
+                  return _liveTvStreamingController.selectedEpisode.value !=
+                          null
+                      ? SocialifiedVideoPlayer(
+                          tvModel: widget.tvModel,
+                          url: _liveTvStreamingController
+                              .selectedEpisode.value!.videoUrl!,
+                          play: false,
+                          orientation: orientation,
 
-                        // showMinimumHeight: isKeyboardVisible,
-                      )
-                    : Container();
-              }),
-              if (orientation == Orientation.portrait)
-                DefaultTabController(
-                    length: tabs.length,
-                    initialIndex: 0,
-                    child: Column(
-                      children: [
-                        SMTabBar(tabs: tabs,canScroll: false),
-                        divider(),
-                        SizedBox(
-                          height: Get.height * 0.5,
-                          child: TabBarView(children: [
-                            Expanded(child: detailView()),
-                            ReviewsList()
-                          ]),
-                        ),
-                      ],
-                    )),
-            ],
+                          // showMinimumHeight: isKeyboardVisible,
+                        )
+                      : Container();
+                }),
+                if (orientation == Orientation.portrait)
+                  DefaultTabController(
+                      length: tabs.length,
+                      initialIndex: 0,
+                      child: Column(
+                        children: [
+                          SMTabBar(tabs: tabs, canScroll: false),
+                          divider(),
+                          SizedBox(
+                            height: Get.height * 0.5,
+                            child: TabBarView(children: [
+                              Expanded(child: detailView()),
+                              ReviewsList()
+                            ]),
+                          ),
+                        ],
+                      )),
+              ],
+            ),
           ),
         );
       });
@@ -138,6 +141,7 @@ class _TVShowDetailState extends State<TVShowDetail> {
 
   episodeTile(TVShowEpisodeModel episode) {
     return Card(
+      color: AppColorConstants.cardColor,
       child: ListTile(
         contentPadding: const EdgeInsets.all(6),
         leading: Stack(
@@ -151,12 +155,17 @@ class _TVShowDetailState extends State<TVShowDetail> {
             const Positioned.fill(child: Icon(Icons.play_circle))
           ],
         ),
-        title: Text(episode.name ?? ''),
+        title: BodyLargeText(episode.name ?? ''),
         dense: true,
       ).ripple(() {
         _liveTvStreamingController.playEpisode(episode);
       }),
-    ).setPadding(left: DesignConstants.horizontalPadding, right: DesignConstants.horizontalPadding, bottom: 5).round(10);
+    )
+        .setPadding(
+            left: DesignConstants.horizontalPadding,
+            right: DesignConstants.horizontalPadding,
+            bottom: 5)
+        .round(10);
   }
 
   Widget episodeInfo() {
@@ -190,7 +199,7 @@ class _TVShowDetailState extends State<TVShowDetail> {
                 const SizedBox(
                   height: 10,
                 ),
-                BodyLargeText(
+                BodySmallText(
                     '${widget.showModel.totalRatings.toString()} $ratingsString',
                     color: AppColorConstants.themeColor,
                     weight: TextWeight.bold),
@@ -204,14 +213,14 @@ class _TVShowDetailState extends State<TVShowDetail> {
             Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const ThemeIconWidget(
+                ThemeIconWidget(
                   ThemeIcon.thumbsUp,
                   size: 25,
                 ),
                 const SizedBox(
                   height: 10,
                 ),
-                BodyLargeText(
+                BodySmallText(
                   rateString,
                   color: AppColorConstants.themeColor,
                   weight: TextWeight.bold,
@@ -271,7 +280,10 @@ class _TVShowDetailState extends State<TVShowDetail> {
               children: <Widget>[
                 Heading5Text(
                   '$rateString ${widget.showModel.name}',
-                ).setPadding(left: DesignConstants.horizontalPadding, right: DesignConstants.horizontalPadding, bottom: 16),
+                ).setPadding(
+                    left: DesignConstants.horizontalPadding,
+                    right: DesignConstants.horizontalPadding,
+                    bottom: 16),
                 ratingView(),
                 reviewView(),
                 AppThemeButton(

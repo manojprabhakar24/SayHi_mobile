@@ -93,7 +93,6 @@ class EventApi {
     var url = NetworkConstantsUtil.buyTicket;
     dynamic param = orderRequest.toJson();
 
-    print('param == $param');
     await ApiWrapper().postApi(url: url, param: param).then((result) {
       if (result?.success == true) {
         resultCallback(result!.data['id']);

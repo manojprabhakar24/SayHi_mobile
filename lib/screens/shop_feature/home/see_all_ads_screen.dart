@@ -3,8 +3,8 @@ import 'package:foap/helper/imports/common_import.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import '../../../model/shop_model/advertisement.dart';
 import 'package:foap/controllers/shop/shop_controller.dart';
-import '../components/adCard.dart';
-import '../components/advertisementCard.dart';
+import '../components/ad_card.dart';
+import '../components/advertisement_card.dart';
 import 'ad_detail_screen.dart';
 
 class SeeAllAdListing extends StatefulWidget {

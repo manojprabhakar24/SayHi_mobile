@@ -9,7 +9,6 @@ import 'package:foap/helper/imports/common_import.dart';
 import 'package:foap/helper/list_extension.dart';
 import 'package:foap/helper/string_extension.dart';
 import 'package:video_compress_ds/video_compress_ds.dart';
-import '../../api_handler/apis/users_api.dart';
 import '../../helper/enum_linking.dart';
 import '../../model/hash_tag.dart';
 import '../../screens/chat/media.dart';
@@ -162,10 +161,6 @@ class AddPostController extends GetxController {
     update();
   }
 
-  searchUsers({required String text, VoidCallback? callBackHandler}) {
-    _usersController.setSearchTextFilter(text.replaceAll('@', ''));
-  }
-
   textChanged(String text, int position) {
     clear();
     isEditing.value = 1;
@@ -175,26 +170,29 @@ class AddPostController extends GetxController {
     String lastPart = parts.last;
 
     if (lastPart.startsWith('#') == true && lastPart.contains('@') == false) {
-      if (currentHashtag.value.startsWith('#') == false) {
+      if (currentHashtag.value.startsWith('#') == false ||
+          currentUpdateAbleStartOffset == 0) {
         currentHashtag.value = lastPart;
-        currentUpdateAbleStartOffset = position;
+        currentUpdateAbleStartOffset = substring.indexOf('#') + 1;
       }
-      hashTags.clear();
+
       if (lastPart.length > 1) {
+        hashTags.clear();
         searchHashTags(text: lastPart);
         currentUpdateAbleEndOffset = position;
+      } else {
+        hashTags.clear();
       }
     } else if (lastPart.startsWith('@') == true &&
         lastPart.contains('#') == false) {
-      if (currentUserTag.value.startsWith('@') == false) {
+      if (currentUserTag.value.startsWith('@') == false ||
+          currentUpdateAbleStartOffset == 0) {
         currentUserTag.value = lastPart;
-        currentUpdateAbleStartOffset = position;
+        currentUpdateAbleStartOffset = substring.indexOf('@') + 1;
       }
-
-      _usersController.clear();
-
       if (lastPart.length > 1) {
-        searchUsers(text: lastPart);
+        _usersController.setSearchTextFilter(
+            lastPart.replaceAll('@', ''), () {});
         currentUpdateAbleEndOffset = position;
       }
     } else {
@@ -208,9 +206,10 @@ class AddPostController extends GetxController {
         currentUserTag.value = lastPart;
       }
       currentUserTag.value = '';
-      _usersController.clear();
-    }
 
+      currentUpdateAbleStartOffset = 0;
+      currentUpdateAbleEndOffset = 0;
+    }
     this.position.value = position;
   }
 
@@ -260,10 +259,6 @@ class AddPostController extends GetxController {
         )
     ]).whenComplete(() {});
 
-    // if (items.isEmpty) {
-    //   print('no media found');
-    //   return;
-    // }
     publishAction(
       postType: postType,
       galleryItems: responses,
@@ -322,11 +317,14 @@ class AddPostController extends GetxController {
 
       videoThumbnail.writeAsBytesSync(media.thumbnail!);
 
-      await PostApi.uploadFile(videoThumbnail.path,
-          resultCallback: (fileName, filePath) async {
-        videoThumbnailPath = fileName;
-        await videoThumbnail.delete();
-      });
+      await PostApi.uploadFile(
+        videoThumbnail.path,
+        mediaType: media.mediaType!,
+        resultCallback: (fileName, filePath) async {
+          videoThumbnailPath = fileName;
+          await videoThumbnail.delete();
+        },
+      );
 
       uploadMainFile(file, media, videoThumbnailPath, competitionId, completer);
     } else {
@@ -342,7 +340,7 @@ class AddPostController extends GetxController {
       int? competitionId, Completer completer) async {
     Map<String, String> gallery = {};
 
-    await PostApi.uploadFile(file.path,
+    await PostApi.uploadFile(file.path, mediaType: media.mediaType!,
         resultCallback: (fileName, filePath) async {
       String imagePath = fileName;
 
@@ -354,6 +352,8 @@ class AddPostController extends GetxController {
         'type': competitionId == null ? '1' : '2',
         'media_type': mediaTypeIdFromMediaType(media.mediaType!).toString(),
         'is_default': '1',
+        'height': (media.size?.height ?? 0).toString(),
+        'width': (media.size?.width ?? 0).toString(),
       };
       completer.complete(gallery);
     });

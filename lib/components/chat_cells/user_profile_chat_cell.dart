@@ -41,7 +41,7 @@ class UserProfileChatTile extends StatelessWidget {
                       ],
                     ),
                     const Spacer(),
-                    const ThemeIconWidget(ThemeIcon.nextArrow),
+                    ThemeIconWidget(ThemeIcon.nextArrow),
                   ],
                 ).hP8)
             .round(15));

@@ -25,7 +25,7 @@ class HighlightsController extends GetxController {
   String? picture;
   UserModel? model;
 
-  bool isLoading = true;
+  RxBool isLoading = true.obs;
 
   clear() {
     selectedStoriesMedia.clear();
@@ -56,23 +56,23 @@ class HighlightsController extends GetxController {
   }
 
   void getHighlights({required int userId}) {
-    isLoading = true;
+    isLoading.value = true;
     update();
 
     HighlightsApi.getHighlights(
         userId: userId,
         resultCallback: (result) {
-          isLoading = false;
+          isLoading.value = false;
           highlights.value = result;
           update();
         });
   }
 
   getAllStories() {
-    isLoading = true;
+    isLoading.value = true;
     update();
     StoryApi.getMyStories(resultCallback: (result) {
-      isLoading = false;
+      isLoading.value = false;
       stories.value = result;
       update();
     });

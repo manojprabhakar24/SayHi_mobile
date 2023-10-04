@@ -1,6 +1,5 @@
 import 'package:foap/helper/imports/common_import.dart';
 import 'package:pin_code_text_field/pin_code_text_field.dart';
-
 import '../../controllers/auth/login_controller.dart';
 
 class VerifyRegistrationOTP extends StatefulWidget {

@@ -41,4 +41,3 @@ export 'package:foap/model/support_request.dart';
 export 'package:foap/model/tv_banner_model.dart';
 export 'package:foap/model/tv_show_model.dart';
 export 'package:foap/model/user_model.dart';
-export 'package:foap/screens/add_on/model/verification_request_model.dart';

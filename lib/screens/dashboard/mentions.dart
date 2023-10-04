@@ -3,7 +3,7 @@ import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import '../../components/post_card/post_card.dart';
 import '../../controllers/post/post_controller.dart';
 import '../../model/post_model.dart';
-import '../settings_menu/notifications.dart';
+import '../../model/post_search_query.dart';
 
 class Mentions extends StatefulWidget {
   final int? userId;
@@ -34,7 +34,7 @@ class _MentionsState extends State<Mentions> {
   @override
   void initState() {
     super.initState();
-
+    loadData();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _postController.addPosts(
           widget.posts ?? [], widget.page, widget.totalPages);
@@ -49,21 +49,17 @@ class _MentionsState extends State<Mentions> {
     });
   }
 
-  // void loadData() {
-  //   if (widget.userId != null) {
-  //     PostSearchQuery query = PostSearchQuery();
-  //     query.userId = widget.userId!;
-  //     _postController.setPostSearchQuery(query: query, callback: () {});
-  //   }
-  //   if (widget.hashTag != null) {
-  //     PostSearchQuery query = PostSearchQuery();
-  //     query.hashTag = widget.hashTag!;
-  //     _postController.setPostSearchQuery(query: query, callback: () {});
-  //   }
-  // }
+  void loadData() {
+    if (widget.userId != null) {
+      MentionedPostSearchQuery query =
+          MentionedPostSearchQuery(userId: widget.userId!);
+      _postController.setMentionedPostSearchQuery(query);
+    }
+  }
 
   @override
   void dispose() {
+    _postController.clearMentions();
     super.dispose();
   }
 
@@ -87,26 +83,12 @@ class _MentionsState extends State<Mentions> {
                 ).ripple(() {
                   Get.back();
                 }),
-                const Spacer(),
-                // Image.asset(
-                //   'assets/logo.png',
-                //   width: 80,
-                //   height: 25,
-                // ),
-                const Spacer(),
-                ThemeIconWidget(
-                  ThemeIcon.notification,
-                  color: AppColorConstants.iconColor,
-                  size: 25,
-                ).ripple(() {
-                  Get.to(() => const NotificationsScreen());
-                }),
               ],
             ).hp(20),
             const SizedBox(
               height: 20,
             ),
-            // Expanded(child: postsView()),
+            Expanded(child: postsView()),
           ],
         ));
   }

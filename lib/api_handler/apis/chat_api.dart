@@ -33,7 +33,6 @@ class ChatApi {
       'description': description ?? ''
     };
 
-    print(param);
     await ApiWrapper().postApi(url: url, param: param).then((result) {
       resultCallback(result!.data['room_id']);
     });
@@ -82,7 +81,7 @@ class ChatApi {
     await ApiWrapper().getApi(url: url).then((result) {
       if (result?.success == true) {
         var room = result!.data['room']['items'] as List<dynamic>?;
-        if (room != null && room.isNotEmpty) {
+        if (room != null) {
           room = room.toList();
           resultCallback(
               List<ChatRoomModel>.from(
@@ -100,7 +99,7 @@ class ChatApi {
     await ApiWrapper().getApi(url: url).then((result) {
       if (result?.success == true) {
         var room = result!.data['room'] as List<dynamic>?;
-        if (room != null && room.isNotEmpty) {
+        if (room != null) {
           room = room
               // .where((element) =>
               //     (element['chatRoomUser'] as List<dynamic>).length > 1)

@@ -1,7 +1,7 @@
 import 'package:foap/helper/imports/common_import.dart';
 import 'package:foap/controllers/shop/shop_controller.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
-import '../components/adCard.dart';
+import '../components/ad_card.dart';
 import 'ad_detail_screen.dart';
 
 class FavProductsListScreen extends StatefulWidget {

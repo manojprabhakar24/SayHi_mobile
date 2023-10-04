@@ -1,8 +1,8 @@
 import 'dart:io';
-
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:foap/helper/imports/common_import.dart';
+import 'package:foap/helper/imports/setting_imports.dart';
 import 'package:foap/screens/post/post_option_popup.dart';
 import 'package:video_editor_sdk/video_editor_sdk.dart';
 import '../../components/video_widget.dart';
@@ -16,7 +16,6 @@ import 'package:photo_editor_sdk/photo_editor_sdk.dart';
 
 class AddPostScreen extends StatefulWidget {
   final PostType postType;
-
   final List<Media>? items;
   final int? competitionId;
   final int? clubId;
@@ -45,6 +44,7 @@ class AddPostState extends State<AddPostScreen> {
   TextEditingController descriptionText = TextEditingController();
   final SelectPostMediaController _selectPostMediaController =
       SelectPostMediaController();
+  SettingsController settingController = Get.find();
 
   final AddPostController addPostController = Get.find();
 
@@ -82,8 +82,7 @@ class AddPostState extends State<AddPostScreen> {
                                 Get.back();
                                 addPostController.clear();
                               },
-                              child:
-                                  const ThemeIconWidget(ThemeIcon.backArrow)),
+                              child: ThemeIconWidget(ThemeIcon.backArrow)),
                           const Spacer(),
                           Container(
                                   color: AppColorConstants.themeColor,
@@ -174,22 +173,23 @@ class AddPostState extends State<AddPostScreen> {
                       Obx(() => addPostController.isEditing.value == 0
                           ? const Spacer()
                           : Container()),
-                      Obx(() => addPostController.isEditing.value == 0
-                          ? PostOptionsPopup(
-                              selectedMediaList: (medias) {
-                                _selectPostMediaController
-                                    .mediaSelected(medias);
-                              },
-                              selectGif: (gifMedia) {
-                                _selectPostMediaController
-                                    .mediaSelected([gifMedia]);
-                              },
-                              recordedAudio: (audioMedia) {
-                                _selectPostMediaController
-                                    .mediaSelected([audioMedia]);
-                              },
-                            )
-                          : Container())
+                      if (widget.isReel != true)
+                        Obx(() => addPostController.isEditing.value == 0
+                            ? PostOptionsPopup(
+                                selectedMediaList: (medias) {
+                                  _selectPostMediaController
+                                      .mediaSelected(medias);
+                                },
+                                selectGif: (gifMedia) {
+                                  _selectPostMediaController
+                                      .mediaSelected([gifMedia]);
+                                },
+                                recordedAudio: (audioMedia) {
+                                  _selectPostMediaController
+                                      .mediaSelected([audioMedia]);
+                                },
+                              )
+                            : Container())
                     ]),
               ],
             );
@@ -206,8 +206,6 @@ class AddPostState extends State<AddPostScreen> {
           child: Stack(
             children: [
               Obx(() {
-                print('reload');
-
                 return CarouselSlider(
                   items: [
                     for (Media media
@@ -218,18 +216,26 @@ class AddPostState extends State<AddPostScreen> {
                               fit: BoxFit.cover,
                               width: double.infinity,
                             ).ripple(() {
-                              openImageEditor(media);
+                              // if (settingController
+                              //     .setting.value!.canEditPhotoVideo) {
+                              //   openImageEditor(media);
+                              // }
                             })
                           : media.mediaType == GalleryMediaType.gif
                               ? CachedNetworkImage(
                                   fit: BoxFit.cover, imageUrl: media.filePath!)
                               : media.mediaType == GalleryMediaType.video
                                   ? VideoPostTile(
+                                      aspectRatio: media.size!.width /
+                                          media.size!.height,
                                       url: media.file!.path,
                                       isLocalFile: true,
                                       play: true,
                                     ).ripple(() {
-                                      openVideoEditor(media);
+                                      // if (settingController
+                                      //     .setting.value!.canEditPhotoVideo) {
+                                      //   openVideoEditor(media);
+                                      // }
                                     })
                                   : audioPostTile(media)
                   ],
@@ -275,14 +281,15 @@ class AddPostState extends State<AddPostScreen> {
         const SizedBox(
           height: 20,
         ),
-        if (_selectPostMediaController.selectedMediaList.isNotEmpty)
-          Heading2Text(
-            'Tap to edit',
-            weight: TextWeight.bold,
-          ),
-        const SizedBox(
-          height: 20,
-        ),
+        // if (_selectPostMediaController.selectedMediaList.isNotEmpty &&
+        //     settingController.setting.value!.canEditPhotoVideo)
+        //   Heading2Text(
+        //     tapToEditString.tr,
+        //     weight: TextWeight.bold,
+        //   ),
+        // const SizedBox(
+        //   height: 20,
+        // ),
       ],
     );
   }
@@ -361,7 +368,6 @@ class AddPostState extends State<AddPostScreen> {
     if (result != null) {
       // The user exported a new photo successfully and the newly generated photo is located at `result.image`.
       Media editedMedia = media.copy;
-      print('result.image ${result.video}');
       editedMedia.file = File(result.video.replaceAll('file://', ''));
       _selectPostMediaController.replaceMediaWithEditedMedia(
           originalMedia: media, editedMedia: editedMedia);

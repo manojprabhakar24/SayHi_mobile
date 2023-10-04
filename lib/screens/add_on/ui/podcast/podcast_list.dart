@@ -1,6 +1,4 @@
 import 'package:foap/screens/add_on/ui/podcast/podcast_detail.dart';
-import 'package:foap/screens/add_on/ui/podcast/podcast_host_detail.dart';
-
 import '../../../../components/media_card.dart';
 import '../../../../controllers/podcast/podcast_streaming_controller.dart';
 import '../../../../helper/imports/common_import.dart';

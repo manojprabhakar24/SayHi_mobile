@@ -1,10 +1,7 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:foap/helper/imports/common_import.dart';
-import 'package:get/get.dart';
-
 import '../../components/live_tv_player.dart';
 import '../../model/post_gallery.dart';
-import '../../model/post_model.dart';
 
 class PostMediaFullScreen extends StatefulWidget {
   final List<PostGallery> gallery;

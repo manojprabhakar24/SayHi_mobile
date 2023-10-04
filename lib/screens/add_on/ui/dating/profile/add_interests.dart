@@ -3,8 +3,6 @@ import 'package:foap/helper/imports/common_import.dart';
 import 'package:foap/screens/add_on/controller/dating/dating_controller.dart';
 import 'package:foap/screens/add_on/model/preference_model.dart';
 import 'package:foap/universal_components/rounded_input_field.dart';
-import 'package:get/get.dart';
-
 import 'add_profesional_details.dart';
 
 class AddInterests extends StatefulWidget {
@@ -72,7 +70,7 @@ class AddInterestsState extends State<AddInterests> {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                Heading2Text(
+                Heading3Text(
                   addInterestsString.tr,
                 ).setPadding(top: 20),
                 Heading6Text(
@@ -89,7 +87,6 @@ class AddInterestsState extends State<AddInterests> {
                     .setPadding(top: 30, bottom: 8),
                 DropdownBorderedField(
                   hintText: selectString.tr,
-
                   controller: drinkHabitController,
                   showBorder: true,
                   borderColor: AppColorConstants.borderColor,
@@ -170,7 +167,7 @@ class AddInterestsState extends State<AddInterests> {
                             shrinkWrap: true,
                             itemBuilder: (_, int index) {
                               return ListTile(
-                                  title: Text(drinkHabitList[index]),
+                                  title: BodyLargeText(drinkHabitList[index]),
                                   onTap: () {
                                     setState(() {
                                       drinkHabitController.text =
@@ -212,7 +209,7 @@ class AddInterestsState extends State<AddInterests> {
                               bool isAdded = anySelection.isNotEmpty;
 
                               return ListTile(
-                                  title: Text(model.name),
+                                  title: BodyLargeText(model.name),
                                   onTap: () {
                                     isAdded
                                         ? selectedInterests.remove(model)
@@ -258,7 +255,7 @@ class AddInterestsState extends State<AddInterests> {
                               bool isAdded = anySelection.isNotEmpty;
 
                               return ListTile(
-                                  title: Text(model.name ?? ''),
+                                  title: BodyLargeText(model.name ?? ''),
                                   onTap: () {
                                     isAdded
                                         ? selectedLanguages.remove(model)

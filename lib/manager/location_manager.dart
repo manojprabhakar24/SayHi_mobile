@@ -63,9 +63,7 @@ class LocationManager extends GetxController {
           latitude: location.latitude, longitude: location.longitude, name: '');
       locationCallback(currentPosition.value!);
 
-      print('found location: ${location.toJson().toString()}');
     }).onError((error, stackTrace) {
-      print('error: ${error.toString()}');
       // locationCallback(AppConfigConstants.defaultLocationForMap);
     });
   }

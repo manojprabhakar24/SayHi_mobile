@@ -3,9 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:foap/helper/imports/common_import.dart';
 import 'package:foap/helper/imports/tv_imports.dart';
 import 'package:foap/model/live_tv_model.dart';
-import 'package:get/get.dart';
 import 'package:readmore/readmore.dart' as read_more;
-
 import '../../components/live_tv_player.dart';
 import '../../components/media_card.dart';
 import '../../controllers/misc/rating_controller.dart';
@@ -89,8 +87,11 @@ class _TVChannelDetailState extends State<TVChannelDetail> {
                             _tvStreamingController.currentViewingTv.value!);
                       })),
                 ],
-              ).setPadding(left: DesignConstants.horizontalPadding, right: DesignConstants.horizontalPadding, top: 50, bottom: 16),
-
+              ).setPadding(
+                  left: DesignConstants.horizontalPadding,
+                  right: DesignConstants.horizontalPadding,
+                  top: 50,
+                  bottom: 16),
               Expanded(
                 child: ListView(
                     padding: EdgeInsets.zero,

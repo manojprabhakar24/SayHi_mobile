@@ -89,14 +89,14 @@ enum AgoraCallType {
 
 enum PaymentGateway {
   creditCard,
-  applePay,
+  // applePay,
   paypal,
   razorpay,
   wallet,
   stripe,
-  googlePay,
+  // googlePay,
   inAppPurchase,
-  flutterWave
+  // flutterWave
 }
 
 enum BookingStatus { confirmed, cancelled }

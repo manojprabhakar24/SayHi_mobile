@@ -1,7 +1,5 @@
 import 'package:foap/helper/imports/chat_imports.dart';
 import 'package:foap/helper/imports/common_import.dart';
-import 'package:get/get.dart';
-
 import '../../../components/actionSheets/action_sheet1.dart';
 import '../../../model/generic_item.dart';
 
@@ -40,7 +38,7 @@ class _GroupSettingsState extends State<GroupSettings> {
                       height: 30,
                       width: 30,
                       color: AppColorConstants.themeColor,
-                      child: const ThemeIconWidget(
+                      child: ThemeIconWidget(
                         ThemeIcon.send,
                         size: 20,
                       ),
@@ -57,7 +55,7 @@ class _GroupSettingsState extends State<GroupSettings> {
                               ? onlyAdminsString.tr
                               : allParticipantsString.tr,
                         )),
-                    const ThemeIconWidget(
+                    ThemeIconWidget(
                       ThemeIcon.nextArrow,
                       size: 12,
                     )

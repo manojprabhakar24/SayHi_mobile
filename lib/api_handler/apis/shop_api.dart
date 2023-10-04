@@ -1,4 +1,3 @@
-import 'dart:typed_data';
 import 'package:foap/model/shop_model/ad_model.dart';
 import 'package:foap/model/shop_model/advertisement.dart';
 import 'package:foap/model/shop_model/category.dart';

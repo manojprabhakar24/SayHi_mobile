@@ -20,6 +20,7 @@ class AudienceInterestsScreen extends StatelessWidget {
                 return Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
+
                       customNavigationBar(title: interestsString.tr),
                       // const EstimatedAudienceTile(),
                       SFSearchBar(
@@ -27,9 +28,9 @@ class AudienceInterestsScreen extends StatelessWidget {
                         onSearchChanged: (value) =>
                             _promotionController.searchInterests(value),
                         showSearchIcon: true,
-                        backgroundColor: AppColorConstants.subHeadingTextColor,
+                        // backgroundColor: AppColorConstants.subHeadingTextColor,
                         radius: 15,
-                      ).p8,
+                      ).p(DesignConstants.horizontalPadding),
                       Expanded(
                           child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -64,7 +65,7 @@ class AudienceInterestsScreen extends StatelessWidget {
                               itemCount:
                                   _promotionController.searchedInterests.length,
                             ),
-                          ]).hP16),
+                          ]).hp(DesignConstants.horizontalPadding)),
                     ]);
               }),
         ));

@@ -1,6 +1,5 @@
 import 'package:foap/helper/imports/common_import.dart';
 import 'package:foap/screens/add_on/controller/relationship/relationship_controller.dart';
-import 'package:get/get.dart';
 
 class ViewRelationship extends StatefulWidget {
   final int userId;

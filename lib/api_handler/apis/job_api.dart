@@ -3,8 +3,6 @@ import 'package:foap/model/job_model.dart';
 
 import '../../model/api_meta_data.dart';
 import '../../model/category_model.dart';
-import '../../model/comment_model.dart';
-import '../../model/fund_raising_campaign.dart';
 import '../api_wrapper.dart';
 
 class JobApi {
@@ -87,7 +85,6 @@ class JobApi {
     }).then((result) {
       Loader.dismiss();
       if (result?.success == true) {
-        print('job posted');
         successHandler();
       }
     });

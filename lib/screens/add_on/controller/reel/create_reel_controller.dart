@@ -9,14 +9,9 @@ import 'package:foap/manager/player_manager.dart';
 import 'package:foap/model/category_model.dart';
 import 'package:foap/screens/add_on/model/reel_music_model.dart';
 import 'package:foap/screens/add_on/ui/reel/preview_reel_screen.dart';
-import 'package:get/get.dart';
 import 'package:just_audio/just_audio.dart';
-import 'package:path_provider/path_provider.dart' as path;
-
-// import 'package:simple_downloader/simple_downloader.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:http/http.dart' as http;
-import 'dart:io';
 
 class CreateReelController extends GetxController {
   final PlayerManager _playerManager = Get.find();
@@ -194,8 +189,6 @@ class CreateReelController extends GetxController {
 
     if (selectedAudioFile != null) {
       FFmpegKitConfig.enableLogCallback((log) {
-        final message = log.getMessage();
-        debugPrint('FFmpegLog:: ${log.getMessage()}');
       });
       var command =
           "-i ${videoFile.path} -i ${selectedAudioFile.path} -map 0:v -map 1:a -c:v copy "

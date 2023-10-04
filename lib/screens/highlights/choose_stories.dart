@@ -1,5 +1,4 @@
 import 'package:foap/helper/imports/common_import.dart';
-import 'package:get/get.dart';
 import 'package:foap/helper/imports/highlights_imports.dart';
 
 class ChooseStoryForHighlights extends StatefulWidget {
@@ -70,29 +69,27 @@ class _ChooseStoryForHighlightsState extends State<ChooseStoryForHighlights> {
           ).hp(20),
           const SizedBox(height: 20),
           Expanded(
-            child: GetBuilder<HighlightsController>(
-                init: _highlightsController,
-                builder: (ctx) {
-                  return _highlightsController.isLoading
-                      ? const StoriesShimmerWidget()
-                      : _highlightsController.stories.isNotEmpty
-                          ? GridView.builder(
-                              padding: EdgeInsets.zero,
-                              gridDelegate:
-                                  SliverGridDelegateWithFixedCrossAxisCount(
-                                      crossAxisSpacing: 5,
-                                      mainAxisSpacing: 5,
-                                      childAspectRatio: 0.6,
-                                      crossAxisCount: _numberOfColumns),
-                              itemCount: _highlightsController.stories.length,
-                              itemBuilder: (context, index) {
-                                return _buildItem(index);
-                              }).hp(DesignConstants.horizontalPadding)
-                          : emptyData(
-                              title: noStoryFoundString.tr,
-                              subTitle: postSomeStoriesString.tr,
-                            );
-                }).hP4,
+            child: Obx(() {
+              return _highlightsController.isLoading.value
+                  ? const StoriesShimmerWidget()
+                  : _highlightsController.stories.isNotEmpty
+                      ? GridView.builder(
+                          padding: EdgeInsets.zero,
+                          gridDelegate:
+                              SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisSpacing: 5,
+                                  mainAxisSpacing: 5,
+                                  childAspectRatio: 0.6,
+                                  crossAxisCount: _numberOfColumns),
+                          itemCount: _highlightsController.stories.length,
+                          itemBuilder: (context, index) {
+                            return _buildItem(index);
+                          }).hp(DesignConstants.horizontalPadding)
+                      : emptyData(
+                          title: noStoryFoundString.tr,
+                          subTitle: postSomeStoriesString.tr,
+                        );
+            }).hP4,
           )
         ],
       ),
@@ -143,7 +140,7 @@ class _ChooseStoryForHighlightsState extends State<ChooseStoryForHighlights> {
                   width: double.infinity,
                 ).round(5),
                 _highlightsController.stories[index].isVideoPost() == true
-                    ? const Positioned(
+                    ?  Positioned(
                         top: 0,
                         right: 0,
                         left: 0,
@@ -165,7 +162,7 @@ class _ChooseStoryForHighlightsState extends State<ChooseStoryForHighlights> {
                     height: 20,
                     width: 20,
                     color: AppColorConstants.themeColor,
-                    child: const ThemeIconWidget(ThemeIcon.checkMark),
+                    child: ThemeIconWidget(ThemeIcon.checkMark),
                   ).circular)
               : Container()
         ],

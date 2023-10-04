@@ -7,10 +7,10 @@ import 'package:foap/helper/file_extension.dart';
 import 'package:foap/helper/imports/common_import.dart';
 import 'package:foap/screens/chat/drawing_screen.dart';
 import 'package:foap/helper/imports/chat_imports.dart';
-import '../../components/giphy/giphy_get.dart';
 import '../../model/location.dart';
 import '../../util/constant_util.dart';
 import '../settings_menu/settings_controller.dart';
+import 'package:giphy_get/giphy_get.dart';
 
 class SharingMediaType {
   ThemeIcon icon;
@@ -101,69 +101,43 @@ class _ChatMediaSharingOptionPopupState
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Expanded(
-          child: Container(
-            color: AppColorConstants.backgroundColor,
-            child: GridView.builder(
-                itemCount: mediaTypes.length,
-                padding: EdgeInsets.only(top: 20, left: DesignConstants.horizontalPadding, right: DesignConstants.horizontalPadding),
-                physics: const NeverScrollableScrollPhysics(),
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 4,
-                    crossAxisSpacing: 5.0,
-                    mainAxisSpacing: 5.0,
-                    childAspectRatio: 0.8),
-                itemBuilder: (ctx, index) {
-                  return Column(
-                    children: [
-                      Container(
-                          height: 40,
-                          width: 40,
-                          color: AppColorConstants.cardColor.darken(),
-                          child: ThemeIconWidget(
-                            mediaTypes[index].icon,
-                            size: 18,
-                          )).circular,
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      BodyMediumText(
-                        mediaTypes[index].text,
-                      )
-                    ],
-                  ).ripple(() {
-                    handleAction(mediaTypes[index]);
-                  });
-                }),
-          ).round(20).p16,
-        ),
-        const SizedBox(
-          height: 10,
-        ),
-        Align(
-          alignment: Alignment.center,
-          child: Container(
-            height: 50,
-            width: 50,
-            color: AppColorConstants.backgroundColor,
-            child: Center(
-              child: ThemeIconWidget(
-                ThemeIcon.close,
-                color: AppColorConstants.iconColor,
-                size: 25,
-              ),
-            ),
-          ).circular.ripple(() {
-            Get.back();
+    return Container(
+      color: AppColorConstants.backgroundColor,
+      child: GridView.builder(
+          itemCount: mediaTypes.length,
+          padding: EdgeInsets.only(
+              top: 20,
+              left: DesignConstants.horizontalPadding,
+              right: DesignConstants.horizontalPadding),
+          physics: const NeverScrollableScrollPhysics(),
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 4,
+              crossAxisSpacing: 5.0,
+              mainAxisSpacing: 5.0,
+              childAspectRatio: 0.8),
+          itemBuilder: (ctx, index) {
+            return Column(
+              children: [
+                Container(
+                    height: 40,
+                    width: 40,
+                    color: AppColorConstants.cardColor.darken(),
+                    child: ThemeIconWidget(
+                      mediaTypes[index].icon,
+                      size: 18,
+                    )).circular,
+                const SizedBox(
+                  height: 10,
+                ),
+                BodyMediumText(
+                  mediaTypes[index].text,
+                )
+              ],
+            ).ripple(() {
+              handleAction(mediaTypes[index]);
+            });
           }),
-        ),
-        const SizedBox(
-          height: 40,
-        ),
-      ],
-    );
+    ).round(20).p16;
   }
 
   handleAction(SharingMediaType mediaType) {

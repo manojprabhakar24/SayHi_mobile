@@ -49,9 +49,7 @@ class _DrawingScreenState extends State<DrawingScreen> {
     Directory directory = await getTemporaryDirectory();
     filePath = '${directory.path}/drawing.png';
     File file = File(filePath);
-    // print(filePath);
     if (file.existsSync()) {
-      // print('deleted');
       file.delete();
     }
   }
@@ -183,7 +181,7 @@ class _DrawingScreenState extends State<DrawingScreen> {
           height: 30,
           width: 30,
           color: AppColorConstants.backgroundColor,
-          child: const ThemeIconWidget(ThemeIcon.edit),
+          child: ThemeIconWidget(ThemeIcon.edit),
         ).borderWithRadius(value: 5, radius: 1),
         SizedBox(
           width: Get.width - 100,

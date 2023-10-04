@@ -5,7 +5,6 @@ import 'package:foap/helper/imports/call_imports.dart';
 import 'package:foap/helper/imports/common_import.dart';
 import 'package:foap/screens/chat/chat_detail.dart';
 import 'package:foap/screens/chat/select_users.dart';
-import 'package:get/get.dart';
 
 class CallHistory extends StatefulWidget {
   const CallHistory({Key? key}) : super(key: key);
@@ -37,7 +36,7 @@ class _CallHistoryState extends State<CallHistory> {
         body: Column(
           children: [
             backNavigationBarWithTrailingWidget(
-              widget: const ThemeIconWidget(ThemeIcon.mobile).ripple(() {
+              widget: ThemeIconWidget(ThemeIcon.mobile).ripple(() {
                 selectUsers();
               }),
               title: callLogString.tr,

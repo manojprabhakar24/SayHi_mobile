@@ -1,7 +1,5 @@
 import 'package:foap/controllers/job/job_controller.dart';
 import 'package:foap/screens/jobs_listing/applied_jobs.dart';
-
-import '../../controllers/fund_raising/fund_raising_controller.dart';
 import '../../helper/imports/common_import.dart';
 import 'explore_jobs.dart';
 import 'job_categories.dart';

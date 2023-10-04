@@ -3,7 +3,6 @@ import 'package:foap/controllers/job/job_controller.dart';
 import 'package:foap/model/job_model.dart';
 import 'package:foap/screens/jobs_listing/apply_job.dart';
 import '../../helper/imports/common_import.dart';
-import 'enter_donation_amount.dart';
 
 class AboutJob extends StatelessWidget {
   final JobModel job;

@@ -194,7 +194,6 @@ class NearByOffersController extends GetxController {
   }
 
   getBusinesses(VoidCallback callback) {
-    print('canLoadMoreBusiness $canLoadMoreBusiness');
     if (canLoadMoreBusiness) {
       OffersApi.getBusinesses(
           page: businessPage,
@@ -202,7 +201,6 @@ class NearByOffersController extends GetxController {
           resultCallback: (result, metadata) {
             businessList.addAll(result);
             businessList.unique((e) => e.id);
-            print('businessList ${businessList.length}');
 
             isLoadingBusiness.value = false;
 

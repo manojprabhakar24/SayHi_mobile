@@ -5,7 +5,6 @@ import 'package:foap/helper/imports/chat_imports.dart';
 import 'package:share_plus/share_plus.dart';
 import '../../manager/db_manager_realm.dart';
 import '../../manager/socket_manager.dart';
-import 'package:path_provider/path_provider.dart';
 
 class ChatRoomDetailController extends GetxController {
   RxList<ChatMessageModel> photos = <ChatMessageModel>[].obs;

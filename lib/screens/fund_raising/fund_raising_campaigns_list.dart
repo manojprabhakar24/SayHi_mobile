@@ -1,5 +1,4 @@
 import 'package:foap/model/fund_raising_campaign.dart';
-import '../../components/category_slider.dart';
 import '../../components/fund_raising/fund_raising_card.dart';
 import '../../controllers/fund_raising/fund_raising_controller.dart';
 import '../../helper/imports/common_import.dart';

@@ -43,7 +43,7 @@ class SelectUserForGroupChatState extends State<SelectUserForGroupChat> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    const ThemeIconWidget(
+                    ThemeIconWidget(
                       ThemeIcon.close,
                       size: 20,
                     ).ripple(() {

@@ -1007,18 +1007,19 @@ packages:
     dependency: "direct main"
     description:
       name: flutter_staggered_grid_view
-      sha256: "1312314293acceb65b92754298754801b0e1f26a1845833b740b30415bbbcf07"
+      sha256: "19e7abb550c96fbfeb546b23f3ff356ee7c59a019a651f8f102a4ba9b7349395"
       url: "https://pub.dev"
     source: hosted
-    version: "0.6.2"
+    version: "0.7.0"
   flutter_stripe:
     dependency: "direct main"
     description:
-      name: flutter_stripe
-      sha256: "2acc4a31f9fed946a1fb230d708169ff0448f2a356fc728780ced52eb0df7712"
-      url: "https://pub.dev"
-    source: hosted
-    version: "9.3.0"
+      path: "packages/stripe"
+      ref: main
+      resolved-ref: "3ef413a10e71189664798e1d6fd183e70612da5c"
+      url: "https://github.com/flutter-stripe/flutter_stripe/"
+    source: git
+    version: "9.4.0"
   flutter_switch:
     dependency: "direct main"
     description:
@@ -1125,6 +1126,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "7.6.0"
+  giphy_get:
+    dependency: "direct main"
+    description:
+      name: giphy_get
+      sha256: "8ec7e9c58c31c3aae18b35d7a02daf4994dc0cd39fcff70e949bea07af73660f"
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.5.0"
   glob:
     dependency: transitive
     description:
@@ -2366,26 +2375,26 @@ packages:
     dependency: transitive
     description:
       name: stripe_android
-      sha256: "0396c877823e84f0053f7d57fed506798635a9d48f0f044859c85216db6194fd"
+      sha256: "188858dab6cc38c2924457766e365980d80fe807109730bc2928f2376870c619"
       url: "https://pub.dev"
     source: hosted
-    version: "9.3.0"
+    version: "9.4.0"
   stripe_ios:
     dependency: transitive
     description:
       name: stripe_ios
-      sha256: f1ab1b2e5ee1c6e91dab3effdbdc3dad55da5a1e6bb8794e57ff69d73f0176cc
+      sha256: ddcf87cacf3a6fa482568d099332bae69326acfab51a726af9faa31a8ef30af8
       url: "https://pub.dev"
     source: hosted
-    version: "9.3.0"
+    version: "9.4.1"
   stripe_platform_interface:
     dependency: transitive
     description:
       name: stripe_platform_interface
-      sha256: "554380d197004cff235ae0327f1c3b596a3d22575af83e07c15ed07b6b62c45e"
+      sha256: c09591fdb8d200812fdcb6262b71b357f8e9a618a8830897953c95eb6ea4897c
       url: "https://pub.dev"
     source: hosted
-    version: "9.3.0"
+    version: "9.4.0"
   syncfusion_flutter_core:
     dependency: transitive
     description:

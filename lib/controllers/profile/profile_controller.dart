@@ -6,8 +6,6 @@ import 'package:foap/helper/enum_linking.dart';
 import 'package:foap/helper/imports/common_import.dart';
 import 'package:foap/helper/list_extension.dart';
 import 'package:foap/model/data_wrapper.dart';
-import 'package:foap/screens/add_on/ui/dating/profile/set_location.dart';
-import 'package:get/get.dart';
 import '../../api_handler/apis/auth_api.dart';
 import '../../api_handler/apis/post_api.dart';
 import '../../api_handler/apis/users_api.dart';
@@ -377,10 +375,9 @@ class ProfileController extends GetxController {
   void getTransactionHistory(VoidCallback callback) {
     WalletApi.getTransactionHistory(
         page: transactionsDataWrapper.page,
-
         resultCallback: (result, metadata) {
           transactions.addAll(result);
-          transactions.unique((e)=> e.id);
+          transactions.unique((e) => e.id);
 
           transactionsDataWrapper.processCompletedWithData(metadata);
 
@@ -474,6 +471,7 @@ class ProfileController extends GetxController {
             });
 
             // refresh profile to get updated wallet info
+            AppUtil.showToast(message: giftSentString.tr, isSuccess: true);
             _userProfileManager.refreshProfile();
           });
     } else {}

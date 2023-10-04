@@ -2,7 +2,6 @@ import '../../controllers/fund_raising/fund_raising_controller.dart';
 import '../../helper/imports/common_import.dart';
 import 'explore_campaigns.dart';
 import 'fav_fund_rasing_campaigns_list.dart';
-import 'fund_raising_campaigns_list.dart';
 import 'fund_raising_categories.dart';
 
 class FundRaisingDashboardController extends GetxController {

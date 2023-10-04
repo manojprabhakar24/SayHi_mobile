@@ -37,7 +37,7 @@ class SearchEventListingState extends State<SearchEventListing> {
           ),
           Row(
             children: [
-              const ThemeIconWidget(
+              ThemeIconWidget(
                 ThemeIcon.backArrow,
                 size: 25,
               ).ripple(() {

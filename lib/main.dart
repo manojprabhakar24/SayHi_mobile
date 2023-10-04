@@ -2,7 +2,6 @@ import 'dart:io';
 import 'package:auto_orientation/auto_orientation.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:foap/api_handler/apis/auth_api.dart';
 import 'package:foap/controllers/fund_raising/fund_raising_controller.dart';
@@ -17,7 +16,7 @@ import 'package:foap/screens/add_on/controller/relationship/relationship_search_
 import 'package:foap/controllers/live/live_users_controller.dart';
 import 'package:foap/screens/dashboard/loading.dart';
 import 'package:foap/screens/settings_menu/help_support_contorller.dart';
-import 'components/giphy/src/l10n/l10n.dart';
+import 'package:giphy_get/l10n.dart';
 import 'controllers/post/post_gift_controller.dart';
 import 'controllers/clubs/clubs_controller.dart';
 import 'controllers/coupons/near_by_offers.dart';
@@ -200,7 +199,7 @@ class _SocialifiedAppState extends State<SocialifiedApp> {
                   locale: snapshot.data!,
                   // locale: const Locale('pt',/ 'BR'),
                   fallbackLocale: const Locale('en', 'US'),
-                  debugShowCheckedModeBanner: false,
+                  // debugShowCheckedModeBanner: false,
                   // navigatorKey: navigationKey,
                   home: widget.startScreen,
                   // builder: Loader.init(),

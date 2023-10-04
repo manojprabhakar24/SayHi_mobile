@@ -169,19 +169,18 @@ class PostApi {
 
   static getMentionedPosts(
       {int? userId,
-      int page = 0,
+      int page = 1,
       required Function(List<PostModel>, APIMetaData) resultCallback}) async {
     var url = '${NetworkConstantsUtil.mentionedPosts}$userId&page=$page';
-    Loader.show();
+    // Loader.show();
 
     await ApiWrapper().getApi(url: url).then((response) {
-      Loader.dismiss();
+      // Loader.dismiss();
 
       if (response?.data != null) {
         List<PostModel> posts = [];
         var items = response!.data['post']['items'];
         posts = List<PostModel>.from(items.map((x) => PostModel.fromJson(x)))
-            // .where((element) => element.gallery.isNotEmpty)
             .toList();
 
         APIMetaData metaData =
@@ -321,13 +320,15 @@ class PostApi {
   }
 
   static Future uploadFile(String filePath,
-      {required Function(String, String) resultCallback}) async {
+      {required GalleryMediaType mediaType,
+      required Function(String, String) resultCallback}) async {
     Loader.show(status: loadingString.tr);
 
     await ApiWrapper()
         .uploadPostFile(
       url: NetworkConstantsUtil.uploadPostImage,
       file: filePath,
+      mediaType: mediaType,
     )
         .then((result) {
       Loader.dismiss();

@@ -27,6 +27,9 @@ class HelpSupportController extends GetxController {
         message!.isNotEmpty) {
       MiscApi.sendSupportRequest(
           name: name, email: email, phone: phone, message: message);
+      AppUtil.showToast(message: supportMessageSentString.tr, isSuccess: true);
+    } else {
+      AppUtil.showToast(message: fillFormString.tr, isSuccess: false);
     }
   }
 

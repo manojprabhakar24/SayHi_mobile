@@ -14,13 +14,13 @@ class NotificationTileType4 extends StatelessWidget {
 
   const NotificationTileType4(
       {Key? key,
-        required this.notification,
-        this.backgroundColor,
-        this.titleTextStyle,
-        this.subTitleTextStyle,
-        this.dateTextStyle,
-        this.followBackUserHandler,
-        this.borderColor})
+      required this.notification,
+      this.backgroundColor,
+      this.titleTextStyle,
+      this.subTitleTextStyle,
+      this.dateTextStyle,
+      this.followBackUserHandler,
+      this.borderColor})
       : super(key: key);
 
   @override
@@ -72,13 +72,14 @@ class NotificationTileType4 extends StatelessWidget {
             ],
           ).setPadding(top: 16, bottom: 16, left: 12, right: 12),
         ),
-        if (notification.type == NotificationType.like ||
-            notification.type == NotificationType.comment)
+        if ((notification.type == NotificationType.like ||
+                notification.type == NotificationType.comment) &&
+            notification.post!.gallery.isNotEmpty)
           CachedNetworkImage(
-              height: 60,
-              width: 60,
-              fit: BoxFit.cover,
-              imageUrl: notification.post!.gallery.first.thumbnail)
+                  height: 60,
+                  width: 60,
+                  fit: BoxFit.cover,
+                  imageUrl: notification.post!.gallery.first.thumbnail)
               .round(20),
         // if (notification.type == NotificationType.follow)
         //   if (notification.actionBy?.isFollowing == false)

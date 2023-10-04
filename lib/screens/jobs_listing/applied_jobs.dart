@@ -1,9 +1,7 @@
 import 'package:foap/controllers/job/job_controller.dart';
 import 'package:foap/helper/imports/common_import.dart';
 import 'package:foap/screens/jobs_listing/jobs_list.dart';
-import '../../components/category_slider.dart';
 import '../../components/paging_scrollview.dart';
-import '../../components/search_bar.dart';
 
 class AppliedJobs extends StatefulWidget {
   const AppliedJobs({Key? key}) : super(key: key);

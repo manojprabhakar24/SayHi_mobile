@@ -146,7 +146,6 @@ class JobController extends GetxController {
         coverLetter: coverLetter,
         resume: uploadedResumeFileName,
         successHandler: () {
-          print('applyJob');
           AppUtil.showToast(message: appliedSuccessfully, isSuccess: true);
           Get.close(2);
           refreshJobs(() {});

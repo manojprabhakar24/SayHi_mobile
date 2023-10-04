@@ -1,6 +1,5 @@
 import 'package:foap/screens/add_on/controller/dating/dating_controller.dart';
 import 'package:foap/screens/add_on/model/preference_model.dart';
-import 'package:get/get.dart';
 import 'package:foap/helper/imports/common_import.dart';
 import 'add_personal_info.dart';
 
@@ -43,7 +42,7 @@ class _SetYourGenderState extends State<SetYourGender> {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                Heading2Text(
+                Heading3Text(
                   genderString.tr,
                 ).setPadding(top: 20),
                 Heading6Text(

@@ -34,7 +34,7 @@ class BattleInvitation extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const ThemeIconWidget(
+                  ThemeIconWidget(
                     ThemeIcon.clock,
                     color: Colors.white,
                     size: 20,
@@ -139,7 +139,7 @@ class AlreadyInvitedTimerView extends StatelessWidget {
           //     child: Row(
           //       mainAxisAlignment: MainAxisAlignment.center,
           //       children: [
-          //         const ThemeIconWidget(
+          //         ThemeIconWidget(
           //           ThemeIcon.clock,
           //           color: Colors.white,
           //           size: 20,

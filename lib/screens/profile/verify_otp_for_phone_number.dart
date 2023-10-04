@@ -1,7 +1,5 @@
 import 'package:foap/helper/imports/common_import.dart';
-import 'package:get/get.dart';
 import 'package:pin_code_text_field/pin_code_text_field.dart';
-
 import '../../controllers/auth/login_controller.dart';
 
 class VerifyOTPPhoneNumberChange extends StatefulWidget {
@@ -35,7 +33,7 @@ class VerifyOTPPhoneNumberChangeState
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const ThemeIconWidget(
+              ThemeIconWidget(
                 ThemeIcon.backArrow,
                 size: 20,
               ).ripple(() {

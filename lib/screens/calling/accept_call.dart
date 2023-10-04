@@ -1,4 +1,3 @@
-import 'package:foap/components/timer_widget.dart';
 import 'package:foap/helper/imports/common_import.dart';
 import 'package:foap/model/call_model.dart';
 import 'package:foap/screens/dashboard/dashboard_screen.dart';
@@ -20,7 +19,6 @@ class AcceptCallScreen extends StatefulWidget {
 
 class _AcceptCallScreenState extends State<AcceptCallScreen> {
   final AgoraCallController agoraCallController = Get.find();
-  final GlobalKey<TimerViewState> _timerKey = GlobalKey();
 
   @override
   void initState() {
@@ -65,13 +63,13 @@ class _AcceptCallScreenState extends State<AcceptCallScreen> {
           height: 70,
           child:
               Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-            const ThemeIconWidget(
+            ThemeIconWidget(
               ThemeIcon.backArrow,
               color: Colors.white,
               size: 25,
             ).p8.ripple(() {
               // Get.back();
-              PIPView.of(context)!.presentBelow(DashboardScreen());
+              PIPView.of(context)!.presentBelow(const DashboardScreen());
             }),
           ]),
         ),
@@ -154,7 +152,7 @@ class _AcceptCallScreenState extends State<AcceptCallScreen> {
               color: AppColorConstants.red,
               height: 80,
               width: 80,
-              child: const ThemeIconWidget(
+              child: ThemeIconWidget(
                 ThemeIcon.declineCall,
                 size: 30,
                 color: Colors.white,
@@ -169,7 +167,7 @@ class _AcceptCallScreenState extends State<AcceptCallScreen> {
               color: AppColorConstants.themeColor,
               height: 80,
               width: 80,
-              child: const ThemeIconWidget(
+              child: ThemeIconWidget(
                 ThemeIcon.acceptCall,
                 size: 30,
                 color: Colors.white,

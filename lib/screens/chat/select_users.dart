@@ -1,6 +1,5 @@
 import 'package:foap/helper/imports/common_import.dart';
 import 'package:foap/screens/chat/random_chat/choose_profile_category.dart';
-import 'package:get/get.dart';
 import 'package:foap/helper/imports/chat_imports.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:progress_state_button/progress_button.dart';
@@ -36,7 +35,7 @@ class SelectUserForChatState extends State<SelectUserForChat> {
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      color: AppColorConstants.cardColor.darken(),
+      color: AppColorConstants.cardColor,
       child: Column(
         children: [
           const SizedBox(
@@ -81,7 +80,7 @@ class SelectUserForChatState extends State<SelectUserForChat> {
                                 itemBuilder: (context, index) {
                                   if (index == 0) {
                                     return SizedBox(
-                                      height: 40,
+                                      height: 30,
                                       child: Row(
                                         children: [
                                           Container(
@@ -111,7 +110,7 @@ class SelectUserForChatState extends State<SelectUserForChat> {
                                     }).hp(DesignConstants.horizontalPadding);
                                   } else if (index == 1) {
                                     return SizedBox(
-                                      height: 40,
+                                      height: 30,
                                       child: Row(
                                         children: [
                                           Container(
@@ -171,7 +170,7 @@ class SelectUserForChatState extends State<SelectUserForChat> {
                                   }
 
                                   return const SizedBox(
-                                    height: 40,
+                                    height: 25,
                                   );
                                 },
                               )
@@ -271,59 +270,66 @@ class SelectFollowingUserForMessageSendingState
   @override
   Widget build(BuildContext context) {
     // this is being used in share post also
-    return GetBuilder<SelectUserForChatController>(
-        init: selectUserForChatController,
-        builder: (ctx) {
-          ScrollController scrollController = ScrollController();
-          scrollController.addListener(() {
-            if (scrollController.position.maxScrollExtent ==
-                scrollController.position.pixels) {
-              if (!selectUserForChatController.followingIsLoading) {
-                selectUserForChatController.getFollowingUsers();
+    return Container(
+      color: AppColorConstants.cardColor,
+      child: GetBuilder<SelectUserForChatController>(
+          init: selectUserForChatController,
+          builder: (ctx) {
+            ScrollController scrollController = ScrollController();
+            scrollController.addListener(() {
+              if (scrollController.position.maxScrollExtent ==
+                  scrollController.position.pixels) {
+                if (!selectUserForChatController.followingIsLoading) {
+                  selectUserForChatController.getFollowingUsers();
+                }
               }
-            }
-          });
+            });
 
-          List<UserModel> usersList = selectUserForChatController.following;
-          return selectUserForChatController.followingIsLoading
-              ? const ShimmerUsers()
-              : usersList.isNotEmpty
-                  ? ListView.separated(
-                      padding: const EdgeInsets.only(top: 20, bottom: 50),
-                      controller: scrollController,
-                      itemCount: usersList.length,
-                      itemBuilder: (context, index) {
-                        UserModel user = usersList[index];
-                        return SendMessageUserTile(
-                          state: selectUserForChatController
-                                  .completedActionUsers
-                                  .contains(user)
-                              ? ButtonState.success
-                              : selectUserForChatController.failedActionUsers
-                                      .contains(user)
-                                  ? ButtonState.fail
-                                  : selectUserForChatController
-                                          .processingActionUsers
-                                          .contains(user)
-                                      ? ButtonState.loading
-                                      : ButtonState.idle,
-                          profile: usersList[index],
-                          sendCallback: () {
-                            Get.back();
-                            widget.sendToUserCallback(usersList[index]);
-                          },
-                        );
-                      },
-                      separatorBuilder: (context, index) {
-                        return const SizedBox(
-                          height: 20,
-                        );
-                      },
-                    )
-                  : emptyUser(
-                      title: noUserFoundString.tr,
-                      subTitle: followFriendsToSendPostString.tr,
-                    );
-        }).round(20);
+            List<UserModel> usersList = selectUserForChatController.following;
+            return selectUserForChatController.followingIsLoading
+                ? const ShimmerUsers()
+                : usersList.isNotEmpty
+                    ? ListView.separated(
+                        padding: EdgeInsets.only(
+                            top: 20,
+                            bottom: 50,
+                            left: DesignConstants.horizontalPadding,
+                            right: DesignConstants.horizontalPadding),
+                        controller: scrollController,
+                        itemCount: usersList.length,
+                        itemBuilder: (context, index) {
+                          UserModel user = usersList[index];
+                          return SendMessageUserTile(
+                            state: selectUserForChatController
+                                    .completedActionUsers
+                                    .contains(user)
+                                ? ButtonState.success
+                                : selectUserForChatController.failedActionUsers
+                                        .contains(user)
+                                    ? ButtonState.fail
+                                    : selectUserForChatController
+                                            .processingActionUsers
+                                            .contains(user)
+                                        ? ButtonState.loading
+                                        : ButtonState.idle,
+                            profile: usersList[index],
+                            sendCallback: () {
+                              Get.back();
+                              widget.sendToUserCallback(usersList[index]);
+                            },
+                          );
+                        },
+                        separatorBuilder: (context, index) {
+                          return const SizedBox(
+                            height: 20,
+                          );
+                        },
+                      )
+                    : emptyUser(
+                        title: noUserFoundString.tr,
+                        subTitle: followFriendsToSendPostString.tr,
+                      );
+          }).round(20),
+    ).round(40);
   }
 }

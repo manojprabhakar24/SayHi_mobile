@@ -1,9 +1,7 @@
-import 'package:foap/helper/file_extension.dart';
 import 'package:foap/helper/imports/chat_imports.dart';
 import 'package:foap/helper/imports/common_import.dart';
 import 'package:foap/helper/imports/story_imports.dart';
 import 'package:foap/screens/home_feed/story_uploader.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:flutter_polls/flutter_polls.dart';
 import '../../components/post_card/post_card.dart';
@@ -12,10 +10,10 @@ import '../../controllers/live/agora_live_controller.dart';
 import '../../controllers/home/home_controller.dart';
 import '../../model/call_model.dart';
 import '../../model/post_model.dart';
+import '../add_on/model/polls_model.dart';
 import '../dashboard/dashboard_screen.dart';
 import '../post/add_post_screen.dart';
 import '../settings_menu/settings_controller.dart';
-
 
 class HomeFeedScreen extends StatefulWidget {
   const HomeFeedScreen({Key? key}) : super(key: key);
@@ -104,7 +102,7 @@ class HomeFeedState extends State<HomeFeedScreen> {
                   color: AppColorConstants.themeColor,
                 ),
                 const Spacer(),
-                const SizedBox(
+                SizedBox(
                     height: 35,
                     width: 35,
                     child: ThemeIconWidget(
@@ -130,7 +128,7 @@ class HomeFeedState extends State<HomeFeedScreen> {
                   child: Stack(
                     alignment: Alignment.center,
                     children: [
-                      const ThemeIconWidget(
+                      ThemeIconWidget(
                         ThemeIcon.chat,
                         size: 25,
                       ).ripple(() {
@@ -229,7 +227,9 @@ class HomeFeedState extends State<HomeFeedScreen> {
 
   Widget storiesView() {
     return Container(
-      height: storyCircleSize + 30 + 2 * DesignConstants.horizontalPadding,
+      height: storyCircleSize +
+          (storyCircleSize / 2) +
+          (2 * DesignConstants.horizontalPadding),
       color: AppColorConstants.themeColor.withOpacity(0.05),
       child: GetBuilder<HomeController>(
           init: _homeController,
@@ -293,118 +293,114 @@ class HomeFeedState extends State<HomeFeedScreen> {
                 }
               },
               separatorBuilder: (context, index) {
-                int separatorIndex = index - 2;
-                if (_homeController.positions.contains(separatorIndex)) {
-                  int positionIndex =
-                      _homeController.positions.indexOf(separatorIndex);
-                  return PostCard(
-                    model: _homeController.sponsoredPosts[positionIndex],
-                    removePostHandler: () {
-                      _homeController.removePostFromList(
-                          _homeController.sponsoredPosts[positionIndex]);
-                    },
-                    blockUserHandler: () {
-                      _homeController.removeUsersAllPostFromList(
-                          _homeController.sponsoredPosts[positionIndex]);
-                    },
-                  );
-                } else {
-                  if (_settingsController.setting.value?.enablePolls == true) {
-                    return polls(index);
-                  } else {
-                    if (index == 1) {
-                      return divider(height: 0.2).vP16;
+                if (index > 0 &&
+                    index % 5 == 0 &&
+                    _homeController.sponsoredPosts.length >= index / 5) {
+                  PostModel post =
+                      _homeController.sponsoredPosts[(index ~/ 5) - 1];
+                  return Column(
+                    children: [
+                      PostCard(
+                        model: post,
+                        removePostHandler: () {
+                          _homeController.removePostFromList(post);
+                        },
+                        blockUserHandler: () {
+                          _homeController.removeUsersAllPostFromList(post);
+                        },
+                      ),
+                      divider(
+                        height: index > 1 ? 10 : 0,
+                      ).tP16
+                    ],
+                  ).vp(index > 1 ? 16 : 8);
+                } else if (index > 0 &&
+                    index % 8 == 0 &&
+                    _homeController.polls.length >= index / 8) {
+                  PollsModel poll = _homeController.polls[(index ~/ 8) - 1];
+                  {
+                    if (_settingsController.setting.value?.enablePolls ==
+                        true) {
+                      return Column(
+                        children: [
+                          pollWidget(poll),
+                          divider(
+                            height: index > 1 ? 10 : 0,
+                          ).vp(index > 1 ? 16 : 8)
+                        ],
+                      );
+                    } else {
+                      return divider(
+                        height: index > 1 ? 10 : 0,
+                      ).vp(index > 1 ? 16 : 8);
                     }
-                    return const SizedBox(
-                      height: 0,
-                    );
                   }
+                } else {
+                  return divider(
+                    height: index > 1 ? 10 : 0,
+                  ).vp(index > 1 ? 16 : 8);
                 }
               })
           .addPullToRefresh(
               refreshController: _refreshController,
-              enablePullUp: false,
+              enablePullUp: true,
               onRefresh: refreshData,
-              onLoading: () {},
+              onLoading: loadMore,
               enablePullDown: true);
     });
   }
 
-  polls(int index) {
-    int postIndex = index > 1 ? index - 2 : 0;
-    if (postIndex % pollFrequencyIndex == 0 && postIndex != 0) {
-      int pollIndex = (postIndex ~/ pollFrequencyIndex) - 1;
-      if (_homeController.polls.length > pollIndex) {
-        return Container(
-          color: AppColorConstants.cardColor,
-          child: FlutterPolls(
-            pollId: _homeController.polls[pollIndex].id.toString(),
-            hasVoted: _homeController.polls[pollIndex].isVote! > 0,
-            userVotedOptionId: _homeController.polls[pollIndex].isVote! > 0
-                ? _homeController.polls[pollIndex].isVote
-                : null,
-            onVoted: (PollOption pollOption, int newTotalVotes) async {
-              await Future.delayed(const Duration(seconds: 1));
-              _homeController.postPollAnswer(
-                  _homeController.polls[pollIndex].id!,
-                  // _homeController.polls[pollIndex].id!,
-                  pollOption.id!);
+  Widget pollWidget(PollsModel poll) {
+    return Container(
+      color: AppColorConstants.cardColor,
+      child: FlutterPolls(
+        pollId: poll.id.toString(),
+        hasVoted: poll.isVote! > 0,
+        userVotedOptionId: poll.isVote! > 0 ? poll.isVote : null,
+        onVoted: (PollOption pollOption, int newTotalVotes) async {
+          await Future.delayed(const Duration(seconds: 1));
+          _homeController.postPollAnswer(
+              poll.id!,
+              // _homeController.polls[pollIndex].id!,
+              pollOption.id!);
 
-              /// If HTTP status is success, return true else false
-              return true;
+          /// If HTTP status is success, return true else false
+          return true;
+        },
+        pollEnded: false,
+        pollOptionsSplashColor: Colors.white,
+        votedProgressColor: Colors.grey.withOpacity(0.3),
+        votedBackgroundColor: Colors.grey.withOpacity(0.2),
+        votesTextStyle: TextStyle(
+            fontSize: FontSizes.b2, color: AppColorConstants.mainTextColor),
+        votedPercentageTextStyle: TextStyle(fontSize: FontSizes.b2).copyWith(
+          color: Colors.black,
+        ),
+        votedCheckmark: const Icon(
+          Icons.check_circle,
+          color: Colors.black,
+        ),
+        pollTitle: Align(
+          alignment: Alignment.centerLeft,
+          child: BodyLargeText(
+            poll.title ?? "",
+            weight: TextWeight.medium,
+          ),
+        ),
+        pollOptions: List<PollOption>.from(
+          (poll.pollOptions ?? []).map(
+            (option) {
+              var a = PollOption(
+                id: option.id,
+                title: BodyLargeText(option.title ?? '',
+                    weight: TextWeight.medium),
+                votes: option.totalOptionVoteCount ?? 0,
+              );
+              return a;
             },
-            pollEnded: false,
-            pollOptionsSplashColor: Colors.white,
-            votedProgressColor: Colors.grey.withOpacity(0.3),
-            votedBackgroundColor: Colors.grey.withOpacity(0.2),
-            votesTextStyle: TextStyle(fontSize: FontSizes.b2),
-            votedPercentageTextStyle:
-                TextStyle(fontSize: FontSizes.b2).copyWith(
-              color: Colors.black,
-            ),
-            votedCheckmark: const Icon(
-              Icons.check_circle,
-              color: Colors.black,
-            ),
-            pollTitle: Align(
-              alignment: Alignment.centerLeft,
-              child: BodyLargeText(
-                _homeController.polls[pollIndex].title ?? "",
-                weight: TextWeight.medium,
-              ),
-            ),
-            pollOptions: List<PollOption>.from(
-              (_homeController.polls[pollIndex].pollOptions ?? []).map(
-                (option) {
-                  var a = PollOption(
-                    id: option.id,
-                    title: BodyLargeText(option.title ?? '',
-                        weight: TextWeight.medium),
-                    votes: option.totalOptionVoteCount ?? 0,
-                  );
-                  return a;
-                },
-              ),
-            ),
-          ).p16,
-        ).round(15).p16;
-      } else {
-        if (index == 1) {
-          return divider(height: 0.2).vP16;
-        }
-        if (index > 1) {
-          return divider(height: 10).vP16;
-        }
-        return Container();
-      }
-    } else {
-      if (index == 1) {
-        return divider(height: 0.2).vP16;
-      }
-      if (index > 1) {
-        return divider(height: 10).vP16;
-      }
-      return Container();
-    }
+          ),
+        ),
+      ).p16,
+    ).round(15).p16;
   }
 }

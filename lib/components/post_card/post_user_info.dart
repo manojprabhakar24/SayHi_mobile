@@ -68,7 +68,7 @@ class PostUserInfo extends StatelessWidget {
                     ? BodyExtraSmallText(sponsoredString.tr)
                     : Row(
                   children: [
-                    const ThemeIconWidget(ThemeIcon.clock, size: 12),
+                    ThemeIconWidget(ThemeIcon.clock, size: 12),
                     const SizedBox(
                       width: 5,
                     ),

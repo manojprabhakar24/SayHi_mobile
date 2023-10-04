@@ -1,7 +1,5 @@
-import 'package:get/get.dart';
 import 'package:foap/helper/imports/common_import.dart';
 import 'package:foap/helper/imports/club_imports.dart';
-import '../../components/group_avatars/group_avatar2.dart';
 import '../../components/search_bar.dart';
 import '../reuseable_widgets/club_listing.dart';
 
@@ -36,7 +34,7 @@ class SearchClubsListingState extends State<SearchClubsListing> {
           ),
           Row(
             children: [
-              const ThemeIconWidget(
+              ThemeIconWidget(
                 ThemeIcon.backArrow,
                 size: 25,
               ).ripple(() {

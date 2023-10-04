@@ -147,7 +147,7 @@ class _LiveTvPlayerState extends State<LiveTvPlayer> {
                 ],
               ),
               // const Spacer(),
-              // const ThemeIconWidget(
+              // ThemeIconWidget(
               //   ThemeIcon.close,
               //   size: 25,
               // ).ripple(() {

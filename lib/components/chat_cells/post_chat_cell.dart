@@ -175,9 +175,7 @@ class MinimalInfoPostChatTile extends StatelessWidget {
     PostModel? post;
     await PostApi.getPostDetail(postId, resultCallback: (result) {
       post = result;
-      print('hello');
     });
-    print('hello 1 ${post}');
 
     return post;
   }

@@ -1,7 +1,7 @@
 import 'package:foap/helper/imports/common_import.dart';
 import 'package:foap/helper/imports/event_imports.dart';
 import 'package:foap/screens/profile/other_user_profile.dart';
-import 'package:get/get.dart';
+
 
 class EventBookingCard extends StatelessWidget {
   final EventBookingModel bookingModel;
@@ -37,7 +37,7 @@ class EventBookingCard extends StatelessWidget {
                                   bookingModel.giftedByUser!.userName,
                                   style: TextStyle(fontSize: FontSizes.b2),
                                 ),
-                                const ThemeIconWidget(
+                                ThemeIconWidget(
                                   ThemeIcon.nextArrow,
                                   size: 15,
                                 )
@@ -71,7 +71,7 @@ class EventBookingCard extends StatelessWidget {
                                   bookingModel.giftedByUser!.userName,
                                   style: TextStyle(fontSize: FontSizes.b2),
                                 ),
-                                const ThemeIconWidget(
+                                ThemeIconWidget(
                                   ThemeIcon.nextArrow,
                                   size: 15,
                                 )

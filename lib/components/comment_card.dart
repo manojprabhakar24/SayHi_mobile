@@ -107,7 +107,9 @@ class CommentTileState extends State<CommentTile> {
               id: 0,
               postId: 0,
               fileName: "",
-              filePath: model.filename ?? "",
+              filePath: model.filename,
+              height: 0,
+              width: 0,
               mediaType: 1, //  image=1, video=2, audio=3
             )
           ]),

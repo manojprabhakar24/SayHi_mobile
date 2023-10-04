@@ -1,8 +1,6 @@
 import 'package:foap/api_handler/apis/profile_api.dart';
 import 'package:foap/helper/imports/common_import.dart';
 
-import '../../../../api_handler/apis/users_api.dart';
-
 class RelationshipSearchController extends GetxController {
   // RxList<UserModel> searchedUsers = <UserModel>[].obs;
   // RxString searchText = ''.obs;

@@ -1,15 +1,16 @@
+import 'dart:developer';
+
 import 'package:foap/manager/location_manager.dart';
 import 'package:foap/screens/add_on/controller/dating/dating_controller.dart';
 import 'package:foap/screens/add_on/model/preference_model.dart';
-import 'package:get/get.dart';
 import 'package:foap/helper/imports/common_import.dart';
-
 import 'add_name.dart';
 
 class SetLocation extends StatefulWidget {
   final bool isSettingProfile;
 
-  const SetLocation({Key? key, required this.isSettingProfile}) : super(key: key);
+  const SetLocation({Key? key, required this.isSettingProfile})
+      : super(key: key);
 
   @override
   State<SetLocation> createState() => _SetLocationState();
@@ -31,9 +32,9 @@ class _SetLocationState extends State<SetLocation> {
               rightBtnTitle: widget.isSettingProfile ? skipString.tr : null,
               title: setLocationString.tr,
               completion: () {
-                Get.to(() => AddName(isSettingProfile: widget.isSettingProfile));
+                Get.to(
+                    () => AddName(isSettingProfile: widget.isSettingProfile));
               }),
-
           Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.start,
@@ -74,7 +75,8 @@ class _SetLocationState extends State<SetLocation> {
         AddDatingDataModel dataModel = AddDatingDataModel();
         dataModel.latitude = locationData.latitude.toString();
         dataModel.longitude = locationData.longitude.toString();
-        _userProfileManager.user.value!.latitude = locationData.latitude.toString();
+        _userProfileManager.user.value!.latitude =
+            locationData.latitude.toString();
         _userProfileManager.user.value!.longitude =
             locationData.longitude.toString();
         datingController.updateDatingProfile(dataModel, () {
@@ -84,7 +86,9 @@ class _SetLocationState extends State<SetLocation> {
             Get.back();
           }
         });
-      } catch (err) {}
+      } catch (err) {
+        log(err.toString());
+      }
     });
   }
 }

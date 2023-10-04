@@ -88,7 +88,7 @@ class MessagesInLive extends StatelessWidget {
                   const SizedBox(
                     width: 5,
                   ),
-                  const ThemeIconWidget(
+                  ThemeIconWidget(
                     ThemeIcon.diamond,
                     color: Colors.yellow,
                   )

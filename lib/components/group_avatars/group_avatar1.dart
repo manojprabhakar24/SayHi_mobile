@@ -1,9 +1,7 @@
 import 'package:foap/helper/imports/common_import.dart';
 import 'package:foap/helper/number_extension.dart';
-import 'package:foap/screens/near_by_offers/business_list.dart';
 import 'package:foap/screens/near_by_offers/explore_buisness.dart';
 import 'package:foap/screens/near_by_offers/explore_offers.dart';
-
 import '../../model/category_model.dart';
 
 class CategoryAvatarType1 extends StatelessWidget {
@@ -122,7 +120,7 @@ class OfferCategoryCard extends StatelessWidget {
                   businessesString.tr,
                 ),
                 const Spacer(),
-                const ThemeIconWidget(ThemeIcon.nextArrow),
+                ThemeIconWidget(ThemeIcon.nextArrow),
               ],
             ).hP4,
           ).ripple(() {
@@ -148,7 +146,7 @@ class OfferCategoryCard extends StatelessWidget {
                         offers.tr,
                       ),
                       const Spacer(),
-                      const ThemeIconWidget(ThemeIcon.nextArrow),
+                      ThemeIconWidget(ThemeIcon.nextArrow),
                     ],
                   ).hP4)
               .ripple(() {

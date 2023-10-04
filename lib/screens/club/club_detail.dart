@@ -7,7 +7,6 @@ import '../../components/actionSheets/action_sheet1.dart';
 import '../../controllers/chat_and_call/chat_detail_controller.dart';
 import '../../model/generic_item.dart';
 import '../chat/chat_detail.dart';
-import '../post/view_post_insight.dart';
 
 class ClubDetail extends StatefulWidget {
   final ClubModel club;
@@ -73,7 +72,7 @@ class ClubDetailState extends State<ClubDetail> {
                   height: 50,
                   width: 50,
                   color: AppColorConstants.themeColor,
-                  child: const ThemeIconWidget(
+                  child: ThemeIconWidget(
                     ThemeIcon.edit,
                     size: 25,
                     color: Colors.white,
@@ -124,7 +123,7 @@ class ClubDetailState extends State<ClubDetail> {
                             ),
                             Row(
                               children: [
-                                const ThemeIconWidget(ThemeIcon.userGroup),
+                                ThemeIconWidget(ThemeIcon.userGroup),
                                 const SizedBox(
                                   width: 5,
                                 ),
@@ -132,7 +131,7 @@ class ClubDetailState extends State<ClubDetail> {
                                   _clubDetailController.club.value!.groupType,
                                   weight: TextWeight.medium,
                                 ),
-                                const ThemeIconWidget(
+                                ThemeIconWidget(
                                   ThemeIcon.circle,
                                   size: 8,
                                 ).hP8,
@@ -310,7 +309,7 @@ class ClubDetailState extends State<ClubDetail> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            const ThemeIconWidget(
+            ThemeIconWidget(
               ThemeIcon.backArrow,
               size: 20,
               color: Colors.white,
@@ -327,7 +326,7 @@ class ClubDetailState extends State<ClubDetail> {
                                 Container(
                                   color: AppColorConstants.themeColor
                                       .withOpacity(0.2),
-                                  child: const ThemeIconWidget(
+                                  child: ThemeIconWidget(
                                     ThemeIcon.request,
                                     size: 20,
                                     color: Colors.white,
@@ -347,7 +346,7 @@ class ClubDetailState extends State<ClubDetail> {
                               ],
                             )),
                       const SizedBox(width: 10),
-                      const ThemeIconWidget(
+                      ThemeIconWidget(
                         ThemeIcon.setting,
                         size: 20,
                         color: Colors.white,

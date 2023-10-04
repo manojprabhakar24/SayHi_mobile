@@ -5,7 +5,6 @@ import 'package:foap/helper/imports/common_import.dart';
 import 'package:foap/helper/imports/event_imports.dart';
 import 'package:foap/screens/add_on/ui/dating/dating_dashboard.dart';
 import 'package:foap/screens/add_on/ui/dating/profile/upload_profile_picture.dart';
-import 'package:foap/screens/add_on/ui/podcast/podcast_list_dashboard.dart';
 import 'package:foap/screens/chatgpt/chat_gpt.dart';
 import 'package:foap/screens/fund_raising/fund_raising_dashboard.dart';
 import 'package:foap/screens/home_feed/story_uploader.dart';
@@ -14,18 +13,14 @@ import 'package:foap/screens/live/live_users_screen.dart';
 import 'package:foap/screens/near_by_offers/offers_dashboard.dart';
 import '../../controllers/home/home_controller.dart';
 import '../../controllers/job/job_controller.dart';
-import '../add_on/ui/dating/profile/add_name.dart';
-import '../add_on/ui/dating/profile/allow_notifications.dart';
 import '../add_on/ui/podcast/podcast_dashboard.dart';
 import '../add_on/ui/reel/create_reel_video.dart';
 import '../chat/random_chat/choose_profile_category.dart';
-
 import '../club/explore_clubs.dart';
 import '../competitions/competitions_screen.dart';
 import '../highlights/choose_stories.dart';
 import '../live/checking_feasibility.dart';
 import '../shop_feature/home/shop_dashboard.dart';
-import '../story/choose_media_for_story.dart';
 import '../tvs/tv_dashboard.dart';
 
 enum QuickLinkType {

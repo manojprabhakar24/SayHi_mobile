@@ -62,7 +62,7 @@ class EditPostScreenState extends State<EditPostScreen> {
                                 addPostController.clear();
                               },
                               child:
-                                  const ThemeIconWidget(ThemeIcon.backArrow)),
+                                  ThemeIconWidget(ThemeIcon.backArrow)),
                           const Spacer(),
                           Container(
                                   color: AppColorConstants.themeColor,

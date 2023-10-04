@@ -1,6 +1,5 @@
 import 'package:foap/helper/imports/common_import.dart';
 import 'package:foap/helper/imports/highlights_imports.dart';
-import 'package:keyboard_attachable/keyboard_attachable.dart';
 import 'package:story_view/controller/story_controller.dart';
 import 'package:story_view/utils.dart';
 import 'package:story_view/widgets/story_view.dart';
@@ -115,7 +114,7 @@ class _HighlightViewerState extends State<HighlightViewer> {
         SizedBox(
           height: 25,
           width: 40,
-          child: const ThemeIconWidget(
+          child: ThemeIconWidget(
             ThemeIcon.more,
             color: Colors.white,
             size: 20,

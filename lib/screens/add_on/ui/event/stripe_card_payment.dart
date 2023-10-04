@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:foap/helper/imports/common_import.dart';
 import 'package:flutter_stripe/flutter_stripe.dart' as stripe;
 import 'package:http/http.dart' as http;
-import 'package:get/get.dart';
+
 
 class StripeCardPayment extends StatefulWidget {
   const StripeCardPayment({Key? key}) : super(key: key);

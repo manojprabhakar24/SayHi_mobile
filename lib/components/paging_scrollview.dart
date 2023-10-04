@@ -1,6 +1,7 @@
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import '../helper/imports/common_import.dart';
 
+//ignore: must_be_immutable
 class PagingScrollView extends StatelessWidget {
   final Widget child;
   final Function(RefreshController) loadMoreCallback;

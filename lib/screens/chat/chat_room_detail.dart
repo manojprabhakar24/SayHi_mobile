@@ -1,5 +1,4 @@
 import 'package:foap/helper/imports/common_import.dart';
-import 'package:get/get.dart';
 import 'package:foap/helper/imports/chat_imports.dart';
 import '../../components/actionSheets/action_sheet1.dart';
 import '../../model/generic_item.dart';
@@ -188,7 +187,7 @@ class _ChatRoomDetailState extends State<ChatRoomDetail> {
                 children: [
                   Container(
                     color: AppColorConstants.themeColor,
-                    child: const ThemeIconWidget(
+                    child: ThemeIconWidget(
                       ThemeIcon.setting,
                       color: Colors.white,
                     ).p4,
@@ -230,7 +229,7 @@ class _ChatRoomDetailState extends State<ChatRoomDetail> {
                 children: [
                   Container(
                     color: AppColorConstants.themeColor,
-                    child: const ThemeIconWidget(
+                    child: ThemeIconWidget(
                       ThemeIcon.gallery,
                       color: Colors.white,
                     ).p4,
@@ -264,7 +263,7 @@ class _ChatRoomDetailState extends State<ChatRoomDetail> {
                 children: [
                   Container(
                     color: AppColorConstants.themeColor,
-                    child: const ThemeIconWidget(
+                    child: ThemeIconWidget(
                       ThemeIcon.wallpaper,
                       color: Colors.white,
                     ).p4,
@@ -300,7 +299,7 @@ class _ChatRoomDetailState extends State<ChatRoomDetail> {
                         children: [
                           Container(
                             color: AppColorConstants.themeColor,
-                            child: const ThemeIconWidget(
+                            child: ThemeIconWidget(
                               ThemeIcon.filledStar,
                               color: Colors.white,
                             ).p4,
@@ -430,7 +429,7 @@ class _ChatRoomDetailState extends State<ChatRoomDetail> {
           Container(
             child: Column(
               children: [
-                const ThemeIconWidget(
+                ThemeIconWidget(
                   ThemeIcon.mobile,
                   size: 20,
                 ),
@@ -451,7 +450,7 @@ class _ChatRoomDetailState extends State<ChatRoomDetail> {
           Container(
             child: Column(
               children: [
-                const ThemeIconWidget(
+                ThemeIconWidget(
                   ThemeIcon.videoCamera,
                   size: 20,
                 ),
@@ -579,7 +578,7 @@ class _ChatRoomDetailState extends State<ChatRoomDetail> {
                               height: 40,
                               width: 40,
                               color: AppColorConstants.themeColor.lighten(),
-                              child: const ThemeIconWidget(
+                              child: ThemeIconWidget(
                                 ThemeIcon.plus,
                                 size: 25,
                               ),

@@ -10,6 +10,7 @@ import '../helper/localization_strings.dart';
 import '../theme/theme_icon.dart';
 import '../util/app_config_constants.dart';
 
+//ignore: must_be_immutable
 class InputField extends StatefulWidget {
   final String? label;
   final bool? showLabelInNewLine;
@@ -174,6 +175,7 @@ class _InputFieldState extends State<InputField> {
   }
 }
 
+//ignore: must_be_immutable
 class PasswordField extends StatefulWidget {
   final String? hintText;
   final ValueChanged<String> onChanged;
@@ -346,6 +348,7 @@ class _PasswordFieldState extends State<PasswordField> {
   }
 }
 
+//ignore: must_be_immutable
 class RoundedInputMobileNumberField extends StatefulWidget {
   final String? label;
   final bool? showLabelInNewLine;
@@ -552,6 +555,7 @@ class _RoundedInputMobileNumberFieldState
   }
 }
 
+//ignore: must_be_immutable
 class RoundedInputDateField extends StatefulWidget {
   final String? label;
   final bool? showLabelInNewLine;
@@ -709,6 +713,7 @@ class _RoundedInputDateFieldState extends State<RoundedInputDateField> {
   }
 }
 
+//ignore: must_be_immutable
 class RoundedInputPriceField extends StatefulWidget {
   final String? label;
   final bool? showLabelInNewLine;
@@ -894,6 +899,7 @@ class _RoundedInputPriceFieldState extends State<RoundedInputPriceField> {
   }
 }
 
+//ignore: must_be_immutable
 class RoundedInputDateTimeField extends StatefulWidget {
   final String? label;
   final bool? showLabelInNewLine;

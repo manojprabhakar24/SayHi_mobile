@@ -2,7 +2,6 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:developer';
-
 import 'package:flutter_fgbg/flutter_fgbg.dart';
 import 'package:foap/api_handler/apis/users_api.dart';
 import 'package:foap/controllers/chat_and_call/agora_call_controller.dart';
@@ -16,12 +15,10 @@ import 'package:foap/helper/imports/common_import.dart';
 import 'package:foap/helper/imports/models.dart';
 import 'package:foap/helper/socket_constants.dart';
 import 'package:foap/helper/string_extension.dart';
-import 'package:foap/manager/db_manager.dart';
 import 'package:foap/manager/socket_manager.dart';
 import 'package:foap/screens/dashboard/dashboard_screen.dart';
 import 'package:foap/util/constant_util.dart';
 import 'package:socket_io_client/socket_io_client.dart' as io;
-
 import 'db_manager_realm.dart';
 export 'package:foap/helper/socket_constants.dart';
 
@@ -71,8 +68,6 @@ class SocketManager {
     // if(_socketInstance!.connected == false){
     _socketInstance?.connect();
     // }
-    print('socket connecting');
-
     socketGlobalListeners();
 
     subscription = FGBGEvents.stream.listen((event) {
@@ -88,8 +83,6 @@ class SocketManager {
 //Socket Global Listener Events
   dynamic socketGlobalListeners() {
     _socketInstance?.onAny((event, data) {
-      print('event $event');
-      print('data $data');
       // Handle the incoming event and data here
     });
     _socketInstance?.on(SocketConstants.eventConnect, onConnect);
@@ -170,8 +163,6 @@ class SocketManager {
 
 //Get This Event After Successful Connection To Socket
   dynamic onConnect(_) {
-    print('socket connected');
-
     emit(SocketConstants.login, {
       'userId': _userProfileManager.user.value!.id,
       'username': _userProfileManager.user.value!.userName
@@ -186,12 +177,12 @@ class SocketManager {
 
 //Get This Event After Connection Lost To Socket Due To Network Or Any Other Reason
   dynamic onDisconnect(_) {
-    print("===> Socket Disconnected....................");
+    // print("===> Socket Disconnected....................");
   }
 
 //Get This Event After Connection Error To Socket With Error
   dynamic onConnectError(error) {
-    print("===> ConnectError socket.................... $error");
+    // print("===> ConnectError socket.................... $error");
   }
 
   //Get This Event When your call is created
@@ -272,7 +263,6 @@ class SocketManager {
   }
 
   void updateMessageCurrentStatusUser(dynamic response) {
-    print('updateMessageCurrentStatusUser $response');
     _chatDetailController.messageUpdateReceived(response);
   }
 
@@ -408,7 +398,6 @@ class SocketManager {
   }
 
   void liveCreatedConfirmation(dynamic response) {
-    print('liveCreatedConfirmation: $response');
     _agoraLiveController.liveCreatedConfirmation(response);
   }
 
@@ -457,27 +446,6 @@ class SocketManager {
           (response['battleInfo']['liveBattleHosts'] as List)
               .map((e) => LiveCallHostUser.fromJson(e))
               .toList();
-
-      print('battleUsers found ${battleUsers.length}');
-
-      // for (Map<String, dynamic> host in response['battleInfo']
-      //     ['liveBattleHosts']) {
-      //   await UsersApi.getOtherUser(
-      //       userId: host['userId'],
-      //       resultCallback: (user) {
-      //         battleUsers.add(LiveCallHostUser(
-      //             battleId: host['battleId'],
-      //             userDetail: user,
-      //             totalCoins: host['totalCoin'] == null
-      //                 ? 0
-      //                 : int.parse(host['totalCoin'].toString()),
-      //             totalGifts: host['totalGift'] == null
-      //                 ? 0
-      //                 : int.parse(host['totalGift'].toString()),
-      //             isMainHost: host['isSuperHost'] == 1));
-      //       });
-      // }
-
       battleDetail.battleUsers = battleUsers;
       // invitation request accepted
       _agoraLiveController.userAcceptedLiveBattle(
@@ -557,13 +525,14 @@ class SocketManager {
           userId: host['userId'],
           resultCallback: (user) {
             hostUsers.add(LiveCallHostUser(
-                // battleId: host['battleId'],
                 userDetail: user,
-                totalCoins: host['totalCoin'] == null
+                totalCoins:
+                    host['totalCoin'] == null || host['totalCoin'] == 'null'
+                        ? 0
+                        : double.parse(host['totalCoin'].toString()).toInt(),
+                totalGifts: host['totalGift'] == null || host['totalGift'] == 'null'
                     ? 0
-                    : int.parse(host['totalCoin'].toString()),
-                totalGifts: host['totalGift'] == null
-                    ? 0
+
                     : int.parse(host['totalGift'].toString()),
                 isMainHost: host['isSuperHost'] == 1));
           });

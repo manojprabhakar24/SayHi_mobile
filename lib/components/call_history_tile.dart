@@ -68,7 +68,7 @@ class CallHistoryTile extends StatelessWidget {
               ),
               Row(
                 children: [
-                  const ThemeIconWidget(
+                  ThemeIconWidget(
                     ThemeIcon.clock,
                     size: 12,
                   ),
@@ -86,7 +86,7 @@ class CallHistoryTile extends StatelessWidget {
           // const SizedBox(
           //   width: 5,
           // ),
-          // const ThemeIconWidget(
+          // ThemeIconWidget(
           //   ThemeIcon.info,
           //   size: 20,
           // ),

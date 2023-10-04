@@ -34,7 +34,7 @@ class ContactTile extends StatelessWidget {
                 size: 20,
                 color: AppColorConstants.themeColor,
               )
-            : const ThemeIconWidget(
+            : ThemeIconWidget(
                 ThemeIcon.circleOutline,
                 size: 20,
               )

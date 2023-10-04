@@ -106,7 +106,7 @@ class _AddRelationshipState extends State<AddRelationship> {
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  const ThemeIconWidget(
+                                  ThemeIconWidget(
                                     ThemeIcon.group,
                                     size: 40,
                                   ),

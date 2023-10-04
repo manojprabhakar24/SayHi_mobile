@@ -3,7 +3,6 @@ import 'package:foap/helper/imports/common_import.dart';
 import 'package:foap/helper/imports/event_imports.dart';
 import 'package:foap/helper/list_extension.dart';
 import '../../api_handler/apis/users_api.dart';
-import '../../model/category_model.dart';
 import '../../model/comment_model.dart';
 import '../../model/fund_raising_campaign.dart';
 

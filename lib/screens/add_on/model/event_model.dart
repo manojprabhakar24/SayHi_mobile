@@ -27,14 +27,13 @@ class EventModel {
   bool isFree;
   List<String> gallery;
 
-  // String desc;
   bool isJoined;
   int totalMembers;
   bool isFavourite;
   bool isTicketBooked;
 
   List<EventOrganizer> organizers;
-  List<EventTicketType> tickets;
+  List<EventTicketType> ticketType;
   bool isClosed;
 
   EventModel({
@@ -57,12 +56,10 @@ class EventModel {
     required this.updatedBy,
     required this.gallery,
     required this.isFree,
-    // required this.desc,
     required this.isJoined,
-    // required this.imageName,
     required this.totalMembers,
     required this.isFavourite,
-    required this.tickets,
+    required this.ticketType,
     required this.organizers,
     required this.eventCurrentStatus,
     required this.isTicketBooked,
@@ -74,7 +71,6 @@ class EventModel {
         name: json["name"],
         categoryId: json["category_id"],
         image: json["imageUrl"],
-        // imageName: json["image"],
         startDate: json["start_date"],
         endDate: json["end_date"],
         placeName: json["place_name"],
@@ -107,10 +103,11 @@ class EventModel {
         //     : (json["eventOrganisor"] as List<dynamic>)
         //         .map((e) => EventOrganisor.fromJson(e))
         //         .toList(),
-        tickets: json["eventTicket"] == null
+        ticketType: json["eventTicket"] == null
             ? []
             : (json["eventTicket"] as List<dynamic>)
                 .map((e) => EventTicketType.fromJson(e))
+                .where((e) => e.availableTicket > 0)
                 .toList(),
         isFavourite: json["isFavourite"] == 1,
         totalMembers: json["totalMembers"] ?? 0,
@@ -130,14 +127,15 @@ class EventModel {
   }
 
   bool get ticketsAdded {
-    List<EventTicketType> ticketTypes =
-        tickets.where((element) => element.availableTicket > 0).toList();
+    List<EventTicketType> ticketTypes = ticketType
+        .where((element) => element.availableTicket > 0 && element.status == 10)
+        .toList();
     return ticketTypes.isNotEmpty;
   }
 
   bool get isSoldOut {
     List<EventTicketType> ticketTypes =
-        tickets.where((element) => element.availableTicket > 0).toList();
+        ticketType.where((element) => element.availableTicket > 0).toList();
     return ticketTypes.isEmpty;
   }
 
@@ -319,7 +317,7 @@ class EventTicketOrderRequest {
   double get paidAmount {
     return payments.fold(0, (total, payment) {
       if (payment.amount != null) {
-        return (total ?? 0) + (double.tryParse(payment.amount!) ?? 0);
+        return (total ) + (double.tryParse(payment.amount!) ?? 0);
       } else {
         return total;
       }

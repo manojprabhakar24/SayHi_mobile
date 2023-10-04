@@ -98,8 +98,8 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.7.20"
     implementation 'com.google.firebase:firebase-messaging:23.1.2'
     implementation 'androidx.annotation:annotation:1.6.0'
+    implementation 'com.google.android.exoplayer:exoplayer:2.17.0'
 }
-
 
 
 // Comment out the modules you don't need, to save size.

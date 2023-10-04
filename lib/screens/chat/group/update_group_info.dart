@@ -45,7 +45,7 @@ class _UpdateGroupInfoState extends State<UpdateGroupInfo> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    const ThemeIconWidget(
+                    ThemeIconWidget(
                       ThemeIcon.close,
                       size: 20,
                     ).ripple(() {
@@ -100,7 +100,7 @@ class _UpdateGroupInfoState extends State<UpdateGroupInfo> {
                                           height: 50,
                                           width: 50,
                                         )
-                                      : const ThemeIconWidget(
+                                      : ThemeIconWidget(
                                           ThemeIcon.camera,
                                           size: 15,
                                         ),

@@ -241,7 +241,7 @@ class EventBookingDetailState extends State<EventBookingDetail> {
                         selectUserCallback: (user) {
                           _eventBookingDetailController.giftToUser(user);
                         },
-                      ));
+                      ).topRounded(40));
                     })).round(5),
               SizedBox(
                 height: 40,
@@ -609,7 +609,7 @@ class EventBookingDetailState extends State<EventBookingDetail> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            const ThemeIconWidget(
+            ThemeIconWidget(
               ThemeIcon.backArrow,
               size: 20,
               color: Colors.white,

@@ -1,15 +1,11 @@
-import 'dart:math';
-import 'package:get/get.dart';
 import '../../components/highlights_bar.dart';
 import '../../components/post_card/post_card.dart';
-import '../../components/segmented_control.dart';
 import '../../controllers/story/highlights_controller.dart';
 import '../../controllers/profile/profile_controller.dart';
 import '../../helper/imports/common_import.dart';
 import '../../model/post_model.dart';
 import '../add_on/ui/reel/reels_list.dart';
 import '../dashboard/mentions.dart';
-import '../dashboard/posts.dart';
 import '../highlights/choose_stories.dart';
 import '../highlights/hightlights_viewer.dart';
 
@@ -23,7 +19,7 @@ class HighlightsView extends StatelessWidget {
     return GetBuilder<HighlightsController>(
         init: _highlightsController,
         builder: (ctx) {
-          return _highlightsController.isLoading == true
+          return _highlightsController.isLoading.value == true
               ? const StoryAndHighlightsShimmer()
               : HighlightsBar(
                   highlights: _highlightsController.highlights,
@@ -124,11 +120,10 @@ class MentionsList extends StatelessWidget {
                     //     mainAxisSpacing: 8.0,
                     //     mainAxisExtent: 100),
                     itemBuilder: (BuildContext context, int index) => PostCard(
-                            model: posts[index],
-                            removePostHandler: () {},
-                            blockUserHandler: () {},
-                            )
-                        .ripple(() {
+                      model: posts[index],
+                      removePostHandler: () {},
+                      blockUserHandler: () {},
+                    ).ripple(() {
                       Get.to(() => Mentions(
                           posts: List.from(posts),
                           index: index,
@@ -201,7 +196,7 @@ class ReelsGrid extends StatelessWidget {
                               page: _profileController.reelsCurrentPage,
                             ));
                       }),
-                      const Positioned(
+                      Positioned(
                         right: 5,
                         top: 5,
                         child: ThemeIconWidget(

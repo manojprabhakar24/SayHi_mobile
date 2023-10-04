@@ -38,6 +38,8 @@ class SettingModel {
   String? fbRewardInterstitialAdUnitIdForiOS;
   String? networkToUse;
   String? stripePublishableKey;
+  String? razorpayKey;
+  String? imglyApiKey;
 
   int minWithdrawLimit;
   int minCoinsWithdrawLimit;
@@ -78,6 +80,7 @@ class SettingModel {
   bool enableWatchTv;
   bool enablePodcasts;
   bool enableGift;
+  bool enablePostPhotoVideoEdit;
 
   bool enablePolls;
   bool enableFundRaising;
@@ -140,6 +143,7 @@ class SettingModel {
     required this.networkToUse,
     required this.serviceFee,
     required this.stripePublishableKey,
+    required this.razorpayKey,
     required this.enableImagePost,
     required this.enableVideoPost,
     required this.enableStories,
@@ -178,6 +182,8 @@ class SettingModel {
     required this.enableJobs,
     required this.enableShop,
     required this.enableLiveUserListing,
+    required this.enablePostPhotoVideoEdit,
+    required this.imglyApiKey,
     required this.chatGPTKey,
     required this.enableChatGPT,
     required this.font,
@@ -239,6 +245,7 @@ class SettingModel {
         networkToUse: json["network_to_use"],
         serviceFee: json["serviceFee"] ?? 5,
         stripePublishableKey: json["stripe_publishable_key"],
+        razorpayKey: json["razorpay_api_key"],
         enableChat: json["is_chat"] == 1,
         enableAudioCalling: json["is_audio_calling"] == 1,
         enableAudioSharingInChat: json["is_audio_share"] == 1,
@@ -279,6 +286,7 @@ class SettingModel {
         enableJobs: json["is_job"] == 1,
         enableLiveUserListing: json["is_live_user"] == 1,
         enableShop: json["is_shop"] == 1,
+        enablePostPhotoVideoEdit: json["is_photo_video_edit"] == 1,
 
         themeColor: json["theme_color"] ?? '4169e1',
         bgColorForLightTheme: json["theme_light_background_color"] ?? 'FFFFFF',
@@ -287,5 +295,10 @@ class SettingModel {
         textColorForDarkTheme: json["theme_dark_text_color"] ?? 'FFFFFF',
         font: json["theme_font"],
         chatGPTKey: json["chat_gpt_key"],
+        imglyApiKey: json["imglyApiKey"],
       );
+
+  bool get canEditPhotoVideo{
+    return imglyApiKey != null && enablePostPhotoVideoEdit;
+  }
 }

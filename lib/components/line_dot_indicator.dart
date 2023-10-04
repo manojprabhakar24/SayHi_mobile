@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:foap/helper/imports/common_import.dart';
 
 class LineDotsIndicator extends StatelessWidget {
@@ -8,14 +7,15 @@ class LineDotsIndicator extends StatelessWidget {
   final double dotSize;
   final double spacing;
 
-  LineDotsIndicator({
+  const LineDotsIndicator({Key? key,
     required this.itemCount,
     required this.currentIndex,
     this.color = Colors.grey,
     this.dotSize = 10.0,
     this.spacing = 12.0,
-  });
+  }) : super(key: key);
 
+  @override
   Widget build(BuildContext context) {
     return SizedBox(
       height: dotSize,

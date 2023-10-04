@@ -1,6 +1,5 @@
 import 'package:flutter_switch/flutter_switch.dart';
 import 'package:foap/helper/imports/common_import.dart';
-import 'package:get/get.dart';
 import 'package:foap/helper/imports/setting_imports.dart';
 
 class PrivacyOptions extends StatefulWidget {
@@ -28,11 +27,11 @@ class _PrivacyOptionsState extends State<PrivacyOptions> {
           backNavigationBar(title: privacyString.tr),
           Expanded(
             child: ListView(
-              padding: EdgeInsets.zero,
+              padding: const EdgeInsets.only(top: 20),
               children: [
                 Column(
                   children: [
-                    shareLocationTile(),
+                    // shareLocationTile(),
                     bioMetricLoginTile(),
                   ],
                 ),

@@ -67,7 +67,7 @@ class AuthApi {
     dynamic param = {
       "country_code": code,
       "phone": phone,
-      "device_type": '3',
+      "device_type": Platform.isAndroid ? '1' : '2',
       "device_token": fcmToken ?? '',
       "device_token_voip_ios": voipToken ?? ''
     };
@@ -109,7 +109,7 @@ class AuthApi {
       "social_type": socialType,
       "social_id": socialId,
       "email": email,
-      "device_type": '3',
+      "device_type": Platform.isAndroid ? '1' : '2',
       "device_token": fcmToken ?? '',
       "device_token_voip_ios": voipToken ?? ''
     }).then((response) {
@@ -141,7 +141,7 @@ class AuthApi {
       "name": name,
       "email": email,
       "password": password,
-      "device_type": '3',
+      "device_type": Platform.isAndroid ? '1' : '2',
       "device_token": fcmToken ?? '',
       "device_token_voip_ios": voipToken ?? ''
     }).then((response) {

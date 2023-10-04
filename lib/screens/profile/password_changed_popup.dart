@@ -1,5 +1,5 @@
 import 'package:foap/helper/imports/common_import.dart';
-import 'package:get/get.dart';
+
 
 class PasswordChangedPopup extends StatelessWidget {
   final UserProfileManager _userProfileManager = Get.find();

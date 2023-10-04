@@ -82,7 +82,7 @@ class ExploreEventsState extends State<ExploreEvents> {
                                                 const SizedBox(
                                                   width: 5,
                                                 ),
-                                                const ThemeIconWidget(
+                                                ThemeIconWidget(
                                                   ThemeIcon.nextArrow,
                                                   size: 15,
                                                 ).rP16,

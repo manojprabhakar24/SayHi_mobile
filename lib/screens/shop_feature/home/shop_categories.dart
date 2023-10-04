@@ -3,8 +3,9 @@ import 'package:foap/model/shop_model/category.dart';
 import 'package:foap/screens/shop_feature/home/see_all_ads_screen.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import '../../../helper/imports/common_import.dart';
-import '../components/categoryCard.dart';
+import '../components/category_card.dart';
 
+//ignore: must_be_immutable
 class ShopCategories extends StatelessWidget {
   final ShopController shopController = Get.find();
   RefreshController refreshController =

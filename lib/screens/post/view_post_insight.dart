@@ -47,7 +47,7 @@ class _ViewPostInsightsState extends State<ViewPostInsights> {
                   children: [
                     Column(
                       children: [
-                        const ThemeIconWidget(ThemeIcon.message),
+                        ThemeIconWidget(ThemeIcon.message),
                         const SizedBox(
                           height: 5,
                         ),
@@ -58,7 +58,7 @@ class _ViewPostInsightsState extends State<ViewPostInsights> {
                     ),
                     Column(
                       children: [
-                        const ThemeIconWidget(ThemeIcon.favFilled),
+                        ThemeIconWidget(ThemeIcon.favFilled),
                         const SizedBox(
                           height: 5,
                         ),

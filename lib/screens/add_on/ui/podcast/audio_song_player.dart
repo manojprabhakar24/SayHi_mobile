@@ -4,6 +4,7 @@ import 'package:just_audio/just_audio.dart' as just_audio;
 import 'package:rxdart/rxdart.dart' as rxdart;
 import 'package:foap/helper/imports/common_import.dart';
 
+//ignore: must_be_immutable
 class AudioSongPlayer extends StatefulWidget {
   final List<PodcastEpisodeModel>? songsArray;
   final PodcastModel? show;

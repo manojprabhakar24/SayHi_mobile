@@ -56,14 +56,14 @@ class _ReplyAudioChatTileState extends State<ReplyAudioChatTile> {
               children: [
                 _playerManager.currentlyPlayingAudio.value?.id ==
                         widget.message.id.toString()
-                    ? const ThemeIconWidget(
+                    ? ThemeIconWidget(
                         ThemeIcon.stop,
                         color: Colors.white,
                         size: 30,
                       ).ripple(() {
                         stopAudio();
                       })
-                    : const ThemeIconWidget(
+                    : ThemeIconWidget(
                         ThemeIcon.play,
                         color: Colors.white,
                         size: 30,

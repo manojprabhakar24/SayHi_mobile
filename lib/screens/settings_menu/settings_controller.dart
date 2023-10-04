@@ -51,10 +51,7 @@ class SettingsController extends GetxController {
   }
 
   changeLanguage(Map<String, String> language) async {
-    languagesList.forEach((element) {
-      var locale = Locale(element['language_code']!);
-      print('changeLanguage : ${locale.toString()}');
-    });
+
     var locale = Locale(language['language_code']!);
     Get.updateLocale(locale);
     currentLanguage.value = language['language_code']!;
@@ -110,7 +107,7 @@ class SettingsController extends GetxController {
           forceUpdate.value = false;
         }
 
-        if (setting.value!.stripePublishableKey?.isNotEmpty == true) {
+         if (setting.value!.stripePublishableKey?.isNotEmpty == true) {
           Stripe.publishableKey = setting.value!.stripePublishableKey!;
           Stripe.merchantIdentifier = 'merchant.com.socialified';
           Stripe.urlScheme = 'socialifiedstripe';

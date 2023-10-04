@@ -60,7 +60,7 @@ class PublicGroupDetailState extends State<PublicGroupDetail> {
                     ),
                     Row(
                       children: [
-                        const ThemeIconWidget(ThemeIcon.userGroup),
+                        ThemeIconWidget(ThemeIcon.userGroup),
                         const SizedBox(
                           width: 5,
                         ),
@@ -68,7 +68,7 @@ class PublicGroupDetailState extends State<PublicGroupDetail> {
                           publicGroupString.tr,
                           weight: TextWeight.medium,
                         ),
-                        // const ThemeIconWidget(
+                        // ThemeIconWidget(
                         //   ThemeIcon.circle,
                         //   size: 8,
                         // ).hP8,
@@ -192,7 +192,7 @@ class PublicGroupDetailState extends State<PublicGroupDetail> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            const ThemeIconWidget(
+            ThemeIconWidget(
               ThemeIcon.backArrow,
               size: 20,
               color: Colors.white,
@@ -203,7 +203,7 @@ class PublicGroupDetailState extends State<PublicGroupDetail> {
                 ? Row(
                     children: [
                       const SizedBox(width: 10),
-                      const ThemeIconWidget(
+                      ThemeIconWidget(
                         ThemeIcon.setting,
                         size: 20,
                         color: Colors.white,

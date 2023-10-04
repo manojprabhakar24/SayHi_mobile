@@ -91,7 +91,7 @@ class _LiveUserScreenState extends State<LiveUserScreen> {
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
-                                      const ThemeIconWidget(
+                                      ThemeIconWidget(
                                         ThemeIcon.group,
                                         color: Colors.white,
                                       ).p4,

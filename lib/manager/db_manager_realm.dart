@@ -279,10 +279,7 @@ class RealmDBManager {
   startUpdateRoom(ChatRoomModel chatRoom, bool isInWriteBatch) async {
     // ChatRoomModel? room = await getRoomById(chatRoom.id);
     ChatMessageModel? lastMessage = chatRoom.lastMessage;
-    print('chatRoom.updatedAt ${chatRoom.updatedAt}');
     int? updateAt = chatRoom.updatedAt ?? DateTime.now().millisecondsSinceEpoch;
-
-    // var realm = await Realm.open(configuration);
 
     if (isInWriteBatch) {
       updateRoom(chatRoom, updateAt, lastMessage);
@@ -355,7 +352,6 @@ class RealmDBManager {
     var rooms = realm.query<ChatRoomsRealm>('id == $chatRoomId');
 
     if (rooms.isNotEmpty) {
-      print('updateRoomUpdateAtTime');
       rooms.first.updatedAt = updateAt;
     }
     // realm.close();
@@ -470,7 +466,6 @@ class RealmDBManager {
 
   UserModel fetchUser(int userId) {
     if (cachedUsers[userId.toString()] != null) {
-      print('returned user from cache');
       return cachedUsers[userId.toString()]!;
     } else {
       var user = realm.query<UsersCacheRealm>('id == $userId').first;
@@ -542,9 +537,6 @@ class RealmDBManager {
   Future<List<ChatMessageModel>> getAllMessages(
       {required int roomId, required int offset, int? limit}) async {
     List<ChatMessageModel> messages = [];
-    // List<ChatMessageModel> messagesToDelete = [];
-    List<ChatMessageModel> messagesToUpdate = [];
-
     List<dynamic> dbMessages = [];
 
     var realMMessages = realm.query<MessagesRealm>("roomId == $roomId");

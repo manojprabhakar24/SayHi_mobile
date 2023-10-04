@@ -1,8 +1,6 @@
-import 'dart:io';
 import 'package:foap/controllers/profile/profile_controller.dart';
 import 'package:foap/helper/imports/common_import.dart';
 import 'package:image_picker/image_picker.dart';
-
 import 'add_name.dart';
 
 class UploadProfilePicture extends StatefulWidget {
@@ -56,7 +54,7 @@ class _UploadProfilePictureState extends State<UploadProfilePicture> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const ThemeIconWidget(
+                      ThemeIconWidget(
                         ThemeIcon.edit,
                         size: 40,
                         color: Colors.white,
@@ -111,7 +109,7 @@ class _UploadProfilePictureState extends State<UploadProfilePicture> {
                         weight: TextWeight.bold,
                       )),
                   ListTile(
-                      leading: const ThemeIconWidget(ThemeIcon.camera),
+                      leading: ThemeIconWidget(ThemeIcon.camera),
                       title: BodyLargeText(takePhotoString.tr),
                       onTap: () {
                         Get.back();
@@ -126,7 +124,7 @@ class _UploadProfilePictureState extends State<UploadProfilePicture> {
                       }),
                   divider(),
                   ListTile(
-                      leading: const ThemeIconWidget(ThemeIcon.gallery),
+                      leading: ThemeIconWidget(ThemeIcon.gallery),
                       title: BodyLargeText(chooseFromGalleryString.tr),
                       onTap: () async {
                         Get.back();
@@ -141,7 +139,7 @@ class _UploadProfilePictureState extends State<UploadProfilePicture> {
                       }),
                   divider(),
                   ListTile(
-                      leading: const ThemeIconWidget(ThemeIcon.close),
+                      leading: ThemeIconWidget(ThemeIcon.close),
                       title: BodyLargeText(cancelString.tr),
                       onTap: () => Get.back()),
                 ],

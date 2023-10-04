@@ -72,7 +72,7 @@ class _ReelsState extends State<Reels> {
                               width: 40,
                               color:
                                   AppColorConstants.themeColor.withOpacity(0.5),
-                              child: const ThemeIconWidget(
+                              child: ThemeIconWidget(
                                 ThemeIcon.backArrow,
                                 color: Colors.white,
                               ).lP8.ripple(() {
@@ -84,7 +84,7 @@ class _ReelsState extends State<Reels> {
                         height: 40,
                         width: 40,
                         color: AppColorConstants.themeColor.withOpacity(0.5),
-                        child: const ThemeIconWidget(
+                        child: ThemeIconWidget(
                           ThemeIcon.camera,
                           color: Colors.white,
                         ).ripple(() {

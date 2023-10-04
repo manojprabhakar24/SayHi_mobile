@@ -2,7 +2,6 @@ import 'dart:async';
 import 'package:foap/api_handler/apis/auth_api.dart';
 import 'package:foap/api_handler/apis/profile_api.dart';
 import 'package:foap/helper/imports/common_import.dart';
-import 'package:foap/manager/db_manager.dart';
 import 'package:foap/manager/socket_manager.dart';
 import 'package:foap/screens/dashboard/dashboard_screen.dart';
 import 'package:foap/screens/login_sign_up/login_screen.dart';
@@ -39,7 +38,6 @@ class UserProfileManager extends GetxController {
   }
 
   Future refreshProfile() async {
-    print('refreshProfile');
     String? authKey = await SharedPrefs().getAuthorizationKey();
 
     if (authKey != null) {

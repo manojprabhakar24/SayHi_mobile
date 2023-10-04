@@ -1,6 +1,4 @@
 import 'package:foap/helper/imports/common_import.dart';
-import 'package:get/get.dart';
-
 import 'add_name.dart';
 
 class AllowNotification extends StatefulWidget {

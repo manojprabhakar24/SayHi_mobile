@@ -6,7 +6,6 @@ import 'dart:io';
 import 'dart:async';
 import 'package:foap/components/custom_gallery_picker.dart';
 import 'package:foap/model/story_model.dart';
-import 'package:foap/screens/dashboard/dashboard_screen.dart';
 import 'package:foap/screens/chat/media.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:video_compress_ds/video_compress_ds.dart';
@@ -14,6 +13,7 @@ import 'package:flutter_video_info/flutter_video_info.dart';
 
 import '../../manager/db_manager_realm.dart';
 import '../../model/data_wrapper.dart';
+import '../home/home_controller.dart';
 
 class AppStoryController extends GetxController {
   RxList<Media> mediaList = <Media>[].obs;
@@ -155,14 +155,17 @@ class AppStoryController extends GetxController {
   void publishAction({
     required List<Map<String, String>> galleryItems,
   }) {
+    HomeController homeController = Get.find();
     StoryApi.postStory(
         gallery: galleryItems,
         successHandler: () {
+          homeController.getStories();
+
           AppUtil.showToast(
               message: storyPostedSuccessfullyString, isSuccess: true);
         });
-    DashboardController dashboardController = Get.find();
-    dashboardController.indexChanged(0);
-    Get.offAll(() => const DashboardScreen());
+    // DashboardController dashboardController = Get.find();
+    // dashboardController.indexChanged(0);
+    // Get.offAll(() => const DashboardScreen());
   }
 }

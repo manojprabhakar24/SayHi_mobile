@@ -31,6 +31,7 @@ class _AdCardState extends State<AdCard> {
             children: [
               SizedBox(
                       width: double.infinity,
+                      height: double.infinity,
                       child: (widget.ad.images).isNotEmpty
                           ? CachedNetworkImage(
                               imageUrl: widget.ad.images.first,
@@ -90,6 +91,7 @@ class _AdCardState extends State<AdCard> {
             widget.ad.locations!.customLocation!,
             weight: TextWeight.semiBold,
             color: AppColorConstants.subHeadingTextColor,
+            maxLines: 1,
           ).bP4,
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,

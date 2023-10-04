@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 import '../util/app_config_constants.dart';
 
 class RatingStar extends StatefulWidget {
-  RatingStar({Key? key, this.rating}) : super(key: key);
+  const RatingStar({Key? key, this.rating}) : super(key: key);
   final double? rating;
 
   @override
-  _RatingStarState createState() => _RatingStarState();
+  State<RatingStar> createState() => _RatingStarState();
 }
 
 class _RatingStarState extends State<RatingStar> {

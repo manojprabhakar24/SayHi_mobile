@@ -137,7 +137,8 @@ class _PodcastDetailState extends State<PodcastDetail> {
           trimMode: read_more.TrimMode.Line,
           colorClickableText: Colors.white,
           trimCollapsedText: showMoreString.tr,
-          style: TextStyle(fontSize: 14, color: AppColorConstants.mainTextColor),
+          style:
+              TextStyle(fontSize: 14, color: AppColorConstants.mainTextColor),
           trimExpandedText: '    ${showLessString.tr}',
           moreStyle: TextStyle(
               fontSize: 14,
@@ -174,7 +175,10 @@ class _PodcastDetailState extends State<PodcastDetail> {
           ],
         ),
         title: BodyLargeText(
-            _podcastStreamingController.podcastEpisodes[index].name),
+          _podcastStreamingController.podcastEpisodes[index].name,
+          maxLines: 2,
+
+        ),
         dense: true,
       ),
     ).round(10).ripple(() {

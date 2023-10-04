@@ -39,29 +39,18 @@ class PlayerManager extends GetxController {
   }
 
   playLocalAudio(Audio audio) async {
-    print('hello');
-
     if (currentlyPlayingAudio.value?.id != audio.id) {
-      print('hello 1');
-
       currentlyPlayingAudio.value = audio;
-      print('hello 2');
-
       await player.setFilePath(audio.url);
-      print('hello 3');
-
       listenToStates();
     }
     isPlaying.value = true;
-    print('hello 4');
-
     player.play();
   }
 
   listenToStates() {
     player.positionStream.listen((event) {
       currentPosition = event;
-      print('player.positionStream.listen');
       progress.value =
           ProgressBarState(current: currentPosition, total: totalDuration);
     });

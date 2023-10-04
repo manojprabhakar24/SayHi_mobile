@@ -16,50 +16,48 @@ class RichTextPostTitle extends StatelessWidget {
     return richTextPostTitle();
   }
 
-  Container richTextPostTitle() {
+  Align richTextPostTitle() {
     List<String> split = model.title.split(' ');
 
-    return Container(
-      child: Align(
-        alignment: Alignment.centerLeft,
-        child: RichText(
-            textAlign: TextAlign.left,
-            text: TextSpan(children: [
-              for (String text in split)
-                text.startsWith('#')
-                    ? TextSpan(
-                        text: '$text ',
-                        style: TextStyle(
-                            color: AppColorConstants.themeColor,
-                            fontSize: FontSizes.b3,
-                            fontWeight: FontWeight.w700),
-                        recognizer: TapGestureRecognizer()
-                          ..onTap = () {
-                            postTextTapHandler(post: model, text: text);
-                            // widget.textTapHandler(text);
-                          },
-                      )
-                    : text.startsWith('@')
-                        ? TextSpan(
-                            text: '$text ',
-                            style: TextStyle(
-                                color: AppColorConstants.themeColor,
-                                fontSize: FontSizes.b3,
-                                fontWeight: FontWeight.w700),
-                            recognizer: TapGestureRecognizer()
-                              ..onTap = () {
-                                // widget.textTapHandler(text);
-                                postTextTapHandler(post: model, text: text);
-                              },
-                          )
-                        : TextSpan(
-                            text: '$text ',
-                            style: TextStyle(
-                                color: AppColorConstants.mainTextColor,
-                                fontSize: FontSizes.b3,
-                                fontWeight: FontWeight.w400))
-            ])),
-      ),
+    return Align(
+      alignment: Alignment.centerLeft,
+      child: RichText(
+          textAlign: TextAlign.left,
+          text: TextSpan(children: [
+            for (String text in split)
+              text.startsWith('#')
+                  ? TextSpan(
+                      text: '$text ',
+                      style: TextStyle(
+                          color: AppColorConstants.themeColor,
+                          fontSize: FontSizes.b3,
+                          fontWeight: FontWeight.w700),
+                      recognizer: TapGestureRecognizer()
+                        ..onTap = () {
+                          postTextTapHandler(post: model, text: text);
+                          // widget.textTapHandler(text);
+                        },
+                    )
+                  : text.startsWith('@')
+                      ? TextSpan(
+                          text: '$text ',
+                          style: TextStyle(
+                              color: AppColorConstants.themeColor,
+                              fontSize: FontSizes.b3,
+                              fontWeight: FontWeight.w700),
+                          recognizer: TapGestureRecognizer()
+                            ..onTap = () {
+                              // widget.textTapHandler(text);
+                              postTextTapHandler(post: model, text: text);
+                            },
+                        )
+                      : TextSpan(
+                          text: '$text ',
+                          style: TextStyle(
+                              color: AppColorConstants.mainTextColor,
+                              fontSize: FontSizes.b3,
+                              fontWeight: FontWeight.w400))
+          ])),
     );
   }
 

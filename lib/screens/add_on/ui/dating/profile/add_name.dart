@@ -39,7 +39,7 @@ class _AddNameState extends State<AddName> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  Heading2Text(
+                  Heading3Text(
                     whatsYourNameString.tr,
                   ).setPadding(top: 20),
                   // Heading6Text(

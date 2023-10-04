@@ -77,6 +77,7 @@ enum ThemeIcon {
   addressType,
   addressPin,
   plus,
+  plusSymbol,
   minus,
   avatar,
   card,
@@ -137,9 +138,9 @@ enum ThemeIcon {
 class ThemeIconWidget extends StatelessWidget {
   final ThemeIcon icon;
   final double? size;
-  final Color? color;
+  Color? color;
 
-  const ThemeIconWidget(this.icon, {Key? key, this.size, this.color})
+  ThemeIconWidget(this.icon, {Key? key, this.size, this.color})
       : super(key: key);
 
   @override
@@ -476,6 +477,12 @@ class ThemeIconWidget extends StatelessWidget {
       case ThemeIcon.plus:
         return Icon(
           Icons.add_circle,
+          size: size ?? 20,
+          color: color ?? AppColorConstants.iconColor,
+        );
+      case ThemeIcon.plusSymbol:
+        return Icon(
+          Icons.add,
           size: size ?? 20,
           color: color ?? AppColorConstants.iconColor,
         );

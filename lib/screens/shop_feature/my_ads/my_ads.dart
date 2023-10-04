@@ -4,7 +4,7 @@ import 'package:foap/controllers/shop/shop_controller.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import '../../../model/shop_model/ad_model.dart';
 import '../../../segmentAndMenu/horizontal_menu.dart';
-import '../components/adCard.dart';
+import '../components/ad_card.dart';
 import '../home/ad_detail_screen.dart';
 import '../post_ad/choose_category.dart';
 import '../post_ad/enter_ad_detail.dart';

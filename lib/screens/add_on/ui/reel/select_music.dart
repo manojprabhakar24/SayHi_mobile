@@ -51,7 +51,7 @@ class _SelectMusicState extends State<SelectMusic> {
               ),
               Row(
                 children: [
-                  const ThemeIconWidget(
+                  ThemeIconWidget(
                     ThemeIcon.backArrow,
                     size: 25,
                   ).ripple(() {

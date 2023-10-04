@@ -147,7 +147,6 @@ class ChatRoomModel {
   }
 
   bool get amIGroupAdmin {
-    print(roomMembers.map((e) => '${e.userDetail.userName} = ${e.isAdmin}'));
     return roomMembers
         .where((element) => element.isAdmin == 1 && element.userDetail.isMe)
         .toList()

@@ -3,8 +3,6 @@ import 'package:foap/components/search_bar.dart';
 import 'package:foap/components/user_card.dart';
 import 'package:foap/helper/imports/common_import.dart';
 import 'package:foap/screens/add_on/controller/relationship/relationship_search_controller.dart';
-import 'package:get/get.dart';
-
 import '../../../../controllers/misc/users_controller.dart';
 
 class SearchProfile extends StatefulWidget {
@@ -41,7 +39,7 @@ class _SearchProfileState extends State<SearchProfile> {
             const SizedBox(height: 40),
             Row(
               children: [
-                const ThemeIconWidget(
+                ThemeIconWidget(
                   ThemeIcon.backArrow,
                   size: 25,
                 ).ripple(() {
@@ -53,7 +51,7 @@ class _SearchProfileState extends State<SearchProfile> {
                       showSearchIcon: true,
                       iconColor: AppColorConstants.themeColor,
                       onSearchChanged: (value) {
-                        _usersController.setSearchTextFilter(value);
+                        _usersController.setSearchTextFilter(value,(){});
                       },
                       onSearchStarted: () {
                         //controller.startSearch();
@@ -100,7 +98,7 @@ class _SearchProfileState extends State<SearchProfile> {
       if (scrollController.position.maxScrollExtent ==
           scrollController.position.pixels) {
         if (!_usersController.accountsIsLoading.value) {
-          _usersController.loadUsers();
+          _usersController.loadUsers((){});
         }
       }
     });

@@ -14,10 +14,8 @@ class AppConfigConstants {
 
   static String appTagline = 'Share your day activity with friends';
   static const googleMapApiKey = 'add your google map api key';
-  static const razorpayKey = 'rzp_test_jDl2SjSKYlghAD';
 
-  static const restApiBaseUrl =
-      'https://sayhi.codepearl.in/api/web/v1/';
+  static const restApiBaseUrl = 'https://sayhi.codepearl.in/api/web/v1/';
 
   // Socket api url
   static const socketApiBaseUrl = "https://sayhi.codepearl.in:4000/";
@@ -32,7 +30,7 @@ class AppConfigConstants {
   static const int chatVersion = 1;
 
   // is demo app
-  static const bool isDemoApp = true;
+  static const bool isDemoApp = false;
 
   // parameters for delete chat
   static const secondsInADay = 86400;
@@ -57,7 +55,7 @@ class AppConfigConstants {
 }
 
 class DesignConstants {
-  static double horizontalPadding = 20;
+  static double horizontalPadding = 25;
 }
 
 class AppColorConstants {
@@ -67,16 +65,21 @@ class AppColorConstants {
 
   static Color get backgroundColor => isDarkMode
       ? HexColor.fromHex(
-          settingsController.setting.value?.bgColorForDarkTheme ?? '000000')
+          settingsController.setting.value?.bgColorForDarkTheme ?? '202020')
       : HexColor.fromHex(
           settingsController.setting.value?.bgColorForLightTheme ?? 'FFFFFF');
 
   static Color get cardColor => isDarkMode
-      ? const Color(0xFF202020).darken(0.05)
-      : const Color(0xFFF9F9F9);
+      ? HexColor.fromHex(
+              settingsController.setting.value?.bgColorForDarkTheme ?? '202020')
+          .lighten(0.05)
+      : HexColor.fromHex(
+              settingsController.setting.value?.bgColorForLightTheme ??
+                  'FFFFFF')
+          .darken(0.05);
 
   static Color get dividerColor => isDarkMode
-      ? const Color(0xFF202020).darken(0.05)
+      ? const Color(0xFFFFFFFF).withOpacity(0.4)
       : Colors.grey.withOpacity(0.7);
 
   static Color get borderColor =>

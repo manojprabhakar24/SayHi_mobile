@@ -5,9 +5,8 @@ import 'package:foap/model/shop_model/category.dart';
 import 'package:foap/screens/shop_feature/home/see_all_ads_screen.dart';
 import '../../../components/app_scaffold.dart';
 import 'package:get/get.dart';
-import '../../../model/shop_model/search_model.dart';
 import '../../../util/app_config_constants.dart';
-import '../components/categoryCard.dart';
+import '../components/category_card.dart';
 
 class AllCategoriesScreen extends StatefulWidget {
   const AllCategoriesScreen({Key? key}) : super(key: key);

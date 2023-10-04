@@ -1,6 +1,5 @@
 import 'package:foap/helper/imports/common_import.dart';
 import 'package:foap/helper/imports/event_imports.dart';
-import 'package:get/get.dart';
 
 class EventCard extends StatelessWidget {
   final EventModel event;
@@ -157,20 +156,24 @@ class EventCard2 extends StatelessWidget {
                     const SizedBox(
                       height: 10,
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        ThemeIconWidget(
-                          ThemeIcon.location,
-                          color: AppColorConstants.themeColor,
-                          size: 17,
-                        ),
-                        const SizedBox(
-                          width: 5,
-                        ),
-                        BodyMediumText(event.placeName,
-                            weight: TextWeight.medium),
-                      ],
+                    Expanded(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          ThemeIconWidget(
+                            ThemeIcon.location,
+                            color: AppColorConstants.themeColor,
+                            size: 17,
+                          ),
+                          const SizedBox(
+                            width: 5,
+                          ),
+                          Expanded(
+                            child: BodyMediumText(event.placeName,
+                                weight: TextWeight.medium),
+                          ),
+                        ],
+                      ),
                     ),
                     // const SizedBox(
                     //   height: 20,

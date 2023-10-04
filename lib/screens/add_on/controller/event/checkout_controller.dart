@@ -413,13 +413,13 @@
 // }
 
 import 'dart:async';
+import 'dart:developer';
 import 'dart:io';
 import 'package:device_info_plus/device_info_plus.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_braintree/flutter_braintree.dart';
-import 'package:foap/api_handler/apis/events_api.dart';
 import 'package:foap/api_handler/apis/payment_gateway_api.dart';
 import 'package:foap/helper/imports/common_import.dart';
+import 'package:foap/helper/imports/setting_imports.dart';
 import 'package:foap/model/post_promotion_model.dart';
 import 'package:foap/util/constant_util.dart';
 import 'package:flutter_stripe/flutter_stripe.dart' as stripe;
@@ -462,8 +462,8 @@ class CheckoutController extends GetxController {
   }
 
   checkIfGooglePaySupported() async {
-    googlePaySupported.value = await stripe.Stripe.instance
-        .isGooglePaySupported(const stripe.IsGooglePaySupportedParams());
+    googlePaySupported.value =
+        await stripe.Stripe.instance.isPlatformPaySupported();
   }
 
   selectPaymentGateway(PaymentGateway gateway) {
@@ -510,9 +510,9 @@ class CheckoutController extends GetxController {
       case PaymentGateway.creditCard:
         Get.to(() => const StripeCardPayment());
         break;
-      case PaymentGateway.applePay:
-        applePay();
-        break;
+      // case PaymentGateway.applePay:
+      //   applePay();
+      //   break;
       case PaymentGateway.paypal:
         payWithPaypal();
         break;
@@ -522,9 +522,9 @@ class CheckoutController extends GetxController {
       case PaymentGateway.stripe:
         payWithStripe();
         break;
-      case PaymentGateway.googlePay:
-        payWithGooglePay();
-        break;
+      // case PaymentGateway.googlePay:
+      //   payWithGooglePay();
+      //   break;
       case PaymentGateway.inAppPurchase:
         placeOrder();
         break;
@@ -534,93 +534,93 @@ class CheckoutController extends GetxController {
     }
   }
 
-  applePay() async {
-    try {
-      // 1. Present Apple Pay sheet
-      await stripe.Stripe.instance.presentApplePay(
-        params: stripe.ApplePayPresentParams(
-          cartItems: [
-            stripe.ApplePayCartSummaryItem.immediate(
-              label: 'Product Test',
-              amount: '$totalAmountToPay',
-            ),
-          ],
-          country: 'US',
-          currency: 'USD',
-        ),
-      );
-
-      // 2. fetch Intent Client Secret from backend
-      PaymentGatewayApi.fetchPaymentIntentClientSecret(
-          amount: totalAmountToPay,
-          resultCallback: (clientSecret) async {
-            // 2. Confirm apple pay payment
-            await stripe.Stripe.instance.confirmApplePayPayment(clientSecret);
-
-            Payment payment = Payment();
-            payment.paymentMode = '6';
-            payment.amount = balanceToPay.value.toString();
-            payment.transactionId = randomId();
-
-            transactions.removeWhere((element) => element.paymentMode == '6');
-            transactions.add(payment);
-
-            placeOrder();
-          });
-    } catch (e) {
-      AppUtil.showToast(message: 'Error1: $e', isSuccess: false);
-      PlatformException error = (e as PlatformException);
-      if (error.code != 'Canceled') {
-        processingPayment.value = ProcessingPaymentStatus.failed;
-      }
-    }
-  }
-
-  payWithGooglePay() async {
-    final googlePaySupported = await stripe.Stripe.instance
-        .isGooglePaySupported(const stripe.IsGooglePaySupportedParams());
-    if (googlePaySupported) {
-      try {
-        // 1. fetch Intent Client Secret from backend
-        PaymentGatewayApi.fetchPaymentIntentClientSecret(
-            amount: totalAmountToPay,
-            resultCallback: (clientSecret) async {
-              // 2.present google pay sheet
-              await stripe.Stripe.instance.initGooglePay(
-                  stripe.GooglePayInitParams(
-                      testEnv: true,
-                      merchantName: AppConfigConstants.appName,
-                      countryCode: 'us'));
-
-              await stripe.Stripe.instance.presentGooglePay(
-                stripe.PresentGooglePayParams(clientSecret: clientSecret),
-              );
-
-              Payment payment = Payment();
-              payment.paymentMode = '7';
-              payment.amount = balanceToPay.value.toString();
-              payment.transactionId = randomId();
-
-              transactions.removeWhere((element) => element.paymentMode == '7');
-              transactions.add(payment);
-
-              placeOrder();
-            });
-      } catch (e) {
-        PlatformException error = (e as PlatformException);
-        if (error.code != 'Canceled') {
-          processingPayment.value = ProcessingPaymentStatus.failed;
-          AppUtil.showToast(message: 'Error: $e', isSuccess: false);
-        }
-      }
-    } else {
-      processingPayment.value = ProcessingPaymentStatus.failed;
-
-      AppUtil.showToast(
-          message: 'Google pay is not supported on this device',
-          isSuccess: false);
-    }
-  }
+  // applePay() async {
+  //   try {
+  //     // 1. Present Apple Pay sheet
+  //     await stripe.Stripe.instance.presentApplePay(
+  //       params: stripe.ApplePayPresentParams(
+  //         cartItems: [
+  //           stripe.ApplePayCartSummaryItem.immediate(
+  //             label: 'Product Test',
+  //             amount: '$totalAmountToPay',
+  //           ),
+  //         ],
+  //         country: 'US',
+  //         currency: 'USD',
+  //       ),
+  //     );
+  //
+  //     // 2. fetch Intent Client Secret from backend
+  //     PaymentGatewayApi.fetchPaymentIntentClientSecret(
+  //         amount: totalAmountToPay,
+  //         resultCallback: (clientSecret) async {
+  //           // 2. Confirm apple pay payment
+  //           await stripe.Stripe.instance.confirmApplePayPayment(clientSecret);
+  //
+  //           Payment payment = Payment();
+  //           payment.paymentMode = '6';
+  //           payment.amount = balanceToPay.value.toString();
+  //           payment.transactionId = randomId();
+  //
+  //           transactions.removeWhere((element) => element.paymentMode == '6');
+  //           transactions.add(payment);
+  //
+  //           placeOrder();
+  //         });
+  //   } catch (e) {
+  //     AppUtil.showToast(message: 'Error1: $e', isSuccess: false);
+  //     PlatformException error = (e as PlatformException);
+  //     if (error.code != 'Canceled') {
+  //       processingPayment.value = ProcessingPaymentStatus.failed;
+  //     }
+  //   }
+  // }
+  //
+  // payWithGooglePay() async {
+  //   final googlePaySupported =
+  //       await stripe.Stripe.instance.isPlatformPaySupported();
+  //   if (googlePaySupported) {
+  //     try {
+  //       // 1. fetch Intent Client Secret from backend
+  //       PaymentGatewayApi.fetchPaymentIntentClientSecret(
+  //           amount: totalAmountToPay,
+  //           resultCallback: (clientSecret) async {
+  //             // 2.present google pay sheet
+  //             await stripe.Stripe.instance.initGooglePay(
+  //                 stripe.GooglePayInitParams(
+  //                     testEnv: true,
+  //                     merchantName: AppConfigConstants.appName,
+  //                     countryCode: 'us'));
+  //
+  //             await stripe.Stripe.instance.presentGooglePay(
+  //               stripe.PresentGooglePayParams(clientSecret: clientSecret),
+  //             );
+  //
+  //             Payment payment = Payment();
+  //             payment.paymentMode = '7';
+  //             payment.amount = balanceToPay.value.toString();
+  //             payment.transactionId = randomId();
+  //
+  //             transactions.removeWhere((element) => element.paymentMode == '7');
+  //             transactions.add(payment);
+  //
+  //             placeOrder();
+  //           });
+  //     } catch (e) {
+  //       PlatformException error = (e as PlatformException);
+  //       if (error.code != 'Canceled') {
+  //         processingPayment.value = ProcessingPaymentStatus.failed;
+  //         AppUtil.showToast(message: 'Error: $e', isSuccess: false);
+  //       }
+  //     }
+  //   } else {
+  //     processingPayment.value = ProcessingPaymentStatus.failed;
+  //
+  //     AppUtil.showToast(
+  //         message: 'Google pay is not supported on this device',
+  //         isSuccess: false);
+  //   }
+  // }
 
   payWithPaypal() async {
     Loader.show(status: loadingString.tr);
@@ -683,22 +683,22 @@ class CheckoutController extends GetxController {
     PaymentGatewayApi.fetchPaymentIntentClientSecret(
         amount: balanceToPay.value,
         resultCallback: (clientSecret) async {
+          log('initPaymentSheet');
+
           await stripe.Stripe.instance.initPaymentSheet(
             paymentSheetParameters: stripe.SetupPaymentSheetParameters(
               paymentIntentClientSecret: clientSecret,
-              // customerEphemeralKeySecret: data['ephemeralKey'],
 
               merchantDisplayName: AppConfigConstants.appName,
               customerId: _userProfileManager.user.value!.id.toString(),
-
-              applePay: const stripe.PaymentSheetApplePay(
-                merchantCountryCode: 'US',
-              ),
-              googlePay: const stripe.PaymentSheetGooglePay(
-                merchantCountryCode: 'US',
-                testEnv: true,
-              ),
-              style: ThemeMode.dark,
+              // applePay: const stripe.PaymentSheetApplePay(
+              //   merchantCountryCode: 'US',
+              // ),
+              // googlePay: const stripe.PaymentSheetGooglePay(
+              //   merchantCountryCode: 'US',
+              //   testEnv: true,
+              // ),
+              style: isDarkMode ? ThemeMode.dark : ThemeMode.light,
               appearance: stripe.PaymentSheetAppearance(
                 colors: stripe.PaymentSheetAppearanceColors(
                   background: Theme.of(Get.context!).cardColor,
@@ -725,6 +725,7 @@ class CheckoutController extends GetxController {
             ),
           );
           // await stripe.Stripe.instance.presentPaymentSheet();
+          log('confirmStripePayment');
           confirmStripePayment();
         });
   }
@@ -733,7 +734,7 @@ class CheckoutController extends GetxController {
     try {
       // 3. display the payment sheet.
       await stripe.Stripe.instance.presentPaymentSheet();
-      stripe.Stripe.instance.confirmPaymentSheetPayment();
+      // stripe.Stripe.instance.confirmPaymentSheetPayment();
 
       Payment payment = Payment();
       payment.paymentMode = '4';
@@ -767,12 +768,13 @@ class CheckoutController extends GetxController {
   }
 
   launchRazorpayPayment() async {
+    SettingsController settingsController = Get.find();
     _razorpay.on(Razorpay.EVENT_PAYMENT_SUCCESS, _handlePaymentSuccess);
     _razorpay.on(Razorpay.EVENT_PAYMENT_ERROR, _handlePaymentError);
     _razorpay.on(Razorpay.EVENT_EXTERNAL_WALLET, _handleExternalWallet);
 
     var options = {
-      'key': AppConfigConstants.razorpayKey,
+      'key': settingsController.setting.value!.razorpayKey!,
       //<-- your razorpay api key/test or live mode goes here.
       'amount': balanceToPay.value * 100,
       'name': AppConfigConstants.appName,

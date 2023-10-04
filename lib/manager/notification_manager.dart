@@ -70,7 +70,6 @@ class NotificationManager {
 
     await flutterLocalNotificationsPlugin.initialize(initializationSettings,
         onDidReceiveNotificationResponse: (response) {
-      print('onDidReceiveNotificationResponse');
       handleNotificationAction(response);
     }, onDidReceiveBackgroundNotificationResponse: notificationTapBackground);
   }
@@ -417,7 +416,6 @@ performActionOnCallNotificationBanner(
               ),
             )));
           } else {
-            print('direct go to accept call');
             Get.to(() => AcceptCallScreen(
                   call: call,
                 ));

@@ -1,12 +1,9 @@
 import 'dart:async';
 import 'dart:io';
 export 'package:path_provider/path_provider.dart';
-
-// import 'package:flutter_sound/flutter_sound.dart';
 import 'dart:typed_data';
 import 'package:foap/helper/imports/common_import.dart';
 import 'package:foap/helper/imports/chat_imports.dart';
-import 'package:permission_handler/permission_handler.dart';
 import '../../util/constant_util.dart';
 import 'package:audio_session/audio_session.dart';
 import 'package:record/record.dart';
@@ -65,8 +62,6 @@ class _VoiceRecordState extends State<VoiceRecord> {
           message: 'Recording permissions are not provided', isSuccess: false);
     }
 
-    print('hello 1');
-
     final session = await AudioSession.instance;
     await session.configure(AudioSessionConfiguration(
       avAudioSessionCategory: AVAudioSessionCategory.playAndRecord,
@@ -85,7 +80,6 @@ class _VoiceRecordState extends State<VoiceRecord> {
       androidAudioFocusGainType: AndroidAudioFocusGainType.gain,
       androidWillPauseWhenDucked: true,
     ));
-    print('hello 2');
   }
 
   void _startTimer() {

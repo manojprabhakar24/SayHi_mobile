@@ -1,4 +1,3 @@
-import 'package:foap/model/rating_model.dart';
 import 'package:intl/intl.dart';
 
 class TVShowModel {
@@ -48,7 +47,7 @@ class TVShowModel {
         .format(DateTime.fromMillisecondsSinceEpoch(json['show_time'] * 1000));
     imageUrl = json['imageUrl'];
     totalRatings = json['rating']['totalCount'] ?? 0;
-    ratingScore = json['rating']['ratingScore'] ?? 0.0;
+    ratingScore = double.parse((json['rating']['ratingScore'].toString()));
   }
 }
 

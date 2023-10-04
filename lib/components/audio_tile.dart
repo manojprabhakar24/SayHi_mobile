@@ -1,8 +1,5 @@
-import 'package:audio_video_progress_bar/audio_video_progress_bar.dart';
-import 'package:foap/helper/imports/chat_imports.dart';
 import 'package:foap/helper/imports/common_import.dart';
 import 'package:foap/helper/imports/models.dart';
-
 import '../../manager/player_manager.dart';
 import 'audio_progress_bar.dart';
 
@@ -49,14 +46,14 @@ class _AudioPostTileState extends State<AudioPostTile> {
               _playerManager.currentlyPlayingAudio.value?.id ==
                           widget.post.gallery.first.id.toString() &&
                       _playerManager.isPlaying.value
-                  ? const ThemeIconWidget(
+                  ? ThemeIconWidget(
                       ThemeIcon.pause,
                       // color: Colors.white,
                       size: 30,
                     ).ripple(() {
                       pauseAudio();
                     })
-                  : const ThemeIconWidget(
+                  : ThemeIconWidget(
                       ThemeIcon.play,
                       // color: Colors.white,
                       size: 30,

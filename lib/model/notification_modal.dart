@@ -1,10 +1,6 @@
 import 'package:foap/helper/date_extension.dart';
 import 'package:foap/helper/imports/common_import.dart';
 import 'package:foap/model/post_model.dart';
-import 'package:foap/model/user_model.dart';
-// import 'package:timeago/timeago.dart' as timeago;
-
-import '../helper/enum.dart';
 import 'club_model.dart';
 import 'competition_model.dart';
 

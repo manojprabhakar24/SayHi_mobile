@@ -3,7 +3,6 @@ import 'package:flutter_login_facebook/flutter_login_facebook.dart';
 import 'package:foap/api_handler/apis/auth_api.dart';
 import 'package:foap/helper/imports/common_import.dart';
 import 'package:foap/screens/login_sign_up/phone_login.dart';
-import 'package:foap/screens/login_sign_up/set_user_name.dart';
 import 'dart:convert';
 import 'package:crypto/crypto.dart';
 import 'package:foap/helper/imports/login_signup_imports.dart';
@@ -100,23 +99,22 @@ class _SocialLoginState extends State<SocialLogin> {
             ))).round(10).ripple(() {
           signInWithGoogle();
         }),
-        Platform.isIOS
-            ? Container(
-                height: 40,
-                width: 40,
-                color: AppColorConstants.themeColor.withOpacity(0.2),
-                child: Center(
-                    child: Image.asset(
-                  'assets/apple.png',
-                  height: 20,
-                  width: 20,
-                  color: Colors.white,
-                ))).round(10).ripple(() {
-                //signInWithGoogle();
-                _handleAppleSignIn();
-                // Get.to(() => const InstagramView());
-              })
-            : Container(),
+        if (Platform.isIOS)
+          Container(
+              height: 40,
+              width: 40,
+              color: AppColorConstants.themeColor.withOpacity(0.2),
+              child: Center(
+                  child: Image.asset(
+                'assets/apple.png',
+                height: 20,
+                width: 20,
+                color: Colors.white,
+              ))).round(10).ripple(() {
+            //signInWithGoogle();
+            _handleAppleSignIn();
+            // Get.to(() => const InstagramView());
+          }),
         Container(
             height: 40,
             width: 40,

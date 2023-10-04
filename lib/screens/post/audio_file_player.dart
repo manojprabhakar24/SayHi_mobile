@@ -1,7 +1,6 @@
 import 'package:foap/helper/imports/common_import.dart';
 import 'package:foap/util/constant_util.dart';
 import '../../components/audio_progress_bar.dart';
-import '../../components/audio_tile.dart';
 import '../../manager/player_manager.dart';
 
 class AudioFilePlayer extends StatefulWidget {
@@ -45,14 +44,14 @@ class _AudioFilePlayerState extends State<AudioFilePlayer> {
             children: [
               _playerManager.currentlyPlayingAudio.value?.id == fileId &&
                       _playerManager.isPlaying.value
-                  ? const ThemeIconWidget(
+                  ? ThemeIconWidget(
                       ThemeIcon.pause,
                       // color: Colors.white,
                       size: 30,
                     ).ripple(() {
                       pauseAudio();
                     })
-                  : const ThemeIconWidget(
+                  : ThemeIconWidget(
                       ThemeIcon.play,
                       // color: Colors.white,
                       size: 30,

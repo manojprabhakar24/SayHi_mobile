@@ -1,17 +1,8 @@
-import 'package:flutter/material.dart';
 import 'package:foap/helper/imports/common_import.dart';
 import 'package:foap/helper/string_extension.dart';
-import '../../helper/localization_strings.dart';
 import '../../model/club_invitation.dart';
 import '../../model/club_model.dart';
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:foap/helper/extension.dart';
 import 'package:foap/helper/number_extension.dart';
-import '../../universal_components/app_buttons.dart';
-import 'package:get/get.dart';
-
-import '../../util/app_config_constants.dart';
-import '../custom_texts.dart';
 
 class ClubCard extends StatelessWidget {
   final ClubModel club;
@@ -200,13 +191,15 @@ class TopClubCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      // width: 250,
       height: 200,
       color: club.name!.generateColorFromText.darken(),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
+          const SizedBox(
+            height: 10,
+          ),
           Row(
             children: [
               CachedNetworkImage(
@@ -235,9 +228,7 @@ class TopClubCard extends StatelessWidget {
             maxLines: 2,
             color: Colors.white,
           ),
-          const SizedBox(
-            height: 40,
-          ),
+          const Spacer(),
           Row(
             children: [
               BodyMediumText(

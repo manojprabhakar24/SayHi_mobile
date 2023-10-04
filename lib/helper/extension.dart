@@ -3,7 +3,6 @@ import 'package:foap/helper/imports/common_import.dart';
 import 'package:pinch_zoom/pinch_zoom.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:shimmer/shimmer.dart';
-import 'package:get/get.dart';
 
 extension RoundedHelper on Widget {
   ClipRRect round(double value) => ClipRRect(

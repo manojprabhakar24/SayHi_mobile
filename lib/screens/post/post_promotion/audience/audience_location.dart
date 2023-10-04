@@ -15,31 +15,33 @@ class AudienceLocationScreen extends StatelessWidget {
     return AppScaffold(
         backgroundColor: AppColorConstants.backgroundColor,
         body: GetBuilder<PromotionController>(
-        init: _promotionController,
-        builder: (ctx) {
-          return SingleChildScrollView(
-            child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  customNavigationBar(title: locationsString.tr),
-                  // const EstimatedAudienceTile(),
-                  DefaultTabController(
-                    length: _promotionController.locationType.length,
-                    child: Column(children: [
-                      SMTabBar(tabs: _promotionController.locationType,canScroll: false),
-                      SizedBox(
-                          height: Get.height - 320,
-                          child: TabBarView(
-                            children: [
-                              regionalLocationView(),
-                              localLocationView(context)
-                            ],
-                          )),
+            init: _promotionController,
+            builder: (ctx) {
+              return SingleChildScrollView(
+                child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      customNavigationBar(title: locationsString.tr),
+                      // const EstimatedAudienceTile(),
+                      DefaultTabController(
+                        length: _promotionController.locationType.length,
+                        child: Column(children: [
+                          SMTabBar(
+                              tabs: _promotionController.locationType,
+                              canScroll: false),
+                          SizedBox(
+                              height: Get.height - 320,
+                              child: TabBarView(
+                                children: [
+                                  regionalLocationView(),
+                                  localLocationView(context)
+                                ],
+                              )),
+                        ]),
+                      ),
                     ]),
-                  ),
-                ]),
-          );
-        }));
+              );
+            }));
   }
 
   Widget regionalLocationView() {
@@ -48,18 +50,19 @@ class AudienceLocationScreen extends StatelessWidget {
         onSearchCompleted: (value) => {},
         onSearchChanged: (value) => _promotionController.searchLocations(value),
         showSearchIcon: true,
-        backgroundColor: AppColorConstants.subHeadingTextColor,
+        // backgroundColor: AppColorConstants.subHeadingTextColor,
         radius: 15,
-      ).p8,
+      ).p(DesignConstants.horizontalPadding),
       Expanded(
         child: SingleChildScrollView(
             child:
                 Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          BodyMediumText(addLocations.tr, color: AppColorConstants.subHeadingTextColor)
-              .hP16,
+          BodyMediumText(addLocations.tr,
+                  color: AppColorConstants.subHeadingTextColor)
+              .hp(DesignConstants.horizontalPadding),
           _promotionController.selectedLocations.isNotEmpty
               ? Heading6Text(selectedRegion.tr, weight: TextWeight.semiBold)
-                  .hP16
+                  .hp(DesignConstants.horizontalPadding)
                   .tP16
               : const SizedBox(),
           _promotionController.selectedLocations.isNotEmpty
@@ -89,11 +92,11 @@ class AudienceLocationScreen extends StatelessWidget {
                     });
                   },
                   itemCount: _promotionController.selectedLocations.length,
-                ).hP16
+                ).hp(DesignConstants.horizontalPadding)
               : const SizedBox(),
           _promotionController.regionalLocations.isNotEmpty
               ? Heading6Text(searchedRegions.tr, weight: TextWeight.semiBold)
-                  .hP16
+                  .hp(DesignConstants.horizontalPadding)
                   .tP16
               : const SizedBox(),
           _promotionController.regionalLocations.isNotEmpty
@@ -117,7 +120,7 @@ class AudienceLocationScreen extends StatelessWidget {
                     });
                   },
                   itemCount: _promotionController.regionalLocations.length,
-                ).hP16
+                ).hp(DesignConstants.horizontalPadding)
               : const SizedBox(),
         ])),
       )
@@ -160,13 +163,12 @@ class AudienceLocationScreen extends StatelessWidget {
               }),
             ).lP4,
           ],
-        ).hp(14).vP8,
-        divider(
-            height: 1, color: AppColorConstants.dividerColor),
+        ).hp(DesignConstants.horizontalPadding).vP8,
+        divider(height: 1, color: AppColorConstants.dividerColor),
         Heading5Text(
           radius.tr,
           weight: TextWeight.semiBold,
-        ).hp(14).vP8,
+        ).hp(DesignConstants.horizontalPadding).vP8,
         SliderTheme(
             data: SliderTheme.of(context).copyWith(
                 trackHeight: 3.0,

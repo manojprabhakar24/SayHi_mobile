@@ -36,7 +36,7 @@ class ActionSheetState extends State<ActionSheet> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const ThemeIconWidget(
+              ThemeIconWidget(
                 ThemeIcon.close,
                 size: 20,
               ).ripple(() {

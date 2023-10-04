@@ -1,6 +1,5 @@
 import 'package:foap/helper/imports/common_import.dart';
 import 'package:foap/screens/add_on/ui/add_relationship/accept_reject_invitation.dart';
-import 'package:get/get.dart';
 
 Widget backNavigationBar({required String title}) {
   return Container(

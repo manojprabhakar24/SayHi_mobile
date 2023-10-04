@@ -41,7 +41,7 @@ class _CropAudioState extends State<CropAudioScreen> {
       body: Column(children: [
         Row(
           children: [
-            const ThemeIconWidget(
+            ThemeIconWidget(
               ThemeIcon.backArrow,
               size: 25,
             ).ripple(() {

@@ -2,8 +2,6 @@ import 'package:foap/helper/imports/common_import.dart';
 import 'package:foap/screens/settings_menu/settings_controller.dart';
 import 'package:foap/helper/imports/event_imports.dart';
 
-import '../../../checkout/checkout.dart';
-
 class BuyTicket extends StatefulWidget {
   final EventModel event;
   final UserModel? giftToUser;
@@ -137,14 +135,15 @@ class _BuyTicketState extends State<BuyTicket> {
                           height: 30,
                           width: 30,
                           color: AppColorConstants.cardColor.darken(),
-                          child: const ThemeIconWidget(ThemeIcon.minus),
+                          child: ThemeIconWidget(ThemeIcon.minus),
                         ).round(5).ripple(() {
                           _buyTicketController.removeTicket();
                         }),
                         Obx(() => SizedBox(
                               width: 25,
                               child: Center(
-                                child: Text(_buyTicketController.numberOfTickets
+                                child: BodyMediumText(_buyTicketController
+                                    .numberOfTickets
                                     .toString()),
                               ),
                             )).hp(DesignConstants.horizontalPadding),
@@ -152,7 +151,7 @@ class _BuyTicketState extends State<BuyTicket> {
                           height: 30,
                           width: 30,
                           color: AppColorConstants.cardColor.darken(),
-                          child: const ThemeIconWidget(ThemeIcon.plus),
+                          child: ThemeIconWidget(ThemeIcon.plusSymbol),
                         ).round(5).ripple(() {
                           _buyTicketController.addTicket();
                         }),
@@ -194,7 +193,7 @@ class _BuyTicketState extends State<BuyTicket> {
                   BodyLargeText(widget.giftToUser!.userName,
                       weight: TextWeight.medium),
                   BodySmallText(
-                      '${widget.giftToUser!.city} ${widget.giftToUser!.country}',
+                      '${widget.giftToUser!.city ?? ''} ${widget.giftToUser!.country ?? ''}',
                       weight: TextWeight.regular),
                 ],
               )
@@ -221,17 +220,17 @@ class _BuyTicketState extends State<BuyTicket> {
                 left: DesignConstants.horizontalPadding,
                 right: DesignConstants.horizontalPadding),
             scrollDirection: Axis.horizontal,
-            itemCount: widget.event.tickets.length,
+            itemCount: widget.event.ticketType.length,
             itemBuilder: (context, index) {
               return Obx(() => ticketTypeWidget(
-                          ticket: widget.event.tickets[index],
+                          ticket: widget.event.ticketType[index],
                           isSelected: _buyTicketController
                                   .selectedTicketType.value?.id ==
-                              widget.event.tickets[index].id)
+                              widget.event.ticketType[index].id)
                       .ripple(() {
-                    if (widget.event.tickets[index].availableTicket > 0) {
+                    if (widget.event.ticketType[index].availableTicket > 0) {
                       _buyTicketController
-                          .selectTicketType(widget.event.tickets[index]);
+                          .selectTicketType(widget.event.ticketType[index]);
                     }
                   }));
             },
@@ -418,7 +417,7 @@ class _BuyTicketState extends State<BuyTicket> {
             ],
           ),
           const Spacer(),
-          // const ThemeIconWidget(ThemeIcon.checkMarkWithCircle, size: 28),
+          // ThemeIconWidget(ThemeIcon.checkMarkWithCircle, size: 28),
         ],
       ).p25,
     ).borderWithRadius(

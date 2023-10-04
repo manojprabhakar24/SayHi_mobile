@@ -163,7 +163,7 @@ class _StoryViewerState extends State<StoryViewer> {
           SizedBox(
             height: 25,
             width: 40,
-            child: const ThemeIconWidget(
+            child: ThemeIconWidget(
               ThemeIcon.more,
               color: Colors.white,
               size: 20,
@@ -180,27 +180,30 @@ class _StoryViewerState extends State<StoryViewer> {
 
     showModalBottomSheet(
         context: context,
-        builder: (context) => Wrap(
-              children: [
-                ListTile(
-                    title: Center(child: BodyLargeText(deleteStoryString.tr)),
-                    onTap: () async {
-                      Get.back();
-                      controller.play();
+        builder: (context) => Container(
+          color: AppColorConstants.cardColor,
+          child: Wrap(
+                children: [
+                  ListTile(
+                      title: Center(child: BodyLargeText(deleteStoryString.tr)),
+                      onTap: () async {
+                        Get.back();
+                        controller.play();
 
-                      storyController.deleteStory(() {
-                        widget.storyDeleted();
-                      });
-                    }),
-                divider(),
-                ListTile(
-                    title: Center(child: BodyLargeText(cancelString.tr)),
-                    onTap: () {
-                      controller.play();
-                      Get.back();
-                    }),
-              ],
-            )).then((value) {
+                        storyController.deleteStory(() {
+                          widget.storyDeleted();
+                        });
+                      }),
+                  divider(),
+                  ListTile(
+                      title: Center(child: BodyLargeText(cancelString.tr)),
+                      onTap: () {
+                        controller.play();
+                        Get.back();
+                      }),
+                ],
+              ),
+        )).then((value) {
       controller.play();
     });
   }
@@ -209,7 +212,7 @@ class _StoryViewerState extends State<StoryViewer> {
     return Obx(() => storyController.currentStoryMediaModel.value != null
         ? Column(
             children: [
-              const ThemeIconWidget(
+              ThemeIconWidget(
                 ThemeIcon.arrowUp,
                 color: Colors.white,
               ),

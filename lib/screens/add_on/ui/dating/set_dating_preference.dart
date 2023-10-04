@@ -2,7 +2,7 @@ import 'package:foap/components/segmented_control.dart';
 import 'package:foap/helper/imports/common_import.dart';
 import 'package:foap/screens/add_on/controller/dating/dating_controller.dart';
 import 'package:foap/universal_components/rounded_input_field.dart';
-import 'package:get/get.dart';
+
 import 'package:syncfusion_flutter_sliders/sliders.dart';
 import '../../model/preference_model.dart';
 
@@ -62,10 +62,6 @@ class SetDatingPreferenceState extends State<SetDatingPreference> {
       _valuesForAge = SfRangeValues(ageFrom, ageTo);
 
       double heightFrom = 165.0;
-      print(
-          'datingController.preferenceModel?.heightFrom ==== ${datingController.preferenceModel?.heightFrom}');
-      print(
-          'datingController.preferenceModel?.heightTo ==== ${datingController.preferenceModel?.heightTo}');
 
       if (datingController.preferenceModel?.heightFrom != null) {
         heightFrom = datingController.preferenceModel!.heightFrom!.toDouble();
@@ -462,7 +458,6 @@ class SetDatingPreferenceState extends State<SetDatingPreference> {
       preferences.interests = selectedInterests;
     }
 
-    print('selectedColor $selectedColor');
     preferences.selectedColor = colors[selectedColor];
 
     if (religionController.text.isNotEmpty) {

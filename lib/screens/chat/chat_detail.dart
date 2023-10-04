@@ -37,7 +37,7 @@ class _ChatDetailState extends State<ChatDetail> {
 
   loadChat() {
     _chatDetailController.loadChat(widget.chatRoom, () {});
-    _chatDetailController.loadWallpaper(widget.chatRoom.id);
+    // _chatDetailController.loadWallpaper(widget.chatRoom.id);
     scrollToBottom();
   }
 
@@ -264,8 +264,7 @@ class _ChatDetailState extends State<ChatDetail> {
                                                   '',
                                           weight: TextWeight.medium)
                                   : SizedBox(
-                                      width: Get.width -
-                                          120,
+                                      width: Get.width - 120,
                                       child: BodyMediumText(
                                         _chatDetailController
                                                 .whoIsTyping.isNotEmpty
@@ -540,14 +539,14 @@ class _ChatDetailState extends State<ChatDetail> {
         init: _chatDetailController,
         builder: (ctx) {
           return Container(
-            decoration: _chatDetailController.wallpaper.value.isEmpty
-                ? null
-                : BoxDecoration(
-                    image: DecorationImage(
-                      image: AssetImage(_chatDetailController.wallpaper.value),
-                      fit: BoxFit.cover,
-                    ),
-                  ),
+            // decoration: _chatDetailController.wallpaper.value.isEmpty
+            //     ? null
+            //     : BoxDecoration(
+            //         image: DecorationImage(
+            //           image: AssetImage(_chatDetailController.wallpaper.value),
+            //           fit: BoxFit.cover,
+            //         ),
+            //       ),
             child: _chatDetailController.messages.isEmpty
                 ? Container()
                 : Container(
@@ -895,7 +894,7 @@ class _ChatDetailState extends State<ChatDetail> {
         context: context,
         isScrollControlled: true,
         builder: (context) => const FractionallySizedBox(
-            heightFactor: 0.42, child: ChatMediaSharingOptionPopup()));
+            heightFactor: 0.3, child: ChatMediaSharingOptionPopup()));
   }
 
   void deleteMessageActionPopup() {

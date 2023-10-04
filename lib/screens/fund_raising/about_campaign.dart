@@ -1,7 +1,5 @@
 import 'package:foap/helper/date_extension.dart';
 import 'package:foap/helper/number_extension.dart';
-import 'package:foap/screens/fund_raising/donation_checkout.dart';
-
 import '../../controllers/fund_raising/fund_raising_controller.dart';
 import '../../helper/imports/common_import.dart';
 import '../../model/fund_raising_campaign.dart';
@@ -162,6 +160,7 @@ class AboutCampaign extends StatelessWidget {
               name: campaign.createdBy!.name,
               size: 50,
             ),
+            const SizedBox(width: 10,),
             Expanded(
               child: Column(
                 children: [
@@ -198,6 +197,7 @@ class AboutCampaign extends StatelessWidget {
               name: campaign.createdFor!.name,
               size: 50,
             ),
+            const SizedBox(width: 10,),
             Expanded(
               child: Column(
                 children: [

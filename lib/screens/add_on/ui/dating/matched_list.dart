@@ -128,7 +128,7 @@ class MatchedListState extends State<MatchedList> {
                     child: Container(
                   height: 40,
                   color: Colors.white.withOpacity(0.5),
-                  child: const Center(
+                  child:  Center(
                       child: ThemeIconWidget(
                     ThemeIcon.close,
                     size: 18,
@@ -145,7 +145,7 @@ class MatchedListState extends State<MatchedList> {
                     child: Container(
                   height: 40,
                   color: Colors.white.withOpacity(0.5),
-                  child: const Center(
+                  child:  Center(
                       child: ThemeIconWidget(
                     ThemeIcon.chatBordered,
                     size: 18,

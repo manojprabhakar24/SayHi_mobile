@@ -1,9 +1,7 @@
 import 'package:foap/helper/imports/models.dart';
-
 import '../../controllers/post/promotion_controller.dart';
 import '../../helper/imports/common_import.dart';
 import '../../model/audience_model.dart';
-import '../../model/post_model.dart';
 import '../../model/post_promotion_model.dart';
 import '../../model/regional_location_model.dart';
 import '../api_wrapper.dart';
@@ -143,7 +141,6 @@ class PromotionApi {
     var url = NetworkConstantsUtil.createPromotions;
 
     dynamic param = order.toJson();
-    print('param == $param');
 
     ApiWrapper().postApi(url: url, param: param).then((response) {
       completionHandler(response?.success == true);

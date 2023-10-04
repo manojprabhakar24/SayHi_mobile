@@ -56,7 +56,6 @@ class SelectUserToGiftEventTicketState
         body: Column(
           children: [
             backNavigationBar(title: selectUserString.tr),
-
             Expanded(
               child: GetBuilder<UserNetworkController>(
                   init: _userNetworkController,
@@ -75,7 +74,8 @@ class SelectUserToGiftEventTicketState
                     List<UserModel> usersList =
                         _userNetworkController.following;
                     return _userNetworkController.isLoading.value
-                        ? const ShimmerUsers().hp(DesignConstants.horizontalPadding)
+                        ? const ShimmerUsers()
+                            .hp(DesignConstants.horizontalPadding)
                         : Column(
                             children: [
                               usersList.isEmpty

@@ -4,9 +4,9 @@ import 'package:foap/model/shop_model/advertisement.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import '../../../model/shop_model/ad_model.dart';
 import 'package:foap/controllers/shop/shop_controller.dart';
-import '../components/adCard.dart';
-import '../components/advertisementCard.dart';
-import '../components/categoryCard.dart';
+import '../components/ad_card.dart';
+import '../components/advertisement_card.dart';
+import '../components/category_card.dart';
 import 'ad_detail_screen.dart';
 import 'see_all_ads_screen.dart';
 
@@ -81,7 +81,7 @@ class _MarketplaceState extends State<Marketplace> {
     return Obx(() => SizedBox(
           height: 120,
           child: GridView.builder(
-            padding: const EdgeInsets.only(left: 8),
+            padding: EdgeInsets.only(left: DesignConstants.horizontalPadding),
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2, childAspectRatio: 0.35),
             scrollDirection: Axis.horizontal,
@@ -108,33 +108,39 @@ class _MarketplaceState extends State<Marketplace> {
     return SizedBox(
       height: (ads.length * 270) +
           (shopController.usedThirdPartyAdvertisement.length * 250),
-      child: ListView.separated(
-          padding: EdgeInsets.all(DesignConstants.horizontalPadding),
-          itemCount: ads.length,
-          physics: const NeverScrollableScrollPhysics(),
-          itemBuilder: (BuildContext context, int index) {
-            return AdCard(
-                ad: ads[index],
-                pressed: () {
-                  Get.to(() => AdDetailScreen(ads[index]));
-                },
-                favPressed: () {
-                  shopController.favUnfavAd(ads[index]);
-                });
-          },
-          separatorBuilder: (BuildContext context, int index) {
-            if ((index % AppConfigConstants.showAdvertiesmentAfter == 0 &&
-                shopController.thirdPartyAdvertisement.length >
-                    (index / AppConfigConstants.showAdvertiesmentAfter))) {
-              Advertisement ad = (shopController.thirdPartyAdvertisement[
-                  (index / AppConfigConstants.showAdvertiesmentAfter).round()]);
-              shopController.addUsersThirdPartyAds(ad);
-              return getAdvertisementView(ad);
-            }
-            return const SizedBox(
-              height: 10,
-            );
-          }),
+      child: GridView.builder(
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 2,
+            childAspectRatio: 0.6,
+            mainAxisSpacing: 10,
+            crossAxisSpacing: 10),
+        padding: EdgeInsets.all(DesignConstants.horizontalPadding),
+        itemCount: ads.length,
+        physics: const NeverScrollableScrollPhysics(),
+        itemBuilder: (BuildContext context, int index) {
+          return AdCard(
+              ad: ads[index],
+              pressed: () {
+                Get.to(() => AdDetailScreen(ads[index]));
+              },
+              favPressed: () {
+                shopController.favUnfavAd(ads[index]);
+              });
+        },
+        // separatorBuilder: (BuildContext context, int index) {
+        //   if ((index % AppConfigConstants.showAdvertiesmentAfter == 0 &&
+        //       shopController.thirdPartyAdvertisement.length >
+        //           (index / AppConfigConstants.showAdvertiesmentAfter))) {
+        //     Advertisement ad = (shopController.thirdPartyAdvertisement[
+        //         (index / AppConfigConstants.showAdvertiesmentAfter).round()]);
+        //     shopController.addUsersThirdPartyAds(ad);
+        //     return getAdvertisementView(ad);
+        //   }
+        //   return const SizedBox(
+        //     height: 10,
+        //   );
+        // }
+      ),
     );
   }
 

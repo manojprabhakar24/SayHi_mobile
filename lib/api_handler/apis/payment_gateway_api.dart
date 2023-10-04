@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:foap/api_handler/api_wrapper.dart';
 
 class PaymentGatewayApi {
@@ -11,8 +13,8 @@ class PaymentGatewayApi {
       'currency': 'USD',
     }).then((result) {
       if (result?.success == true) {
-        print('result!.data ${result!.data}');
-        resultCallback(result!.data['client_secret']);
+        log('result!.data ${result!.data}');
+        resultCallback(result.data['client_secret']);
       }
     });
   }

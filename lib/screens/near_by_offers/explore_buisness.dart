@@ -5,7 +5,6 @@ import '../../components/paging_scrollview.dart';
 import '../../components/search_bar.dart';
 import '../../controllers/coupons/near_by_offers.dart';
 import 'business_list.dart';
-import 'offers_list.dart';
 
 class ExploreBusiness extends StatefulWidget {
   final bool addBackBtn;

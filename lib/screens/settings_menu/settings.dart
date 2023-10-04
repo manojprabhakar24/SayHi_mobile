@@ -73,17 +73,23 @@ class _SettingsState extends State<Settings> {
                                 '${installThisCoolAppString.tr} ${AppConfigConstants.liveAppLink}');
                           }, false),
                           addTileEvent(logoutString.tr, () {
-                            AppUtil.showConfirmationAlert(
+                            AppUtil.showNewConfirmationAlert(
                                 title: logoutString.tr,
                                 subTitle: logoutConfirmationString.tr,
+                                cancelHandler: () {
+                                  Get.back();
+                                },
                                 okHandler: () {
                                   _userProfileManager.logout();
                                 });
                           }, false),
                           addTileEvent(deleteAccountString.tr, () {
-                            AppUtil.showConfirmationAlert(
+                            AppUtil.showNewConfirmationAlert(
                                 title: deleteAccountString.tr,
                                 subTitle: areYouSureToDeleteAccountString.tr,
+                                cancelHandler: () {
+                                  Get.back();
+                                },
                                 okHandler: () {
                                   _settingsController.deleteAccount();
                                 });

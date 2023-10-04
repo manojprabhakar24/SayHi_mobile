@@ -74,7 +74,7 @@ class ExploreClubsState extends State<ExploreClubs> {
         height: 50,
         width: 50,
         color: AppColorConstants.themeColor,
-        child: const ThemeIconWidget(
+        child: ThemeIconWidget(
           ThemeIcon.plus,
           size: 25,
           color: Colors.white,
@@ -89,7 +89,7 @@ class ExploreClubsState extends State<ExploreClubs> {
         children: [
           backNavigationBarWithTrailingWidget(
               title: clubsString.tr,
-              widget: const ThemeIconWidget(ThemeIcon.search).ripple(() {
+              widget: ThemeIconWidget(ThemeIcon.search).ripple(() {
                 _clubsController.clear();
                 Get.to(() => const SearchClubsListing())!.then((value) {
                   loadData();

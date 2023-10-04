@@ -29,7 +29,6 @@ class _SetDateOfBirthState extends State<SetDateOfBirth> {
 
     if ((_userProfileManager.user.value!.dob ?? '').isNotEmpty) {
       String dateOfBirthString = _userProfileManager.user.value!.dob ?? '';
-      print('dateOfBirthString $dateOfBirthString');
       dateOfBirth.text = dateOfBirthString;
       dob = dateOfBirthString.toDateInFormat('yyyy-MM-dd');
     }
@@ -48,7 +47,7 @@ class _SetDateOfBirthState extends State<SetDateOfBirth> {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                Heading2Text(
+                Heading3Text(
                   whenIsYourBdayString.tr,
                 ).setPadding(top: 20),
                 BodyMediumText(

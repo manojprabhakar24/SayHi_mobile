@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:foap/helper/imports/common_import.dart';
-import 'package:get/get.dart';
 import 'package:foap/helper/imports/chat_imports.dart';
 
 class ChatMediaList extends StatefulWidget {
@@ -115,7 +114,7 @@ class _ChatMediaListState extends State<ChatMediaList> {
                   });
                 }),
                 messages[index].messageContentType == MessageContentType.video
-                    ? const Positioned(
+                    ?  Positioned(
                         right: 0,
                         top: 0,
                         left: 0,
