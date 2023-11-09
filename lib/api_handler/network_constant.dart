@@ -22,7 +22,8 @@ class NetworkConstantsUtil {
   static String updatedDeviceToken = 'users/update-token';
   static String register = 'users/register';
   static String checkUserName = 'users/check-username';
-  static String otherUser = 'users/{{id}}?expand=isFollowing,isFollower,totalFollowing,totalFollower,totalPost,totalWinnerPost,totalReel,totalClub,totalMention,userLiveDetail,giftSummary,userSetting';
+  static String otherUser =
+      'users/{{id}}?expand=isFollowing,isFollower,totalFollowing,totalFollower,totalPost,totalWinnerPost,totalReel,totalClub,totalMention,userLiveDetail,giftSummary,userSetting';
 
   static String getMyProfile =
       'users/profile?expand=totalFollowing,totalFollower,totalActivePost,totalReel,totalClub,totalMention,userLiveDetail,giftSummary,userSetting,interest,language';
@@ -93,7 +94,7 @@ class NetworkConstantsUtil {
   static String removeStoryFromHighlight = 'highlights/remove-story';
   static String addHighlight = 'highlights';
   static String updateHighlight = 'highlights/';
-  static String deleteHighlight = 'highlights';
+  static String deleteHighlight = 'highlights/';
 
   //********************* Post ***********//
   static String addPost = 'posts';
@@ -119,11 +120,14 @@ class NetworkConstantsUtil {
   static String savePost = 'favorites/add-favorite';
   static String removeSavedPost = 'favorites/remove-favorite';
 
-  static String getComments = 'posts/comment-list';
-  static String addComment = 'posts/add-comment';
   static String reportPost = 'posts/report-post';
   static String deletePost = 'posts/{{id}}';
   static String postInsight = 'posts/insight?post_id=';
+
+  static String getComments = 'posts/comment-list';
+  static String addComment = 'posts/add-comment';
+  static String deleteComment = 'post-comments/';
+  static String reportComment = 'post-comments/report-comment';
 
   //********************* competition ***********//
   static String getCompetitions =
@@ -324,11 +328,11 @@ class NetworkConstantsUtil {
   static String campaignCategories = 'categories/campaign?expand=campaignList';
   static String campaignsList =
       'campaigns?expand=donorsDetails,categoryDetails';
-  static String favCampaignsList =
+  static String favCampaignsList  =
       'campaigns/my-favorite-list?expand=donorsDetails,categoryDetails';
-  static String campaignComments =
-      'campaigns/comment-list?expand=user&campaign_id=';
+  static String campaignComments = 'campaigns/comment-list?expand=user,totalChildComment,childCommentDetail,childCommentDetail.user';
   static String addCommentOnCampaign = 'campaigns/add-comment';
+  static String deleteCampaignComment = 'campaigns/delete-comment';
 
   static String favCampaign = 'campaigns/add-favorite';
   static String unFavCampaign = 'campaigns/remove-favorite';
@@ -342,9 +346,12 @@ class NetworkConstantsUtil {
   static String searchBusiness = 'businesses?expand=coupon';
   static String offersList = 'coupons?expand=business';
 
-  static String offerCommentsList = 'coupons/comment-list?expand=coupon,user';
+  static String offerCommentsList = 'coupons/comment-list?expand=coupon,totalChildComment,childCommentDetail,childCommentDetail.user';
 
   static String addCommentOnOffer = 'coupons/add-comment';
+
+  static String deleteOfferComment = 'coupons/delete-comment';
+  static String reportOfferComment = 'coupons/report-comment';
 
   static String getFavOffer = 'coupons/my-favorite-list?expand=business';
 

@@ -282,39 +282,18 @@ class HomeController extends GetxController {
   }
 
   void getPromotionalPosts() async {
-    // if (_canLoadMorePosts == true) {
-    //   postSearchQuery.isRecent = 1;
-
-    // if (_postsCurrentPage == 1) {
-    //   isRefreshingPosts.value = true;
-    // }
-
     PostApi.getPromotionalPosts(
         page: 0,
         resultCallback: (result, metadata) {
           sponsoredPosts.addAll(result);
           sponsoredPosts.unique((e) => e.id);
 
-          // isRefreshingPosts.value = false;
-          //
-          // if (_postsCurrentPage >= metadata.pageCount) {
-          //   _canLoadMorePosts = false;
-          // } else {
-          //   _canLoadMorePosts = true;
-          // }
-          // _postsCurrentPage += 1;
-
-          // callback();
           update();
         });
-    // } else {
-    //   callback();
-    // }
   }
 
   setCurrentVisibleVideo(
       {required PostGallery media, required double visibility}) {
-
     _mediaVisibilityInfo[media.id] = visibility;
     double maxVisibility =
         _mediaVisibilityInfo[_mediaVisibilityInfo.keys.first] ?? 0;
@@ -335,7 +314,6 @@ class HomeController extends GetxController {
     } else if (maxVisibility <= 20) {
       currentVisibleVideoId.value = -1;
     }
-
   }
 
   void reportPost(int postId) {
@@ -400,33 +378,29 @@ class HomeController extends GetxController {
     isRefreshingStories.value = true;
     update();
 
-    AppUtil.checkInternet().then((value) async {
-      if (value) {
-        var responses = await Future.wait([
-          getCurrentActiveStories(),
-          getFollowersStories(),
-          getLiveUsers()
-        ]).whenComplete(() {});
-        stories.clear();
+    var responses = await Future.wait([
+      getCurrentActiveStories(),
+      getFollowersStories(),
+    ]).whenComplete(() {});
+    stories.clear();
 
-        StoryModel story = StoryModel(
-            id: 1,
-            name: '',
-            userName: _userProfileManager.user.value!.userName,
-            email: '',
-            image: _userProfileManager.user.value!.picture,
-            media: responses[0] as List<StoryMediaModel>);
+    StoryModel story = StoryModel(
+        id: 1,
+        name: '',
+        userName: _userProfileManager.user.value!.userName,
+        // email: '',
+        image: _userProfileManager.user.value!.picture,
+        media: responses[0] as List<StoryMediaModel>);
 
-        stories.add(story);
-        stories.addAll(responses[1] as List<StoryModel>);
-        stories.unique((e) => e.id);
-
-        liveUsers.value = responses[2] as List<UserModel>;
-      }
-
-      isRefreshingStories.value = false;
-      update();
-    });
+    if ((responses[0] as List<StoryMediaModel>).isNotEmpty) {
+      stories.add(story);
+      stories.addAll(responses[1] as List<StoryModel>);
+    } else {
+      stories.addAll(responses[1] as List<StoryModel>);
+    }
+    stories.unique((e) => e.id);
+    isRefreshingStories.value = false;
+    update();
   }
 
   Future<List<UserModel>> getLiveUsers() async {

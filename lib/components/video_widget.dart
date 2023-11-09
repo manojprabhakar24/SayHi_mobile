@@ -8,7 +8,8 @@ bool isMute = false;
 
 class VideoPostTile extends StatefulWidget {
   final PostGallery? media;
-  final double aspectRatio;
+  final double width;
+
   final String url;
   final bool isLocalFile;
   final bool play;
@@ -16,8 +17,8 @@ class VideoPostTile extends StatefulWidget {
   const VideoPostTile(
       {Key? key,
       this.media,
+      required this.width,
       required this.url,
-      required this.aspectRatio,
       required this.isLocalFile,
       required this.play})
       : super(key: key);
@@ -67,46 +68,52 @@ class _VideoPostTileState extends State<VideoPostTile> {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        SizedBox(
-          height: Get.width / widget.aspectRatio,
-          child: FutureBuilder(
+    return GestureDetector(
+      onTap: () {
+        if (isMute == true) {
+          unMuteAudio();
+        } else {
+          muteAudio();
+        }
+      },
+      child: Stack(
+        children: [
+          FutureBuilder(
             future: initializeVideoPlayerFuture,
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.done) {
-                return Stack(
-                  children: [
-                    Container(
-                      key: PageStorageKey(widget.url),
-                      child: Chewie(
-                        key: PageStorageKey(widget.url),
-                        controller: ChewieController(
-                          videoPlayerController: videoPlayerController!,
-                          aspectRatio: videoPlayerController!.value.aspectRatio,
-                          showControls: false,
-                          autoInitialize: true,
-                          looping: false,
-                          autoPlay: false,
-                          allowMuting: true,
-                          placeholder: widget.media != null
-                              ? CachedNetworkImage(
-                                  imageUrl: widget.media!.thumbnail,
-                                  fit: BoxFit.cover,
-                                )
-                              : Container(),
-                          errorBuilder: (context, errorMessage) {
-                            return Center(
-                              child: Text(
-                                errorMessage,
-                                style: const TextStyle(color: Colors.white),
-                              ),
-                            );
-                          },
-                        ),
-                      ),
+                return SizedBox(
+                  height:
+                      widget.width / videoPlayerController!.value.aspectRatio,
+                  key: PageStorageKey(widget.url),
+                  child: Chewie(
+                    key: PageStorageKey(widget.url),
+                    controller: ChewieController(
+                      videoPlayerController: videoPlayerController!,
+                      aspectRatio: videoPlayerController!.value.aspectRatio,
+                      showControls: false,
+                      autoInitialize: true,
+                      looping: false,
+                      autoPlay: false,
+                      allowMuting: true,
+                      placeholder: widget.media != null
+                          ? CachedNetworkImage(
+                              imageUrl: widget.media!.thumbnail,
+                              fit: BoxFit.cover,
+                              width: Get.width,
+                              height: double.infinity,
+                            )
+                          : Container(),
+                      errorBuilder: (context, errorMessage) {
+                        return Center(
+                          child: Text(
+                            errorMessage,
+                            style: const TextStyle(color: Colors.white),
+                          ),
+                        );
+                      },
                     ),
-                  ],
+                  ),
                 );
               } else {
                 return widget.media == null
@@ -114,52 +121,26 @@ class _VideoPostTileState extends State<VideoPostTile> {
                     : CachedNetworkImage(
                         imageUrl: widget.media!.thumbnail,
                         fit: BoxFit.cover,
+                        width: Get.width,
                       );
               }
             },
           ),
-        ),
-        // isPlayed == true || playVideo == false
-        //     ? Positioned(
-        //         left: 0,
-        //         right: 0,
-        //         bottom: 0,
-        //         top: 0,
-        //         child: Container(
-        //           height: min(
-        //               (Get.width - 32) /
-        //                   videoPlayerController!.value.aspectRatio,
-        //               Get.height * 0.5),
-        //           color: Colors.black38,
-        //           child: ThemeIconWidget(
-        //             ThemeIcon.play,
-        //             size: 50,
-        //             color: Colors.white,
-        //           ),
-        //         ).ripple(() {
-        //           play();
-        //         }))
-        //     : Container(),
-        Positioned(
-            right: 10,
-            bottom: 10,
-            child: Container(
-              height: 25,
-              width: 25,
-              color: Colors.black38,
-              child: ThemeIconWidget(
-                isMute ? ThemeIcon.micOff : ThemeIcon.mic,
-                size: 15,
-                color: Colors.white,
-              ),
-            ).circular.ripple(() {
-              if (isMute == true) {
-                unMuteAudio();
-              } else {
-                muteAudio();
-              }
-            })),
-      ],
+          Positioned(
+              right: 10,
+              bottom: 10,
+              child: Container(
+                height: 25,
+                width: 25,
+                color: Colors.black38,
+                child: ThemeIconWidget(
+                  isMute ? ThemeIcon.micOff : ThemeIcon.mic,
+                  size: 15,
+                  color: Colors.white,
+                ),
+              )),
+        ],
+      ),
     );
   }
 

@@ -17,6 +17,7 @@ class FundRaisingController extends GetxController {
   RxList<FundRaisingCampaign> favCampaigns = <FundRaisingCampaign>[].obs;
   RxList<CommentModel> comments = <CommentModel>[].obs;
   RxList<UserModel> donors = <UserModel>[].obs;
+  Rx<CommentModel?> replyingComment = Rx<CommentModel?>(null);
 
   FundRaisingCampaignSearchModel searchModel = FundRaisingCampaignSearchModel();
 
@@ -64,8 +65,8 @@ class FundRaisingController extends GetxController {
     totalDonorsFound.value = 0;
 
     searchModel = FundRaisingCampaignSearchModel();
-
     donationAmount = 0.0;
+    replyingComment.value = null;
 
     clearComments();
     clearCampaigns();
@@ -109,6 +110,10 @@ class FundRaisingController extends GetxController {
     getCategories();
     getFavCampaigns(() {});
     getCampaigns(() {});
+  }
+
+  setReplyComment(CommentModel? comment) {
+    replyingComment.value = comment;
   }
 
   setCurrentCampaign(FundRaisingCampaign campaign) {
@@ -262,11 +267,59 @@ class FundRaisingController extends GetxController {
   }
 
   postComment(String comment) {
-    comments.add(CommentModel.fromNewMessage(
-        CommentType.text, _userProfileManager.user.value!,
-        comment: comment));
     FundRaisingApi.postComment(
-        comment: comment, campaignId: currentCampaign.value!.id);
+        comment: comment,
+        campaignId: currentCampaign.value!.id,
+        parentCommentId: replyingComment.value?.id,
+        resultCallback: (id) {
+          CommentModel newComment = CommentModel.fromNewMessage(
+              CommentType.text, _userProfileManager.user.value!,
+              comment: comment, id: id);
+          if (replyingComment.value == null) {
+            comments.add(newComment);
+          } else {
+            newComment.level = 2;
+            CommentModel mainComment =
+                comments.where((e) => e.id == replyingComment.value!.id).first;
+            mainComment.replies.add(newComment);
+          }
+
+          replyingComment.value = null;
+          update();
+        });
+  }
+
+  void deleteComment({required CommentModel comment}) {
+    if (comment.level == 1) {
+      comments.removeWhere((element) => element.id == comment.id);
+    } else {
+      CommentModel mainComment =
+          comments.where((e) => e.id == comment.parentId).first;
+      mainComment.replies.removeWhere((element) => element.id == comment.id);
+    }
+
+    update();
+    FundRaisingApi.deleteComment(
+        resultCallback: () {
+          AppUtil.showToast(message: commentIsDeletedString, isSuccess: true);
+        },
+        commentId: comment.id);
+  }
+
+  void reportComment({required int commentId}) {
+    FundRaisingApi.reportComment(
+        resultCallback: () {
+          AppUtil.showToast(message: commentIsReportedString, isSuccess: true);
+        },
+        commentId: commentId);
+  }
+
+  void favUnfavComment({required int commentId}) {
+    FundRaisingApi.favUnfavComment(
+        resultCallback: () {
+          AppUtil.showToast(message: commentIsReportedString, isSuccess: true);
+        },
+        commentId: commentId);
   }
 
   getComments(VoidCallback callback) {
@@ -287,6 +340,26 @@ class FundRaisingController extends GetxController {
     } else {
       callback();
     }
+  }
+
+  void getChildComments({
+    required int page,
+    required int refId,
+    required int parentId,
+  }) {
+    FundRaisingApi.getComments(
+        campaignId: refId,
+        parentId: parentId,
+        page: page,
+        resultCallback: (result, metadata) {
+          CommentModel mainComment =
+              comments.where((e) => e.id == parentId).first;
+          mainComment.currentPageForReplies = metadata.currentPage + 1;
+          mainComment.pendingReplies =
+              metadata.totalCount - (metadata.currentPage * metadata.perPage);
+          mainComment.replies.addAll(result);
+          update();
+        });
   }
 
   setDonationAmount(int amount) {

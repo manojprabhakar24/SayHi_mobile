@@ -51,7 +51,6 @@ class SettingsController extends GetxController {
   }
 
   changeLanguage(Map<String, String> language) async {
-
     var locale = Locale(language['language_code']!);
     Get.updateLocale(locale);
     currentLanguage.value = language['language_code']!;
@@ -95,28 +94,23 @@ class SettingsController extends GetxController {
   }
 
   getSettings() async {
-    String? authKey = await SharedPrefs().getAuthorizationKey();
+    await MiscApi.getSettings(resultCallback: (result) async {
+      setting.value = result;
 
-    if (authKey != null) {
-      await MiscApi.getSettings(resultCallback: (result) async {
-        setting.value = result;
+      if (setting.value?.latestVersion! != AppConfigConstants.currentVersion) {
+        forceUpdate.value = true;
+        forceUpdate.value = false;
+      }
 
-        if (setting.value?.latestVersion! !=
-            AppConfigConstants.currentVersion) {
-          forceUpdate.value = true;
-          forceUpdate.value = false;
-        }
+      if (setting.value!.stripePublishableKey?.isNotEmpty == true) {
+        Stripe.publishableKey = setting.value!.stripePublishableKey!;
+        Stripe.merchantIdentifier = 'merchant.com.socialified';
+        Stripe.urlScheme = 'socialifiedstripe';
+        await Stripe.instance.applySettings();
+      }
 
-         if (setting.value!.stripePublishableKey?.isNotEmpty == true) {
-          Stripe.publishableKey = setting.value!.stripePublishableKey!;
-          Stripe.merchantIdentifier = 'merchant.com.socialified';
-          Stripe.urlScheme = 'socialifiedstripe';
-          await Stripe.instance.applySettings();
-        }
-
-        update();
-      });
-    }
+      update();
+    });
   }
 
   Future checkBiometric() async {

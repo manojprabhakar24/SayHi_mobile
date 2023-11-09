@@ -12,8 +12,9 @@ import '../api_wrapper.dart';
 class AuthApi {
   static login(
       {required String email,
-      required String password,
-      required Function(String) successCallback}) async {
+        required String password,
+        required Function(String) successCallback,
+        required Function(String) verifyOtpCallback}) async {
     String? fcmToken = await SharedPrefs().getFCMToken();
     String? voipToken = await SharedPrefs().getVoipToken();
     dynamic param = {
@@ -23,6 +24,8 @@ class AuthApi {
       "device_token": fcmToken ?? '',
       "device_token_voip_ios": voipToken ?? ''
     };
+
+    print('param $param');
     Loader.show(status: loadingString.tr);
 
     await ApiWrapper()
@@ -34,6 +37,12 @@ class AuthApi {
         String authKey = response!.data!['auth_key'];
         successCallback(authKey);
       } else {
+        if (response?.data != null) {
+          if (response!.data['token'] != null) {
+            String authKey = response.data!['token'];
+            verifyOtpCallback(authKey);
+          }
+        }
         AppUtil.showToast(
             message: response?.message ?? errorMessageString.tr,
             isSuccess: false);

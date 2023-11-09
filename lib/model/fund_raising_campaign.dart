@@ -52,7 +52,7 @@ class FundRaisingCampaign {
         endDate: DateTime.fromMillisecondsSinceEpoch(json['end_date'] * 1000),
         createdDate:
             DateTime.fromMillisecondsSinceEpoch(json['created_at'] * 1000),
-        targetValue: (json['target_value'] as int).toDouble(),
+        targetValue: double.parse(json['target_value'].toString()),
         raisedValue: json['raised_value'] == null
             ? 0.0
             : double.parse(json['raised_value'].toString()),

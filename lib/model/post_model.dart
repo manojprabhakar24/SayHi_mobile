@@ -62,7 +62,6 @@ class PostModel {
     model.isSaved = json['isFavorite'] == 1;
     model.commentsEnabled = json['is_comment_enable'] == 1;
 
-    // model.imageUrl = json['imageUrl'];
     model.tags = [];
     if (json['hashtags'] != null && json['hashtags'].length > 0) {
       model.tags = List<String>.from(json['hashtags'].map((x) => '#$x'));

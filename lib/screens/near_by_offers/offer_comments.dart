@@ -18,7 +18,6 @@ class OfferCommentsScreenState extends State<OfferCommentsScreen> {
   TextEditingController commentInputField = TextEditingController();
   final ScrollController _controller = ScrollController();
   final NearByOffersController _nearByOffersController = Get.find();
-
   final RefreshController _commentsRefreshController =
       RefreshController(initialRefresh: false);
 
@@ -57,7 +56,34 @@ class OfferCommentsScreenState extends State<OfferCommentsScreen> {
                   controller: _controller,
                   itemBuilder: (context, index) {
                     return CommentTile(
-                        model: _nearByOffersController.comments[index]);
+                      model: _nearByOffersController.comments[index],
+                      replyActionHandler: (comment) {
+                        _nearByOffersController.setReplyComment(comment);
+                      },
+                      deleteActionHandler: (comment) {
+                        _nearByOffersController.deleteComment(
+                          comment: comment,
+                        );
+                      },
+                      favActionHandler: (comment) {
+                        _nearByOffersController.favUnfavComment(
+                          commentId: comment.id,
+                        );
+                      },
+                      reportActionHandler: (comment) {
+                        _nearByOffersController.reportComment(
+                          commentId: comment.id,
+                        );
+                      },
+                      loadMoreChildCommentsActionHandler: (comment) {
+                        _nearByOffersController.getChildComments(
+                          page: comment.currentPageForReplies,
+                          offerId:
+                              _nearByOffersController.currentOffer.value!.id,
+                          parentId: comment.id,
+                        );
+                      },
+                    );
                   },
                   separatorBuilder: (ctx, index) {
                     return const SizedBox(
@@ -74,6 +100,27 @@ class OfferCommentsScreenState extends State<OfferCommentsScreen> {
                     enablePullDown: false);
               }),
             ),
+            Obx(() => _nearByOffersController.replyingComment.value == null
+                ? Container()
+                : Container(
+                    color: AppColorConstants.cardColor,
+                    child: Row(
+                      children: [
+                        BodySmallText(
+                          '${replyingToString.tr} ${_nearByOffersController.replyingComment.value!.userName}',
+                          weight: TextWeight.regular,
+                        ),
+                        const Spacer(),
+                        ThemeIconWidget(ThemeIcon.close).ripple(() {
+                          _nearByOffersController.setReplyComment(null);
+                        })
+                      ],
+                    ).setPadding(
+                        left: DesignConstants.horizontalPadding,
+                        right: DesignConstants.horizontalPadding,
+                        top: 12,
+                        bottom: 12),
+                  )),
             buildMessageTextField(),
             const SizedBox(height: 20)
           ],
@@ -88,7 +135,7 @@ class OfferCommentsScreenState extends State<OfferCommentsScreen> {
         children: <Widget>[
           Expanded(
             child: Container(
-              color: AppColorConstants.cardColor.withOpacity(0.5),
+              // color: AppColorConstants.cardColor.withOpacity(0.5),
               child: TextField(
                 controller: commentInputField,
                 onChanged: (text) {},

@@ -89,7 +89,9 @@ class MyProfileState extends State<MyProfile>
                   addProfileView(),
                   addHighlightsView(),
                   contentWidget(),
-                  const SizedBox(height: 20,)
+                  const SizedBox(
+                    height: 20,
+                  )
                 ]),
               ),
               Positioned(top: 0, left: 0, right: 0, child: appBar())
@@ -130,18 +132,7 @@ class MyProfileState extends State<MyProfile>
                                     weight: TextWeight.bold,
                                   ),
                                   if (_profileController.user.value!.isVerified)
-                                    Row(
-                                      children: [
-                                        const SizedBox(
-                                          width: 5,
-                                        ),
-                                        Image.asset(
-                                          'assets/verified.png',
-                                          height: 15,
-                                          width: 15,
-                                        )
-                                      ],
-                                    ),
+                                    verifiedUserTag()
                                 ],
                               ).bP4,
                               if (_profileController
@@ -282,7 +273,6 @@ class MyProfileState extends State<MyProfile>
 
   Widget appBar() {
     return SizedBox(
-      // color: Colors.black26,
       height: 100,
       child: widget.showBack == true
           ? backNavigationBarWithTrailingWidget(
@@ -293,14 +283,14 @@ class MyProfileState extends State<MyProfile>
               ).ripple(() {
                 Get.to(() => const Settings());
               }),
-            ).tp(40)
+            )
           : titleNavigationBarWithIcon(
               title: '',
               icon: ThemeIcon.setting,
               iconColor: AppColorConstants.themeColor,
               completion: () {
                 Get.to(() => const Settings());
-              }).tp(40),
+              }),
     );
   }
 
@@ -346,10 +336,12 @@ class MyProfileState extends State<MyProfile>
                 ],
               ),
             ).round(20).ripple(() {
-              Get.to(() => Posts(
-                    userId: _userProfileManager.user.value!.id,
-                    title: _userProfileManager.user.value!.userName,
-                  ));
+              if (_userProfileManager.user.value!.totalPost > 0) {
+                Get.to(() => Posts(
+                      userId: _userProfileManager.user.value!.id,
+                      title: _userProfileManager.user.value!.userName,
+                    ));
+              }
             }),
             const SizedBox(
               width: 5,
@@ -389,14 +381,16 @@ class MyProfileState extends State<MyProfile>
                 ],
               ),
             ).round(20).ripple(() {
-              ReelsController reelsController = Get.find();
+              if (_userProfileManager.user.value!.totalReels > 0) {
+                ReelsController reelsController = Get.find();
 
-              PostSearchQuery query = PostSearchQuery();
-              query.userId = _userProfileManager.user.value!.id;
-              reelsController.setReelsSearchQuery(query);
-              Get.to(() => const Reels(
-                    needBackBtn: true,
-                  ));
+                PostSearchQuery query = PostSearchQuery();
+                query.userId = _userProfileManager.user.value!.id;
+                reelsController.setReelsSearchQuery(query);
+                Get.to(() => const Reels(
+                      needBackBtn: true,
+                    ));
+              }
             }),
           ],
         ),
@@ -442,7 +436,10 @@ class MyProfileState extends State<MyProfile>
                 ],
               ),
             ).round(20).ripple(() {
-              Get.to(() => Mentions(userId: _profileController.user.value!.id));
+              if (_userProfileManager.user.value!.totalMentions > 0) {
+                Get.to(
+                    () => Mentions(userId: _profileController.user.value!.id));
+              }
             }),
             const SizedBox(
               width: 5,
@@ -482,9 +479,11 @@ class MyProfileState extends State<MyProfile>
                 ],
               ),
             ).round(20).ripple(() {
-              Get.to(() => UsersClubs(
-                    user: _userProfileManager.user.value!,
-                  ));
+              if (_userProfileManager.user.value!.totalClubs > 0) {
+                Get.to(() => UsersClubs(
+                      user: _userProfileManager.user.value!,
+                    ));
+              }
             }),
           ],
         ),

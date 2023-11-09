@@ -1,7 +1,6 @@
 import 'dart:io';
 import 'package:foap/helper/imports/common_import.dart';
 import 'package:foap/screens/post/watch_videos.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:awesome_bottom_bar/awesome_bottom_bar.dart';
 import '../../components/force_update_view.dart';
 import '../add_on/ui/reel/reels.dart';
@@ -36,7 +35,6 @@ class DashboardState extends State<DashboardScreen> {
   final SettingsController _settingsController = Get.find();
 
   List<Widget> widgets = [];
-  final picker = ImagePicker();
   bool hasPermission = false;
 
   @override
@@ -48,11 +46,9 @@ class DashboardState extends State<DashboardScreen> {
         needBackBtn: false,
       ),
       const WatchVideos(),
-
       const MyProfile(
         showBack: false,
       ),
-      //const Settings()
     ];
 
     super.initState();

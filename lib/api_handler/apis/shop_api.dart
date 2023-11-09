@@ -81,7 +81,7 @@ class ShopApi {
       required Function(List<Advertisement>, APIMetaData)
           resultCallback}) async {
     var url = NetworkConstantsUtil.promotionalAds;
-    url = '$url&page=$page';
+    url = '$url?page=$page';
 
     await ApiWrapper().getApi(url: url).then((result) {
       // Loader.dismiss();

@@ -19,6 +19,7 @@ import '../../model/call_model.dart';
 import '../../model/gallery_media.dart';
 import '../../model/location.dart';
 import '../../model/post_model.dart';
+import '../../model/story_model.dart';
 import '../../util/constant_util.dart';
 import '../../util/shared_prefs.dart';
 import 'agora_call_controller.dart';
@@ -179,7 +180,7 @@ class ChatDetailController extends GetxController {
       ChatApi.getChatHistory(
           roomId: roomId,
           lastMessageId: lastFetchedMessageId,
-          resultCallback: (result) async {
+          resultCallback: (result, metadata) async {
             if (result.isNotEmpty) {
               await getIt<RealmDBManager>().prepareSaveMessage(
                   chatMessages: result, alreadyWritingInDB: false);
@@ -1126,6 +1127,145 @@ class ChatDetailController extends GetxController {
     return status;
   }
 
+  Future<bool> sendStoryTextReplyMessage(
+      {required String messageText,
+      required StoryMediaModel storyMedia,
+      required ChatRoomModel room}) async {
+    bool status = true;
+
+    final filter = ProfanityFilter();
+    bool hasProfanity = filter.hasProfanity(messageText);
+    if (hasProfanity) {
+      AppUtil.showToast(message: notAllowedMessageString.tr, isSuccess: true);
+      return false;
+    }
+
+    String encryptedTextMessage = messageText.encrypted();
+    var content = {
+      'messageType': messageTypeId(MessageContentType.text),
+      'text': encryptedTextMessage,
+    };
+
+    String repliedOnStory = jsonEncode(storyMedia.toJson()).encrypted();
+
+    if (encryptedTextMessage.removeAllWhitespace.trim().isNotEmpty) {
+      String localMessageId = randomId();
+      var message = {
+        'userId': _userProfileManager.user.value!.id,
+        'localMessageId': localMessageId,
+        'is_encrypted': AppConfigConstants.enableEncryption,
+        'messageType': messageTypeId(MessageContentType.textReplyOnStory),
+        'message': json.encode(content).encrypted(),
+        'replied_on_message': repliedOnStory,
+        'chat_version': AppConfigConstants.chatVersion,
+        'room': room.id,
+        'created_by': _userProfileManager.user.value!.id,
+        'created_at': (DateTime.now().millisecondsSinceEpoch / 1000).round()
+      };
+
+      //save message to socket server
+      status =
+          getIt<SocketManager>().emit(SocketConstants.sendMessage, message);
+
+      ChatMessageModel currentMessageModel = ChatMessageModel();
+      currentMessageModel.isEncrypted = AppConfigConstants.enableEncryption;
+      currentMessageModel.chatVersion = AppConfigConstants.chatVersion;
+
+      currentMessageModel.localMessageId = localMessageId;
+      currentMessageModel.sender = _userProfileManager.user.value!;
+
+      currentMessageModel.roomId = room.id;
+
+      currentMessageModel.userName = youString.tr;
+      currentMessageModel.senderId = _userProfileManager.user.value!.id;
+      currentMessageModel.messageType =
+          messageTypeId(MessageContentType.textReplyOnStory);
+      currentMessageModel.messageContent = json.encode(content).encrypted();
+      currentMessageModel.repliedOnMessageContent = repliedOnStory;
+
+      currentMessageModel.createdAt =
+          (DateTime.now().millisecondsSinceEpoch / 1000).round();
+
+      addNewMessage(message: currentMessageModel, roomId: room.id);
+      // save message to database
+      getIt<RealmDBManager>().prepareSaveMessage(
+          chatMessages: [currentMessageModel], alreadyWritingInDB: false);
+
+      setReplyMessage(message: null);
+      messageTf.value.text = '';
+      messageTf.refresh();
+      update();
+    }
+
+    return status;
+  }
+
+  Future<bool> sendStoryReactionReplyMessage(
+      {required String emoji,
+      required StoryMediaModel storyMedia,
+      required ChatRoomModel room}) async {
+    bool status = true;
+
+    String encryptedTextMessage = emoji.encrypted();
+    var content = {
+      'messageType': messageTypeId(MessageContentType.text),
+      'text': encryptedTextMessage,
+    };
+
+    String reactedOnStory = jsonEncode(storyMedia.toJson()).encrypted();
+
+    if (encryptedTextMessage.removeAllWhitespace.trim().isNotEmpty) {
+      String localMessageId = randomId();
+      var message = {
+        'userId': _userProfileManager.user.value!.id,
+        'localMessageId': localMessageId,
+        'is_encrypted': AppConfigConstants.enableEncryption,
+        'messageType': messageTypeId(MessageContentType.reactedOnStory),
+        'message': json.encode(content).encrypted(),
+        'replied_on_message': reactedOnStory,
+        'chat_version': AppConfigConstants.chatVersion,
+        'room': room.id,
+        'created_by': _userProfileManager.user.value!.id,
+        'created_at': (DateTime.now().millisecondsSinceEpoch / 1000).round()
+      };
+
+      //save message to socket server
+      status =
+          getIt<SocketManager>().emit(SocketConstants.sendMessage, message);
+
+      ChatMessageModel currentMessageModel = ChatMessageModel();
+      currentMessageModel.isEncrypted = AppConfigConstants.enableEncryption;
+      currentMessageModel.chatVersion = AppConfigConstants.chatVersion;
+
+      currentMessageModel.localMessageId = localMessageId;
+      currentMessageModel.sender = _userProfileManager.user.value!;
+
+      currentMessageModel.roomId = room.id;
+
+      currentMessageModel.userName = youString.tr;
+      currentMessageModel.senderId = _userProfileManager.user.value!.id;
+      currentMessageModel.messageType =
+          messageTypeId(MessageContentType.reactedOnStory);
+      currentMessageModel.messageContent = json.encode(content).encrypted();
+      currentMessageModel.repliedOnMessageContent = reactedOnStory;
+
+      currentMessageModel.createdAt =
+          (DateTime.now().millisecondsSinceEpoch / 1000).round();
+
+      addNewMessage(message: currentMessageModel, roomId: room.id);
+      // save message to database
+      getIt<RealmDBManager>().prepareSaveMessage(
+          chatMessages: [currentMessageModel], alreadyWritingInDB: false);
+
+      setReplyMessage(message: null);
+      messageTf.value.text = '';
+      messageTf.refresh();
+      update();
+    }
+
+    return status;
+  }
+
   addNewMessage(
       {required ChatMessageModel message, required int roomId}) async {
     if (roomId != message.roomId) {
@@ -1191,43 +1331,12 @@ class ChatDetailController extends GetxController {
         // String messageMediaDirectoryPath =
         //     await messageMediaDirectory(messageId);
 
-        if (media.mediaType == GalleryMediaType.photo) {
-        } else if (media.mediaType == GalleryMediaType.video) {
+        if (media.mediaType == GalleryMediaType.video) {
           await MiscApi.uploadFile(thumbnailFile!.path,
               mediaType: GalleryMediaType.photo,
               type: UploadMediaType.chat, resultCallback: (filename, filepath) {
             videoThumbnailPath = filepath;
           });
-        } else if (media.mediaType == GalleryMediaType.audio) {
-          // mainFile = await FileManager.saveChatMediaToDirectory(
-          //     media, messageId, false, chatRoom.value!.id);
-
-          // Uint8List mainFileData;
-          // if (media.mediaByte == null) {
-          //   mainFileData = media.file!.readAsBytesSync();
-          // } else {
-          //   mainFileData = media.mediaByte!;
-          // }
-          // // audio
-          // String audioPath = '$messageMediaDirectoryPath/$messageId.mp3';
-          // mainFile = await File(audioPath).create();
-          // mainFile.writeAsBytesSync(mainFileData);
-        } else {
-          // Uint8List mainFileData;
-          // if (media.mediaByte == null) {
-          //   mainFileData = media.file!.readAsBytesSync();
-          // } else {
-          //   mainFileData = media.mediaByte!;
-          // }
-          // // file
-          //
-          // final extension = p.extension(media.file!.path); // '.dart'
-          //
-          // String filePath = '$messageMediaDirectoryPath/$messageId$extension';
-          // mainFile = await File(filePath).create();
-          // mainFile.writeAsBytesSync(mainFileData);
-          // mainFile = await FileManager.saveChatMediaToDirectory(
-          //     media, messageId, false, chatRoom.value!.id);
         }
 
         await MiscApi.uploadFile(mainFile.path,

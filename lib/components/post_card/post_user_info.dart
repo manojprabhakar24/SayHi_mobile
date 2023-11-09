@@ -31,62 +31,62 @@ class PostUserInfo extends StatelessWidget {
         const SizedBox(width: 10),
         Expanded(
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Row(
               children: [
-                Row(
-                  children: [
-                    BodyLargeText(
-                      post.user.userName,
-                      weight: TextWeight.medium,
+                BodyMediumText(
+                  post.user.userName,
+                  weight: TextWeight.medium,
+                ).ripple(() {
+                  openProfile();
+                }),
+                if (post.user.isVerified) verifiedUserTag().rP8,
+                if (post.club != null)
+                  Expanded(
+                    child: BodyMediumText(
+                      '${sharedInString.tr} (${post.club!.name})',
+                      weight: TextWeight.semiBold,
+                      color: AppColorConstants.themeColor,
+                      maxLines: 1,
                     ).ripple(() {
-                      openProfile();
+                      openClubDetail();
                     }),
-                    if (post.club != null)
-                      Expanded(
-                        child: BodyLargeText(
-                          ' (${post.club!.name})',
-                          weight: TextWeight.semiBold,
-                          color: AppColorConstants.themeColor,
-                          maxLines: 1,
-                        ).ripple(() {
-                          openClubDetail();
-                        }),
-                      ),
-                    if (post.sharedPost != null)
-                      BodySmallText(
-                        ' ($reSharedString) ',
-                        weight: TextWeight.semiBold,
-                        maxLines: 1,
-                      )
-                  ],
-                ),
-                const SizedBox(
-                  height: 2,
-                ),
-                isSponsored == true
-                    ? BodyExtraSmallText(sponsoredString.tr)
-                    : Row(
-                  children: [
-                    ThemeIconWidget(ThemeIcon.clock, size: 12),
-                    const SizedBox(
-                      width: 5,
-                    ),
-                    BodyExtraSmallText(post.postTime.tr),
-                  ],
-                ),
+                  ),
+                if (post.sharedPost != null)
+                  BodySmallText(
+                    ' ($reSharedString) ',
+                    weight: TextWeight.semiBold,
+                    maxLines: 1,
+                  )
               ],
-            )),
+            ),
+            const SizedBox(
+              height: 2,
+            ),
+            isSponsored == true
+                ? BodyExtraSmallText(sponsoredString.tr)
+                : Row(
+                    children: [
+                      ThemeIconWidget(ThemeIcon.clock, size: 12),
+                      const SizedBox(
+                        width: 5,
+                      ),
+                      BodyExtraSmallText(post.postTime.tr),
+                    ],
+                  ),
+          ],
+        )),
       ],
     );
   }
 
   void openProfile() async {
     if (post.user.isMe) {
-      Get.to(() =>
-      const MyProfile(
-        showBack: true,
-      ));
+      Get.to(() => const MyProfile(
+            showBack: true,
+          ));
     } else {
       _profileController.otherUserProfileView(
           refId: post.user.id, viewSource: UserViewSourceType.post);
@@ -95,10 +95,9 @@ class PostUserInfo extends StatelessWidget {
   }
 
   void openClubDetail() async {
-    Get.to(() =>
-        ClubDetail(
-            club: post.club!,
-            needRefreshCallback: () {},
-            deleteCallback: (club) {}));
+    Get.to(() => ClubDetail(
+        club: post.club!,
+        needRefreshCallback: () {},
+        deleteCallback: (club) {}));
   }
 }

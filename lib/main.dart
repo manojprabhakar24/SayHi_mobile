@@ -17,6 +17,7 @@ import 'package:foap/controllers/live/live_users_controller.dart';
 import 'package:foap/screens/dashboard/loading.dart';
 import 'package:foap/screens/settings_menu/help_support_contorller.dart';
 import 'package:giphy_get/l10n.dart';
+import 'components/smart_text_field.dart';
 import 'controllers/post/post_gift_controller.dart';
 import 'controllers/clubs/clubs_controller.dart';
 import 'controllers/coupons/near_by_offers.dart';
@@ -138,6 +139,7 @@ Future<void> main() async {
   Get.put(SavedPostController());
   Get.put(ShopController());
   Get.put(JobController());
+  Get.put(SmartTextFieldController());
 
   setupServiceLocator();
 

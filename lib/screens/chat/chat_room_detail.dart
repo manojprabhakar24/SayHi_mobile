@@ -195,7 +195,7 @@ class _ChatRoomDetailState extends State<ChatRoomDetail> {
                   const SizedBox(
                     width: 10,
                   ),
-                  Heading6Text(groupSettingsString.tr,
+                  BodyLargeText(groupSettingsString.tr,
                       weight: TextWeight.regular),
                 ],
               ),
@@ -237,7 +237,7 @@ class _ChatRoomDetailState extends State<ChatRoomDetail> {
                   const SizedBox(
                     width: 10,
                   ),
-                  Heading6Text(mediaString.tr, weight: TextWeight.regular),
+                  BodyLargeText(mediaString.tr, weight: TextWeight.regular),
                 ],
               ),
               ThemeIconWidget(
@@ -271,7 +271,7 @@ class _ChatRoomDetailState extends State<ChatRoomDetail> {
                   const SizedBox(
                     width: 10,
                   ),
-                  Heading6Text(wallpaperString.tr, weight: TextWeight.regular),
+                  BodyLargeText(wallpaperString.tr, weight: TextWeight.regular),
                 ],
               ),
               ThemeIconWidget(
@@ -359,7 +359,7 @@ class _ChatRoomDetailState extends State<ChatRoomDetail> {
           color: AppColorConstants.cardColor,
           child: Align(
             alignment: Alignment.centerLeft,
-            child: Heading5Text(deleteChatString.tr,
+            child: BodyLargeText(deleteChatString.tr,
                     weight: TextWeight.medium, color: AppColorConstants.red)
                 .hP8,
           ),
@@ -384,7 +384,7 @@ class _ChatRoomDetailState extends State<ChatRoomDetail> {
           color: AppColorConstants.cardColor,
           child: Align(
             alignment: Alignment.centerLeft,
-            child: Heading5Text(
+            child: BodyLargeText(
                     widget.chatRoom.amIMember
                         ? leaveGroupString.tr
                         : deleteGroupString.tr,
@@ -394,13 +394,13 @@ class _ChatRoomDetailState extends State<ChatRoomDetail> {
           ),
         ).ripple(() {
           if (widget.chatRoom.amIMember) {
-            // AppUtil.showConfirmationAlert(
-            //     title: leaveGroup,
-            //     subTitle: leaveGroupConfirmation,
-            //     cxt: context,
-            //     okHandler: () {
-            _chatRoomDetailController.leaveGroup(widget.chatRoom);
-            // });
+            AppUtil.showNewConfirmationAlert(
+                title: leaveGroupString.tr,
+                subTitle: leaveGroupConfirmationString.tr,
+                okHandler: () {
+                  _chatRoomDetailController.leaveGroup(widget.chatRoom);
+                },
+                cancelHandler: () {});
           } else {
             // print('test 2');
             //
@@ -624,25 +624,31 @@ class _ChatRoomDetailState extends State<ChatRoomDetail> {
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Heading6Text(
+                              Row(
+                                children: [
+                                  BodyLargeText(
                                       member.userDetail.isMe
                                           ? youString.tr
                                           : member.userDetail.userName,
-                                      weight: TextWeight.regular)
-                                  .bP4,
+                                      weight: TextWeight.regular),
+                                  if (member.userDetail.isVerified)
+                                    verifiedUserTag()
+                                ],
+                              ).bP4,
                               member.userDetail.country != null
                                   ? BodyLargeText(
                                       '${member.userDetail.city!}, ${member.userDetail.country!}',
                                     )
                                   : Container()
                             ],
-                          ).hp(DesignConstants.horizontalPadding),
+                          ).hP8,
 
                           const Spacer(),
                           member.isAdmin == 1
-                              ? Heading6Text(adminString.tr,
-                                      weight: TextWeight.medium)
-                                  .bP4
+                              ? BodySmallText(
+                                  adminString.tr,
+                                  weight: TextWeight.bold,
+                                ).bP4
                               : Container()
                           // const Spacer(),
                         ],

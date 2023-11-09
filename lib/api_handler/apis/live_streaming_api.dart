@@ -46,22 +46,7 @@ class LiveStreamingApi {
       }
     });
   }
-
-  // static getRandomLiveUsers(
-  //     {required Function(List<UserModel>, APIMetaData) resultCallback}) async {
-  //   var url = NetworkConstantsUtil.randomLives;
-  //
-  //   await ApiWrapper().getApi(url: url).then((result) {
-  //     if (result?.success == true) {
-  //       var items = result!.data['user']['items'];
-  //
-  //       resultCallback(
-  //           List<UserModel>.from(items.map((x) => UserModel.fromJson(x))),
-  //           APIMetaData.fromJson(result.data['user']['_meta']));
-  //     }
-  //   });
-  // }
-
+  
   static getLiveHistory(
       {required int page,
       required Function(List<LiveModel>, APIMetaData) resultCallback}) async {

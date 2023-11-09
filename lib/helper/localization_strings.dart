@@ -1345,3 +1345,17 @@ String pleaseEnterCoverLetterString = 'Please enter cover letter.';
 String appliedSuccessfully = 'Your have applied for this job successfully';
 
 String tapToEditString = 'Tap to edit';
+
+//////////////////// v 2
+
+String sharedInString = 'Shared in';
+String typeHereString = "Type here...";
+String commentIsDeletedString = 'Comment is deleted successfully';
+String commentIsReportedString = 'Comment is reported successfully';
+String replyingToString = 'Replying to';
+String moreRepliesString = 'more replies';
+String youReactedToStory = 'You reacted to their story';
+String youRepliedToStory = 'You replied to their story';
+
+String reactedToYourStory = 'reacted to your story';
+String repliedToYourStory = 'replied to your story';

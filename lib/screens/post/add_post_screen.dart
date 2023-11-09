@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:dots_indicator/dots_indicator.dart';
+import 'package:foap/components/smart_text_field.dart';
 import 'package:foap/helper/imports/common_import.dart';
 import 'package:foap/helper/imports/setting_imports.dart';
 import 'package:foap/screens/post/post_option_popup.dart';
@@ -44,12 +45,13 @@ class AddPostState extends State<AddPostScreen> {
   TextEditingController descriptionText = TextEditingController();
   final SelectPostMediaController _selectPostMediaController =
       SelectPostMediaController();
-  SettingsController settingController = Get.find();
-
+  final SmartTextFieldController _smartTextFieldController = Get.find();
+  final SettingsController settingController = Get.find();
   final AddPostController addPostController = Get.find();
 
   @override
   void initState() {
+    _smartTextFieldController.clear();
     super.initState();
   }
 
@@ -149,17 +151,17 @@ class AddPostState extends State<AddPostScreen> {
                         height: 10,
                       ),
                       Obx(() {
-                        return addPostController.isEditing.value == 1
+                        return _smartTextFieldController.isEditing.value == 1
                             ? Expanded(
                                 child: Container(
                                   // height: 500,
                                   width: double.infinity,
                                   color: AppColorConstants.disabledColor
                                       .withOpacity(0.1),
-                                  child: addPostController
+                                  child: _smartTextFieldController
                                           .currentHashtag.isNotEmpty
                                       ? TagHashtagView()
-                                      : addPostController
+                                      : _smartTextFieldController
                                               .currentUserTag.isNotEmpty
                                           ? TagUsersView()
                                           : Container().ripple(() {
@@ -170,11 +172,11 @@ class AddPostState extends State<AddPostScreen> {
                               )
                             : mediaList();
                       }),
-                      Obx(() => addPostController.isEditing.value == 0
+                      Obx(() => _smartTextFieldController.isEditing.value == 0
                           ? const Spacer()
                           : Container()),
                       if (widget.isReel != true)
-                        Obx(() => addPostController.isEditing.value == 0
+                        Obx(() => _smartTextFieldController.isEditing.value == 0
                             ? PostOptionsPopup(
                                 selectedMediaList: (medias) {
                                   _selectPostMediaController
@@ -226,8 +228,7 @@ class AddPostState extends State<AddPostScreen> {
                                   fit: BoxFit.cover, imageUrl: media.filePath!)
                               : media.mediaType == GalleryMediaType.video
                                   ? VideoPostTile(
-                                      aspectRatio: media.size!.width /
-                                          media.size!.height,
+                                      width: Get.width,
                                       url: media.file!.path,
                                       isLocalFile: true,
                                       play: true,
@@ -305,43 +306,26 @@ class AddPostState extends State<AddPostScreen> {
       height: 100,
       child: Obx(() {
         descriptionText.value = TextEditingValue(
-            text: addPostController.searchText.value,
-            selection: TextSelection.fromPosition(
-                TextPosition(offset: addPostController.position.value)));
+            text: _smartTextFieldController.searchText.value,
+            selection: TextSelection.fromPosition(TextPosition(
+                offset: _smartTextFieldController.position.value)));
 
-        return Focus(
-          child: Container(
-            color: AppColorConstants.cardColor,
-            child: TextField(
+        return Container(
+          color: AppColorConstants.cardColor,
+          child: SmartTextField(
+              maxLine: 5,
               controller: descriptionText,
-              textAlign: TextAlign.left,
-              style: TextStyle(
-                  fontSize: FontSizes.h5,
-                  color: AppColorConstants.mainTextColor),
-              maxLines: 5,
-              onChanged: (text) {
-                addPostController.textChanged(
-                    text, descriptionText.selection.baseOffset);
+              onTextChangeActionHandler: (text, offset) {
+                _smartTextFieldController.textChanged(text, offset);
               },
-              decoration: InputDecoration(
-                  border: InputBorder.none,
-                  contentPadding:
-                      const EdgeInsets.only(top: 10, left: 10, right: 10),
-                  counterText: "",
-                  hintStyle: TextStyle(
-                      fontSize: FontSizes.h5,
-                      color: AppColorConstants.subHeadingTextColor),
-                  hintText: addSomethingAboutPostString.tr),
-            ),
-          ).round(10),
-          onFocusChange: (hasFocus) {
-            if (hasFocus == true) {
-              addPostController.startedEditing();
-            } else {
-              addPostController.stoppedEditing();
-            }
-          },
-        );
+              onFocusChangeActionHandler: (status) {
+                if (status == true) {
+                  _smartTextFieldController.startedEditing();
+                } else {
+                  _smartTextFieldController.stoppedEditing();
+                }
+              }),
+        ).round(5);
       }),
     );
   }

@@ -1,5 +1,5 @@
-import '../helper/imports/common_import.dart';
-import '../model/offer_model.dart';
+import '../../helper/imports/common_import.dart';
+import '../../model/offer_model.dart';
 
 class OfferCard extends StatelessWidget {
   final OfferModel offer;

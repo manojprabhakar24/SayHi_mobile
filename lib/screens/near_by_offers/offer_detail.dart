@@ -41,19 +41,6 @@ class OfferDetail extends StatelessWidget {
           Expanded(
             child: Column(
               children: [
-                SizedBox(
-                  height: Get.height * 0.3,
-                  child: Stack(
-                    children: [
-                      CachedNetworkImage(
-                        imageUrl: offer.coverImage,
-                        width: double.infinity,
-                        height: double.infinity,
-                        fit: BoxFit.cover,
-                      )
-                    ],
-                  ),
-                ),
                 Expanded(
                   child: SizedBox(
                     height: Get.height - (Get.height * 0.4),

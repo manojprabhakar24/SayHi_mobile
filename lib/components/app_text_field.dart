@@ -7,7 +7,10 @@ class AppTextField extends StatelessWidget {
   final ThemeIcon? icon;
   final String? label;
   final int? maxLines;
+  final int? maxLength;
+
   final ValueChanged<String>? onChanged;
+  final Function(bool)? focusStatusChangeHandler;
 
   const AppTextField(
       {Key? key,
@@ -16,22 +19,25 @@ class AppTextField extends StatelessWidget {
       this.label,
       this.maxLines,
       this.onChanged,
-      this.icon})
+      this.icon,
+      this.maxLength,
+      this.focusStatusChangeHandler})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return InputField(
-      controller: controller,
-      hintText: hintText,
-      icon: icon,
-      label: label,
-      maxLines: maxLines,
-      onChanged: onChanged,
-      backgroundColor: AppColorConstants.cardColor.darken(0.02),
-      cornerRadius: 10,
-      iconColor: AppColorConstants.iconColor,
-    );
+        controller: controller,
+        hintText: hintText,
+        icon: icon,
+        label: label,
+        maxLines: maxLines,
+        onChanged: onChanged,
+        maxLength: maxLength,
+        backgroundColor: AppColorConstants.cardColor.darken(0.02),
+        cornerRadius: 10,
+        iconColor: AppColorConstants.iconColor,
+        focusStatusChangeHandler: focusStatusChangeHandler);
   }
 }
 

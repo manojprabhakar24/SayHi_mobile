@@ -3,10 +3,10 @@ import 'dart:typed_data';
 import 'package:foap/api_handler/apis/highlights_api.dart';
 import 'package:foap/api_handler/apis/misc_api.dart';
 import 'package:foap/api_handler/apis/story_api.dart';
-import 'package:foap/components/custom_gallery_picker.dart';
 import 'package:foap/helper/imports/common_import.dart';
 import 'package:foap/helper/imports/highlights_imports.dart';
 import '../../model/story_model.dart';
+import 'package:foap/helper/file_extension.dart';
 
 class HighlightsController extends GetxController {
   final UserProfileManager _userProfileManager = Get.find();

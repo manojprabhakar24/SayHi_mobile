@@ -20,11 +20,13 @@ class StoryViewHistoryRealm extends _StoryViewHistoryRealm
 
   @override
   int? get storyId => RealmObjectBase.get<int>(this, 'storyId') as int?;
+
   @override
   set storyId(int? value) => RealmObjectBase.set(this, 'storyId', value);
 
   @override
   int? get time => RealmObjectBase.get<int>(this, 'time') as int?;
+
   @override
   set time(int? value) => RealmObjectBase.set(this, 'time', value);
 
@@ -38,6 +40,7 @@ class StoryViewHistoryRealm extends _StoryViewHistoryRealm
 
   static SchemaObject get schema => _schema ??= _initSchema();
   static SchemaObject? _schema;
+
   static SchemaObject _initSchema() {
     RealmObjectBase.registerFactory(StoryViewHistoryRealm._);
     return const SchemaObject(ObjectType.realmObject, StoryViewHistoryRealm,
@@ -84,55 +87,65 @@ class ChatRoomsRealm extends _ChatRoomsRealm
 
   @override
   int? get id => RealmObjectBase.get<int>(this, 'id') as int?;
+
   @override
   set id(int? value) => RealmObjectBase.set(this, 'id', value);
 
   @override
   String? get title => RealmObjectBase.get<String>(this, 'title') as String?;
+
   @override
   set title(String? value) => RealmObjectBase.set(this, 'title', value);
 
   @override
   int? get status => RealmObjectBase.get<int>(this, 'status') as int?;
+
   @override
   set status(int? value) => RealmObjectBase.set(this, 'status', value);
 
   @override
   int? get type => RealmObjectBase.get<int>(this, 'type') as int?;
+
   @override
   set type(int? value) => RealmObjectBase.set(this, 'type', value);
 
   @override
   int? get isChatUserOnline =>
       RealmObjectBase.get<int>(this, 'isChatUserOnline') as int?;
+
   @override
   set isChatUserOnline(int? value) =>
       RealmObjectBase.set(this, 'isChatUserOnline', value);
 
   @override
   int? get createdBy => RealmObjectBase.get<int>(this, 'createdBy') as int?;
+
   @override
   set createdBy(int? value) => RealmObjectBase.set(this, 'createdBy', value);
 
   @override
   int? get createdAt => RealmObjectBase.get<int>(this, 'createdAt') as int?;
+
   @override
   set createdAt(int? value) => RealmObjectBase.set(this, 'createdAt', value);
 
   @override
   int? get updatedAt => RealmObjectBase.get<int>(this, 'updatedAt') as int?;
+
   @override
   set updatedAt(int? value) => RealmObjectBase.set(this, 'updatedAt', value);
 
   @override
   String? get imageUrl =>
       RealmObjectBase.get<String>(this, 'imageUrl') as String?;
+
   @override
   set imageUrl(String? value) => RealmObjectBase.set(this, 'imageUrl', value);
 
   @override
   String? get description =>
       RealmObjectBase.get<String>(this, 'description') as String?;
+
   @override
   set description(String? value) =>
       RealmObjectBase.set(this, 'description', value);
@@ -140,6 +153,7 @@ class ChatRoomsRealm extends _ChatRoomsRealm
   @override
   int? get chatAccessGroup =>
       RealmObjectBase.get<int>(this, 'chatAccessGroup') as int?;
+
   @override
   set chatAccessGroup(int? value) =>
       RealmObjectBase.set(this, 'chatAccessGroup', value);
@@ -147,6 +161,7 @@ class ChatRoomsRealm extends _ChatRoomsRealm
   @override
   String? get lastMessageId =>
       RealmObjectBase.get<String>(this, 'lastMessageId') as String?;
+
   @override
   set lastMessageId(String? value) =>
       RealmObjectBase.set(this, 'lastMessageId', value);
@@ -154,6 +169,7 @@ class ChatRoomsRealm extends _ChatRoomsRealm
   @override
   int? get unreadMessagesCount =>
       RealmObjectBase.get<int>(this, 'unreadMessagesCount') as int?;
+
   @override
   set unreadMessagesCount(int? value) =>
       RealmObjectBase.set(this, 'unreadMessagesCount', value);
@@ -167,6 +183,7 @@ class ChatRoomsRealm extends _ChatRoomsRealm
 
   static SchemaObject get schema => _schema ??= _initSchema();
   static SchemaObject? _schema;
+
   static SchemaObject _initSchema() {
     RealmObjectBase.registerFactory(ChatRoomsRealm._);
     return const SchemaObject(
@@ -234,22 +251,26 @@ class MessagesRealm extends _MessagesRealm
   @override
   String? get localMessageId =>
       RealmObjectBase.get<String>(this, 'localMessageId') as String?;
+
   @override
   set localMessageId(String? value) =>
       RealmObjectBase.set(this, 'localMessageId', value);
 
   @override
   int? get id => RealmObjectBase.get<int>(this, 'id') as int?;
+
   @override
   set id(int? value) => RealmObjectBase.set(this, 'id', value);
 
   @override
   int? get roomId => RealmObjectBase.get<int>(this, 'roomId') as int?;
+
   @override
   set roomId(int? value) => RealmObjectBase.set(this, 'roomId', value);
 
   @override
   int? get messageType => RealmObjectBase.get<int>(this, 'messageType') as int?;
+
   @override
   set messageType(int? value) =>
       RealmObjectBase.set(this, 'messageType', value);
@@ -257,54 +278,64 @@ class MessagesRealm extends _MessagesRealm
   @override
   String? get message =>
       RealmObjectBase.get<String>(this, 'message') as String?;
+
   @override
   set message(String? value) => RealmObjectBase.set(this, 'message', value);
 
   @override
   String? get username =>
       RealmObjectBase.get<String>(this, 'username') as String?;
+
   @override
   set username(String? value) => RealmObjectBase.set(this, 'username', value);
 
   @override
   int? get createdBy => RealmObjectBase.get<int>(this, 'createdBy') as int?;
+
   @override
   set createdBy(int? value) => RealmObjectBase.set(this, 'createdBy', value);
 
   @override
   int? get createdAt => RealmObjectBase.get<int>(this, 'createdAt') as int?;
+
   @override
   set createdAt(int? value) => RealmObjectBase.set(this, 'createdAt', value);
 
   @override
   int? get viewedAt => RealmObjectBase.get<int>(this, 'viewedAt') as int?;
+
   @override
   set viewedAt(int? value) => RealmObjectBase.set(this, 'viewedAt', value);
 
   @override
   int? get isDeleted => RealmObjectBase.get<int>(this, 'isDeleted') as int?;
+
   @override
   set isDeleted(int? value) => RealmObjectBase.set(this, 'isDeleted', value);
 
   @override
   int? get isStar => RealmObjectBase.get<int>(this, 'isStar') as int?;
+
   @override
   set isStar(int? value) => RealmObjectBase.set(this, 'isStar', value);
 
   @override
   int? get deleteAfter => RealmObjectBase.get<int>(this, 'deleteAfter') as int?;
+
   @override
   set deleteAfter(int? value) =>
       RealmObjectBase.set(this, 'deleteAfter', value);
 
   @override
   int? get isEncrypted => RealmObjectBase.get<int>(this, 'isEncrypted') as int?;
+
   @override
   set isEncrypted(int? value) =>
       RealmObjectBase.set(this, 'isEncrypted', value);
 
   @override
   int? get chatVersion => RealmObjectBase.get<int>(this, 'chatVersion') as int?;
+
   @override
   set chatVersion(int? value) =>
       RealmObjectBase.set(this, 'chatVersion', value);
@@ -312,6 +343,7 @@ class MessagesRealm extends _MessagesRealm
   @override
   int? get currentStatus =>
       RealmObjectBase.get<int>(this, 'currentStatus') as int?;
+
   @override
   set currentStatus(int? value) =>
       RealmObjectBase.set(this, 'currentStatus', value);
@@ -319,6 +351,7 @@ class MessagesRealm extends _MessagesRealm
   @override
   String? get encryptionKey =>
       RealmObjectBase.get<String>(this, 'encryptionKey') as String?;
+
   @override
   set encryptionKey(String? value) =>
       RealmObjectBase.set(this, 'encryptionKey', value);
@@ -326,6 +359,7 @@ class MessagesRealm extends _MessagesRealm
   @override
   String? get repliedOnMessage =>
       RealmObjectBase.get<String>(this, 'repliedOnMessage') as String?;
+
   @override
   set repliedOnMessage(String? value) =>
       RealmObjectBase.set(this, 'repliedOnMessage', value);
@@ -339,6 +373,7 @@ class MessagesRealm extends _MessagesRealm
 
   static SchemaObject get schema => _schema ??= _initSchema();
   static SchemaObject? _schema;
+
   static SchemaObject _initSchema() {
     RealmObjectBase.registerFactory(MessagesRealm._);
     return const SchemaObject(
@@ -386,26 +421,31 @@ class ChatRoomMembersRealm extends _ChatRoomMembersRealm
 
   @override
   int? get id => RealmObjectBase.get<int>(this, 'id') as int?;
+
   @override
   set id(int? value) => RealmObjectBase.set(this, 'id', value);
 
   @override
   int? get roomId => RealmObjectBase.get<int>(this, 'roomId') as int?;
+
   @override
   set roomId(int? value) => RealmObjectBase.set(this, 'roomId', value);
 
   @override
   int? get userId => RealmObjectBase.get<int>(this, 'userId') as int?;
+
   @override
   set userId(int? value) => RealmObjectBase.set(this, 'userId', value);
 
   @override
   int? get isAdmin => RealmObjectBase.get<int>(this, 'isAdmin') as int?;
+
   @override
   set isAdmin(int? value) => RealmObjectBase.set(this, 'isAdmin', value);
 
   @override
   String? get user => RealmObjectBase.get<String>(this, 'user') as String?;
+
   @override
   set user(String? value) => RealmObjectBase.set(this, 'user', value);
 
@@ -419,6 +459,7 @@ class ChatRoomMembersRealm extends _ChatRoomMembersRealm
 
   static SchemaObject get schema => _schema ??= _initSchema();
   static SchemaObject? _schema;
+
   static SchemaObject _initSchema() {
     RealmObjectBase.registerFactory(ChatRoomMembersRealm._);
     return const SchemaObject(
@@ -450,23 +491,27 @@ class UsersCacheRealm extends _UsersCacheRealm
 
   @override
   int? get id => RealmObjectBase.get<int>(this, 'id') as int?;
+
   @override
   set id(int? value) => RealmObjectBase.set(this, 'id', value);
 
   @override
   String? get username =>
       RealmObjectBase.get<String>(this, 'username') as String?;
+
   @override
   set username(String? value) => RealmObjectBase.set(this, 'username', value);
 
   @override
   String? get email => RealmObjectBase.get<String>(this, 'email') as String?;
+
   @override
   set email(String? value) => RealmObjectBase.set(this, 'email', value);
 
   @override
   String? get picture =>
       RealmObjectBase.get<String>(this, 'picture') as String?;
+
   @override
   set picture(String? value) => RealmObjectBase.set(this, 'picture', value);
 
@@ -480,6 +525,7 @@ class UsersCacheRealm extends _UsersCacheRealm
 
   static SchemaObject get schema => _schema ??= _initSchema();
   static SchemaObject? _schema;
+
   static SchemaObject _initSchema() {
     RealmObjectBase.registerFactory(UsersCacheRealm._);
     return const SchemaObject(
@@ -509,17 +555,20 @@ class ChatMessageUserRealm extends _ChatMessageUserRealm
   @override
   int? get chatMessageId =>
       RealmObjectBase.get<int>(this, 'chatMessageId') as int?;
+
   @override
   set chatMessageId(int? value) =>
       RealmObjectBase.set(this, 'chatMessageId', value);
 
   @override
   int? get userId => RealmObjectBase.get<int>(this, 'userId') as int?;
+
   @override
   set userId(int? value) => RealmObjectBase.set(this, 'userId', value);
 
   @override
   int? get status => RealmObjectBase.get<int>(this, 'status') as int?;
+
   @override
   set status(int? value) => RealmObjectBase.set(this, 'status', value);
 
@@ -533,6 +582,7 @@ class ChatMessageUserRealm extends _ChatMessageUserRealm
 
   static SchemaObject get schema => _schema ??= _initSchema();
   static SchemaObject? _schema;
+
   static SchemaObject _initSchema() {
     RealmObjectBase.registerFactory(ChatMessageUserRealm._);
     return const SchemaObject(

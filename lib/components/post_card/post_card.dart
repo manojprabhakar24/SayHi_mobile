@@ -37,8 +37,11 @@ class PostMediaTile extends StatelessWidget {
   final HomeController homeController = Get.find();
 
   final PostModel model;
+  final bool isSharedPostMedia;
 
-  PostMediaTile({Key? key, required this.model}) : super(key: key);
+  PostMediaTile(
+      {Key? key, required this.model, required this.isSharedPostMedia})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -46,13 +49,14 @@ class PostMediaTile extends StatelessWidget {
   }
 
   Widget mediaTile() {
+    print('isSharedPostMedia here ${isSharedPostMedia}');
     if (model.gallery.length > 1) {
       return SizedBox(
         height: 350,
         child: Stack(
           children: [
             CarouselSlider(
-              items: mediaList(),
+              items: mediaList(isSharedPostMedia),
               options: CarouselOptions(
                 aspectRatio: 1,
                 enlargeCenterPage: false,
@@ -88,39 +92,41 @@ class PostMediaTile extends StatelessWidget {
       );
     } else {
       return model.gallery.first.isVideoPost == true
-          ? videoPostTile(model.gallery.first)
+          ? videoPostTile(
+              media: model.gallery.first, isReshared: isSharedPostMedia)
           : model.gallery.first.isAudioPost
               ? AudioPostTile(
                   post: model,
+                  isResharedPost: isSharedPostMedia,
                 )
               : SizedBox(
                   height: 350, child: photoPostTile(model.gallery.first));
     }
   }
 
-  List<Widget> mediaList() {
+  List<Widget> mediaList(bool isReshared) {
     return model.gallery.map((item) {
       if (item.isVideoPost == true) {
-        return videoPostTile(item);
+        return videoPostTile(media: item, isReshared: isReshared);
       } else {
         return photoPostTile(item);
       }
     }).toList();
   }
 
-  Widget videoPostTile(PostGallery media) {
+  Widget videoPostTile({required PostGallery media, required bool isReshared}) {
     return VisibilityDetector(
       key: Key(media.id.toString()),
       onVisibilityChanged: (visibilityInfo) {
         var visiblePercentage = visibilityInfo.visibleFraction * 100;
-        // if (visiblePercentage > 80) {
         homeController.setCurrentVisibleVideo(
             media: media, visibility: visiblePercentage);
-        // }
       },
       child: Obx(() => VideoPostTile(
             media: media,
-            aspectRatio: media.width / media.height,
+            width: isReshared
+                ? Get.width - ((DesignConstants.horizontalPadding * 3) + 10)
+                : Get.width,
             url: media.filePath,
             isLocalFile: false,
             play: homeController.currentVisibleVideoId.value == media.id,
@@ -211,17 +217,17 @@ class PostContent extends StatelessWidget {
               // widget.likeTapHandler();
               flareControls.play("like");
             },
-            onTap: () {
-              Navigator.push(
-                context,
-                PageRouteBuilder(
-                  pageBuilder: (context, animation1, animation2) =>
-                      PostMediaFullScreen(gallery: model.gallery),
-                  transitionDuration: Duration.zero,
-                  reverseTransitionDuration: Duration.zero,
-                ),
-              );
-            },
+            // onTap: () {
+            //   Navigator.push(
+            //     context,
+            //     PageRouteBuilder(
+            //       pageBuilder: (context, animation1, animation2) =>
+            //           PostMediaFullScreen(gallery: model.gallery),
+            //       transitionDuration: Duration.zero,
+            //       reverseTransitionDuration: Duration.zero,
+            //     ),
+            //   );
+            // },
             child: Stack(
               children: [
                 Column(
@@ -232,10 +238,17 @@ class PostContent extends StatelessWidget {
                           left: DesignConstants.horizontalPadding,
                           right: DesignConstants.horizontalPadding,
                           bottom: 25),
-                    if (model.gallery.isNotEmpty) PostMediaTile(model: model),
+                    if (model.gallery.isNotEmpty)
+                      PostMediaTile(
+                        model: model,
+                        isSharedPostMedia: model.sharedPost != null,
+                      ),
                     if (model.sharedPost != null)
-                      ResharedPostCard(model: model.sharedPost!)
-                          .setPadding(left: 57, right: 5, top: 5, bottom: 15),
+                      ResharedPostCard(model: model.sharedPost!).setPadding(
+                          left: DesignConstants.horizontalPadding,
+                          right: 10,
+                          top: 5,
+                          bottom: 15),
                   ],
                 ),
                 Obx(() => Positioned(
@@ -498,7 +511,6 @@ class PostCardState extends State<PostCard> {
                 ],
               ).hp(DesignConstants.horizontalPadding),
             ),
-
           const SizedBox(
             height: 20,
           ),
@@ -522,8 +534,7 @@ class PostCardState extends State<PostCard> {
           color: Colors.white,
           weight: TextWeight.semiBold,
         ),
-        ThemeIconWidget(ThemeIcon.nextArrow,
-            size: 25, color: Colors.white)
+        ThemeIconWidget(ThemeIcon.nextArrow, size: 25, color: Colors.white)
       ]).p8.ripple(() {
         widget.model.postPromotionData?.type == GoalType.website
             ? launchUrl(Uri.parse(widget.model.postPromotionData?.url ?? ''))
@@ -602,7 +613,9 @@ class PostCardState extends State<PostCard> {
             '${widget.model.totalComment} $commentsString',
             // weight: TextWeight.semiBold,
             color: AppColorConstants.mainTextColor,
-          ),
+          ).ripple(() {
+            openComments();
+          }),
         BodyMediumText(
           '${widget.model.totalView} $viewsString',
           // weight: TextWeight.semiBold,

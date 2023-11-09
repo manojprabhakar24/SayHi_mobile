@@ -32,6 +32,7 @@ class _ExploreState extends State<Explore> {
 
   @override
   void initState() {
+    exploreController.defaultData();
     super.initState();
   }
 

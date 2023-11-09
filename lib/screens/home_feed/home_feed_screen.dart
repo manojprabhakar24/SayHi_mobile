@@ -226,11 +226,9 @@ class HomeFeedState extends State<HomeFeedScreen> {
   }
 
   Widget storiesView() {
-    return Container(
-      height: storyCircleSize +
-          (storyCircleSize / 2) +
-          (2 * DesignConstants.horizontalPadding),
-      color: AppColorConstants.themeColor.withOpacity(0.05),
+    return SizedBox(
+      height: storyCircleSize + (storyCircleSize / 2),
+      // color: AppColorConstants.themeColor,
       child: GetBuilder<HomeController>(
           init: _homeController,
           builder: (ctx) {
@@ -260,9 +258,9 @@ class HomeFeedState extends State<HomeFeedScreen> {
                   live: live,
                 );
               },
-            ).p(DesignConstants.horizontalPadding);
+            ).hp(DesignConstants.horizontalPadding);
           }),
-    ).round(20).hp(DesignConstants.horizontalPadding);
+    );
   }
 
   postsView() {
@@ -323,6 +321,9 @@ class HomeFeedState extends State<HomeFeedScreen> {
                         true) {
                       return Column(
                         children: [
+                          divider(
+                            height: index > 1 ? 10 : 0,
+                          ).vp(index > 1 ? 16 : 8),
                           pollWidget(poll),
                           divider(
                             height: index > 1 ? 10 : 0,

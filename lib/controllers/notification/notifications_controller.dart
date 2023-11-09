@@ -25,13 +25,13 @@ class NotificationController extends GetxController {
     filteredNotifications = filteredNotifications.map((e) {
       NotificationModel notification = e;
       if (e.date.isToday) {
-        notification.notificationDate = todayString;
+        notification.notificationDate = todayString.tr;
       } else if (e.date.isThisWeek) {
-        notification.notificationDate = thisWeekString;
+        notification.notificationDate = thisWeekString.tr;
       } else if (e.date.isThisMonth) {
-        notification.notificationDate = thisMonthString;
+        notification.notificationDate = thisMonthString.tr;
       } else {
-        notification.notificationDate = earlierString;
+        notification.notificationDate = earlierString.tr;
       }
       return notification;
     }).toList();

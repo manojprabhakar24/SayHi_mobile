@@ -1,10 +1,10 @@
 import 'package:foap/api_handler/apis/misc_api.dart';
 import 'package:foap/api_handler/apis/story_api.dart';
+import 'package:foap/controllers/chat_and_call/chat_detail_controller.dart';
 import 'package:foap/helper/imports/common_import.dart';
 import 'package:flutter/services.dart';
 import 'dart:io';
 import 'dart:async';
-import 'package:foap/components/custom_gallery_picker.dart';
 import 'package:foap/model/story_model.dart';
 import 'package:foap/screens/chat/media.dart';
 import 'package:path_provider/path_provider.dart';
@@ -14,8 +14,10 @@ import 'package:flutter_video_info/flutter_video_info.dart';
 import '../../manager/db_manager_realm.dart';
 import '../../model/data_wrapper.dart';
 import '../home/home_controller.dart';
+import 'package:foap/helper/file_extension.dart';
 
 class AppStoryController extends GetxController {
+  final ChatDetailController _chatDetailController = Get.find();
   RxList<Media> mediaList = <Media>[].obs;
   RxList<StoryViewerModel> storyViewers = <StoryViewerModel>[].obs;
   DataWrapper storyViewerDataWrapper = DataWrapper();
@@ -26,9 +28,15 @@ class AppStoryController extends GetxController {
   Rx<StoryMediaModel?> currentStoryMediaModel = Rx<StoryMediaModel?>(null);
   bool isLoading = false;
 
+  RxBool showEmoticons = false.obs;
+
   clearStoryViewers() {
     storyViewers.clear();
     storyViewerDataWrapper = DataWrapper();
+  }
+
+  showHideEmoticons(bool show) {
+    showEmoticons.value = show;
   }
 
   mediaSelected(List<Media> media) {
@@ -167,5 +175,27 @@ class AppStoryController extends GetxController {
     // DashboardController dashboardController = Get.find();
     // dashboardController.indexChanged(0);
     // Get.offAll(() => const DashboardScreen());
+  }
+
+  sendTextMessage(String message) {
+    _chatDetailController.getChatRoomWithUser(
+        userId: currentStoryMediaModel.value!.userId,
+        callback: (room) {
+          _chatDetailController.sendStoryTextReplyMessage(
+              messageText: message,
+              storyMedia: currentStoryMediaModel.value!,
+              room: room);
+        });
+  }
+
+  sendReactionMessage(String emoji) {
+    _chatDetailController.getChatRoomWithUser(
+        userId: currentStoryMediaModel.value!.userId,
+        callback: (room) {
+          _chatDetailController.sendStoryReactionReplyMessage(
+              emoji: emoji,
+              storyMedia: currentStoryMediaModel.value!,
+              room: room);
+        });
   }
 }

@@ -282,12 +282,11 @@ class SettingModel {
         enableDating: json["is_dating"] == 1,
         enableChatGPT: json["is_chat_gpt"] == 1,
         enableFundRaising: json["is_fund_raising"] == 1,
-        enableOffers: json["is_offers"] == 1,
+        enableOffers: json["is_offer"] == 1,
         enableJobs: json["is_job"] == 1,
         enableLiveUserListing: json["is_live_user"] == 1,
         enableShop: json["is_shop"] == 1,
         enablePostPhotoVideoEdit: json["is_photo_video_edit"] == 1,
-
         themeColor: json["theme_color"] ?? '4169e1',
         bgColorForLightTheme: json["theme_light_background_color"] ?? 'FFFFFF',
         bgColorForDarkTheme: json["theme_dark_background_color"] ?? '000000',
@@ -298,7 +297,7 @@ class SettingModel {
         imglyApiKey: json["imglyApiKey"],
       );
 
-  bool get canEditPhotoVideo{
+  bool get canEditPhotoVideo {
     return imglyApiKey != null && enablePostPhotoVideoEdit;
   }
 }

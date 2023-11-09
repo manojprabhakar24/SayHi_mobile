@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:foap/helper/imports/models.dart';
 import 'package:foap/model/business_model.dart';
 import 'package:foap/model/offer_model.dart';
@@ -127,10 +129,15 @@ class OffersApi {
   static getComments(
       {required int page,
       required int offerId,
+      int? parentId,
       required Function(List<CommentModel>, APIMetaData)
           resultCallback}) async {
     var url = NetworkConstantsUtil.offerCommentsList;
+    url = '$url&reference_id=$offerId';
 
+    if (parentId != null) {
+      url = '$url&parent_id=$parentId';
+    }
     url = '$url&page=$page';
 
     await ApiWrapper().getApi(url: url).then((result) {
@@ -144,12 +151,53 @@ class OffersApi {
     });
   }
 
-  static postComment({required String comment, required int offerId}) async{
-    var url = NetworkConstantsUtil.addCommentOnOffer;
+  static deleteComment(
+      {required int commentId, required VoidCallback resultCallback}) async {
+    var url = NetworkConstantsUtil.deleteOfferComment + commentId.toString();
+
+    await ApiWrapper().deleteApi(url: url).then((value) {
+      resultCallback();
+    });
+  }
+
+  static reportComment(
+      {required int commentId, required VoidCallback resultCallback}) async {
+    var url = NetworkConstantsUtil.reportOfferComment;
+
     await ApiWrapper().postApi(
         url: url,
-        param: {'comment_post_id': offerId, 'comment': comment}).then((result) {
-      if (result?.success == true) {}
+        param: {"post_comment_id": commentId.toString()}).then((value) {
+      resultCallback();
+    });
+  }
+
+  static favUnfavComment(
+      {required int commentId, required VoidCallback resultCallback}) async {
+    var url = NetworkConstantsUtil.reportComment;
+
+    await ApiWrapper().postApi(
+        url: url,
+        param: {"post_comment_id": commentId.toString()}).then((value) {
+      resultCallback();
+    });
+  }
+
+  static postComment(
+      {required String comment,
+      required int offerId,
+      int? parentCommentId,
+      required Function(int) resultCallback}) async {
+    var url = NetworkConstantsUtil.addCommentOnOffer;
+    await ApiWrapper().postApi(url: url, param: {
+      'reference_id': offerId,
+      'parent_id': parentCommentId ?? 0,
+      'comment': comment
+    }).then((response) {
+      if (response?.success == true) {
+        var id = response!.data['id'];
+
+        resultCallback(id);
+      }
     });
   }
 }

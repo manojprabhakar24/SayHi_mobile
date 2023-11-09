@@ -138,7 +138,8 @@ class _QuickLinkWidgetState extends State<QuickLinkWidget> {
                     Get.to(() => PodcastDashboard());
                   } else if (link.linkType == QuickLinkType.reel) {
                     Get.to(() => const CreateReelScreen());
-                  } else if (link.linkType == QuickLinkType.dating) {
+                  }
+                  else if (link.linkType == QuickLinkType.dating) {
                     if (_userProfileManager.user.value!.canUseDating) {
                       Get.to(() => const DatingDashboard());
                     } else {
@@ -151,25 +152,30 @@ class _QuickLinkWidgetState extends State<QuickLinkWidget> {
                           },
                           cancelHandler: () {});
                     }
-                  } else if (link.linkType == QuickLinkType.chatGPT) {
+                  }
+                  else if (link.linkType == QuickLinkType.chatGPT) {
                     Get.to(() => const ChatGPT());
-                  } else if (link.linkType == QuickLinkType.fundRaising) {
+                  }
+                  else if (link.linkType == QuickLinkType.fundRaising) {
                     _fundRaisingController.initiate();
                     Get.to(() => FundRaisingDashboard())!.then((value) {
                       _fundRaisingController.clear();
                     });
-                  } else if (link.linkType == QuickLinkType.offers) {
+                  }
+                  else if (link.linkType == QuickLinkType.offers) {
                     _nearByOffersController.initiate();
                     Get.to(() => OffersDashboard())!.then((value) {
                       _nearByOffersController.clear();
                     });
-                  } else if (link.linkType == QuickLinkType.shop) {
+                  }
+                  else if (link.linkType == QuickLinkType.shop) {
                     final ShopController shopController = Get.find();
 
                     Get.to(() => ShopDashboard())!.then((value) {
                       shopController.clear();
                     });
-                  } else if (link.linkType == QuickLinkType.job) {
+                  }
+                  else if (link.linkType == QuickLinkType.job) {
                     final JobController jobController = Get.find();
                     Get.to(() => JobDashboard())!.then((value) {
                       jobController.clear();

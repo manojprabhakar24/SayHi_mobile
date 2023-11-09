@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:io';
 import 'dart:typed_data';
 import 'package:flutter/services.dart';
-import 'package:foap/components/custom_gallery_picker.dart';
+import 'package:foap/helper/file_extension.dart';
 import 'package:foap/helper/enum.dart';
 import 'package:foap/helper/imports/common_import.dart';
 import 'package:foap/model/chat_message_model.dart';

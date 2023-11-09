@@ -6,6 +6,8 @@ import 'package:foap/screens/home_feed/comments_screen.dart';
 import 'package:video_player/video_player.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 
+import '../../../profile/other_user_profile.dart';
+
 class ReelVideoPlayer extends StatefulWidget {
   final PostModel reel;
 
@@ -55,44 +57,67 @@ class _ReelVideoPlayerState extends State<ReelVideoPlayer> {
         FutureBuilder(
           future: initializeVideoPlayerFuture,
           builder: (context, snapshot) {
+            final size = MediaQuery.of(context).size;
+
+            // calculate scale for aspect ratio widget
+            var scale =
+                videoPlayerController!.value.aspectRatio / size.aspectRatio;
+
+            // check if adjustments are needed...
+            if (videoPlayerController!.value.aspectRatio < size.aspectRatio) {
+              scale = 1 / scale;
+            }
             if (snapshot.connectionState == ConnectionState.done) {
-              return VisibilityDetector(
-                key: Key(widget.reel.gallery.first.filePath),
-                onVisibilityChanged: (VisibilityInfo info) {
-                  if (info.visibleFraction == 1.0) {
-                    play();
-                  } else if (info.visibleFraction < 0.4) {
+              return GestureDetector(
+                  onLongPress: () {
                     pause();
-                  }
-                },
-                child: SizedBox(
-                  key: PageStorageKey(widget.reel.gallery.first.filePath),
-                  child: Chewie(
-                    key: PageStorageKey(widget.reel.gallery.first.filePath),
-                    controller: ChewieController(
-                      allowFullScreen: false,
-                      videoPlayerController: videoPlayerController!,
-                      aspectRatio: videoPlayerController!.value.aspectRatio,
+                  },
+                  onLongPressUp: () {
+                    play();
+                  },
+                  child: VisibilityDetector(
+                    key: Key(widget.reel.gallery.first.filePath),
+                    onVisibilityChanged: (VisibilityInfo info) {
+                      if (info.visibleFraction == 1.0) {
+                        play();
+                      } else if (info.visibleFraction < 0.4) {
+                        pause();
+                      }
+                    },
+                    child: Transform.scale(
+                        scale: scale,
+                        // Adjust the offset to cut from left and right
+                        child: SizedBox(
+                          key: PageStorageKey(
+                              widget.reel.gallery.first.filePath),
+                          child: Chewie(
+                            key: PageStorageKey(
+                                widget.reel.gallery.first.filePath),
+                            controller: ChewieController(
+                              allowFullScreen: false,
+                              videoPlayerController: videoPlayerController!,
+                              aspectRatio:
+                                  videoPlayerController!.value.aspectRatio,
 
-                      showOptions: false,
-                      showControls: false,
-                      autoInitialize: true,
-                      looping: true,
-                      autoPlay: false,
+                              showOptions: false,
+                              showControls: false,
+                              autoInitialize: true,
+                              looping: true,
+                              autoPlay: false,
 
-                      // allowMuting: true,
-                      errorBuilder: (context, errorMessage) {
-                        return Center(
-                          child: Text(
-                            errorMessage,
-                            style: const TextStyle(color: Colors.white),
+                              // allowMuting: true,
+                              errorBuilder: (context, errorMessage) {
+                                return Center(
+                                  child: Text(
+                                    errorMessage,
+                                    style: const TextStyle(color: Colors.white),
+                                  ),
+                                );
+                              },
+                            ),
                           ),
-                        );
-                      },
-                    ),
-                  ),
-                ),
-              );
+                        )),
+                  ));
             } else {
               return const Center(
                 child: CircularProgressIndicator(),
@@ -142,7 +167,9 @@ class _ReelVideoPlayerState extends State<ReelVideoPlayer> {
                       color: Colors.white,
                     ),
                   ],
-                ),
+                ).ripple(() {
+                  Get.to(() => OtherUserProfile(userId: widget.reel.user.id));
+                }),
                 const SizedBox(
                   height: 10,
                 ),

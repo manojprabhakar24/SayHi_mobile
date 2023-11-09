@@ -22,7 +22,7 @@ class MiscApi {
   static getPolls({required Function(List<PollsModel>) resultCallback}) async {
     var url = NetworkConstantsUtil.getPolls;
 
-    Loader.show(status: loadingString.tr);
+    // Loader.show(status: loadingString.tr);
     await ApiWrapper().getApi(url: url).then((result) {
       Loader.dismiss();
       if (result?.success == true) {

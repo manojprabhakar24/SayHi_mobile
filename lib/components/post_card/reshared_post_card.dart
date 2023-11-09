@@ -36,7 +36,14 @@ class ResharedPostCard extends StatelessWidget {
                 const SizedBox(height: 10),
               ])
             : const SizedBox(),
-        if (model.gallery.isNotEmpty) PostMediaTile(model: model),
+        const SizedBox(
+          height: 10,
+        ),
+        if (model.gallery.isNotEmpty)
+          PostMediaTile(
+            model: model,
+            isSharedPostMedia: true,
+          ),
       ]).p(DesignConstants.horizontalPadding),
     ).borderWithRadius(value: 1, radius: 10).ripple(() {
       Get.to(() => SinglePostDetail(postId: model.id));

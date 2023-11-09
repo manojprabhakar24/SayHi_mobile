@@ -23,9 +23,14 @@ class CallHistoryTile extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              BodyLargeText(
-                model.opponent.userName,
-                weight: TextWeight.medium,
+              Row(
+                children: [
+                  BodyLargeText(
+                    model.opponent.userName,
+                    weight: TextWeight.medium,
+                  ),
+                  if (model.opponent.isVerified) verifiedUserTag()
+                ],
               ),
               const SizedBox(
                 height: 5,
@@ -92,6 +97,6 @@ class CallHistoryTile extends StatelessWidget {
           // ),
         ],
       ).hP8,
-    ).shadowWithBorder(borderWidth: 0);
+    ).round(10);
   }
 }

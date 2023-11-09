@@ -1,16 +1,12 @@
 import 'dart:async';
 import 'dart:io';
 import 'dart:typed_data';
-import 'package:foap/api_handler/apis/misc_api.dart';
 import 'package:foap/api_handler/apis/post_api.dart';
-import 'package:foap/components/custom_gallery_picker.dart';
-import 'package:foap/controllers/misc/users_controller.dart';
+import 'package:foap/helper/file_extension.dart';
 import 'package:foap/helper/imports/common_import.dart';
-import 'package:foap/helper/list_extension.dart';
 import 'package:foap/helper/string_extension.dart';
 import 'package:video_compress_ds/video_compress_ds.dart';
 import '../../helper/enum_linking.dart';
-import '../../model/hash_tag.dart';
 import '../../screens/chat/media.dart';
 import '../../screens/dashboard/dashboard_screen.dart';
 import '../home/home_controller.dart';
@@ -18,11 +14,7 @@ import 'package:path_provider/path_provider.dart';
 
 class AddPostController extends GetxController {
   final HomeController _homeController = Get.find();
-  final UsersController _usersController = Get.find();
 
-  RxInt isEditing = 0.obs;
-  RxString currentHashtag = ''.obs;
-  RxString currentUserTag = ''.obs;
   RxInt currentIndex = 0.obs;
 
   RxBool isPosting = false.obs;
@@ -32,15 +24,6 @@ class AddPostController extends GetxController {
 
   List<Media> postingMedia = [];
   late String postingTitle;
-
-  RxList<Hashtag> hashTags = <Hashtag>[].obs;
-
-  // RxList<UserModel> searchedUsers = <UserModel>[].obs;
-
-  int currentUpdateAbleStartOffset = 0;
-  int currentUpdateAbleEndOffset = 0;
-  RxString searchText = ''.obs;
-  RxInt position = 0.obs;
 
   RxBool isPreviewMode = false.obs;
 
@@ -55,22 +38,10 @@ class AddPostController extends GetxController {
   PostType? currentPostType;
 
   clear() {
-    isEditing.value = 0;
-    currentHashtag.value = '';
-    currentUserTag.value = '';
     currentIndex.value = 0;
 
     isPosting.value = false;
     isErrorInPosting.value = false;
-
-    hashTags.clear();
-    // searchedUsers.clear();
-
-    currentUpdateAbleStartOffset = 0;
-    currentUpdateAbleEndOffset = 0;
-
-    searchText.value = '';
-    position.value = 0;
 
     isPreviewMode.value = false;
 
@@ -96,121 +67,6 @@ class AddPostController extends GetxController {
   toggleEnableComments() {
     enableComments.value = !enableComments.value;
     update();
-  }
-
-  startedEditing() {
-    isEditing.value = 1;
-    update();
-  }
-
-  stoppedEditing() {
-    isEditing.value = 0;
-    update();
-  }
-
-  searchHashTags({required String text, VoidCallback? callBackHandler}) {
-    if (canLoadMoreHashtags) {
-      hashtagsIsLoading = true;
-
-      MiscApi.searchHashtag(
-          page: hashtagsPage,
-          hashtag: text.replaceAll('#', ''),
-          resultCallback: (result, metaData) {
-            hashTags.addAll(result);
-            hashTags.unique((e) => e.name);
-
-            canLoadMoreHashtags = result.length >= metaData.perPage;
-            hashtagsIsLoading = false;
-            hashtagsPage += 1;
-
-            update();
-            if (callBackHandler != null) {
-              callBackHandler();
-            }
-          });
-    } else {
-      if (callBackHandler != null) {
-        callBackHandler();
-      }
-    }
-  }
-
-  addUserTag(String user) {
-    String updatedText = searchText.value.replaceRange(
-        currentUpdateAbleStartOffset, currentUpdateAbleEndOffset, '$user ');
-    searchText.value = updatedText;
-    position.value = updatedText.indexOf(user, currentUpdateAbleStartOffset) +
-        user.length +
-        1;
-
-    currentUserTag.value = '';
-    update();
-  }
-
-  addHashTag(String hashtag) {
-    String updatedText = searchText.value.replaceRange(
-        currentUpdateAbleStartOffset, currentUpdateAbleEndOffset, '$hashtag ');
-    position.value =
-        updatedText.indexOf(hashtag, currentUpdateAbleStartOffset) +
-            hashtag.length +
-            1;
-
-    searchText.value = updatedText;
-    currentHashtag.value = '';
-
-    update();
-  }
-
-  textChanged(String text, int position) {
-    clear();
-    isEditing.value = 1;
-    searchText.value = text;
-    String substring = text.substring(0, position).replaceAll("\n", " ");
-    List<String> parts = substring.split(' ');
-    String lastPart = parts.last;
-
-    if (lastPart.startsWith('#') == true && lastPart.contains('@') == false) {
-      if (currentHashtag.value.startsWith('#') == false ||
-          currentUpdateAbleStartOffset == 0) {
-        currentHashtag.value = lastPart;
-        currentUpdateAbleStartOffset = substring.indexOf('#') + 1;
-      }
-
-      if (lastPart.length > 1) {
-        hashTags.clear();
-        searchHashTags(text: lastPart);
-        currentUpdateAbleEndOffset = position;
-      } else {
-        hashTags.clear();
-      }
-    } else if (lastPart.startsWith('@') == true &&
-        lastPart.contains('#') == false) {
-      if (currentUserTag.value.startsWith('@') == false ||
-          currentUpdateAbleStartOffset == 0) {
-        currentUserTag.value = lastPart;
-        currentUpdateAbleStartOffset = substring.indexOf('@') + 1;
-      }
-      if (lastPart.length > 1) {
-        _usersController.setSearchTextFilter(
-            lastPart.replaceAll('@', ''), () {});
-        currentUpdateAbleEndOffset = position;
-      }
-    } else {
-      if (currentHashtag.value.startsWith('#') == true) {
-        currentHashtag.value = lastPart;
-      }
-      currentHashtag.value = '';
-      hashTags.value = [];
-
-      if (currentUserTag.value.startsWith('!') == true) {
-        currentUserTag.value = lastPart;
-      }
-      currentUserTag.value = '';
-
-      currentUpdateAbleStartOffset = 0;
-      currentUpdateAbleEndOffset = 0;
-    }
-    this.position.value = position;
   }
 
   discardFailedPost() {

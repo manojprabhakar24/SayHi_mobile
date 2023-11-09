@@ -148,8 +148,6 @@ class PostApi {
       required Function(List<PostModel>, APIMetaData) resultCallback}) async {
     var url = NetworkConstantsUtil.getPromotedPosts;
 
-    Loader.show(status: loadingString.tr);
-
     await ApiWrapper().getApi(url: url).then((response) {
       Loader.dismiss();
 
@@ -207,11 +205,17 @@ class PostApi {
 
   static Future<void> getComments(
       {required int postId,
+      int? parentId,
       required int page,
       required Function(List<CommentModel>, APIMetaData)
           resultCallback}) async {
-    var url =
-        '${NetworkConstantsUtil.getComments}?expand=user&post_id=$postId&page=$page';
+    var url = NetworkConstantsUtil.getComments;
+    if (parentId != null) {
+      url = '$url?expand=user&post_id=$postId&parent_id=$parentId&page=$page';
+    } else {
+      url =
+          '$url?expand=user,totalChildComment,childCommentDetail,childCommentDetail.user&post_id=$postId&page=$page';
+    }
 
     await ApiWrapper().getApi(url: url).then((response) {
       if (response?.success == true) {
@@ -225,14 +229,16 @@ class PostApi {
 
   static postComment(
       {required int postId,
+      int? parentCommentId,
       required CommentType? type,
-      required VoidCallback resultCallback,
+      required Function(int) resultCallback,
       String? comment,
       String? filename}) async {
     var url = NetworkConstantsUtil.addComment;
 
     await ApiWrapper().postApi(url: url, param: {
       "post_id": postId.toString(),
+      "parent_id": parentCommentId ?? 0,
       'comment': comment ?? '',
       "type": type == CommentType.gif
           ? '4'
@@ -242,10 +248,43 @@ class PostApi {
                   ? '2'
                   : '1',
       "filename": filename ?? ''
-    }).then((value) {
-      if (value?.success == true) {
-        resultCallback();
+    }).then((response) {
+      if (response?.success == true) {
+        var id = response!.data['id'];
+
+        resultCallback(id);
       }
+    });
+  }
+
+  static deleteComment(
+      {required int commentId, required VoidCallback resultCallback}) async {
+    var url = NetworkConstantsUtil.deleteComment + commentId.toString();
+
+    await ApiWrapper().deleteApi(url: url).then((value) {
+      resultCallback();
+    });
+  }
+
+  static reportComment(
+      {required int commentId, required VoidCallback resultCallback}) async {
+    var url = NetworkConstantsUtil.reportComment;
+
+    await ApiWrapper().postApi(
+        url: url,
+        param: {"post_comment_id": commentId.toString()}).then((value) {
+      resultCallback();
+    });
+  }
+
+  static favUnfavComment(
+      {required int commentId, required VoidCallback resultCallback}) async {
+    var url = NetworkConstantsUtil.reportComment;
+
+    await ApiWrapper().postApi(
+        url: url,
+        param: {"post_comment_id": commentId.toString()}).then((value) {
+      resultCallback();
     });
   }
 

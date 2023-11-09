@@ -99,7 +99,8 @@ class FundRaisingApi {
         var items = result!.data['donorsList']['items'];
 
         resultCallback(
-            List<UserModel>.from(items.map((x) => UserModel.fromJson(x['userDetail']))),
+            List<UserModel>.from(
+                items.map((x) => UserModel.fromJson(x['userDetail']))),
             APIMetaData.fromJson(result.data['donorsList']['_meta']));
         // resultCallback(List<FundRaisingCampaign>.from(
         //     items.map((x) => FundRaisingCampaign.fromJson(x))));
@@ -109,11 +110,16 @@ class FundRaisingApi {
 
   static getComments(
       {required int page,
+      int? parentId,
       required int campaignId,
       required Function(List<CommentModel>, APIMetaData)
           resultCallback}) async {
-    var url = NetworkConstantsUtil.campaignComments + campaignId.toString();
+    var url =
+        '${NetworkConstantsUtil.campaignComments}&campaign_id=$campaignId';
 
+    if (parentId != null) {
+      url = '$url&parent_id=$parentId';
+    }
     url = '$url&page=$page';
 
     await ApiWrapper().getApi(url: url).then((result) {
@@ -127,12 +133,22 @@ class FundRaisingApi {
     });
   }
 
-  static postComment({required String comment, required int campaignId}) async{
+  static postComment(
+      {required String comment,
+      required int campaignId,
+      int? parentCommentId,
+      required Function(int) resultCallback}) async {
     var url = NetworkConstantsUtil.addCommentOnCampaign;
-    await ApiWrapper().postApi(
-        url: url,
-        param: {'campaign_id': campaignId, 'comment': comment}).then((result) {
-      if (result?.success == true) {}
+    await ApiWrapper().postApi(url: url, param: {
+      'campaign_id': campaignId,
+      'parent_id': parentCommentId ?? 0,
+      'comment': comment
+    }).then((response) {
+      if (response?.success == true) {
+        var id = response!.data['id'];
+
+        resultCallback(id);
+      }
     });
   }
 
@@ -148,6 +164,38 @@ class FundRaisingApi {
       } else {
         resultCallback(false);
       }
+    });
+  }
+
+  static deleteComment(
+      {required int commentId, required VoidCallback resultCallback}) async {
+    var url = NetworkConstantsUtil.deleteComment + commentId.toString();
+
+    await ApiWrapper()
+        .postApi(url: url, param: {'id': commentId.toString()}).then((value) {
+      resultCallback();
+    });
+  }
+
+  static reportComment(
+      {required int commentId, required VoidCallback resultCallback}) async {
+    var url = NetworkConstantsUtil.reportComment;
+
+    await ApiWrapper().postApi(
+        url: url,
+        param: {"post_comment_id": commentId.toString()}).then((value) {
+      resultCallback();
+    });
+  }
+
+  static favUnfavComment(
+      {required int commentId, required VoidCallback resultCallback}) async {
+    var url = NetworkConstantsUtil.reportComment;
+
+    await ApiWrapper().postApi(
+        url: url,
+        param: {"post_comment_id": commentId.toString()}).then((value) {
+      resultCallback();
     });
   }
 }

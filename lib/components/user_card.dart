@@ -29,10 +29,15 @@ class UserInfo extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              BodyLargeText(
-                model.name ?? model.userName,
-                weight: TextWeight.semiBold,
-                maxLines: 1,
+              Row(
+                children: [
+                  BodyLargeText(
+                    model.name ?? model.userName,
+                    weight: TextWeight.semiBold,
+                    maxLines: 1,
+                  ),
+                  if (model.isVerified) verifiedUserTag()
+                ],
               ),
               const SizedBox(
                 height: 5,
@@ -104,10 +109,15 @@ class UserTile extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    BodyLargeText(
-                      profile.userName,
-                      // weight: TextWeight.regular,
-                      maxLines: 1,
+                    Row(
+                      children: [
+                        BodyLargeText(
+                          profile.userName,
+                          // weight: TextWeight.regular,
+                          maxLines: 1,
+                        ),
+                        if (profile.isVerified) verifiedUserTag()
+                      ],
                     ).bP4,
                     profile.country != null
                         ? BodyMediumText(
@@ -258,11 +268,16 @@ class UserCard extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Heading6Text(
-                    profile.userName,
-                    weight: TextWeight.semiBold,
-                    // weight: TextWeight.regular,
-                    maxLines: 1,
+                  Row(
+                    children: [
+                      Heading6Text(
+                        profile.userName,
+                        weight: TextWeight.semiBold,
+                        // weight: TextWeight.regular,
+                        maxLines: 1,
+                      ),
+                      if (profile.isVerified) verifiedUserTag()
+                    ],
                   ).bP4,
                   BodyMediumText(
                     '${profile.totalFollower.formatNumber} $followersString',
@@ -351,7 +366,7 @@ class SelectableUserCardState extends State<SelectableUserCard> {
                       height: 50,
                       width: 50,
                       color: Colors.black45,
-                      child:  Center(
+                      child: Center(
                         child: ThemeIconWidget(
                           ThemeIcon.checkMark,
                           color: Colors.white,
@@ -368,8 +383,13 @@ class SelectableUserCardState extends State<SelectableUserCard> {
           ),
         ),
         const SizedBox(height: 10),
-        BodyMediumText(widget.model.userName,
-            maxLines: 1, weight: TextWeight.medium)
+        Row(
+          children: [
+            BodyMediumText(widget.model.userName,
+                maxLines: 1, weight: TextWeight.medium),
+            if (widget.model.isVerified) verifiedUserTag()
+          ],
+        )
       ],
     );
   }
@@ -412,10 +432,15 @@ class SelectableUserTileState extends State<SelectableUserTile> {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                BodyLargeText(
-                  model.userName,
-                  weight: TextWeight.semiBold,
-                  maxLines: 1,
+                Row(
+                  children: [
+                    BodyLargeText(
+                      model.userName,
+                      weight: TextWeight.semiBold,
+                      maxLines: 1,
+                    ),
+                    if (widget.model.isVerified) verifiedUserTag()
+                  ],
                 ),
                 const SizedBox(
                   height: 5,
@@ -489,10 +514,15 @@ class InviteUserTile extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    BodyLargeText(
-                      profile.userName,
-                      // weight: TextWeight.regular,
-                      maxLines: 1,
+                    Row(
+                      children: [
+                        BodyLargeText(
+                          profile.userName,
+                          // weight: TextWeight.regular,
+                          maxLines: 1,
+                        ),
+                        if (profile.isVerified) verifiedUserTag()
+                      ],
                     ).bP4,
                     profile.country != null
                         ? BodyMediumText(
@@ -560,9 +590,14 @@ class RelationUserTile extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  BodyLargeText(
-                    profile.userName,
-                    weight: TextWeight.bold,
+                  Row(
+                    children: [
+                      BodyLargeText(
+                        profile.userName,
+                        weight: TextWeight.bold,
+                      ),
+                      if (profile.isVerified) verifiedUserTag()
+                    ],
                   ).bP4,
                   profile.country != null
                       ? BodyMediumText(
@@ -650,8 +685,13 @@ class ClubMemberTile extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  BodyLargeText(member.user!.userName, weight: TextWeight.bold)
-                      .bP4,
+                  Row(
+                    children: [
+                      BodyLargeText(member.user!.userName,
+                          weight: TextWeight.bold),
+                      if (member.user!.isVerified) verifiedUserTag()
+                    ],
+                  ).bP4,
                   member.user!.country != null
                       ? BodyMediumText(
                           '${member.user!.city!}, ${member.user!.country!}',
@@ -878,8 +918,13 @@ class ClubJoinRequestTile extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  BodyLargeText(request.user!.userName, weight: TextWeight.bold)
-                      .bP4,
+                  Row(
+                    children: [
+                      BodyLargeText(request.user!.userName,
+                          weight: TextWeight.bold),
+                      if (request.user!.isVerified) verifiedUserTag()
+                    ],
+                  ).bP4,
                   request.user!.country != null
                       ? BodyMediumText(
                           '${request.user!.city!}, ${request.user!.country!}',

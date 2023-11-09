@@ -290,11 +290,7 @@ class SelectFollowingUserForMessageSendingState
                 ? const ShimmerUsers()
                 : usersList.isNotEmpty
                     ? ListView.separated(
-                        padding: EdgeInsets.only(
-                            top: 20,
-                            bottom: 50,
-                            left: DesignConstants.horizontalPadding,
-                            right: DesignConstants.horizontalPadding),
+                        padding: const EdgeInsets.only(top: 20, bottom: 50),
                         controller: scrollController,
                         itemCount: usersList.length,
                         itemBuilder: (context, index) {

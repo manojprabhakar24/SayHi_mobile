@@ -96,7 +96,9 @@ class PostController extends GetxController {
   void getPosts(VoidCallback callback) async {
     if (postDataWrapper.haveMoreData.value == true &&
         totalPages > postDataWrapper.page) {
-      postDataWrapper.isLoading.value = true;
+      if (postDataWrapper.page == 1) {
+        postDataWrapper.isLoading.value = true;
+      }
 
       PostApi.getPosts(
           userId: postSearchQuery!.userId,

@@ -1,5 +1,4 @@
 export 'package:foap/screens/chat/chat_history.dart';
-export 'package:foap/screens/chat/media_gallery_for_chat.dart';
 export 'package:foap/screens/chat/random_chat/find_random_user.dart';
 export 'package:foap/screens/chat/chat_detail.dart';
 export 'package:foap/screens/chat/select_users.dart';

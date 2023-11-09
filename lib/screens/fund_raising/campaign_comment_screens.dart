@@ -53,11 +53,37 @@ class CampaignCommentsScreenState extends State<CampaignCommentsScreen> {
                       left: DesignConstants.horizontalPadding,
                       right: DesignConstants.horizontalPadding),
                   itemCount: _fundraisingController.comments.length,
-                  // reverse: true,
                   controller: _controller,
                   itemBuilder: (context, index) {
                     return CommentTile(
-                        model: _fundraisingController.comments[index]);
+                      model: _fundraisingController.comments[index],
+                      replyActionHandler: (comment) {
+                        _fundraisingController.setReplyComment(comment);
+                      },
+                      deleteActionHandler: (comment) {
+                        _fundraisingController.deleteComment(
+                          comment: comment,
+                        );
+                      },
+                      favActionHandler: (comment) {
+                        _fundraisingController.favUnfavComment(
+                          commentId: comment.id,
+                        );
+                      },
+                      reportActionHandler: (comment) {
+                        _fundraisingController.reportComment(
+                          commentId: comment.id,
+                        );
+                      },
+                      loadMoreChildCommentsActionHandler: (comment) {
+                        _fundraisingController.getChildComments(
+                          page: comment.currentPageForReplies,
+                          parentId: comment.id,
+                          refId:
+                              _fundraisingController.currentCampaign.value!.id,
+                        );
+                      },
+                    );
                   },
                   separatorBuilder: (ctx, index) {
                     return const SizedBox(
@@ -74,6 +100,27 @@ class CampaignCommentsScreenState extends State<CampaignCommentsScreen> {
                     enablePullDown: false);
               }),
             ),
+            Obx(() => _fundraisingController.replyingComment.value == null
+                ? Container()
+                : Container(
+                    color: AppColorConstants.cardColor,
+                    child: Row(
+                      children: [
+                        BodySmallText(
+                          '${replyingToString.tr} ${_fundraisingController.replyingComment.value!.userName}',
+                          weight: TextWeight.regular,
+                        ),
+                        const Spacer(),
+                        ThemeIconWidget(ThemeIcon.close).ripple(() {
+                          _fundraisingController.setReplyComment(null);
+                        })
+                      ],
+                    ).setPadding(
+                        left: DesignConstants.horizontalPadding,
+                        right: DesignConstants.horizontalPadding,
+                        top: 12,
+                        bottom: 12),
+                  )),
             buildMessageTextField(),
             const SizedBox(height: 20)
           ],
@@ -88,7 +135,7 @@ class CampaignCommentsScreenState extends State<CampaignCommentsScreen> {
         children: <Widget>[
           Expanded(
             child: Container(
-              color: AppColorConstants.cardColor.withOpacity(0.5),
+              // color: AppColorConstants.cardColor.withOpacity(0.5),
               child: TextField(
                 controller: commentInputField,
                 onChanged: (text) {},

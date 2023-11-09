@@ -894,7 +894,7 @@ class _ChatDetailState extends State<ChatDetail> {
         context: context,
         isScrollControlled: true,
         builder: (context) => const FractionallySizedBox(
-            heightFactor: 0.3, child: ChatMediaSharingOptionPopup()));
+            heightFactor: 0.5, child: ChatMediaSharingOptionPopup()));
   }
 
   void deleteMessageActionPopup() {

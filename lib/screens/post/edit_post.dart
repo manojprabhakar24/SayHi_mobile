@@ -2,6 +2,7 @@ import 'package:foap/helper/imports/models.dart';
 import 'package:foap/screens/post/tag_hashtag_view.dart';
 import 'package:foap/screens/post/tag_users_view.dart';
 import 'package:foap/helper/imports/common_import.dart';
+import '../../components/smart_text_field.dart';
 import '../../controllers/post/add_post_controller.dart';
 
 class EditPostScreen extends StatefulWidget {
@@ -19,11 +20,12 @@ class EditPostScreen extends StatefulWidget {
 class EditPostScreenState extends State<EditPostScreen> {
   TextEditingController descriptionText = TextEditingController();
   final AddPostController addPostController = Get.find();
+  final SmartTextFieldController _smartTextFieldController = Get.find();
 
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      addPostController.textChanged(
+      _smartTextFieldController.textChanged(
           widget.post.title, widget.post.title.length);
       descriptionText.text = widget.post.title;
       addPostController.enableComments.value = widget.post.commentsEnabled;
@@ -61,8 +63,7 @@ class EditPostScreenState extends State<EditPostScreen> {
                                 Get.back();
                                 addPostController.clear();
                               },
-                              child:
-                                  ThemeIconWidget(ThemeIcon.backArrow)),
+                              child: ThemeIconWidget(ThemeIcon.backArrow)),
                           const Spacer(),
                           Container(
                                   color: AppColorConstants.themeColor,
@@ -114,21 +115,23 @@ class EditPostScreenState extends State<EditPostScreen> {
                         height: 10,
                       ),
                       Expanded(
-                        child: Container(
-                          width: double.infinity,
-                          color:
-                              AppColorConstants.disabledColor.withOpacity(0.1),
-                          child: addPostController.currentHashtag.isNotEmpty
-                              ? TagHashtagView()
-                              : addPostController.currentUserTag.isNotEmpty
-                                  ? TagUsersView()
-                                  : Container().ripple(() {
-                                      FocusManager.instance.primaryFocus
-                                          ?.unfocus();
-                                    }),
-                        ),
+                        child: Obx(() => Container(
+                              width: double.infinity,
+                              color: AppColorConstants.disabledColor
+                                  .withOpacity(0.1),
+                              child: _smartTextFieldController
+                                      .currentHashtag.isNotEmpty
+                                  ? TagHashtagView()
+                                  : _smartTextFieldController
+                                          .currentUserTag.isNotEmpty
+                                      ? TagUsersView()
+                                      : Container().ripple(() {
+                                          FocusManager.instance.primaryFocus
+                                              ?.unfocus();
+                                        }),
+                            )),
                       ),
-                      Obx(() => addPostController.isEditing.value == 0
+                      Obx(() => _smartTextFieldController.isEditing.value == 0
                           ? const Spacer()
                           : Container()),
                     ]),
@@ -143,43 +146,26 @@ class EditPostScreenState extends State<EditPostScreen> {
       height: 100,
       child: Obx(() {
         descriptionText.value = TextEditingValue(
-            text: addPostController.searchText.value,
-            selection: TextSelection.fromPosition(
-                TextPosition(offset: addPostController.position.value)));
+            text: _smartTextFieldController.searchText.value,
+            selection: TextSelection.fromPosition(TextPosition(
+                offset: _smartTextFieldController.position.value)));
 
-        return Focus(
-          child: Container(
-            color: AppColorConstants.cardColor,
-            child: TextField(
+        return Container(
+          color: AppColorConstants.cardColor,
+          child: SmartTextField(
+            maxLine: 5,
               controller: descriptionText,
-              textAlign: TextAlign.left,
-              style: TextStyle(
-                  fontSize: FontSizes.h5,
-                  color: AppColorConstants.mainTextColor),
-              maxLines: 5,
-              onChanged: (text) {
-                addPostController.textChanged(
-                    text, descriptionText.selection.baseOffset);
+              onTextChangeActionHandler: (text, offset) {
+                _smartTextFieldController.textChanged(text, offset);
               },
-              decoration: InputDecoration(
-                  border: InputBorder.none,
-                  contentPadding:
-                      const EdgeInsets.only(top: 10, left: 10, right: 10),
-                  counterText: "",
-                  hintStyle: TextStyle(
-                      fontSize: FontSizes.h5,
-                      color: AppColorConstants.subHeadingTextColor),
-                  hintText: addSomethingAboutPostString.tr),
-            ),
-          ).round(10),
-          onFocusChange: (hasFocus) {
-            if (hasFocus == true) {
-              addPostController.startedEditing();
-            } else {
-              addPostController.stoppedEditing();
-            }
-          },
-        );
+              onFocusChangeActionHandler: (status) {
+                if (status == true) {
+                  _smartTextFieldController.startedEditing();
+                } else {
+                  _smartTextFieldController.stoppedEditing();
+                }
+              }),
+        ).round(5);
       }),
     );
   }

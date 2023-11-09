@@ -47,7 +47,7 @@ class EventCard extends StatelessWidget {
             ],
           ),
           const SizedBox(
-            height: 12,
+            height: 10,
           ),
           Heading5Text(
             event.name,
@@ -55,7 +55,7 @@ class EventCard extends StatelessWidget {
             maxLines: 1,
           ),
           const SizedBox(
-            height: 8,
+            height: 5,
           ),
           BodyMediumText(
             event.startAtDateTime,

@@ -17,6 +17,22 @@ class AboutOffer extends StatelessWidget {
           const SizedBox(
             height: 20,
           ),
+          SizedBox(
+            height: Get.height * 0.3,
+            child: Stack(
+              children: [
+                CachedNetworkImage(
+                  imageUrl: offer.coverImage,
+                  width: double.infinity,
+                  height: double.infinity,
+                  fit: BoxFit.cover,
+                )
+              ],
+            ),
+          ).round(25),
+          const SizedBox(
+            height: 20,
+          ),
           Wrap(
             children: [
               BodyExtraLargeText(

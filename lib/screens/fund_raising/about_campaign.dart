@@ -1,3 +1,5 @@
+import 'package:carousel_slider/carousel_slider.dart';
+import 'package:dots_indicator/dots_indicator.dart';
 import 'package:foap/helper/date_extension.dart';
 import 'package:foap/helper/number_extension.dart';
 import '../../controllers/fund_raising/fund_raising_controller.dart';
@@ -17,6 +19,48 @@ class AboutCampaign extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          const SizedBox(height: 30),
+          SizedBox(
+            height: Get.height * 0.3,
+            child: Stack(
+              children: [
+                CarouselSlider(
+                  items: mediaList(),
+                  options: CarouselOptions(
+                    aspectRatio: 1,
+                    enlargeCenterPage: false,
+                    enableInfiniteScroll: false,
+                    height: double.infinity,
+                    viewportFraction: 1,
+                    onPageChanged: (index, reason) {
+                      fundRaisingController.updateGallerySlider(index);
+                    },
+                  ),
+                ),
+
+                if (mediaList().length > 1)
+                  Positioned(
+                      bottom: 10,
+                      left: 0,
+                      right: 0,
+                      child: Align(
+                        alignment: Alignment.center,
+                        child: Obx(
+                              () {
+                            return DotsIndicator(
+                              dotsCount: mediaList().length,
+                              position: fundRaisingController
+                                  .currentIndex.value,
+                              decorator: DotsDecorator(
+                                  activeColor: Theme.of(Get.context!)
+                                      .primaryColor),
+                            );
+                          },
+                        ),
+                      )),
+              ],
+            ),
+          ).round(25),
           const SizedBox(height: 30),
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -139,6 +183,27 @@ class AboutCampaign extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  List<Widget> mediaList() {
+    List<CachedNetworkImage> images = [];
+    images.add(CachedNetworkImage(
+      imageUrl: campaign.coverImage,
+      width: double.infinity,
+      height: double.infinity,
+      fit: BoxFit.cover,
+    ));
+
+    for (String image in campaign.allImages) {
+      images.add(CachedNetworkImage(
+        imageUrl: image,
+        fit: BoxFit.cover,
+        width: double.infinity,
+        height: double.infinity,
+      ));
+    }
+
+    return images;
   }
 
   Widget createdBy() {

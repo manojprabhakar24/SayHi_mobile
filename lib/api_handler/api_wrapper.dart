@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'dart:developer';
 import 'dart:typed_data';
-
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
@@ -10,8 +9,6 @@ import '../helper/localization_strings.dart';
 import '../util/constant_util.dart';
 import '../util/shared_prefs.dart';
 import 'network_constant.dart';
-export 'api_param_model.dart';
-export 'api_response_model.dart';
 export 'network_constant.dart';
 import 'package:foap/components/loader.dart';
 
@@ -58,13 +55,8 @@ class ApiWrapper {
     return http.get(Uri.parse(urlString)).then((http.Response response) async {
       dynamic data = _decoder.convert(response.body);
       Loader.dismiss();
-      // log(data.toString());
-      if (data['status'] == 401 && data['data'] == null) {
-        //Get.offAll(() => LoginForExpiredToken());
-      } else {
-        return ApiResponse.fromJson(data);
-      }
-      return null;
+
+      return ApiResponse.fromJson(data);
     });
   }
 
@@ -72,18 +64,17 @@ class ApiWrapper {
     String? authKey = await SharedPrefs().getAuthorizationKey();
     String urlString = '${NetworkConstantsUtil.baseUrl}$url';
 
+    print(urlString);
+    print(authKey);
+
     return http.get(Uri.parse(urlString), headers: {
       "Authorization": "Bearer ${authKey!}"
     }).then((http.Response response) async {
       dynamic data = _decoder.convert(response.body);
       Loader.dismiss();
       log(data.toString());
-      if (data['status'] == 401 && data['data'] == null) {
-        //Get.offAll(() => LoginForExpiredToken());
-      } else {
-        return ApiResponse.fromJson(data);
-      }
-      return null;
+
+      return ApiResponse.fromJson(data);
     });
   }
 
@@ -102,13 +93,8 @@ class ApiWrapper {
     }).then((http.Response response) async {
       dynamic data = _decoder.convert(response.body);
       log('data $data');
-      // Loader.dismiss();
-      if (data['status'] == 401 && data['data'] == null) {
-        // Get.offAll(() => LoginForExpiredToken());
-      } else {
-        return ApiResponse.fromJson(data);
-      }
-      return null;
+
+      return ApiResponse.fromJson(data);
     });
   }
 
@@ -116,7 +102,7 @@ class ApiWrapper {
       {required String url, required dynamic param}) async {
     String? authKey = await SharedPrefs().getAuthorizationKey();
     Loader.show(status: loadingString.tr);
-    
+
     return http.put(Uri.parse('${NetworkConstantsUtil.baseUrl}$url'),
         body: jsonEncode(param),
         headers: {
@@ -126,12 +112,8 @@ class ApiWrapper {
       dynamic data = _decoder.convert(response.body);
       // print(data);
       Loader.dismiss();
-      if (data['status'] == 401 && data['data'] == null) {
-        // Get.offAll(() => LoginForExpiredToken());
-      } else {
-        return ApiResponse.fromJson(data);
-      }
-      return null;
+
+      return ApiResponse.fromJson(data);
     });
   }
 
@@ -139,19 +121,17 @@ class ApiWrapper {
     String? authKey = await SharedPrefs().getAuthorizationKey();
     Loader.show(status: loadingString.tr);
 
+    print('${NetworkConstantsUtil.baseUrl}$url');
     return http.delete(Uri.parse('${NetworkConstantsUtil.baseUrl}$url'),
         headers: {
           "Authorization": "Bearer $authKey",
           'Content-Type': 'application/json'
         }).then((http.Response response) async {
       dynamic data = _decoder.convert(response.body);
+      print(data);
       Loader.dismiss();
-      if (data['status'] == 401 && data['data'] == null) {
-        // Get.offAll(() => LoginForExpiredToken());
-      } else {
-        return ApiResponse.fromJson(data);
-      }
-      return null;
+
+      return ApiResponse.fromJson(data);
     });
   }
 
@@ -165,12 +145,8 @@ class ApiWrapper {
       dynamic data = _decoder.convert(response.body);
 
       // Loader.dismiss();
-      if (data['status'] == 401 && data['data'] == null) {
-        // Get.offAll(() => LoginForExpiredToken());
-      } else {
-        return ApiResponse.fromJson(data);
-      }
-      return null;
+
+      return ApiResponse.fromJson(data);
     });
   }
 
@@ -192,11 +168,8 @@ class ApiWrapper {
       Loader.dismiss();
 
       dynamic data = _decoder.convert(respStr);
-      // if (data['status'] == 401 && data['data'] == null) {
-      //   // Get.offAll(() => LoginForExpiredToken());
-      // } else {
-        return ApiResponse.fromJson(data);
-      // }
+
+      return ApiResponse.fromJson(data);
     });
   }
 
@@ -225,15 +198,8 @@ class ApiWrapper {
     var responseData = await res.stream.toBytes();
     var responseString = String.fromCharCodes(responseData);
     dynamic data = _decoder.convert(responseString);
-
     Loader.dismiss();
-    if (data['status'] == 401 && data['data'] == null) {
-      // Get.offAll(() => LoginForExpiredToken());
-    } else {
-      // print('data ${data}');
-      return ApiResponse.fromJson(data);
-    }
-    return null;
+    return ApiResponse.fromJson(data);
   }
 
   Future<ApiResponse?> uploadPostFile(
@@ -246,8 +212,6 @@ class ApiWrapper {
         'POST', Uri.parse('${NetworkConstantsUtil.baseUrl}$url'));
     String? authKey = await SharedPrefs().getAuthorizationKey();
     request.headers.addAll({"Authorization": "Bearer ${authKey!}"});
-
-    // request.files.add(await http.MultipartFile.fromPath('filenameFile', file));
 
     if (mediaType == GalleryMediaType.video) {
       request.files.add(await http.MultipartFile.fromPath('filenameFile', file,
@@ -264,13 +228,7 @@ class ApiWrapper {
     var responseData = await res.stream.toBytes();
     var responseString = String.fromCharCodes(responseData);
     dynamic data = _decoder.convert(responseString);
-
     Loader.dismiss();
-    if (data['status'] == 401 && data['data'] == null) {
-      // Get.offAll(() => LoginForExpiredToken());
-    } else {
-      return ApiResponse.fromJson(data);
-    }
-    return null;
+    return ApiResponse.fromJson(data);
   }
 }

@@ -30,8 +30,10 @@ class PostOptionsPopup extends StatelessWidget {
   Widget build(BuildContext context) {
     List<Widget> options = [];
 
+    options.add(cameraButton());
+
     if (_settingsController.setting.value!.enableImagePost) {
-      options.add(photoButton());
+      options.add(galleryButton());
     }
     if (_settingsController.setting.value!.enableVideoPost) {
       options.add(videoButton());
@@ -53,10 +55,23 @@ class PostOptionsPopup extends StatelessWidget {
     ).topRounded(40);
   }
 
-  Widget photoButton() {
+  Widget cameraButton() {
     return ModalComponents(
       check: true,
       icon: ThemeIcon.camera,
+      // name: isInTabBar ? null : LocalizationString.cameraModal,
+      onPress: () async {
+        selectPhoto(
+          source: ImageSource.camera,
+        );
+      },
+    );
+  }
+
+  Widget galleryButton() {
+    return ModalComponents(
+      check: true,
+      icon: ThemeIcon.gallery,
       // name: isInTabBar ? null : LocalizationString.cameraModal,
       onPress: () async {
         selectPhoto(
@@ -215,6 +230,7 @@ class PostOptionsPopup extends StatelessWidget {
 
       if (mediaType == GalleryMediaType.video) {
         final videoInfo = await FlutterVideoInfo().getVideoInfo(mediaFile.path);
+
         media.size =
             Size(videoInfo!.width!.toDouble(), videoInfo.height!.toDouble());
 

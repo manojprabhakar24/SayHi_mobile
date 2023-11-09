@@ -1,7 +1,7 @@
 import 'package:foap/controllers/coupons/near_by_offers.dart';
 import 'package:foap/model/offer_model.dart';
 import 'package:foap/screens/near_by_offers/offer_detail.dart';
-import '../../components/offer_card.dart';
+import '../../components/offers/offer_card.dart';
 import '../../helper/imports/common_import.dart';
 
 class OffersList extends StatelessWidget {

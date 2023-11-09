@@ -1,5 +1,4 @@
 import 'package:foap/model/business_model.dart';
-
 import '../../helper/imports/common_import.dart';
 
 class BusinessCard extends StatelessWidget {

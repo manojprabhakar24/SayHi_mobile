@@ -222,11 +222,7 @@ class SocketManager {
 
       message.sender = user;
 
-      // ChatMessageModel message = ChatMessageModel.fromJson(response);
-
       await getIt<RealmDBManager>().newMessageReceived(message);
-      // await _chatDetailController.newMessageReceived(message);
-      // _chatController.newMessageReceived(message);
 
       int roomsWithUnreadMessageCount =
           await getIt<RealmDBManager>().roomsWithUnreadMessages();

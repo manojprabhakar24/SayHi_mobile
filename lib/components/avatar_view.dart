@@ -44,13 +44,13 @@ class AvatarView extends StatelessWidget {
               errorWidget: (context, url, error) => const Icon(
                 Icons.error,
               ),
-            ).round(18)
+            ).round(size ?? 60)
           : Center(
               child: BodySmallText(initials, weight: TextWeight.medium).p8,
             ),
     ).borderWithRadius(
         value: 2,
-        radius: 20,
+        radius: size ?? 60,
         color: borderColor ?? AppColorConstants.themeColor);
   }
 }

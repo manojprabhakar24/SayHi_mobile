@@ -51,40 +51,16 @@ class LoginController extends GetxController {
             await _settingsController.getSettings();
             getIt<SocketManager>().connect();
 
-            if (_userProfileManager.user.value!.userName.isEmpty) {
-              Get.to(() => const SetLocation(isSettingProfile: false))!
-                  .then((value) {});
-            } else {
-              Get.offAll(() => const DashboardScreen());
-              getIt<SocketManager>().connect();
-            }
+            Get.offAll(() => const DashboardScreen());
+            getIt<SocketManager>().connect();
+          },
+          verifyOtpCallback: (token) {
+            Get.to(() => VerifyRegistrationOTP(
+                  // isVerifyingEmail: true,
+                  // isVerifyingPhone: false,
+                  token: token,
+                ));
           });
-      // AppUtil.checkInternet().then((value) {
-      //   if (value) {
-      //     ApiController().login(email, password).then((response) async {
-      //       if (response.success) {
-      //       } else {
-      //         Loader.dismiss();
-      //         if (response.token != null) {
-      //           Get.to(() => VerifyOTPScreen(
-      //                 isVerifyingEmail: true,
-      //                 isVerifyingPhone: false,
-      //                 token: response.token!,
-      //               ));
-      //         } else {
-      //           Loader.dismiss();
-      //           showErrorMessage(
-      //             response.message,
-      //           );
-      //         }
-      //       }
-      //     });
-      //   } else {
-      //     showErrorMessage(
-      //       noInternet,
-      //     );
-      //   }
-      // });
     }
   }
 

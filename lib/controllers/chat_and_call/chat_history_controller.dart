@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 import 'package:foap/api_handler/apis/chat_api.dart';
 import 'package:foap/helper/date_extension.dart';
 import 'package:foap/helper/imports/chat_imports.dart';
@@ -68,6 +69,9 @@ class ChatHistoryController extends GetxController {
   }
 
   groupRooms() {
+    _searchedRooms.value = _searchedRooms
+        .where((e) => e.isGroupChat == true || (e.roomMembers.length > 1))
+        .toList();
     _searchedRooms.value = _searchedRooms.map((e) {
       ChatRoomModel room = e;
       if (e.lastMessage?.date.isToday == true || e.createAtDate.isToday) {

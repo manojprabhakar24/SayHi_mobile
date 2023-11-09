@@ -97,8 +97,4 @@ class DatingController extends GetxController {
   }
 }
 
-enum DatingActions {
-  liked,
-  rejected,
-  undoLiked,
-}
+

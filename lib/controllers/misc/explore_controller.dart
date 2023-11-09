@@ -45,6 +45,16 @@ class ExploreController extends GetxController {
     searchData();
   }
 
+  defaultData() {
+    PostSearchQuery query = PostSearchQuery();
+    query.isPopular = 1;
+    _postController.setPostSearchQuery(query: query, callback: () {});
+    _usersController.loadSuggestedUsers();
+    _miscController.searchHashTags(searchText.value);
+    _eventsController.searchEvents(searchText.value);
+    _clubsController.setSearchText(searchText.value);
+  }
+
   searchData() {
     if (searchText.isNotEmpty) {
       PostSearchQuery query = PostSearchQuery();

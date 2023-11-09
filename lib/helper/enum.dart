@@ -44,10 +44,19 @@ enum MessageContentType {
   profile,
   group,
   groupAction,
-  gift
+  gift,
+  textReplyOnStory,
+  reactedOnStory,
 }
 
-enum UploadMediaType { shop, storyOrHighlights, chat, club, verification, uploadResume, }
+enum UploadMediaType {
+  shop,
+  storyOrHighlights,
+  chat,
+  club,
+  verification,
+  uploadResume,
+}
 
 ///Media picker selection type
 enum GalleryMediaType {
@@ -119,7 +128,9 @@ enum NotificationType {
   clubInvitation,
   competitionAdded,
   relationInvite,
-  none
+  none,
+  verification,
+  supportRequest
 }
 
 enum CommentType { text, image, video, gif }
@@ -166,4 +177,10 @@ enum PaymentMode {
   stripe,
   razorpay,
   flutterWave
+}
+
+enum DatingActions {
+  liked,
+  rejected,
+  undoLiked,
 }

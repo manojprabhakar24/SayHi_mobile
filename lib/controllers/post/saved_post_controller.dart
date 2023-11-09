@@ -28,7 +28,9 @@ class SavedPostController extends GetxController {
   }
 
   void getPosts(VoidCallback callback) async {
-    postDataWrapper.isLoading.value = true;
+    if(postDataWrapper.page == 1){
+      postDataWrapper.isLoading.value = true;
+    }
     PostApi.getPosts(
         isSaved: 1,
         page: postDataWrapper.page,

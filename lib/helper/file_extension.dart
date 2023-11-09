@@ -1,4 +1,6 @@
 import 'dart:io';
+import 'dart:typed_data';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:foap/helper/enum.dart';
 import 'package:foap/helper/imports/common_import.dart';
 import 'package:image_picker/image_picker.dart';
@@ -7,6 +9,21 @@ import 'package:video_thumbnail/video_thumbnail.dart';
 
 import '../screens/chat/media.dart';
 import '../util/constant_util.dart';
+
+extension FileCompressor on File {
+  Future<Uint8List> compress(
+      {int? byQuality, int? minWidth, int? minHeight}) async {
+    var result = await FlutterImageCompress.compressWithFile(
+      absolute.path,
+      minWidth: minWidth ?? 1000,
+      minHeight: minHeight ?? 1000,
+      quality: byQuality ?? 60,
+      rotate: 0,
+    );
+
+    return result!;
+  }
+}
 
 extension FileExtension on File {
   GalleryMediaType get mediaType {

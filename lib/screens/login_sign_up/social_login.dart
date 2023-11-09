@@ -10,6 +10,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import '../../manager/location_manager.dart';
 import '../../manager/socket_manager.dart';
+import '../../util/constant_util.dart';
 import '../../util/shared_prefs.dart';
 import '../dashboard/dashboard_screen.dart';
 import '../settings_menu/settings_controller.dart';
@@ -70,7 +71,7 @@ class _SocialLoginState extends State<SocialLogin> {
                   'assets/phone.png',
                   height: 20,
                   width: 20,
-                  color: Colors.white,
+                  color: isDarkMode ? Colors.white : AppColorConstants.mainTextColor,
                 ))).round(10).ripple(() {
                 Get.offAll(() => const PhoneLoginScreen());
               })
@@ -83,7 +84,7 @@ class _SocialLoginState extends State<SocialLogin> {
                   'assets/email.png',
                   height: 20,
                   width: 20,
-                  color: Colors.white,
+                  color: isDarkMode ? Colors.white : AppColorConstants.mainTextColor,
                 ))).round(10).ripple(() {
                 Get.offAll(() => const LoginScreen());
               }),
@@ -109,7 +110,7 @@ class _SocialLoginState extends State<SocialLogin> {
                 'assets/apple.png',
                 height: 20,
                 width: 20,
-                color: Colors.white,
+                color: isDarkMode ? Colors.white : AppColorConstants.mainTextColor,
               ))).round(10).ripple(() {
             //signInWithGoogle();
             _handleAppleSignIn();

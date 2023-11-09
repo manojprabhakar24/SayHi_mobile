@@ -51,6 +51,17 @@ class UsersController extends GetxController {
     accountsIsLoading.value = false;
   }
 
+  loadSuggestedUsers() {
+    UsersApi.getSuggestedUsers(
+        page: 1,
+        resultCallback: (result) {
+          searchedUsers.addAll(result);
+          searchedUsers.unique((e) => e.id);
+
+          update();
+        });
+  }
+
   loadUsers(VoidCallback callback) {
     if (canLoadMoreAccounts) {
       accountsIsLoading.value = true;

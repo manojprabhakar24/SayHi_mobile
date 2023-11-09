@@ -1,5 +1,6 @@
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
+import '../../components/smart_text_field.dart';
 import '../../components/user_card.dart';
 import '../../helper/imports/common_import.dart';
 import '../../controllers/misc/users_controller.dart';
@@ -10,7 +11,7 @@ class TagUsersView extends StatelessWidget {
     Key? key,
   }) : super(key: key);
 
-  final AddPostController addPostController = Get.find();
+  final SmartTextFieldController _smartTextFieldController = Get.find();
   final UsersController _usersController = Get.find();
 
   final RefreshController _usersRefreshController =
@@ -28,7 +29,7 @@ class TagUsersView extends StatelessWidget {
           return UserTile(
             profile: _usersController.searchedUsers[index],
             viewCallback: () {
-              addPostController
+              _smartTextFieldController
                   .addUserTag(_usersController.searchedUsers[index].userName);
             },
           );
@@ -41,8 +42,8 @@ class TagUsersView extends StatelessWidget {
         refreshController: _usersRefreshController,
         onRefresh: () {},
         onLoading: () {
-          _usersController
-              .setSearchTextFilter(addPostController.currentUserTag.value, () {
+          _usersController.setSearchTextFilter(
+              _smartTextFieldController.currentUserTag.value, () {
             _usersRefreshController.loadComplete();
           });
         },

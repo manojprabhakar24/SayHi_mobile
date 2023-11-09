@@ -1,3 +1,4 @@
+import 'package:foap/components/chat_cells/story_reply_chat_cell.dart';
 import 'package:foap/helper/imports/chat_imports.dart';
 import 'package:foap/helper/imports/common_import.dart';
 import 'package:visibility_detector/visibility_detector.dart';
@@ -48,7 +49,11 @@ class ChatMessageTile extends StatelessWidget {
                 child: Container(
                   color: message.messageContentType == MessageContentType.gif ||
                           message.messageContentType ==
-                              MessageContentType.sticker
+                              MessageContentType.sticker ||
+                          message.messageContentType ==
+                              MessageContentType.textReplyOnStory ||
+                          message.messageContentType ==
+                              MessageContentType.reactedOnStory
                       ? Colors.transparent
                       : message.isMineMessage
                           ? AppColorConstants.themeColor
@@ -130,8 +135,7 @@ class ChatMessageTile extends StatelessWidget {
           message: message,
           messageTapHandler: messageTapHandler,
           replyMessageTapHandler: replyMessageTapHandler);
-    } else if (message.messageReplyContentType ==
-        MessageContentType.location) {
+    } else if (message.messageReplyContentType == MessageContentType.location) {
       return ReplyLocationChatTile(
           message: message,
           messageTapHandler: messageTapHandler,
@@ -173,6 +177,10 @@ class ChatMessageTile extends StatelessWidget {
       return UserProfileChatTile(message: messageModel);
     } else if (messageModel.messageContentType == MessageContentType.file) {
       return FileChatTile(message: messageModel);
+    } else if (messageModel.messageContentType ==
+            MessageContentType.textReplyOnStory ||
+        messageModel.messageContentType == MessageContentType.reactedOnStory) {
+      return StoryReplyChatTile(message: messageModel);
     }
     return TextChatTile(message: message);
   }
@@ -181,7 +189,6 @@ class ChatMessageTile extends StatelessWidget {
     return BodyLargeText(
       message.isMineMessage ? youString.tr : message.sender!.userName,
       weight: TextWeight.bold,
-
     );
   }
 }
@@ -211,7 +218,9 @@ class MessageDeliveryStatusView extends StatelessWidget {
           }
         },
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.end,
+          mainAxisAlignment: message.isMineMessage
+              ? MainAxisAlignment.end
+              : MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             message.isStar == 1
@@ -223,7 +232,7 @@ class MessageDeliveryStatusView extends StatelessWidget {
                 : Container(),
             BodySmallText(
               message.messageTime,
-              weight:TextWeight.medium,
+              weight: TextWeight.medium,
             ),
             const SizedBox(
               width: 5,

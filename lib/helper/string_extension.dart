@@ -43,17 +43,6 @@ extension StringExtension on String {
   }
 
   String encrypted() {
-    // final encryptionKey =
-    //     encrypt.Key.fromUtf8(AppConfigConstants.encryptionKey);
-    //
-    // final iv = encrypt.IV.fromLength(16);
-    //
-    // final encrypter = encrypt.Encrypter(
-    //     encrypt.AES(encryptionKey, mode: encrypt.AESMode.ecb));
-    //
-    // final encryptedMessageContent = encrypter.encrypt(this, iv: iv);
-    //
-    // return encryptedMessageContent.base64;
     if (isEmpty) {
       return '';
     }
@@ -65,16 +54,6 @@ extension StringExtension on String {
   }
 
   String decrypted() {
-    // final encryptionKey =
-    //     encrypt.Key.fromUtf8(AppConfigConstants.encryptionKey);
-    //
-    // final iv = encrypt.IV.fromLength(16);
-    //
-    // final encrypter = encrypt.Encrypter(
-    //     encrypt.AES(encryptionKey, mode: encrypt.AESMode.ecb));
-    //
-    // final decrypted = encrypter.decrypt64(this, iv: iv);
-    // return decrypted.replaceAll('\\', '');
     if (isEmpty) {
       return '';
     }
@@ -108,7 +87,6 @@ extension StringExtension on String {
     // Use the generated hash value to generate a color
     return Color(hash).darken(0.3).withOpacity(1.0);
   }
-
 }
 
 extension AgeCalculator on String {
@@ -116,7 +94,8 @@ extension AgeCalculator on String {
     DateTime now = DateTime.now();
     DateTime dob = DateTime.parse(this); // Parse the date string
     int age = now.year - dob.year;
-    if (now.month < dob.month || (now.month == dob.month && now.day < dob.day)) {
+    if (now.month < dob.month ||
+        (now.month == dob.month && now.day < dob.day)) {
       age--;
     }
     return age.toString();

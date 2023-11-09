@@ -24,59 +24,34 @@ class StoryUpdatesBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
-      padding: EdgeInsets.only(
-          right: DesignConstants.horizontalPadding),
+      padding: EdgeInsets.only(right: DesignConstants.horizontalPadding),
       scrollDirection: Axis.horizontal,
-      itemCount: stories.length + liveUsers.length,
+      itemCount: stories.length + liveUsers.length + 1,
       itemBuilder: (BuildContext ctx, int index) {
         if (index == 0) {
           return SizedBox(
             width: storyCircleSize + 20,
-            child: stories.isNotEmpty
-                ? stories[index].media.isEmpty == true
-                    ? Column(
-                        children: [
-                          SizedBox(
-                            height: storyCircleSize,
-                            width: storyCircleSize,
-                            child: ThemeIconWidget(
-                              ThemeIcon.plus,
-                              size: storyCircleSize,
-                              color: AppColorConstants.themeColor.darken(),
-                            ),
-                          )
-                              .borderWithRadius(
-                                  value: 2, radius: storyCircleSize / 2)
-                              .ripple(() {
-                            addStoryCallback();
-                          }),
-                          const SizedBox(
-                            height: 5,
-                          ),
-                          BodySmallText(yourStoryString.tr,
-                              weight: TextWeight.medium)
-                        ],
-                      )
-                    : Column(
-                        children: [
-                          MediaThumbnailView(
-                            borderColor: stories[index].isViewed == true
-                                ? AppColorConstants.disabledColor
-                                : AppColorConstants.themeColor,
-                            media: stories[index].media.last,
-                          ).ripple(() {
-                            viewStoryCallback(stories[index]);
-                          }),
-                          const SizedBox(
-                            height: 5,
-                          ),
-                          Expanded(
-                            child: BodySmallText(yourStoryString.tr,
-                                maxLines: 1, weight: TextWeight.medium),
-                          )
-                        ],
-                      )
-                : Container(),
+            child: Column(
+              children: [
+                SizedBox(
+                  height: storyCircleSize,
+                  width: storyCircleSize,
+                  child: ThemeIconWidget(
+                    ThemeIcon.plus,
+                    size: storyCircleSize,
+                    color: AppColorConstants.themeColor.darken(),
+                  ),
+                )
+                    .borderWithRadius(value: 2, radius: storyCircleSize / 2)
+                    .ripple(() {
+                  addStoryCallback();
+                }),
+                const SizedBox(
+                  height: 5,
+                ),
+                BodySmallText(yourStoryString.tr, weight: TextWeight.medium)
+              ],
+            ),
           );
         } else {
           if (index <= liveUsers.length) {
@@ -96,7 +71,7 @@ class StoryUpdatesBar extends StatelessWidget {
                     ),
                     Expanded(
                         child: BodySmallText(liveUsers[index - 1].userName,
-                                maxLines: 1, weight: TextWeight.medium)
+                            maxLines: 1, weight: TextWeight.medium)
                             .hP4)
                   ],
                 ));
@@ -107,23 +82,23 @@ class StoryUpdatesBar extends StatelessWidget {
                   children: [
                     MediaThumbnailView(
                       borderColor:
-                          stories[index - liveUsers.length].isViewed == true
-                              ? AppColorConstants.disabledColor
-                              : AppColorConstants.themeColor,
-                      media: stories[index - liveUsers.length].media.last,
+                      stories[index - liveUsers.length - 1].isViewed == true
+                          ? AppColorConstants.disabledColor
+                          : AppColorConstants.themeColor,
+                      media: stories[index - liveUsers.length - 1].media.last,
                     ).ripple(() {
-                      viewStoryCallback(stories[index - liveUsers.length]);
+                      viewStoryCallback(stories[index - liveUsers.length - 1]);
                     }).ripple(() {
-                      viewStoryCallback(stories[index - liveUsers.length]);
+                      viewStoryCallback(stories[index - liveUsers.length - 1]);
                     }),
                     const SizedBox(
                       height: 4,
                     ),
                     Expanded(
                       child: BodySmallText(
-                              stories[index - liveUsers.length].userName,
-                              maxLines: 1,
-                              weight: TextWeight.medium)
+                          stories[index - liveUsers.length - 1].userName,
+                          maxLines: 1,
+                          weight: TextWeight.medium)
                           .hP4,
                     ),
                   ],

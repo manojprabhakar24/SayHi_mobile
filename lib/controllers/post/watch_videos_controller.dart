@@ -34,7 +34,9 @@ class WatchVideosController extends GetxController {
   }
 
   void getPosts(VoidCallback callback) async {
-    postDataWrapper.isLoading.value = true;
+    if(postDataWrapper.page == 1){
+      postDataWrapper.isLoading.value = true;
+    }
     PostApi.getPosts(
         isVideo: 1,
         page: postDataWrapper.page,

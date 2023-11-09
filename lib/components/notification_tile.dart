@@ -65,8 +65,8 @@ class NotificationTileType4 extends StatelessWidget {
                       text: ' ${notification.notificationTime}',
                       style: TextStyle(
                           fontSize: FontSizes.b3,
-                          color: AppColorConstants.subHeadingTextColor,
-                          fontWeight: TextWeight.medium),
+                          color: AppColorConstants.mainTextColor,
+                          fontWeight: TextWeight.semiBold),
                     ),
                   ]))
             ],
@@ -81,18 +81,6 @@ class NotificationTileType4 extends StatelessWidget {
                   fit: BoxFit.cover,
                   imageUrl: notification.post!.gallery.first.thumbnail)
               .round(20),
-        // if (notification.type == NotificationType.follow)
-        //   if (notification.actionBy?.isFollowing == false)
-        //     SizedBox(
-        //       width: 120,
-        //       height: 40,
-        //       child: AppThemeButton(
-        //           cornerRadius: 15,
-        //           text: followBackString,
-        //           onPress: () {
-        //             followBack();
-        //           }),
-        //     )
       ],
     ).hP8;
   }
@@ -114,6 +102,10 @@ class NotificationTileType4 extends StatelessWidget {
       return 'liked your post';
     } else if (type == NotificationType.competitionAdded) {
       return 'Added new competition';
+    } else if (type == NotificationType.supportRequest) {
+      return 'Replied on your support request';
+    } else if (type == NotificationType.verification) {
+      return 'Congratulations, Your verification request has been approved.';
     }
     return '';
   }

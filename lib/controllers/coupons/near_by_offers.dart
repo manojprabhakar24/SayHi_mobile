@@ -45,6 +45,7 @@ class NearByOffersController extends GetxController {
   OfferSearchModel favOfferSearchModel = OfferSearchModel();
 
   BusinessSearchModel businessSearchModel = BusinessSearchModel();
+  Rx<CommentModel?> replyingComment = Rx<CommentModel?>(null);
 
   clear() {
     categories.clear();
@@ -72,6 +73,8 @@ class NearByOffersController extends GetxController {
     commentPage = 1;
     canLoadMoreComment = true;
     isLoadingComments.value = false;
+
+    replyingComment.value = null;
 
     totalOffersFound.value = 0;
     totalFavOffersFound.value = 0;
@@ -114,6 +117,10 @@ class NearByOffersController extends GetxController {
     getCategories();
     getBusinesses(() {});
     getOffers(() {});
+  }
+
+  setReplyComment(CommentModel? comment) {
+    replyingComment.value = comment;
   }
 
   setCurrentBusiness(BusinessModel business) {
@@ -269,38 +276,27 @@ class NearByOffersController extends GetxController {
     OffersApi.favUnfavOffer(isFav, offer.id);
   }
 
-  // postBusinessComment(String comment) {
-  //   comments.add(CommentModel.fromNewMessage(
-  //       CommentType.text, _userProfileManager.user.value!,
-  //       comment: comment));
-  //   OffersApi.postComment(comment: comment, offerId: currentOffer.value!.id);
-  // }
-  //
-  // getBusinessComments(VoidCallback callback) {
-  //   if (canLoadMoreComment) {
-  //     OffersApi.getComments(
-  //         page: commentPage,
-  //         offerId: currentBusiness.value!.id,
-  //         resultCallback: (result, metadata) {
-  //           comments.addAll(result);
-  //           comments.unique((e) => e.id);
-  //           isLoadingComments.value = false;
-  //
-  //           canLoadMoreComment = result.length >= metadata.perPage;
-  //           commentPage += 1;
-  //           update();
-  //           callback();
-  //         });
-  //   } else {
-  //     callback();
-  //   }
-  // }
-
   postOfferComment(String comment) {
-    comments.add(CommentModel.fromNewMessage(
-        CommentType.text, _userProfileManager.user.value!,
-        comment: comment));
-    OffersApi.postComment(comment: comment, offerId: currentOffer.value!.id);
+    OffersApi.postComment(
+        comment: comment,
+        offerId: currentOffer.value!.id,
+        parentCommentId: replyingComment.value?.id ,
+        resultCallback: (id) {
+          CommentModel newComment = CommentModel.fromNewMessage(
+              CommentType.text, _userProfileManager.user.value!,
+              comment: comment, id: id);
+          if (replyingComment.value == null) {
+            comments.add(newComment);
+          } else {
+            newComment.level = 2;
+            CommentModel mainComment =
+                comments.where((e) => e.id == replyingComment.value!.id).first;
+            mainComment.replies.add(newComment);
+          }
+
+          replyingComment.value = null;
+          update();
+        });
   }
 
   getOfferComments(VoidCallback callback) {
@@ -321,6 +317,59 @@ class NearByOffersController extends GetxController {
     } else {
       callback();
     }
+  }
+
+  void getChildComments({
+    required int page,
+    required int offerId,
+    required int parentId,
+  }) {
+    OffersApi.getComments(
+        offerId: offerId,
+        parentId: parentId,
+        page: page,
+        resultCallback: (result, metadata) {
+          CommentModel mainComment =
+              comments.where((e) => e.id == parentId).first;
+          mainComment.currentPageForReplies = metadata.currentPage + 1;
+          mainComment.pendingReplies =
+              metadata.totalCount - (metadata.currentPage * metadata.perPage);
+          mainComment.replies.addAll(result);
+          update();
+        });
+  }
+
+  void deleteComment({required CommentModel comment}) {
+    if (comment.level == 1) {
+      comments.removeWhere((element) => element.id == comment.id);
+    } else {
+      CommentModel mainComment =
+          comments.where((e) => e.id == comment.parentId).first;
+      mainComment.replies.removeWhere((element) => element.id == comment.id);
+    }
+
+    update();
+    OffersApi.deleteComment(
+        resultCallback: () {
+          AppUtil.showToast(message: commentIsDeletedString, isSuccess: true);
+        },
+        commentId: comment.id);
+  }
+
+  void reportComment({required int commentId}) {
+    OffersApi.reportComment(
+        resultCallback: () {
+          AppUtil.showToast(message: commentIsReportedString, isSuccess: true);
+        },
+        commentId: commentId);
+  }
+
+  void favUnfavComment({required int commentId}) {
+    OffersApi.favUnfavComment(
+        resultCallback: () {
+          AppUtil.showToast(message: commentIsReportedString, isSuccess: true);
+        },
+        commentId: commentId);
   }
 
   getFavOffers(VoidCallback callback) {

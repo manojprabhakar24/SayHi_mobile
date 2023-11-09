@@ -7,7 +7,8 @@ class StoryModel {
   // int isReported;
   String name;
   String userName;
-  String email;
+
+  // String email;
   String? image;
   List<StoryMediaModel> media;
   bool isViewed = false;
@@ -17,7 +18,7 @@ class StoryModel {
     // required this.isReported,
     required this.name,
     required this.userName,
-    required this.email,
+    // required this.email,
     this.image,
     required this.media,
   });
@@ -28,7 +29,7 @@ class StoryModel {
       // isReported: json['is_reported'],
       name: json['name'],
       userName: json['username'],
-      email: json['email'],
+      // email: json['email'],
       image: json['picture'],
       media: (json['userStory'] as List<dynamic>)
           .map((e) => StoryMediaModel.fromJson(e))
@@ -56,21 +57,20 @@ class StoryMediaModel {
   UserModel? user;
   int totalView;
 
-  StoryMediaModel({
-    required this.id,
-    required this.userId,
-    required this.description,
-    required this.bgColor,
-    required this.video,
-    required this.image,
-    required this.imageName,
-    required this.createdAtDate,
-    required this.createdAt,
-    required this.type,
-    required this.user,
-    required this.totalView,
-    this.videoDuration
-  });
+  StoryMediaModel(
+      {required this.id,
+      required this.userId,
+      required this.description,
+      required this.bgColor,
+      required this.video,
+      required this.image,
+      required this.imageName,
+      required this.createdAtDate,
+      required this.createdAt,
+      required this.type,
+      required this.user,
+      required this.totalView,
+      this.videoDuration});
 
   factory StoryMediaModel.fromJson(dynamic json) {
     StoryMediaModel model = StoryMediaModel(
@@ -82,7 +82,7 @@ class StoryMediaModel {
         videoDuration: json['video_time'],
         imageName: json['image'],
         image: json['imageUrl'],
-        createdAtDate : json['created_at'] * 1000,
+        createdAtDate: json['created_at'] * 1000,
         createdAt: TimeAgo.timeAgoSinceDate(
             DateTime.fromMillisecondsSinceEpoch(json['created_at'] * 1000)
                 .toUtc()),
@@ -93,13 +93,23 @@ class StoryMediaModel {
     return model;
   }
 
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "user_id": userId,
+        "description": description,
+        "background_color": bgColor,
+        "videoUrl": video,
+        "video_time": videoDuration,
+        "image": imageName,
+        "imageUrl": image,
+        "created_at": createdAtDate,
+        "type": type,
+        "totalView": totalView,
+      };
+
   isVideoPost() {
     return type == 3;
   }
-
-  // String thumbnail() {
-  //   return isVideoPost() == true ? videoThumbnail! : filePath;
-  // }
 }
 
 class StoryViewerModel {
@@ -117,4 +127,3 @@ class StoryViewerModel {
     return model;
   }
 }
-

@@ -1,7 +1,6 @@
 export 'package:foap/screens/story/text_story.dart';
 export 'package:foap/screens/story/story_viewer.dart';
 export 'package:foap/screens/story/story_updates_bar.dart';
-export 'package:foap/screens/story/choose_media_for_story.dart';
 
 export 'package:foap/controllers/story/story_controller.dart';
 export 'package:foap/controllers/story/text_story_maker_controller.dart';

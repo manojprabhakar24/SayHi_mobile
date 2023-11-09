@@ -64,8 +64,7 @@ Widget messageTypeShortInfoFromType({
                       : type == MessageContentType.audio
                           ? Row(
                               children: [
-                                ThemeIconWidget(ThemeIcon.mic, size: 15)
-                                    .rP4,
+                                ThemeIconWidget(ThemeIcon.mic, size: 15).rP4,
                                 BodyMediumText(audioString.tr,
                                     maxLines: 1, weight: TextWeight.regular),
                               ],
@@ -86,12 +85,10 @@ Widget messageTypeShortInfoFromType({
                               : type == MessageContentType.location
                                   ? Row(
                                       children: [
-                                        ThemeIconWidget(
-                                                ThemeIcon.location,
+                                        ThemeIconWidget(ThemeIcon.location,
                                                 size: 15)
                                             .rP4,
-                                        BodyMediumText(
-                                            locationString.tr,
+                                        BodyMediumText(locationString.tr,
                                             maxLines: 1,
                                             weight: TextWeight.regular),
                                       ],
@@ -99,12 +96,10 @@ Widget messageTypeShortInfoFromType({
                                   : type == MessageContentType.file
                                       ? Row(
                                           children: [
-                                            ThemeIconWidget(
-                                                    ThemeIcon.files,
+                                            ThemeIconWidget(ThemeIcon.files,
                                                     size: 15)
                                                 .rP4,
-                                            BodyMediumText(
-                                                fileString.tr,
+                                            BodyMediumText(fileString.tr,
                                                 maxLines: 1,
                                                 weight: TextWeight.regular),
                                           ],
@@ -116,13 +111,27 @@ Widget messageTypeShortInfoFromType({
                                                         ThemeIcon.account,
                                                         size: 15)
                                                     .rP4,
-                                                BodyMediumText(
-                                                    profileString.tr,
+                                                BodyMediumText(profileString.tr,
                                                     maxLines: 1,
                                                     weight: TextWeight.regular),
                                               ],
                                             )
-                                          : Container();
+                                          : type ==
+                                                  MessageContentType
+                                                      .reactedOnStory
+                                              ? Image.asset(
+                                                  message.textMessage,
+                                                  height: 20,
+                                                  width: 20,
+                                                )
+                                              : type ==
+                                                      MessageContentType
+                                                          .textReplyOnStory
+                                                  ? BodyMediumText(
+                                                      message.textMessage,
+                                                      maxLines: 1,
+                                                    )
+                                                  : Container();
 }
 
 Widget messageMainContent(ChatMessageModel message) {

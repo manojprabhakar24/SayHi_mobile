@@ -2,7 +2,6 @@ import 'package:foap/components/post_card_controller.dart';
 import 'package:foap/helper/imports/common_import.dart';
 import 'package:foap/model/post_model.dart';
 import 'package:foap/model/post_search_query.dart';
-
 import '../../../../api_handler/apis/post_api.dart';
 import 'package:foap/helper/list_extension.dart';
 

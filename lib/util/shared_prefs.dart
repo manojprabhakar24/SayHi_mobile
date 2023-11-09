@@ -3,6 +3,12 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:foap/helper/imports/common_import.dart';
 
 class SharedPrefs {
+  Future<Locale> getLocale() async {
+    String selectedLanguage = await SharedPrefs().getLanguage();
+    var locale = Locale(selectedLanguage);
+    return locale;
+  }
+
   //Set/Get UserLoggedIn Status
   void setTutorialSeen() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -117,17 +123,6 @@ class SharedPrefs {
   Future<String> getLanguage() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     return prefs.get('language') as String? ?? 'en';
-  }
-
-  Future<Locale> getLocale() async {
-    // Get the user's preferred locale from the system settings
-    // var locale = WidgetsBinding.instance.window.locale;
-    var locale = WidgetsBinding.instance.platformDispatcher.locale;
-
-    // var locale = Localizations.localeOf(Get.context!);
-    // Alternatively, you can use the device's current locale:
-    // var locale = await findSystemLocale();
-    return locale;
   }
 
   void setCallNotificationData(dynamic data) async {

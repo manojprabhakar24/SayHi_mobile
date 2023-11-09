@@ -1,6 +1,8 @@
 import 'package:foap/helper/imports/common_import.dart';
 import 'package:foap/helper/imports/story_imports.dart';
+import 'package:foap/screens/story/story_reaction_options.dart';
 import 'package:foap/screens/story/story_view_users.dart';
+import 'package:keyboard_attachable/keyboard_attachable.dart';
 import 'package:story_view/utils.dart';
 
 import '../profile/my_profile.dart';
@@ -23,9 +25,12 @@ class _StoryViewerState extends State<StoryViewer> {
   final AppStoryController storyController = Get.find();
   final SettingsController settingsController = Get.find();
   final UserProfileManager _userProfileManager = Get.find();
+  final TextEditingController replyController = TextEditingController();
 
   @override
   void initState() {
+    storyController.showHideEmoticons(false);
+
     super.initState();
   }
 
@@ -34,89 +39,122 @@ class _StoryViewerState extends State<StoryViewer> {
     return AppScaffold(
       backgroundColor: AppColorConstants.backgroundColor,
       resizeToAvoidBottomInset: false,
-      body: storyWidget(),
+      body: replyWidget(),
     );
   }
 
   Widget storyWidget() {
-    return Stack(
+    return Column(
       children: [
-        StoryView(
-            storyItems: [
-              for (StoryMediaModel media in widget.story.media.reversed)
-                media.isVideoPost() == true
-                    ? StoryItem.pageVideo(
-                        media.video!,
-                        controller: controller,
-                        duration: media.videoDuration != null
-                            ? Duration(seconds: media.videoDuration! ~/ 1000)
-                            : null,
-                        key: Key(media.id.toString()),
-                      )
-                    : StoryItem.pageImage(
-                        key: Key(media.id.toString()),
-                        url: media.image!,
-                        controller: controller,
-                      ),
+        Expanded(
+          child: Stack(
+            children: [
+              StoryView(
+                  storyItems: [
+                    for (StoryMediaModel media in widget.story.media.reversed)
+                      media.isVideoPost() == true
+                          ? StoryItem.pageVideo(
+                              media.video!,
+                              controller: controller,
+                              duration: media.videoDuration != null
+                                  ? Duration(
+                                      seconds: media.videoDuration! ~/ 1000)
+                                  : null,
+                              key: Key(media.id.toString()),
+                            )
+                          : StoryItem.pageImage(
+                              key: Key(media.id.toString()),
+                              url: media.image!,
+                              controller: controller,
+                            ),
+                  ],
+                  controller: controller,
+                  // pass controller here too
+                  repeat: true,
+                  // should the stories be slid forever
+                  onStoryShow: (s) {
+                    WidgetsBinding.instance.addPostFrameCallback((_) {
+                      storyController.setCurrentStoryMedia(widget.story.media
+                          .where((element) =>
+                              Key(element.id.toString()) == s.view.key)
+                          .first);
+                    });
+                  },
+                  onComplete: () {
+                    Get.back();
+                  },
+                  onVerticalSwipeComplete: (direction) {
+                    if (direction == Direction.down) {
+                      Get.back();
+                    }
+                  } // To disable vertical swipe gestures, ignore this parameter.
+                  ),
+              Positioned(top: 70, left: 20, right: 0, child: userProfileView()),
+              Obx(() => (storyController.currentStoryMediaModel.value?.userId ==
+                      _userProfileManager.user.value!.id)
+                  ? Positioned(
+                      bottom: 20, left: 0, right: 0, child: storyViewCounter())
+                  : Container()),
+              Obx(() => (storyController.showEmoticons.value == true)
+                  ? Positioned(
+                      bottom: 0,
+                      left: 0,
+                      right: 0,
+                      top: 0,
+                      child: StoryReactionOptions(
+                        reactionCallbackHandler: (emoji) {
+                          storyController.sendReactionMessage(emoji);
+                        },
+                      ))
+                  : Container()),
             ],
-            controller: controller,
-            // pass controller here too
-            repeat: true,
-            // should the stories be slid forever
-            onStoryShow: (s) {
-              WidgetsBinding.instance.addPostFrameCallback((_) {
-                storyController.setCurrentStoryMedia(widget.story.media
-                    .where(
-                        (element) => Key(element.id.toString()) == s.view.key)
-                    .first);
-              });
-            },
-            onComplete: () {
-              Get.back();
-            },
-            onVerticalSwipeComplete: (direction) {
-              if (direction == Direction.down) {
-                Get.back();
-              }
-            } // To disable vertical swipe gestures, ignore this parameter.
-            // Preferrably for inline story view.
-            ),
-        Positioned(top: 70, left: 20, right: 0, child: userProfileView()),
-        Obx(() => (storyController.currentStoryMediaModel.value?.userId ==
-                _userProfileManager.user.value!.id)
-            ? Positioned(
-                bottom: 20, left: 0, right: 0, child: storyViewCounter())
-            : Container()),
-        // Positioned(bottom: 0, left: 0, right: 0, child: replyView()),
+          ),
+        ),
+        // replyWidget()
       ],
     );
   }
 
-  // Widget replyWidget() {
-  //   return FooterLayout(
-  //     footer: KeyboardAttachable(
-  //       // backgroundColor: Colors.blue,
-  //       child: Container(
-  //         height: 60,
-  //         color: AppColorConstants.themeColor,
-  //         child: Row(
-  //           children: [
-  //             Expanded(
-  //               child: AppTextField(
-  //                 hintText: replyString.tr,
-  //               ),
-  //             ),
-  //             ThemeIconWidget(
-  //               ThemeIcon.send,
-  //               color: AppColorConstants.iconColor,
-  //             )
-  //           ],
-  //         ).hP25,
-  //       ),
-  //     ),
-  //     child: storyWidget(),
-  //   );
-  // }
+  Widget replyWidget() {
+    return FooterLayout(
+      footer: KeyboardAttachable(
+        child: Container(
+          height: 80,
+          color: AppColorConstants.cardColor.darken(),
+          child: Row(
+            children: [
+              Expanded(
+                child: AppTextField(
+                  hintText: replyString.tr,
+                  controller: replyController,
+                  maxLength: 80,
+                  onChanged: (value) {
+                    storyController.showHideEmoticons(value.isEmpty);
+                  },
+                  focusStatusChangeHandler: (status) {
+                    storyController.showHideEmoticons(status);
+                    if (status == true) {
+                      controller.pause();
+                    } else {
+                      FocusScope.of(context).requestFocus(FocusNode());
+                      controller.play();
+                    }
+                  },
+                ),
+              ),
+              const SizedBox(
+                width: 10,
+              ),
+              BodyLargeText(sendString.tr).ripple(() {
+                storyController.sendTextMessage(replyController.text);
+              }),
+            ],
+          ).p16,
+        ),
+      ),
+      child: storyWidget(),
+    );
+  }
 
   Widget userProfileView() {
     return Row(
@@ -181,8 +219,8 @@ class _StoryViewerState extends State<StoryViewer> {
     showModalBottomSheet(
         context: context,
         builder: (context) => Container(
-          color: AppColorConstants.cardColor,
-          child: Wrap(
+              color: AppColorConstants.cardColor,
+              child: Wrap(
                 children: [
                   ListTile(
                       title: Center(child: BodyLargeText(deleteStoryString.tr)),
@@ -203,7 +241,7 @@ class _StoryViewerState extends State<StoryViewer> {
                       }),
                 ],
               ),
-        )).then((value) {
+            )).then((value) {
       controller.play();
     });
   }

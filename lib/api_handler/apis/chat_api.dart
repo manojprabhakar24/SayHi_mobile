@@ -131,7 +131,8 @@ class ChatApi {
   static getChatHistory(
       {required int roomId,
       required int lastMessageId,
-      required Function(List<ChatMessageModel>) resultCallback}) async {
+      required Function(List<ChatMessageModel>, APIMetaData)
+          resultCallback}) async {
     var url = NetworkConstantsUtil.chatHistory;
     url = url
         .replaceAll('{{room_id}}', roomId.toString())
@@ -140,8 +141,10 @@ class ChatApi {
     await ApiWrapper().getApi(url: url).then((result) {
       if (result?.success == true) {
         var items = result!.data['chatMessage']['items'];
-        resultCallback(List<ChatMessageModel>.from(
-            items.map((x) => ChatMessageModel.fromJson(x))));
+        resultCallback(
+            List<ChatMessageModel>.from(
+                items.map((x) => ChatMessageModel.fromJson(x))),
+            APIMetaData.fromJson(result.data['chatMessage']['_meta']));
       }
     });
   }

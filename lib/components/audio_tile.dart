@@ -5,8 +5,11 @@ import 'audio_progress_bar.dart';
 
 class AudioPostTile extends StatefulWidget {
   final PostModel post;
+  final bool isResharedPost;
 
-  const AudioPostTile({Key? key, required this.post}) : super(key: key);
+  const AudioPostTile(
+      {Key? key, required this.post, required this.isResharedPost})
+      : super(key: key);
 
   @override
   State<AudioPostTile> createState() => _AudioPostTileState();
@@ -64,7 +67,9 @@ class _AudioPostTileState extends State<AudioPostTile> {
                 width: 15,
               ),
               SizedBox(
-                width: Get.width - (2 * DesignConstants.horizontalPadding) - 50,
+                width: Get.width -
+                    (2 * DesignConstants.horizontalPadding) -
+                    (widget.isResharedPost ? 140 : 50),
                 height: 20,
                 child: AudioProgressBar(
                     id: widget.post.gallery.first.id.toString()),
@@ -79,4 +84,3 @@ class _AudioPostTileState extends State<AudioPostTile> {
     });
   }
 }
-

@@ -16,7 +16,7 @@ class NotificationModel {
   CompetitionModel? competition;
   PostModel? post;
   NotificationType type;
-  String notificationDate = earlierString;
+  String notificationDate = earlierString.tr;
 
   NotificationModel(
       {required this.id,
@@ -66,8 +66,14 @@ class NotificationModel {
     if (type == 4) {
       return NotificationType.competitionAdded;
     }
+    if (type == 6) {
+      return NotificationType.supportRequest;
+    }
     if (type == 8) {
       return NotificationType.gift;
+    }
+    if (type == 9) {
+      return NotificationType.verification;
     }
     if (type == 11) {
       return NotificationType.clubInvitation;

@@ -73,18 +73,20 @@ class RealmDBManager {
 
     if (existingRoom == null) {
       // save room in database
-      _chatDetailController.getRoomDetail(message.roomId, (chatroom) async {
+      await _chatDetailController.getRoomDetail(message.roomId,
+          (chatroom) async {
         await saveRooms([chatroom]);
         await prepareSaveMessage(
             chatMessages: [message], alreadyWritingInDB: false);
+        _chatDetailController.newMessageReceived(message);
+        _chatHistoryController.newMessageReceived(message);
       });
     } else {
       await prepareSaveMessage(
           chatMessages: [message], alreadyWritingInDB: false);
+      _chatDetailController.newMessageReceived(message);
+      _chatHistoryController.newMessageReceived(message);
     }
-
-    _chatDetailController.newMessageReceived(message);
-    _chatHistoryController.newMessageReceived(message);
   }
 
   Future<ChatRoomModel?> getRoomById(int roomId) async {
@@ -212,6 +214,8 @@ class RealmDBManager {
           cachedMessage.first,
         );
       }
+      print(
+          ' save in db chatMessage.repliedOnMessageContent ${chatMessage.repliedOnMessageContent}');
 
       realm.add(
         MessagesRealm(
@@ -400,7 +404,7 @@ class RealmDBManager {
     return membersArr;
   }
 
-  insertChatMessageUsersFirstTime({required List<ChatMessageUser> users}){
+  insertChatMessageUsersFirstTime({required List<ChatMessageUser> users}) {
     realm.write(() {
       insertChatMessageUsers(users: users);
     });
@@ -411,15 +415,15 @@ class RealmDBManager {
     // var realm = await Realm.open(configuration);
 
     // realm.write(() {
-      for (ChatMessageUser user in users) {
-        var existingUser = realm.query<ChatMessageUserRealm>(
-            'userId == ${user.userId} AND chatMessageId == ${user.messageId}');
+    for (ChatMessageUser user in users) {
+      var existingUser = realm.query<ChatMessageUserRealm>(
+          'userId == ${user.userId} AND chatMessageId == ${user.messageId}');
 
-        if (existingUser.isEmpty) {
-          realm.add(ChatMessageUserRealm(
-              chatMessageId: user.messageId, userId: user.userId, status: 1));
-        }
+      if (existingUser.isEmpty) {
+        realm.add(ChatMessageUserRealm(
+            chatMessageId: user.messageId, userId: user.userId, status: 1));
       }
+    }
     // });
 
     // realm.close();
@@ -546,16 +550,11 @@ class RealmDBManager {
 
     if (limit != null) {
       dbMessages = dbMessages.getSublist(offset, limit);
-// dbMessages = await txn.rawQuery(
-      //     'SELECT * FROM Messages WHERE room_id = $roomId ORDER BY created_at DESC LIMIT $limit OFFSET $offset');
-    } else {
-      // dbMessages = await txn.rawQuery(
-      //     'SELECT * FROM Messages WHERE room_id = $roomId ORDER BY created_at DESC');
     }
 
-    // List<Map> updateAbleDbMessages = List<Map>.from(dbMessages);
-
     dbMessages.sort((a, b) => a['created_at'].compareTo(b['created_at']));
+    print(dbMessages);
+
     messages = dbMessages.map((e) {
       ChatMessageModel message = ChatMessageModel.fromJson((e));
       List<ChatMessageUser> usersInMessage = getAllMembersInMessage(message.id);
@@ -564,49 +563,6 @@ class RealmDBManager {
 
       return message;
     }).toList();
-
-    // below code is for delete chat message after viewing , similar to snapchat
-    // if (dbMessages.isNotEmpty) {
-    //   List<Map> updateAbleDbMessages = List<Map>.from(dbMessages);
-    //
-    //   updateAbleDbMessages
-    //       .sort((a, b) => a['created_at'].compareTo(b['created_at']));
-    //
-    //   for (var doc in updateAbleDbMessages) {
-    //     ChatMessageModel message = ChatMessageModel.fromJson((doc));
-    //     int timeDifference = 0;
-    //
-    //     message.sender = await fetchUser(message.senderId);
-    //     if (message.viewedAt != null) {
-    //       final date2 = DateTime.now();
-    //       DateTime viewAtDateTime =
-    //           DateTime.fromMillisecondsSinceEpoch(message.viewedAt!);
-    //       timeDifference = date2.difference(viewAtDateTime).inSeconds;
-    //     } else {
-    //       messagesToUpdate.add(message);
-    //     }
-    //
-    //     if (timeDifference < _userProfileManager.user.value!.chatDeleteTime) {
-    //       messages.add(message);
-    //     } else {
-    //       messagesToDelete.add(message);
-    //     }
-    //
-    //     List<ChatMessageUser> usersInMessage =
-    //         await getAllMembersInMessage(message.id);
-    //
-    //     message.chatMessageUser = usersInMessage;
-    //   }
-    //
-    //   ChatRoomModel? chatRoom = await fetchRoom(roomId);
-    //
-    //   if (chatRoom != null) {
-    //     hardDeleteMessages(messages: messagesToDelete);
-    //   }
-    //   if (messagesToUpdate.isNotEmpty) {
-    //     updateMessageViewedTime(messagesToUpdate);
-    //   }
-    // }
 
     return messages.unique((e) => e.localMessageId);
   }

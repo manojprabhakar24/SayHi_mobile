@@ -46,10 +46,12 @@ int messageTypeId(MessageContentType type) {
       return 15;
     case MessageContentType.file:
       return 16;
-
+    case MessageContentType.textReplyOnStory:
+      return 17;
+    case MessageContentType.reactedOnStory:
+      return 18;
     case MessageContentType.groupAction:
       return 100;
-
     case MessageContentType.gift:
       return 200;
   }

@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter_contacts/flutter_contacts.dart';
 import 'package:foap/helper/date_extension.dart';
 import 'package:foap/helper/imports/common_import.dart';
+import 'package:foap/helper/imports/models.dart';
 import 'package:foap/helper/string_extension.dart';
 import 'package:foap/model/location.dart';
 import 'package:foap/screens/chat/media.dart';
@@ -72,7 +73,6 @@ class ChatMessageModel {
     model.messageContent = jsonMap['message'].replaceAll('\\', '');
     model.repliedOnMessageContent =
         jsonMap['replied_on_message'] ?? jsonMap['repliedOnMessage'];
-
     model.messageType = jsonMap['messageType'] ?? jsonMap['type'];
     model.senderId = jsonMap['created_by'] ?? jsonMap['createdBy'];
     model.createdAt = jsonMap['created_at'] ?? jsonMap['createdAt'];
@@ -248,6 +248,10 @@ class ChatMessageModel {
       return MessageContentType.group;
     } else if (messageType == 16) {
       return MessageContentType.file;
+    } else if (messageType == 17) {
+      return MessageContentType.textReplyOnStory;
+    } else if (messageType == 18) {
+      return MessageContentType.reactedOnStory;
     } else if (messageType == 100) {
       return MessageContentType.groupAction;
     } else if (messageType == 200) {
@@ -292,6 +296,10 @@ class ChatMessageModel {
       return MessageContentType.group;
     } else if (messageType == 16) {
       return MessageContentType.file;
+    } else if (messageType == 17) {
+      return MessageContentType.textReplyOnStory;
+    } else if (messageType == 18) {
+      return MessageContentType.reactedOnStory;
     } else if (messageType == 100) {
       return MessageContentType.groupAction;
     } else if (messageType == 200) {
@@ -451,10 +459,15 @@ class ChatMessageModel {
   }
 
   String get repliedOnMessageDecrypt {
+    print('repliedOnMessageDecrypt');
     if (isEncrypted == 1) {
       return repliedOnMessageContent!.decrypted();
     }
     return repliedOnMessageContent!.decrypted();
+  }
+
+  StoryMediaModel get storyMedia {
+    return StoryMediaModel.fromJson(json.decode(repliedOnMessageDecrypt));
   }
 }
 
