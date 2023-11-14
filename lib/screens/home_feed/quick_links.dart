@@ -87,7 +87,7 @@ class _QuickLinkWidgetState extends State<QuickLinkWidget> {
                 crossAxisCount: 2,
                 crossAxisSpacing: 10.0,
                 mainAxisSpacing: 10.0,
-                childAspectRatio: 2),
+                childAspectRatio: 2.8),
             children: [
               for (QuickLink link in _homeController.quickLinks)
                 quickLinkView2(link).ripple(() {
@@ -138,8 +138,7 @@ class _QuickLinkWidgetState extends State<QuickLinkWidget> {
                     Get.to(() => PodcastDashboard());
                   } else if (link.linkType == QuickLinkType.reel) {
                     Get.to(() => const CreateReelScreen());
-                  }
-                  else if (link.linkType == QuickLinkType.dating) {
+                  } else if (link.linkType == QuickLinkType.dating) {
                     if (_userProfileManager.user.value!.canUseDating) {
                       Get.to(() => const DatingDashboard());
                     } else {
@@ -152,30 +151,25 @@ class _QuickLinkWidgetState extends State<QuickLinkWidget> {
                           },
                           cancelHandler: () {});
                     }
-                  }
-                  else if (link.linkType == QuickLinkType.chatGPT) {
+                  } else if (link.linkType == QuickLinkType.chatGPT) {
                     Get.to(() => const ChatGPT());
-                  }
-                  else if (link.linkType == QuickLinkType.fundRaising) {
+                  } else if (link.linkType == QuickLinkType.fundRaising) {
                     _fundRaisingController.initiate();
                     Get.to(() => FundRaisingDashboard())!.then((value) {
                       _fundRaisingController.clear();
                     });
-                  }
-                  else if (link.linkType == QuickLinkType.offers) {
+                  } else if (link.linkType == QuickLinkType.offers) {
                     _nearByOffersController.initiate();
                     Get.to(() => OffersDashboard())!.then((value) {
                       _nearByOffersController.clear();
                     });
-                  }
-                  else if (link.linkType == QuickLinkType.shop) {
+                  } else if (link.linkType == QuickLinkType.shop) {
                     final ShopController shopController = Get.find();
 
                     Get.to(() => ShopDashboard())!.then((value) {
                       shopController.clear();
                     });
-                  }
-                  else if (link.linkType == QuickLinkType.job) {
+                  } else if (link.linkType == QuickLinkType.job) {
                     final JobController jobController = Get.find();
                     Get.to(() => JobDashboard())!.then((value) {
                       jobController.clear();
@@ -216,13 +210,11 @@ class _QuickLinkWidgetState extends State<QuickLinkWidget> {
   Widget quickLinkView2(QuickLink link) {
     return Container(
       color: AppColorConstants.cardColor,
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.center,
+      child: Stack(
         children: [
           Container(
-            height: double.infinity,
-            width: 60,
+            height: 50,
+            width: 50,
             color: AppColorConstants.themeColor.withOpacity(0.2),
             child: Center(
               child: Image.asset(
@@ -231,15 +223,24 @@ class _QuickLinkWidgetState extends State<QuickLinkWidget> {
                 width: 30,
               ),
             ),
-          ),
+          ).topLeftDiognalRounded(20),
           const SizedBox(
             width: 10,
           ),
-          Expanded(
-            child: BodyMediumText(
-              link.heading.tr,
-              weight: TextWeight.semiBold,
+          Positioned(
+            top: 0,
+            bottom: 0,
+            left: 60,
+            child: Center(
+              child: BodySmallText(
+                link.heading.tr,
+                weight: TextWeight.semiBold,
+                maxLines: 2,
+              ),
             ),
+          ),
+          const SizedBox(
+            width: 10,
           ),
         ],
       ),

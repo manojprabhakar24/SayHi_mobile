@@ -1186,14 +1186,14 @@ class ChatDetailController extends GetxController {
       currentMessageModel.createdAt =
           (DateTime.now().millisecondsSinceEpoch / 1000).round();
 
-      addNewMessage(message: currentMessageModel, roomId: room.id);
+      // addNewMessage(message: currentMessageModel, roomId: room.id);
       // save message to database
       getIt<RealmDBManager>().prepareSaveMessage(
           chatMessages: [currentMessageModel], alreadyWritingInDB: false);
 
-      setReplyMessage(message: null);
-      messageTf.value.text = '';
-      messageTf.refresh();
+      // setReplyMessage(message: null);
+      // messageTf.value.text = '';
+      // messageTf.refresh();
       update();
     }
 
@@ -1252,15 +1252,15 @@ class ChatDetailController extends GetxController {
       currentMessageModel.createdAt =
           (DateTime.now().millisecondsSinceEpoch / 1000).round();
 
-      addNewMessage(message: currentMessageModel, roomId: room.id);
+      // addNewMessage(message: currentMessageModel, roomId: room.id);
       // save message to database
       getIt<RealmDBManager>().prepareSaveMessage(
           chatMessages: [currentMessageModel], alreadyWritingInDB: false);
 
-      setReplyMessage(message: null);
-      messageTf.value.text = '';
-      messageTf.refresh();
-      update();
+      // setReplyMessage(message: null);
+      // messageTf.value.text = '';
+      // messageTf.refresh();
+      // update();
     }
 
     return status;

@@ -9,7 +9,7 @@ import '../screens/dashboard/posts.dart';
 import '../screens/home_feed/post_media_full_screen.dart';
 import '../screens/profile/other_user_profile.dart';
 
-class CommentTile extends StatelessWidget {
+class CommentTile extends StatefulWidget {
   final CommentModel model;
   final Function(CommentModel) replyActionHandler;
   final Function(CommentModel) deleteActionHandler;
@@ -28,6 +28,19 @@ class CommentTile extends StatelessWidget {
   }) : super(key: key);
 
   @override
+  State<CommentTile> createState() => _CommentTileState();
+}
+
+class _CommentTileState extends State<CommentTile> {
+  bool isFavourite = false;
+
+  @override
+  void initState() {
+    isFavourite = widget.model.isFavourite;
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -37,14 +50,14 @@ class CommentTile extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               AvatarView(
-                url: model.userPicture,
-                name: model.user!.userName.isEmpty
-                    ? model.user!.name
-                    : model.user!.userName,
-                size: model.level == 1 ? 35 : 20,
+                url: widget.model.userPicture,
+                name: widget.model.user!.userName.isEmpty
+                    ? widget.model.user!.name
+                    : widget.model.user!.userName,
+                size: widget.model.level == 1 ? 35 : 20,
               ).ripple(() {
-                Get.to(() =>
-                    OtherUserProfile(userId: model.userId, user: model.user));
+                Get.to(() => OtherUserProfile(
+                    userId: widget.model.userId, user: widget.model.user));
               }),
               const SizedBox(width: 10),
               Flexible(
@@ -53,32 +66,42 @@ class CommentTile extends StatelessWidget {
                 children: [
                   Row(
                     children: [
-                      BodyMediumText(
-                        model.userName,
-                        weight: TextWeight.medium,
-                      ).rP8,
-                      if (model.user?.isVerified == true) verifiedUserTag().rP4,
-                      BodySmallText(
-                        model.commentTime,
-                        weight: TextWeight.semiBold,
-                        color: AppColorConstants.subHeadingTextColor
-                            .withOpacity(0.5),
-                      ),
+                      Row(
+                        children: [
+                          BodyMediumText(
+                            widget.model.userName,
+                            weight: TextWeight.medium,
+                          ).rP8,
+                          if (widget.model.user?.isVerified == true)
+                            verifiedUserTag().rP4,
+                          BodySmallText(
+                            widget.model.commentTime,
+                            weight: TextWeight.semiBold,
+                            color: AppColorConstants.subHeadingTextColor
+                                .withOpacity(0.5),
+                          ),
+                        ],
+                      ).ripple(() {
+                        Get.to(() => OtherUserProfile(
+                            userId: widget.model.userId,
+                            user: widget.model.user));
+                      }),
                       const Spacer(),
                       ThemeIconWidget(
-                        model.isFavourite ? ThemeIcon.favFilled : ThemeIcon.fav,
-                        color: model.isFavourite
+                        isFavourite ? ThemeIcon.favFilled : ThemeIcon.fav,
+                        color: isFavourite
                             ? AppColorConstants.red
                             : AppColorConstants.iconColor,
                       ).ripple(() {
-                        favActionHandler(model);
+                        setState(() {
+                          isFavourite = !isFavourite;
+                          widget.model.isFavourite = !widget.model.isFavourite;
+                        });
+                        widget.favActionHandler(widget.model);
                       }),
                     ],
-                  ).ripple(() {
-                    Get.to(() => OtherUserProfile(
-                        userId: model.userId, user: model.user));
-                  }),
-                  model.type == CommentType.text
+                  ),
+                  widget.model.type == CommentType.text
                       ? showCommentText()
                       : showCommentMedia(),
                   const SizedBox(
@@ -86,28 +109,28 @@ class CommentTile extends StatelessWidget {
                   ),
                   Row(
                     children: [
-                      if (model.canReply)
+                      if (widget.model.canReply)
                         BodySmallText(
                           replyString.tr,
                           weight: TextWeight.semiBold,
                         ).rp(20).ripple(() {
-                          replyActionHandler(model);
+                          widget.replyActionHandler(widget.model);
                         }),
-                      if (model.user?.isMe == true)
+                      if (widget.model.user?.isMe == true)
                         BodySmallText(
                           deleteString.tr,
                           weight: TextWeight.semiBold,
                           color: Colors.red,
                         ).ripple(() {
-                          deleteActionHandler(model);
+                          widget.deleteActionHandler(widget.model);
                         }),
-                      if (model.user?.isMe == false)
+                      if (widget.model.user?.isMe == false)
                         BodySmallText(
                           reportString.tr,
                           weight: TextWeight.semiBold,
                           color: Colors.red,
                         ).ripple(() {
-                          reportActionHandler(model);
+                          widget.reportActionHandler(widget.model);
                         }),
                     ],
                   )
@@ -117,40 +140,40 @@ class CommentTile extends StatelessWidget {
           ),
           Column(
             children: [
-              for (CommentModel comment in model.replies)
+              for (CommentModel comment in widget.model.replies)
                 CommentTile(
                     model: comment,
                     replyActionHandler: (comment) {
-                      reportActionHandler(comment);
+                      widget.reportActionHandler(comment);
                     },
                     deleteActionHandler: (comment) {
-                      deleteActionHandler(comment);
+                      widget.deleteActionHandler(comment);
                     },
                     favActionHandler: (comment) {
-                      favActionHandler(comment);
+                      widget.favActionHandler(comment);
                     },
                     reportActionHandler: (comment) {
-                      reportActionHandler(comment);
+                      widget.reportActionHandler(comment);
                     },
                     loadMoreChildCommentsActionHandler: (comment) {
-                      loadMoreChildCommentsActionHandler(comment);
+                      widget.loadMoreChildCommentsActionHandler(comment);
                     }).setPadding(left: 50, top: 15)
             ],
           ),
-          if (model.pendingReplies > 0)
+          if (widget.model.pendingReplies > 0)
             BodySmallText(
-              '${viewString.tr} ${model.pendingReplies} ${moreRepliesString.tr}',
+              '${viewString.tr} ${widget.model.pendingReplies} ${moreRepliesString.tr}',
               weight: TextWeight.bold,
               color: AppColorConstants.subHeadingTextColor,
             ).setPadding(top: 25, left: 50).ripple(() {
-              loadMoreChildCommentsActionHandler(model);
+              widget.loadMoreChildCommentsActionHandler(widget.model);
             }),
         ]);
   }
 
   showCommentText() {
     return DetectableText(
-      text: model.comment,
+      text: widget.model.comment,
       detectionRegExp: RegExp(
         "(?!\\n)(?:^|\\s)([#@]([$detectionContentLetters]+))|$urlRegexContent",
         multiLine: true,
@@ -169,7 +192,7 @@ class CommentTile extends StatelessWidget {
 
   showCommentMedia() {
     return CachedNetworkImage(
-      imageUrl: model.filename,
+      imageUrl: widget.model.filename,
       height: 150,
       width: 150,
       fit: BoxFit.cover,
@@ -183,7 +206,7 @@ class CommentTile extends StatelessWidget {
               id: 0,
               postId: 0,
               fileName: "",
-              filePath: model.filename,
+              filePath: widget.model.filename,
               height: 0,
               width: 0,
               mediaType: 1, //  image=1, video=2, audio=3

@@ -13,8 +13,7 @@ class PaymentGatewayApi {
       'currency': 'USD',
     }).then((result) {
       if (result?.success == true) {
-        log('result!.data ${result!.data}');
-        resultCallback(result.data['client_secret']);
+        resultCallback(result!.data['client_secret']);
       }
     });
   }

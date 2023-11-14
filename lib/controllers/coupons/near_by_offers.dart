@@ -280,7 +280,7 @@ class NearByOffersController extends GetxController {
     OffersApi.postComment(
         comment: comment,
         offerId: currentOffer.value!.id,
-        parentCommentId: replyingComment.value?.id ,
+        parentCommentId: replyingComment.value?.id,
         resultCallback: (id) {
           CommentModel newComment = CommentModel.fromNewMessage(
               CommentType.text, _userProfileManager.user.value!,
@@ -364,12 +364,12 @@ class NearByOffersController extends GetxController {
         commentId: commentId);
   }
 
-  void favUnfavComment({required int commentId}) {
-    OffersApi.favUnfavComment(
-        resultCallback: () {
-          AppUtil.showToast(message: commentIsReportedString, isSuccess: true);
-        },
-        commentId: commentId);
+  void favUnfavComment({required CommentModel comment}) {
+    if (comment.isFavourite) {
+      OffersApi.favComment(resultCallback: () {}, commentId: comment.id);
+    } else {
+      OffersApi.unfavComment(resultCallback: () {}, commentId: comment.id);
+    }
   }
 
   getFavOffers(VoidCallback callback) {

@@ -74,9 +74,11 @@ class NetworkConstantsUtil {
       'followers/my-following-live?expand=followingUserDetail,followingUserDetail.isFollowing,,followingUserDetail.isFollower,followingUserDetail.userLiveDetail&user_id=';
 
   static String getSettings = 'settings';
+  static String reportGenericComment = 'reported-contents';
+  static String likeComment = 'comments/like';
+  static String unLikeComment = 'comments/unlike';
 
   //********************* Story and Highlights ***********//
-
   static String stories = 'stories?expand=user,user.userLiveDetail';
   static String addStory = 'stories';
   static String myStories = 'stories/my-story';
@@ -328,9 +330,10 @@ class NetworkConstantsUtil {
   static String campaignCategories = 'categories/campaign?expand=campaignList';
   static String campaignsList =
       'campaigns?expand=donorsDetails,categoryDetails';
-  static String favCampaignsList  =
+  static String favCampaignsList =
       'campaigns/my-favorite-list?expand=donorsDetails,categoryDetails';
-  static String campaignComments = 'campaigns/comment-list?expand=user,totalChildComment,childCommentDetail,childCommentDetail.user';
+  static String campaignComments =
+      'campaigns/comment-list?expand=user,isLike,totalChildComment,childCommentDetail.isLike,childCommentDetail.user';
   static String addCommentOnCampaign = 'campaigns/add-comment';
   static String deleteCampaignComment = 'campaigns/delete-comment';
 
@@ -346,13 +349,11 @@ class NetworkConstantsUtil {
   static String searchBusiness = 'businesses?expand=coupon';
   static String offersList = 'coupons?expand=business';
 
-  static String offerCommentsList = 'coupons/comment-list?expand=coupon,totalChildComment,childCommentDetail,childCommentDetail.user';
+  static String offerCommentsList =
+      'coupons/comment-list?expand=user,isLike,coupon,totalChildComment,childCommentDetail.isLike,childCommentDetail.user';
 
   static String addCommentOnOffer = 'coupons/add-comment';
-
   static String deleteOfferComment = 'coupons/delete-comment';
-  static String reportOfferComment = 'coupons/report-comment';
-
   static String getFavOffer = 'coupons/my-favorite-list?expand=business';
 
   static String favOffer = 'coupons/add-favorite';

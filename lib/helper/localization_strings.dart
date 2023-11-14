@@ -1357,5 +1357,5 @@ String moreRepliesString = 'more replies';
 String youReactedToStory = 'You reacted to their story';
 String youRepliedToStory = 'You replied to their story';
 
-String reactedToYourStory = 'reacted to your story';
-String repliedToYourStory = 'replied to your story';
+String reactedToYourStory = 'Reacted to your story';
+String repliedToYourStory = 'Replied to your story';

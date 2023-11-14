@@ -45,60 +45,62 @@ class OfferCommentsScreenState extends State<OfferCommentsScreen> {
         child: Column(
           children: <Widget>[
             Expanded(
-              child: Obx(() {
-                return ListView.separated(
-                  padding: EdgeInsets.only(
-                      top: 20,
-                      left: DesignConstants.horizontalPadding,
-                      right: DesignConstants.horizontalPadding),
-                  itemCount: _nearByOffersController.comments.length,
-                  // reverse: true,
-                  controller: _controller,
-                  itemBuilder: (context, index) {
-                    return CommentTile(
-                      model: _nearByOffersController.comments[index],
-                      replyActionHandler: (comment) {
-                        _nearByOffersController.setReplyComment(comment);
-                      },
-                      deleteActionHandler: (comment) {
-                        _nearByOffersController.deleteComment(
-                          comment: comment,
+              child: GetBuilder<NearByOffersController>(
+                  init: _nearByOffersController,
+                  builder: (ctx) {
+                    return ListView.separated(
+                      padding: EdgeInsets.only(
+                          top: 20,
+                          left: DesignConstants.horizontalPadding,
+                          right: DesignConstants.horizontalPadding),
+                      itemCount: _nearByOffersController.comments.length,
+                      // reverse: true,
+                      controller: _controller,
+                      itemBuilder: (context, index) {
+                        return CommentTile(
+                          model: _nearByOffersController.comments[index],
+                          replyActionHandler: (comment) {
+                            _nearByOffersController.setReplyComment(comment);
+                          },
+                          deleteActionHandler: (comment) {
+                            _nearByOffersController.deleteComment(
+                              comment: comment,
+                            );
+                          },
+                          favActionHandler: (comment) {
+                            _nearByOffersController.favUnfavComment(
+                              comment: comment,
+                            );
+                          },
+                          reportActionHandler: (comment) {
+                            _nearByOffersController.reportComment(
+                              commentId: comment.id,
+                            );
+                          },
+                          loadMoreChildCommentsActionHandler: (comment) {
+                            _nearByOffersController.getChildComments(
+                              page: comment.currentPageForReplies,
+                              offerId: _nearByOffersController
+                                  .currentOffer.value!.id,
+                              parentId: comment.id,
+                            );
+                          },
                         );
                       },
-                      favActionHandler: (comment) {
-                        _nearByOffersController.favUnfavComment(
-                          commentId: comment.id,
+                      separatorBuilder: (ctx, index) {
+                        return const SizedBox(
+                          height: 20,
                         );
                       },
-                      reportActionHandler: (comment) {
-                        _nearByOffersController.reportComment(
-                          commentId: comment.id,
-                        );
-                      },
-                      loadMoreChildCommentsActionHandler: (comment) {
-                        _nearByOffersController.getChildComments(
-                          page: comment.currentPageForReplies,
-                          offerId:
-                              _nearByOffersController.currentOffer.value!.id,
-                          parentId: comment.id,
-                        );
-                      },
-                    );
-                  },
-                  separatorBuilder: (ctx, index) {
-                    return const SizedBox(
-                      height: 20,
-                    );
-                  },
-                ).addPullToRefresh(
-                    refreshController: _commentsRefreshController,
-                    onRefresh: () {},
-                    onLoading: () {
-                      loadData();
-                    },
-                    enablePullUp: true,
-                    enablePullDown: false);
-              }),
+                    ).addPullToRefresh(
+                        refreshController: _commentsRefreshController,
+                        onRefresh: () {},
+                        onLoading: () {
+                          loadData();
+                        },
+                        enablePullUp: true,
+                        enablePullDown: false);
+                  }),
             ),
             Obx(() => _nearByOffersController.replyingComment.value == null
                 ? Container()
@@ -134,32 +136,29 @@ class OfferCommentsScreenState extends State<OfferCommentsScreen> {
       child: Row(
         children: <Widget>[
           Expanded(
-            child: Container(
-              // color: AppColorConstants.cardColor.withOpacity(0.5),
-              child: TextField(
-                controller: commentInputField,
-                onChanged: (text) {},
-                decoration: InputDecoration(
-                  border: InputBorder.none,
-                  hintText: writeCommentString.tr,
-                  hintStyle: TextStyle(
-                      fontSize: FontSizes.b2,
-                      color: AppColorConstants.mainTextColor),
-                ),
-                textInputAction: TextInputAction.send,
-                style: TextStyle(
+            child: TextField(
+              controller: commentInputField,
+              onChanged: (text) {},
+              decoration: InputDecoration(
+                border: InputBorder.none,
+                hintText: writeCommentString.tr,
+                hintStyle: TextStyle(
                     fontSize: FontSizes.b2,
                     color: AppColorConstants.mainTextColor),
-                onSubmitted: (_) {
-                  addNewMessage();
-                },
-                onTap: () {
-                  Timer(
-                      const Duration(milliseconds: 300),
-                      () => _controller
-                          .jumpTo(_controller.position.maxScrollExtent));
-                },
               ),
+              textInputAction: TextInputAction.send,
+              style: TextStyle(
+                  fontSize: FontSizes.b2,
+                  color: AppColorConstants.mainTextColor),
+              onSubmitted: (_) {
+                addNewMessage();
+              },
+              onTap: () {
+                Timer(
+                    const Duration(milliseconds: 300),
+                    () => _controller
+                        .jumpTo(_controller.position.maxScrollExtent));
+              },
             ).hP8.borderWithRadius(value: 0.5, radius: 15),
           ),
           const SizedBox(width: 20),

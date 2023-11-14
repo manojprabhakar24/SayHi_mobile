@@ -214,7 +214,7 @@ class PostApi {
       url = '$url?expand=user&post_id=$postId&parent_id=$parentId&page=$page';
     } else {
       url =
-          '$url?expand=user,totalChildComment,childCommentDetail,childCommentDetail.user&post_id=$postId&page=$page';
+          '$url?expand=user,isLike,totalChildComment,childCommentDetail.isLike,childCommentDetail.user&post_id=$postId&page=$page';
     }
 
     await ApiWrapper().getApi(url: url).then((response) {
@@ -277,13 +277,26 @@ class PostApi {
     });
   }
 
-  static favUnfavComment(
+  static favComment(
       {required int commentId, required VoidCallback resultCallback}) async {
-    var url = NetworkConstantsUtil.reportComment;
+    var url = NetworkConstantsUtil.likeComment;
 
-    await ApiWrapper().postApi(
-        url: url,
-        param: {"post_comment_id": commentId.toString()}).then((value) {
+    await ApiWrapper().postApi(url: url, param: {
+      "comment_id": commentId.toString(),
+      "source_type": "1"
+    }).then((value) {
+      resultCallback();
+    });
+  }
+
+  static unfavComment(
+      {required int commentId, required VoidCallback resultCallback}) async {
+    var url = NetworkConstantsUtil.unLikeComment;
+
+    await ApiWrapper().postApi(url: url, param: {
+      "comment_id": commentId.toString(),
+      "source_type": "1"
+    }).then((value) {
       resultCallback();
     });
   }

@@ -6,7 +6,7 @@ import 'package:foap/helper/imports/common_import.dart';
 import 'package:foap/helper/imports/setting_imports.dart';
 import 'package:foap/screens/post/post_option_popup.dart';
 import 'package:video_editor_sdk/video_editor_sdk.dart';
-import '../../components/video_widget.dart';
+import '../../components/post_card/video_widget.dart';
 import '../../controllers/post/add_post_controller.dart';
 import '../../controllers/post/select_post_media_controller.dart';
 import 'tag_hashtag_view.dart';

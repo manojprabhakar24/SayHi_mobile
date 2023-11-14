@@ -178,7 +178,6 @@ class ChatMessageModel {
     if (chatMessageUser.isEmpty) {
       return MessageStatus.sending;
     }
-
     if (usersInMessageWithPendingRead.isEmpty) {
       return MessageStatus.read;
     } else if (usersInMessageWithPendingDelivery.isEmpty) {
@@ -309,41 +308,45 @@ class ChatMessageModel {
   }
 
   bool get isMediaMessage {
-    if (messageType == 1) {
+    if (messageContentType == MessageContentType.text) {
       return false;
-    } else if (messageType == 2) {
+    } else if (messageContentType == MessageContentType.photo) {
       return true;
-    } else if (messageType == 3) {
+    } else if (messageContentType == MessageContentType.video) {
       return true;
-    } else if (messageType == 4) {
+    } else if (messageContentType == MessageContentType.audio) {
       return true;
-    } else if (messageType == 5) {
+    } else if (messageContentType == MessageContentType.gift) {
       return false;
-    } else if (messageType == 6) {
+    } else if (messageContentType == MessageContentType.sticker) {
       return false;
-    } else if (messageType == 7) {
+    } else if (messageContentType == MessageContentType.contact) {
       return false;
-    } else if (messageType == 8) {
+    } else if (messageContentType == MessageContentType.location) {
       return false;
-    } else if (messageType == 9) {
+    } else if (messageContentType == MessageContentType.reply) {
       // return isMediaMessage;
-    } else if (messageType == 10) {
+    } else if (messageContentType == MessageContentType.forward) {
       return originalMessage.isMediaMessage;
-    } else if (messageType == 11) {
+    } else if (messageContentType == MessageContentType.post) {
       return false;
-    } else if (messageType == 12) {
+    } else if (messageContentType == MessageContentType.story) {
       return false;
-    } else if (messageType == 13) {
+    } else if (messageContentType == MessageContentType.drawing) {
       return true;
-    } else if (messageType == 14) {
+    } else if (messageContentType == MessageContentType.profile) {
       return false;
-    } else if (messageType == 15) {
+    } else if (messageContentType == MessageContentType.group) {
       return false;
-    } else if (messageType == 16) {
+    } else if (messageContentType == MessageContentType.file) {
       return true;
-    } else if (messageType == 100) {
+    } else if (messageContentType == MessageContentType.textReplyOnStory) {
       return false;
-    } else if (messageType == 200) {
+    } else if (messageContentType == MessageContentType.reactedOnStory) {
+      return false;
+    } else if (messageContentType == MessageContentType.groupAction) {
+      return false;
+    } else if (messageContentType == MessageContentType.gift) {
       return false;
     }
     return false;
@@ -385,35 +388,39 @@ class ChatMessageModel {
   }
 
   String get shortInfoForNotification {
-    if (messageType == 1) {
+    if (messageContentType == MessageContentType.text) {
       return textMessage;
-    } else if (messageType == 2) {
+    } else if (messageContentType == MessageContentType.photo) {
       return sentAPhotoString.tr;
-    } else if (messageType == 3) {
+    } else if (messageContentType == MessageContentType.video) {
       return sentAVideoString.tr;
-    } else if (messageType == 4) {
+    } else if (messageContentType == MessageContentType.audio) {
       return sentAnAudioString.tr;
-    } else if (messageType == 5) {
+    } else if (messageContentType == MessageContentType.gif) {
       return sentAGifString.tr;
-    } else if (messageType == 6) {
+    } else if (messageContentType == MessageContentType.sticker) {
       return sentAStickerString.tr;
-    } else if (messageType == 7) {
+    } else if (messageContentType == MessageContentType.contact) {
       return sentAContactString.tr;
-    } else if (messageType == 8) {
+    } else if (messageContentType == MessageContentType.location) {
       return sentALocationString.tr;
-    } else if (messageType == 9) {
+    } else if (messageContentType == MessageContentType.reply) {
       return '';
-    } else if (messageType == 10) {
+    } else if (messageContentType == MessageContentType.forward) {
       return originalMessage.shortInfoForNotification;
-    } else if (messageType == 11) {
+    } else if (messageContentType == MessageContentType.post) {
       return sentAPostString.tr;
-    } else if (messageType == 12) {
+    } else if (messageContentType == MessageContentType.story) {
       return sentAStoryString.tr;
-    } else if (messageType == 13) {
+    } else if (messageContentType == MessageContentType.drawing) {
       return sentADrawingString.tr;
-    } else if (messageType == 14) {
+    } else if (messageContentType == MessageContentType.profile) {
       return sentAProfileString.tr;
-    } else if (messageType == 100) {
+    } else if (messageContentType == MessageContentType.textReplyOnStory) {
+      return repliedToYourStory.tr;
+    } else if (messageContentType == MessageContentType.reactedOnStory) {
+      return reactedToYourStory.tr;
+    } else if (messageContentType == MessageContentType.groupAction) {
       Map<String, dynamic> actionMessage =
           json.decode(messageContent.decrypted());
       int action = actionMessage['action'] as int;
@@ -459,7 +466,6 @@ class ChatMessageModel {
   }
 
   String get repliedOnMessageDecrypt {
-    print('repliedOnMessageDecrypt');
     if (isEncrypted == 1) {
       return repliedOnMessageContent!.decrypted();
     }

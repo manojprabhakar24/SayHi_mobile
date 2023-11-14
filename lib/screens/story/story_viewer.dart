@@ -117,41 +117,44 @@ class _StoryViewerState extends State<StoryViewer> {
 
   Widget replyWidget() {
     return FooterLayout(
-      footer: KeyboardAttachable(
-        child: Container(
-          height: 80,
-          color: AppColorConstants.cardColor.darken(),
-          child: Row(
-            children: [
-              Expanded(
-                child: AppTextField(
-                  hintText: replyString.tr,
-                  controller: replyController,
-                  maxLength: 80,
-                  onChanged: (value) {
-                    storyController.showHideEmoticons(value.isEmpty);
-                  },
-                  focusStatusChangeHandler: (status) {
-                    storyController.showHideEmoticons(status);
-                    if (status == true) {
-                      controller.pause();
-                    } else {
-                      FocusScope.of(context).requestFocus(FocusNode());
-                      controller.play();
-                    }
-                  },
-                ),
+      footer: storyController.currentStoryMediaModel.value?.userId ==
+              _userProfileManager.user.value!.id
+          ? null
+          : KeyboardAttachable(
+              child: Container(
+                height: 80,
+                color: AppColorConstants.cardColor.darken(),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: AppTextField(
+                        hintText: replyString.tr,
+                        controller: replyController,
+                        maxLength: 80,
+                        onChanged: (value) {
+                          storyController.showHideEmoticons(value.isEmpty);
+                        },
+                        focusStatusChangeHandler: (status) {
+                          storyController.showHideEmoticons(status);
+                          if (status == true) {
+                            controller.pause();
+                          } else {
+                            FocusScope.of(context).requestFocus(FocusNode());
+                            controller.play();
+                          }
+                        },
+                      ),
+                    ),
+                    const SizedBox(
+                      width: 10,
+                    ),
+                    BodyLargeText(sendString.tr).ripple(() {
+                      storyController.sendTextMessage(replyController.text);
+                    }),
+                  ],
+                ).p16,
               ),
-              const SizedBox(
-                width: 10,
-              ),
-              BodyLargeText(sendString.tr).ripple(() {
-                storyController.sendTextMessage(replyController.text);
-              }),
-            ],
-          ).p16,
-        ),
-      ),
+            ),
       child: storyWidget(),
     );
   }

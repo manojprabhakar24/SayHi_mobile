@@ -489,7 +489,7 @@ class _RoundedInputMobileNumberFieldState
                           // optional. Shows phone code before the country name.
                           onSelect: (Country country) {
                             setState(() {
-                              widget.countryCodeText = '+${country.phoneCode}';
+                              widget.countryCodeText = '${country.phoneCode}';
                               widget.countrycodeValueChanged!(
                                   widget.countryCodeText!);
                             });

@@ -8,7 +8,7 @@ import 'package:foap/components/post_card/reshared_post_card.dart';
 import 'package:foap/components/post_card/post_text_widget.dart';
 import 'package:foap/screens/post/edit_post.dart';
 import 'package:foap/controllers/post/post_gift_controller.dart';
-import 'package:foap/components/video_widget.dart';
+import 'package:foap/components/post_card/video_widget.dart';
 import 'package:foap/helper/imports/common_import.dart';
 import 'package:foap/helper/imports/post_imports.dart';
 import 'package:profanity_filter/profanity_filter.dart';
@@ -49,7 +49,6 @@ class PostMediaTile extends StatelessWidget {
   }
 
   Widget mediaTile() {
-    print('isSharedPostMedia here ${isSharedPostMedia}');
     if (model.gallery.length > 1) {
       return SizedBox(
         height: 350,

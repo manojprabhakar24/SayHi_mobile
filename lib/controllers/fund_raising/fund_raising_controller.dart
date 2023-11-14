@@ -314,12 +314,12 @@ class FundRaisingController extends GetxController {
         commentId: commentId);
   }
 
-  void favUnfavComment({required int commentId}) {
-    FundRaisingApi.favUnfavComment(
-        resultCallback: () {
-          AppUtil.showToast(message: commentIsReportedString, isSuccess: true);
-        },
-        commentId: commentId);
+  void favUnfavComment({required CommentModel comment}) {
+    if (comment.isFavourite) {
+      FundRaisingApi.favComment(resultCallback: () {}, commentId: comment.id);
+    } else {
+      FundRaisingApi.unfavComment(resultCallback: () {}, commentId: comment.id);
+    }
   }
 
   getComments(VoidCallback callback) {

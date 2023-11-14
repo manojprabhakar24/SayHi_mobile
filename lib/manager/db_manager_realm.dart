@@ -412,9 +412,6 @@ class RealmDBManager {
 
   Future<void> insertChatMessageUsers(
       {required List<ChatMessageUser> users}) async {
-    // var realm = await Realm.open(configuration);
-
-    // realm.write(() {
     for (ChatMessageUser user in users) {
       var existingUser = realm.query<ChatMessageUserRealm>(
           'userId == ${user.userId} AND chatMessageId == ${user.messageId}');
@@ -424,9 +421,6 @@ class RealmDBManager {
             chatMessageId: user.messageId, userId: user.userId, status: 1));
       }
     }
-    // });
-
-    // realm.close();
   }
 
   Future<void> updateChatMessageUserStatus(

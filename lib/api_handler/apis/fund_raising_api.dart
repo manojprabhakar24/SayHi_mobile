@@ -169,7 +169,7 @@ class FundRaisingApi {
 
   static deleteComment(
       {required int commentId, required VoidCallback resultCallback}) async {
-    var url = NetworkConstantsUtil.deleteComment + commentId.toString();
+    var url = NetworkConstantsUtil.deleteCampaignComment;
 
     await ApiWrapper()
         .postApi(url: url, param: {'id': commentId.toString()}).then((value) {
@@ -179,22 +179,36 @@ class FundRaisingApi {
 
   static reportComment(
       {required int commentId, required VoidCallback resultCallback}) async {
-    var url = NetworkConstantsUtil.reportComment;
+    var url = NetworkConstantsUtil.reportGenericComment;
 
-    await ApiWrapper().postApi(
-        url: url,
-        param: {"post_comment_id": commentId.toString()}).then((value) {
+    await ApiWrapper().postApi(url: url, param: {
+      "reference_id": commentId.toString(),
+      "type": '1'
+    }).then((value) {
       resultCallback();
     });
   }
 
-  static favUnfavComment(
+  static favComment(
       {required int commentId, required VoidCallback resultCallback}) async {
-    var url = NetworkConstantsUtil.reportComment;
+    var url = NetworkConstantsUtil.likeComment;
 
-    await ApiWrapper().postApi(
-        url: url,
-        param: {"post_comment_id": commentId.toString()}).then((value) {
+    await ApiWrapper().postApi(url: url, param: {
+      "comment_id": commentId.toString(),
+      "source_type": "2"
+    }).then((value) {
+      resultCallback();
+    });
+  }
+
+  static unfavComment(
+      {required int commentId, required VoidCallback resultCallback}) async {
+    var url = NetworkConstantsUtil.unLikeComment;
+
+    await ApiWrapper().postApi(url: url, param: {
+      "comment_id": commentId.toString(),
+      "source_type": "2"
+    }).then((value) {
       resultCallback();
     });
   }

@@ -23,7 +23,7 @@ class LoginController extends GetxController {
 
   RxString passwordStrengthText = ''.obs;
   RxDouble passwordStrength = 0.toDouble().obs;
-  RxString phoneCountryCode = '+1'.obs;
+  RxString phoneCountryCode = '1'.obs;
 
   int pinLength = 4;
   RxBool hasError = false.obs;

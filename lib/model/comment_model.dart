@@ -37,7 +37,7 @@ class CommentModel {
     model.comment = json['comment'];
     model.userId = json['user_id'];
     model.level = json['level'] ?? 1;
-    model.isFavourite = json['isFavourite'] ?? false;
+    model.isFavourite = json['isLike'] == 1;
 
     // model.replies = json['childCommentDetail'] == null
     //     ? []

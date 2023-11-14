@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:foap/util/app_config_constants.dart';
+import 'dart:math' as math;
 
 enum ThemeIcon {
   home,
@@ -913,10 +914,13 @@ class ThemeIconWidget extends StatelessWidget {
           color: color ?? AppColorConstants.iconColor,
         );
       case ThemeIcon.arrowUp:
-        return Icon(
-          Icons.arrow_circle_up,
-          size: size ?? 20,
-          color: color ?? AppColorConstants.iconColor,
+        return Transform.rotate(
+          angle: math.pi/2 ,
+          child: Icon(
+            Icons.arrow_back_ios,
+            size: size ?? 20,
+            color: color ?? AppColorConstants.iconColor,
+          ),
         );
       case ThemeIcon.product:
         return Icon(

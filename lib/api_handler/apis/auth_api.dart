@@ -25,7 +25,6 @@ class AuthApi {
       "device_token_voip_ios": voipToken ?? ''
     };
 
-    print('param $param');
     Loader.show(status: loadingString.tr);
 
     await ApiWrapper()

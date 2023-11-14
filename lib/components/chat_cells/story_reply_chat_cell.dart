@@ -24,10 +24,10 @@ class StoryReplyChatTile extends StatelessWidget {
             message.messageContentType == MessageContentType.reactedOnStory
                 ? BodySmallText(message.isMineMessage
                     ? youReactedToStory.tr
-                    : '${message.userName} $reactedToYourStory')
+                    : '${message.userName} ${reactedToYourStory.toLowerCase()}')
                 : BodySmallText(message.isMineMessage
                     ? youRepliedToStory.tr
-                    : '${message.userName} $repliedToYourStory'),
+                    : '${message.userName} ${repliedToYourStory.toLowerCase()}'),
             const SizedBox(
               height: 10,
             ),

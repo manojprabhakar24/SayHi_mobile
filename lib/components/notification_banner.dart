@@ -23,10 +23,10 @@ showNotification(ChatMessageModel message, ChatRoomModel room) {
       child: Container(
         color: Colors.transparent,
         child: Container(
-          color: AppColorConstants.cardColor.lighten(),
+          color: AppColorConstants.cardColor,
           child: ListTile(
             leading: AvatarView(
-              size: 40,
+              size: 35,
               url: room.isGroupChat == true
                   ? room.image
                   : room.memberById(message.senderId).userDetail.picture,
@@ -34,14 +34,14 @@ showNotification(ChatMessageModel message, ChatRoomModel room) {
                   ? room.name
                   : room.memberById(message.senderId).userDetail.userName,
             ),
-            title: Heading5Text(
+            title: BodyLargeText(
               room.isGroupChat == true
                   ? '(${room.name}) ${room.memberById(message.senderId).userDetail.userName}'
                   : room.memberById(message.senderId).userDetail.userName,
-              weight: TextWeight.bold,
-              color: AppColorConstants.themeColor,
+              weight: TextWeight.semiBold,
+              // color: AppColorConstants.themeColor,
             ),
-            subtitle: Heading6Text(
+            subtitle: BodyMediumText(
               message.shortInfoForNotification,
             ),
           )

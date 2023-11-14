@@ -138,7 +138,7 @@ class _VideoPostTileState extends State<VideoPostTile> {
                   size: 15,
                   color: Colors.white,
                 ),
-              )),
+              ).circular),
         ],
       ),
     );

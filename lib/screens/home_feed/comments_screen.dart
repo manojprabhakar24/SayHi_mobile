@@ -117,9 +117,9 @@ class CommentsScreenState extends State<CommentsScreen> {
                                     comment: comment,
                                   );
                                 },
-                                favActionHandler: (comment) {
+                                favActionHandler: (isFav) {
                                   _commentsController.favUnfavComment(
-                                    commentId: comment.id,
+                                    comment: comment,
                                   );
                                 },
                                 reportActionHandler: (comment) {

@@ -19,7 +19,6 @@ class SmartTextFieldController extends GetxController {
   final UsersController _usersController = Get.find();
 
   clear() {
-    print('clear it');
     isEditing.value = 0;
     currentHashtag.value = '';
     currentUserTag.value = '';

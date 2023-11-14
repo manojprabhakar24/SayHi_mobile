@@ -70,10 +70,9 @@ class ApiWrapper {
     return http.get(Uri.parse(urlString), headers: {
       "Authorization": "Bearer ${authKey!}"
     }).then((http.Response response) async {
+      print(response.body);
       dynamic data = _decoder.convert(response.body);
       Loader.dismiss();
-      log(data.toString());
-
       return ApiResponse.fromJson(data);
     });
   }
@@ -84,16 +83,12 @@ class ApiWrapper {
 
     String urlString = '${NetworkConstantsUtil.baseUrl}$url';
 
-    log('urlString $urlString');
-    log('param $param');
-
     return http.post(Uri.parse(urlString), body: jsonEncode(param), headers: {
       "Authorization": "Bearer ${authKey!}",
       'Content-Type': 'application/json'
     }).then((http.Response response) async {
       dynamic data = _decoder.convert(response.body);
-      log('data $data');
-
+      print(data);
       return ApiResponse.fromJson(data);
     });
   }
@@ -121,14 +116,14 @@ class ApiWrapper {
     String? authKey = await SharedPrefs().getAuthorizationKey();
     Loader.show(status: loadingString.tr);
 
-    print('${NetworkConstantsUtil.baseUrl}$url');
+    // print('${NetworkConstantsUtil.baseUrl}$url');
     return http.delete(Uri.parse('${NetworkConstantsUtil.baseUrl}$url'),
         headers: {
           "Authorization": "Bearer $authKey",
           'Content-Type': 'application/json'
         }).then((http.Response response) async {
       dynamic data = _decoder.convert(response.body);
-      print(data);
+      // print(data);
       Loader.dismiss();
 
       return ApiResponse.fromJson(data);
@@ -139,6 +134,7 @@ class ApiWrapper {
       {required String url, required dynamic param}) async {
     // Loader.show(status: loadingString.tr);
 
+    print(param);
     return http
         .post(Uri.parse('${NetworkConstantsUtil.baseUrl}$url'), body: param)
         .then((http.Response response) async {

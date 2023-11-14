@@ -81,6 +81,7 @@ class UserModel {
 
   UserModel();
 
+
   factory UserModel.fromJson(dynamic json) {
     UserModel model = UserModel();
     model.id = json['id'];

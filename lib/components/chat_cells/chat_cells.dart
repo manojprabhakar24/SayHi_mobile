@@ -56,7 +56,7 @@ class ChatMessageTile extends StatelessWidget {
                               MessageContentType.reactedOnStory
                       ? Colors.transparent
                       : message.isMineMessage
-                          ? AppColorConstants.themeColor
+                          ? AppColorConstants.themeColor.withOpacity(0.5)
                           : AppColorConstants.cardColor,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -187,7 +187,7 @@ class ChatMessageTile extends StatelessWidget {
 
   Widget nameWidget(BuildContext context) {
     return BodyLargeText(
-      message.isMineMessage ? youString.tr : message.sender!.userName,
+      message.isMineMessage ? '' : message.sender!.userName,
       weight: TextWeight.bold,
     );
   }

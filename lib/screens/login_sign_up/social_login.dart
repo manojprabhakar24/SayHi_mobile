@@ -71,7 +71,9 @@ class _SocialLoginState extends State<SocialLogin> {
                   'assets/phone.png',
                   height: 20,
                   width: 20,
-                  color: isDarkMode ? Colors.white : AppColorConstants.mainTextColor,
+                  color: isDarkMode
+                      ? Colors.white
+                      : AppColorConstants.mainTextColor,
                 ))).round(10).ripple(() {
                 Get.offAll(() => const PhoneLoginScreen());
               })
@@ -84,7 +86,9 @@ class _SocialLoginState extends State<SocialLogin> {
                   'assets/email.png',
                   height: 20,
                   width: 20,
-                  color: isDarkMode ? Colors.white : AppColorConstants.mainTextColor,
+                  color: isDarkMode
+                      ? Colors.white
+                      : AppColorConstants.mainTextColor,
                 ))).round(10).ripple(() {
                 Get.offAll(() => const LoginScreen());
               }),
@@ -110,7 +114,8 @@ class _SocialLoginState extends State<SocialLogin> {
                 'assets/apple.png',
                 height: 20,
                 width: 20,
-                color: isDarkMode ? Colors.white : AppColorConstants.mainTextColor,
+                color:
+                    isDarkMode ? Colors.white : AppColorConstants.mainTextColor,
               ))).round(10).ripple(() {
             //signInWithGoogle();
             _handleAppleSignIn();
@@ -263,7 +268,8 @@ class _SocialLoginState extends State<SocialLogin> {
         .getAppleIdName(forAppleId: '${appleCredential.userIdentifier}');
 
     if (appleCredential.userIdentifier != null) {
-      socialLogin('apple', appleCredential.userIdentifier!, name!, email!);
+      socialLogin(
+          'apple', appleCredential.userIdentifier!, '',  '');
     }
   }
 }

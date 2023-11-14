@@ -126,12 +126,12 @@ class CommentsController extends GetxController {
         commentId: commentId);
   }
 
-  void favUnfavComment({required int commentId}) {
-    PostApi.favUnfavComment(
-        resultCallback: () {
-          AppUtil.showToast(message: commentIsReportedString, isSuccess: true);
-        },
-        commentId: commentId);
+  void favUnfavComment({required CommentModel comment}) {
+    if (comment.isFavourite) {
+      PostApi.favComment(resultCallback: () {}, commentId: comment.id);
+    } else {
+      PostApi.unfavComment(resultCallback: () {}, commentId: comment.id);
+    }
   }
 
   void postMediaCommentsApiCall(

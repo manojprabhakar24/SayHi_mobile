@@ -181,6 +181,9 @@ class AppStoryController extends GetxController {
     _chatDetailController.getChatRoomWithUser(
         userId: currentStoryMediaModel.value!.userId,
         callback: (room) {
+          FocusScope.of(Get.context!).requestFocus(FocusNode());
+          showHideEmoticons(false);
+
           _chatDetailController.sendStoryTextReplyMessage(
               messageText: message,
               storyMedia: currentStoryMediaModel.value!,
@@ -192,6 +195,8 @@ class AppStoryController extends GetxController {
     _chatDetailController.getChatRoomWithUser(
         userId: currentStoryMediaModel.value!.userId,
         callback: (room) {
+          FocusScope.of(Get.context!).requestFocus(FocusNode());
+          showHideEmoticons(false);
           _chatDetailController.sendStoryReactionReplyMessage(
               emoji: emoji,
               storyMedia: currentStoryMediaModel.value!,
