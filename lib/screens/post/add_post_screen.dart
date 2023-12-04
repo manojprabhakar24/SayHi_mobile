@@ -218,10 +218,10 @@ class AddPostState extends State<AddPostScreen> {
                               fit: BoxFit.cover,
                               width: double.infinity,
                             ).ripple(() {
-                              // if (settingController
-                              //     .setting.value!.canEditPhotoVideo) {
-                              //   openImageEditor(media);
-                              // }
+                              if (settingController
+                                  .setting.value!.canEditPhotoVideo) {
+                                openImageEditor(media);
+                              }
                             })
                           : media.mediaType == GalleryMediaType.gif
                               ? CachedNetworkImage(
@@ -232,12 +232,13 @@ class AddPostState extends State<AddPostScreen> {
                                       url: media.file!.path,
                                       isLocalFile: true,
                                       play: true,
-                                    ).ripple(() {
-                                      // if (settingController
-                                      //     .setting.value!.canEditPhotoVideo) {
-                                      //   openVideoEditor(media);
-                                      // }
-                                    })
+                                      onTapActionHandler: () {
+                                        if (settingController
+                                            .setting.value!.canEditPhotoVideo) {
+                                          openVideoEditor(media);
+                                        }
+                                      },
+                                    )
                                   : audioPostTile(media)
                   ],
                   options: CarouselOptions(
@@ -282,15 +283,13 @@ class AddPostState extends State<AddPostScreen> {
         const SizedBox(
           height: 20,
         ),
-        // if (_selectPostMediaController.selectedMediaList.isNotEmpty &&
-        //     settingController.setting.value!.canEditPhotoVideo)
-        //   Heading2Text(
-        //     tapToEditString.tr,
-        //     weight: TextWeight.bold,
-        //   ),
-        // const SizedBox(
-        //   height: 20,
-        // ),
+        if (_selectPostMediaController.selectedMediaList.isNotEmpty &&
+            settingController.setting.value!.canEditPhotoVideo &&
+            _selectPostMediaController.canEditMedia)
+          Heading2Text(
+            tapToEditString.tr,
+            weight: TextWeight.bold,
+          ),
       ],
     );
   }
@@ -331,6 +330,8 @@ class AddPostState extends State<AddPostScreen> {
   }
 
   openImageEditor(Media media) async {
+    // PESDK.unlockWithLicense("assets/pesdk_license");
+
     final result = await PESDK.openEditor(image: media.file!.path);
 
     if (result != null) {
@@ -346,6 +347,9 @@ class AddPostState extends State<AddPostScreen> {
   }
 
   openVideoEditor(Media media) async {
+    // PESDK.unlockWithLicense("assets/pesdk_license");
+
+    print('openVideoEditor');
     final video = Video(media.file!.path);
     final result = await VESDK.openEditor(video);
 

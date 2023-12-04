@@ -12,6 +12,7 @@ void openStoryUploader() {
       context: Get.context!,
       builder: (context) => Container(
             color: AppColorConstants.cardColor.darken(0.15),
+            width: Get.width,
             child: Wrap(
               alignment: WrapAlignment.center,
               runAlignment: WrapAlignment.center,

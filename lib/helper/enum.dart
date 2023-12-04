@@ -124,6 +124,7 @@ enum NotificationType {
   like,
   comment,
   follow,
+  followRequest,
   gift,
   clubInvitation,
   competitionAdded,
@@ -184,3 +185,11 @@ enum DatingActions {
   rejected,
   undoLiked,
 }
+
+enum FollowingStatus {
+  notFollowing,
+  requested,
+  following,
+}
+
+enum PlayStateState { paused, playing, loading, idle }

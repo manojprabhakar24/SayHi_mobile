@@ -312,7 +312,7 @@ class StoryAndHighlightsShimmer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 85,
+      height: 90,
       child: ListView.separated(
           padding: EdgeInsets.only(left: DesignConstants.horizontalPadding),
           scrollDirection: Axis.horizontal,

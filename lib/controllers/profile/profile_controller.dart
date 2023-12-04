@@ -318,12 +318,24 @@ class ProfileController extends GetxController {
         });
   }
 
-  void followUnFollowUserApi({required bool isFollowing}) {
-    user.value!.isFollowing = isFollowing;
+  void followUnFollowUser({required UserModel user}) {
+    if (user.isPrivate &&
+        user.followingStatus == FollowingStatus.notFollowing) {
+      this.user.value!.followingStatus = FollowingStatus.requested;
+    } else if (user.followingStatus == FollowingStatus.notFollowing) {
+      this.user.value!.followingStatus = FollowingStatus.following;
+    } else {
+      this.user.value!.followingStatus = FollowingStatus.notFollowing;
+    }
+
     update();
 
     UsersApi.followUnfollowUser(
-            isFollowing: isFollowing, userId: user.value!.id)
+            isFollowing:
+                this.user.value!.followingStatus == FollowingStatus.notFollowing
+                    ? false
+                    : true,
+            userId: user.id)
         .then((value) {
       update();
     });
@@ -387,7 +399,8 @@ class ProfileController extends GetxController {
   }
 
   followUser(UserModel user) {
-    user.isFollowing = true;
+    user.followingStatus =
+        user.isPrivate ? FollowingStatus.requested : FollowingStatus.following;
     update();
     UsersApi.followUnfollowUser(isFollowing: true, userId: user.id)
         .then((value) {
@@ -396,7 +409,7 @@ class ProfileController extends GetxController {
   }
 
   unFollowUser(UserModel user) {
-    user.isFollowing = false;
+    user.followingStatus = FollowingStatus.notFollowing;
 
     update();
     UsersApi.followUnfollowUser(isFollowing: false, userId: user.id)

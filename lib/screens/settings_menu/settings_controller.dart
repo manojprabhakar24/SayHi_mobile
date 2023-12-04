@@ -2,6 +2,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:foap/api_handler/apis/auth_api.dart';
 import 'package:foap/api_handler/apis/misc_api.dart';
+import 'package:foap/api_handler/apis/profile_api.dart';
 import 'package:foap/helper/imports/common_import.dart';
 import 'package:foap/util/constant_util.dart';
 import 'package:local_auth/error_codes.dart' as auth_error;
@@ -26,13 +27,8 @@ class SettingsController extends GetxController {
 
   var localAuth = LocalAuthentication();
   RxInt bioMetricType = 0.obs;
-
-  // RateMyApp rateMyApp = RateMyApp(
-  //   preferencesPrefix: 'rateMyApp_',
-  //   minDays: 0, // Show rate popup on first day of install.
-  //   minLaunches:
-  //       0, // Show rate popup after 5 launches of app after minDays is passed.
-  // );
+  RxBool isPrivateAccount = false.obs;
+  RxBool isShareOnlineStatus = true.obs;
 
   List<Map<String, String>> languagesList = [
     {'language_code': 'hi', 'language_name': 'Hindi'},
@@ -66,7 +62,9 @@ class SettingsController extends GetxController {
     bool isDarkTheme = await SharedPrefs().isDarkMode();
     bioMetricAuthStatus.value = await SharedPrefs().getBioMetricAuthStatus();
     shareLocation.value = _userProfileManager.user.value!.latitude != null;
-
+    isPrivateAccount.value = _userProfileManager.user.value!.isPrivate;
+    isShareOnlineStatus.value =
+        _userProfileManager.user.value!.isShareOnlineStatus;
     setDarkMode(isDarkTheme);
     checkBiometric();
   }
@@ -156,11 +154,23 @@ class SettingsController extends GetxController {
     });
   }
 
-  askForRating(BuildContext context) {
-    // rateMyApp.init().then((value) {
-    //   if (rateMyApp.shouldOpenDialog) {
-    //     rateMyApp.showRateDialog(context);
-    //   }
-    // });
+  void toggleAccountPrivacy(bool isPrivate) async {
+    isPrivateAccount.value = isPrivate;
+    updateAccountPrivacy(isPrivate);
+  }
+
+  updateAccountPrivacy(bool isPrivate) {
+    ProfileApi.updateAccountPrivacy(
+        isPrivate: isPrivate, resultCallback: () {});
+  }
+
+  void toggleShowOnlineStatusSetting(bool showOnlineStatus) async {
+    isShareOnlineStatus.value = showOnlineStatus;
+    updateShowOnlineStatusSetting(showOnlineStatus);
+  }
+
+  updateShowOnlineStatusSetting(bool showOnlineStatus) {
+    ProfileApi.updateOnlineStatusSetting(
+        status: showOnlineStatus ? 1 : 0, resultCallback: () {});
   }
 }

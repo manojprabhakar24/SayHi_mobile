@@ -13,18 +13,18 @@ class AppConfigConstants {
   static const liveAppLink = 'https://www.google.com/';
 
   static String appTagline = 'Share your day activity with friends';
-  static const googleMapApiKey = 'add your google map api key';
+  static const googleMapApiKey = 'AIzaSyA4vcqErGvq5NRbvhvq8JKSp0VFpNBBPjE';
 
-  static const restApiBaseUrl =
-      'https://development.fwdtechnology.co/social_media_plus/api/web/v1/';
-
-  // Socket api url
-  static const socketApiBaseUrl = "https://development.fwdtechnology.co:4000/";
-
-  // static const restApiBaseUrl = 'https://sayhi.codepearl.in/api/web/v1/';
+  // static const restApiBaseUrl =
+  //     'https://development.fwdtechnology.co/social_media_plus/api/web/v1/';
   //
   // // Socket api url
-  // static const socketApiBaseUrl = "https://sayhi.codepearl.in:4000/";
+  // static const socketApiBaseUrl = "https://development.fwdtechnology.co:4000/";
+
+  static const restApiBaseUrl = 'https://sayhi.codepearl.in/api/web/v1/';
+
+  // Socket api url
+  static const socketApiBaseUrl = "https://sayhi.codepearl.in:4000/";
 
   // Chat encryption key -- DO NOT CHANGE THIS
   static const encryptionKey = 'bbC2H19lkVbQDfakxcrtNMQdd0FloLyw';
@@ -37,6 +37,7 @@ class AppConfigConstants {
 
   // is demo app
   static const bool isDemoApp = false;
+  static const bool askForFollow = true;
 
   // parameters for delete chat
   static const secondsInADay = 86400;

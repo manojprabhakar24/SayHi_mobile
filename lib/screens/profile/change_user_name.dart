@@ -57,7 +57,7 @@ class _ChangeUserNameState extends State<ChangeUserName> {
                     },
                   ),
                   Positioned(
-                    right: 0,
+                    right: 10,
                     bottom: 0,
                     top: 0,
                     child: Center(

@@ -6,6 +6,7 @@ import '../../model/notification_modal.dart';
 import '../competitions/competition_detail_screen.dart';
 import '../home_feed/comments_screen.dart';
 import '../post/single_post_detail.dart';
+import '../profile/follow_requests.dart';
 import '../profile/other_user_profile.dart';
 
 class NotificationsScreen extends StatefulWidget {
@@ -23,6 +24,8 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
   @override
   void initState() {
     _notificationController.getNotifications();
+    _notificationController.getFollowRequests(() {});
+
     super.initState();
   }
 
@@ -41,7 +44,46 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                 filterNotifications();
               }),
             ),
-
+            Obx(() => _notificationController.followRequests.isEmpty
+                ? Container()
+                : Container(
+                    height: 80,
+                    color: AppColorConstants.themeColor.withOpacity(0.1),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        ThemeIconWidget(
+                          ThemeIcon.request,
+                          size: 20,
+                        ),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        Expanded(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              BodyMediumText(
+                                followRequestsString.tr,
+                                weight: TextWeight.semiBold,
+                              ),
+                              BodySmallText(
+                                acceptFollowRequestsString.tr,
+                                weight: TextWeight.semiBold,
+                              )
+                            ],
+                          ),
+                        ),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        ThemeIconWidget(ThemeIcon.nextArrow),
+                      ],
+                    ).hp(DesignConstants.horizontalPadding),
+                  ).round(20).ripple(() {
+                    Get.to(() => const FollowRequestList());
+                  }).p(DesignConstants.horizontalPadding)),
             Expanded(
               child: GetBuilder<NotificationController>(
                   init: _notificationController,

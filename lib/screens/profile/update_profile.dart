@@ -64,13 +64,13 @@ class UpdateProfileState extends State<UpdateProfile> {
                         ThemeIcon.edit,
                         color: AppColorConstants.iconColor,
                         size: 15,
-                      ).ripple(() {
-                        Get.to(() => const ChangeUserName())!.then((value) {
-                          reloadData();
-                        });
-                      })
+                      )
                     ],
-                  ),
+                  ).ripple(() {
+                    Get.to(() => const ChangeUserName())!.then((value) {
+                      reloadData();
+                    });
+                  }),
                   divider().vP16,
                   Row(
                     children: [
@@ -92,16 +92,16 @@ class UpdateProfileState extends State<UpdateProfile> {
                         ThemeIcon.edit,
                         color: AppColorConstants.iconColor,
                         size: 15,
-                      ).ripple(() {
-                        Get.to(() => const SetProfileCategoryType(
-                                  isFromSignup: false,
-                                ))!
-                            .then((value) {
-                          reloadData();
-                        });
-                      })
+                      )
                     ],
-                  ),
+                  ).ripple(() {
+                    Get.to(() => const SetProfileCategoryType(
+                              isFromSignup: false,
+                            ))!
+                        .then((value) {
+                      reloadData();
+                    });
+                  }),
                   divider().vP16,
                   Row(
                     children: [
@@ -120,11 +120,11 @@ class UpdateProfileState extends State<UpdateProfile> {
                         ThemeIcon.edit,
                         color: AppColorConstants.iconColor,
                         size: 15,
-                      ).ripple(() {
-                        Get.to(() => const ChangePassword());
-                      })
+                      )
                     ],
-                  ),
+                  ).ripple(() {
+                    Get.to(() => const ChangePassword());
+                  }),
                   divider().vP16,
                   Row(
                     children: [
@@ -145,13 +145,13 @@ class UpdateProfileState extends State<UpdateProfile> {
                         ThemeIcon.edit,
                         color: AppColorConstants.iconColor,
                         size: 15,
-                      ).ripple(() {
-                        Get.to(() => const ChangePhoneNumber())!.then((value) {
-                          reloadData();
-                        });
-                      })
+                      )
                     ],
-                  ),
+                  ).ripple(() {
+                    Get.to(() => const ChangePhoneNumber())!.then((value) {
+                      reloadData();
+                    });
+                  }),
                   divider().vP16,
                   Row(
                     children: [
@@ -170,13 +170,13 @@ class UpdateProfileState extends State<UpdateProfile> {
                         ThemeIcon.edit,
                         color: AppColorConstants.iconColor,
                         size: 15,
-                      ).ripple(() {
-                        Get.to(() => const ChangePaypalId())!.then((value) {
-                          reloadData();
-                        });
-                      })
+                      )
                     ],
-                  ),
+                  ).ripple(() {
+                    Get.to(() => const ChangePaypalId())!.then((value) {
+                      reloadData();
+                    });
+                  }),
                   divider().vP16,
                   Row(
                     children: [
@@ -193,13 +193,13 @@ class UpdateProfileState extends State<UpdateProfile> {
                         ThemeIcon.edit,
                         color: AppColorConstants.iconColor,
                         size: 15,
-                      ).ripple(() {
-                        Get.to(() => const ChangeLocation())!.then((value) {
-                          reloadData();
-                        });
-                      })
+                      )
                     ],
-                  ),
+                  ).ripple(() {
+                    Get.to(() => const ChangeLocation())!.then((value) {
+                      reloadData();
+                    });
+                  }),
                   divider().vP16,
                   Row(
                     children: [
@@ -215,14 +215,14 @@ class UpdateProfileState extends State<UpdateProfile> {
                         ThemeIcon.edit,
                         color: AppColorConstants.iconColor,
                         size: 15,
-                      ).ripple(() {
-                        Get.to(() => const AddName(isSettingProfile: false))!
-                            .then((value) {
-                          reloadData();
-                        });
-                      })
+                      )
                     ],
-                  ),
+                  ).ripple(() {
+                    Get.to(() => const AddName(isSettingProfile: false))!
+                        .then((value) {
+                      reloadData();
+                    });
+                  }),
                   divider().vP16,
                   Row(
                     children: [
@@ -239,15 +239,14 @@ class UpdateProfileState extends State<UpdateProfile> {
                         ThemeIcon.edit,
                         color: AppColorConstants.iconColor,
                         size: 15,
-                      ).ripple(() {
-                        Get.to(() =>
-                                const SetDateOfBirth(isSettingProfile: false))!
-                            .then((value) {
-                          reloadData();
-                        });
-                      })
+                      )
                     ],
-                  ),
+                  ).ripple(() {
+                    Get.to(() => const SetDateOfBirth(isSettingProfile: false))!
+                        .then((value) {
+                      reloadData();
+                    });
+                  }),
                   divider().vP16,
                   Row(
                     children: [
@@ -269,15 +268,14 @@ class UpdateProfileState extends State<UpdateProfile> {
                         ThemeIcon.edit,
                         color: AppColorConstants.iconColor,
                         size: 15,
-                      ).ripple(() {
-                        Get.to(() =>
-                                const SetYourGender(isSettingProfile: false))!
-                            .then((value) {
-                          reloadData();
-                        });
-                      })
+                      )
                     ],
-                  ),
+                  ).ripple(() {
+                    Get.to(() => const SetYourGender(isSettingProfile: false))!
+                        .then((value) {
+                      reloadData();
+                    });
+                  }),
                   divider().vP16,
                   Row(
                     children: [
@@ -288,15 +286,15 @@ class UpdateProfileState extends State<UpdateProfile> {
                         ThemeIcon.edit,
                         color: AppColorConstants.iconColor,
                         size: 15,
-                      ).ripple(() {
-                        Get.to(() =>
-                                const AddPersonalInfo(isSettingProfile: false))!
-                            .then((value) {
-                          reloadData();
-                        });
-                      })
+                      )
                     ],
-                  ),
+                  ).ripple(() {
+                    Get.to(() =>
+                            const AddPersonalInfo(isSettingProfile: false))!
+                        .then((value) {
+                      reloadData();
+                    });
+                  }),
                   divider().vP16,
                   Row(
                     children: [
@@ -307,16 +305,16 @@ class UpdateProfileState extends State<UpdateProfile> {
                         ThemeIcon.edit,
                         color: AppColorConstants.iconColor,
                         size: 15,
-                      ).ripple(() {
-                        Get.to(() => const AddInterests(
-                                  isSettingProfile: false,
-                                ))!
-                            .then((value) {
-                          reloadData();
-                        });
-                      })
+                      )
                     ],
-                  ),
+                  ).ripple(() {
+                    Get.to(() => const AddInterests(
+                              isSettingProfile: false,
+                            ))!
+                        .then((value) {
+                      reloadData();
+                    });
+                  }),
                   divider().vP16,
                   Row(
                     children: [
@@ -327,15 +325,15 @@ class UpdateProfileState extends State<UpdateProfile> {
                         ThemeIcon.edit,
                         color: AppColorConstants.iconColor,
                         size: 15,
-                      ).ripple(() {
-                        Get.to(() => const AddProfessionalDetails(
-                                isSettingProfile: false))!
-                            .then((value) {
-                          reloadData();
-                        });
-                      })
+                      )
                     ],
-                  ),
+                  ).ripple(() {
+                    Get.to(() => const AddProfessionalDetails(
+                            isSettingProfile: false))!
+                        .then((value) {
+                      reloadData();
+                    });
+                  }),
                   divider().vP16,
                 ],
               ).hp(DesignConstants.horizontalPadding),

@@ -215,6 +215,26 @@ Widget titleNavigationBarWithIcon(
       bottom: 16);
 }
 
+Widget titleNavigationBarWithWidget(
+    {required String title,
+      required Widget widget,
+      required VoidCallback completion}) {
+  return Row(
+    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    children: [
+      const SizedBox(
+        width: 25,
+      ),
+      BodyLargeText(title.tr, weight: TextWeight.medium),
+      widget,
+    ],
+  ).setPadding(
+      left: DesignConstants.horizontalPadding,
+      right: DesignConstants.horizontalPadding,
+      top: 8,
+      bottom: 16);
+}
+
 Widget titleNavigationBar({required String title}) {
   return Container(
     height: 100,

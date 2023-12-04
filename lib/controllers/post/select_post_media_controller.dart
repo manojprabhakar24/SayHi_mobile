@@ -1,3 +1,4 @@
+import 'package:foap/helper/enum.dart';
 import 'package:foap/screens/chat/media.dart';
 import 'package:get/get.dart';
 
@@ -36,5 +37,13 @@ class SelectPostMediaController extends GetxController {
   updateGallerySlider(int index) {
     currentIndex.value = index;
     update();
+  }
+
+  bool get canEditMedia {
+    return selectedMediaList
+        .where((element) =>
+            element.mediaType == GalleryMediaType.photo ||
+            element.mediaType == GalleryMediaType.video)
+        .isNotEmpty;
   }
 }

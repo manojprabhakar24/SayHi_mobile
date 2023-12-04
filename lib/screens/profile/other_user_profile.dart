@@ -94,8 +94,8 @@ class OtherUserProfileState extends State<OtherUserProfile>
                   const SizedBox(
                     height: 20,
                   ),
-                  addProfileView(),
-                  addHighlightsView().bP25,
+                  addProfileView().bP16,
+                  addHighlightsView().bP16,
                   contentWidget(),
                   const SizedBox(
                     height: 20,
@@ -108,7 +108,7 @@ class OtherUserProfileState extends State<OtherUserProfile>
         ));
   }
 
-  addProfileView() {
+  Widget addProfileView() {
     return GetBuilder<ProfileController>(
         init: _profileController,
         builder: (ctx) {
@@ -160,18 +160,7 @@ class OtherUserProfileState extends State<OtherUserProfile>
                   Heading6Text(_profileController.user.value!.userName,
                       weight: TextWeight.medium),
                   if (_profileController.user.value!.isVerified)
-                    Row(
-                      children: [
-                        const SizedBox(
-                          width: 5,
-                        ),
-                        Image.asset(
-                          'assets/verified.png',
-                          height: 15,
-                          width: 15,
-                        )
-                      ],
-                    ),
+                    verifiedUserTag()
                 ],
               ).bP4,
               if (_profileController.user.value!.profileCategoryTypeId != 0)
@@ -211,28 +200,34 @@ class OtherUserProfileState extends State<OtherUserProfile>
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         SizedBox(
-          height: 50,
+          height: 40,
           child: Center(
             child: BodyMediumText(
-              _profileController.user.value!.isFollowing
+              _profileController.user.value!.followingStatus ==
+                      FollowingStatus.following
                   ? unFollowString.tr
-                  : _profileController.user.value!.isFollower
-                      ? followBackString.tr
-                      : followString.tr.toUpperCase(),
-              color: _profileController.user.value!.isFollowing
+                  : _profileController.user.value!.followingStatus ==
+                          FollowingStatus.requested
+                      ? requestedString.tr
+                      : _profileController.user.value!.isFollower
+                          ? followBackString.tr
+                          : followString.tr,
+              color: _profileController.user.value!.followingStatus ==
+                      FollowingStatus.following
                   ? AppColorConstants.themeColor
                   : AppColorConstants.mainTextColor,
-              weight: _profileController.user.value!.isFollowing
+              weight: _profileController.user.value!.followingStatus ==
+                      FollowingStatus.following
                   ? TextWeight.bold
                   : TextWeight.medium,
             ),
           ),
         ).ripple(() {
-          _profileController.followUnFollowUserApi(
-              isFollowing: !_profileController.user.value!.isFollowing);
+          _profileController.followUnFollowUser(
+              user: _profileController.user.value!);
         }),
         Container(
-          height: 50,
+          height: 40,
           width: 1,
           color: AppColorConstants.dividerColor,
         ),
@@ -252,7 +247,7 @@ class OtherUserProfileState extends State<OtherUserProfile>
                 });
           }),
         Container(
-          height: 50,
+          height: 40,
           width: 1,
           color: AppColorConstants.dividerColor,
         ),
@@ -361,7 +356,7 @@ class OtherUserProfileState extends State<OtherUserProfile>
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-           SizedBox(
+          SizedBox(
               width: 50,
               child: Align(
                 alignment: Alignment.centerLeft,
@@ -434,7 +429,7 @@ class OtherUserProfileState extends State<OtherUserProfile>
                           loadData();
                         });
                       },
-                    ).vP25;
+                    );
         });
   }
 
@@ -452,39 +447,25 @@ class OtherUserProfileState extends State<OtherUserProfile>
                             (2 * DesignConstants.horizontalPadding) -
                             5) /
                         2,
-                    height: 100,
+                    height: 50,
                     color: AppColorConstants.cardColor,
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        ThemeIconWidget(
-                          ThemeIcon.gallery,
-                          size: 30,
-                          // color: AppColorConstants.themeColor,
+                        BodyLargeText(
+                          postsString,
+                          weight: TextWeight.semiBold,
                         ),
                         const SizedBox(
-                          width: 20,
+                          height: 10,
                         ),
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            BodyLargeText(
-                              postsString,
-                              weight: TextWeight.bold,
-                            ),
-                            const SizedBox(
-                              height: 10,
-                            ),
-                            BodyLargeText(
-                              _profileController
-                                  .user.value!.totalPost.formatNumber,
-                              weight: TextWeight.bold,
-                            ),
-                          ],
+                        BodyMediumText(
+                          '(${_profileController.user.value!.totalPost.formatNumber})',
+                          weight: TextWeight.bold,
                         ),
                       ],
                     ),
-                  ).round(20).ripple(() {
+                  ).round(10).ripple(() {
                     if (_profileController.user.value!.totalPost > 0) {
                       Get.to(() => Posts(
                             userId: _profileController.user.value!.id,
@@ -500,39 +481,25 @@ class OtherUserProfileState extends State<OtherUserProfile>
                             (2 * DesignConstants.horizontalPadding) -
                             5) /
                         2,
-                    height: 100,
+                    height: 50,
                     color: AppColorConstants.cardColor,
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        ThemeIconWidget(
-                          ThemeIcon.videoCamera,
-                          size: 30,
-                          // color: AppColorConstants.themeColor,
+                        BodyLargeText(
+                          reelsString,
+                          weight: TextWeight.semiBold,
                         ),
                         const SizedBox(
-                          width: 20,
+                          height: 10,
                         ),
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            BodyLargeText(
-                              reelsString,
-                              weight: TextWeight.bold,
-                            ),
-                            const SizedBox(
-                              height: 10,
-                            ),
-                            BodyLargeText(
-                              _profileController
-                                  .user.value!.totalReels.formatNumber,
-                              weight: TextWeight.bold,
-                            ),
-                          ],
+                        BodyMediumText(
+                          '(${_profileController.user.value!.totalReels.formatNumber})',
+                          weight: TextWeight.bold,
                         ),
                       ],
                     ),
-                  ).round(20).ripple(() {
+                  ).round(10).ripple(() {
                     if (_profileController.user.value!.totalReels > 0) {
                       ReelsController reelsController = Get.find();
 
@@ -557,39 +524,25 @@ class OtherUserProfileState extends State<OtherUserProfile>
                             (2 * DesignConstants.horizontalPadding) -
                             5) /
                         2,
-                    height: 100,
+                    height: 50,
                     color: AppColorConstants.cardColor,
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        ThemeIconWidget(
-                          ThemeIcon.mention,
-                          size: 30,
-                          // color: AppColorConstants.themeColor,
+                        BodyLargeText(
+                          mentionsString,
+                          weight: TextWeight.semiBold,
                         ),
                         const SizedBox(
-                          width: 20,
+                          height: 10,
                         ),
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            BodyLargeText(
-                              mentionsString,
-                              weight: TextWeight.bold,
-                            ),
-                            const SizedBox(
-                              height: 10,
-                            ),
-                            BodyLargeText(
-                              _profileController
-                                  .user.value!.totalMentions.formatNumber,
-                              weight: TextWeight.bold,
-                            ),
-                          ],
+                        BodyMediumText(
+                          '(${_profileController.user.value!.totalMentions.formatNumber})',
+                          weight: TextWeight.bold,
                         ),
                       ],
                     ),
-                  ).round(20).ripple(() {
+                  ).round(10).ripple(() {
                     if (_profileController.user.value!.totalMentions > 0) {
                       Get.to(() =>
                           Mentions(userId: _profileController.user.value!.id));
@@ -603,39 +556,25 @@ class OtherUserProfileState extends State<OtherUserProfile>
                             (2 * DesignConstants.horizontalPadding) -
                             5) /
                         2,
-                    height: 100,
+                    height: 50,
                     color: AppColorConstants.cardColor,
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        ThemeIconWidget(
-                          ThemeIcon.group,
-                          size: 30,
-                          // color: AppColorConstants.themeColor,
+                        BodyLargeText(
+                          clubsString,
+                          weight: TextWeight.semiBold,
                         ),
                         const SizedBox(
-                          width: 20,
+                          height: 10,
                         ),
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            BodyLargeText(
-                              clubsString,
-                              weight: TextWeight.bold,
-                            ),
-                            const SizedBox(
-                              height: 10,
-                            ),
-                            BodyLargeText(
-                              _profileController
-                                  .user.value!.totalClubs.formatNumber,
-                              weight: TextWeight.bold,
-                            ),
-                          ],
+                        BodyMediumText(
+                          '(${_profileController.user.value!.totalClubs.formatNumber})',
+                          weight: TextWeight.bold,
                         ),
                       ],
                     ),
-                  ).round(20).ripple(() {
+                  ).round(10).ripple(() {
                     if (_profileController.user.value!.totalClubs > 0) {
                       Get.to(() => UsersClubs(
                             user: _profileController.user.value!,

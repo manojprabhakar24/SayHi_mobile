@@ -21,17 +21,17 @@ class UsersController extends GetxController {
 
   setIsOnlineFilter() {
     searchModel.isOnline = 1;
-    loadUsers((){});
+    loadUsers(() {});
   }
 
   setSearchFromParam(SearchFrom source) {
     searchModel.searchFrom = source;
-    loadUsers((){});
+    loadUsers(() {});
   }
 
   setIsExactMatchFilter() {
     searchModel.isExactMatch = 1;
-    loadUsers((){});
+    loadUsers(() {});
   }
 
   setSearchTextFilter(String text, VoidCallback callback) {
@@ -80,29 +80,26 @@ class UsersController extends GetxController {
 
             update();
           });
-    }
-    else{
+    } else {
       callback();
     }
   }
 
   followUser(UserModel user) {
-    user.isFollowing = true;
+    user.followingStatus =
+        user.isPrivate ? FollowingStatus.requested : FollowingStatus.following;
     if (searchedUsers.where((e) => e.id == user.id).isNotEmpty) {
       searchedUsers[
           searchedUsers.indexWhere((element) => element.id == user.id)] = user;
     }
-    // if (suggestedUsers.where((e) => e.id == user.id).isNotEmpty) {
-    //   suggestedUsers[
-    //   suggestedUsers.indexWhere((element) => element.id == user.id)] = user;
-    // }
+
     update();
 
     UsersApi.followUnfollowUser(isFollowing: true, userId: user.id);
   }
 
   unFollowUser(UserModel user) {
-    user.isFollowing = false;
+    user.followingStatus = FollowingStatus.notFollowing;
     if (searchedUsers.where((e) => e.id == user.id).isNotEmpty) {
       searchedUsers[
           searchedUsers.indexWhere((element) => element.id == user.id)] = user;
@@ -114,5 +111,4 @@ class UsersController extends GetxController {
     update();
     UsersApi.followUnfollowUser(isFollowing: false, userId: user.id);
   }
-
 }

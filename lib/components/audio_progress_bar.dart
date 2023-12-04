@@ -1,4 +1,5 @@
 import 'package:audio_video_progress_bar/audio_video_progress_bar.dart';
+import 'package:flutter_audio_waveforms/flutter_audio_waveforms.dart';
 
 import '../helper/imports/common_import.dart';
 import '../manager/player_manager.dart';
@@ -12,6 +13,17 @@ class AudioProgressBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Obx(() {
+      // return RectangleWaveform(
+      //   maxDuration:
+      //       _playerManager.progress.value?.total ?? const Duration(seconds: 0),
+      //   elapsedDuration: _playerManager.currentlyPlayingAudio.value?.id == id
+      //       ? _playerManager.progress.value?.current ??
+      //           const Duration(seconds: 0)
+      //       : const Duration(seconds: 0),
+      //   samples: [0, 5, 10, 20, 5, 4, 8, 20, 4, 2, 6, 7, 8, 1, 10, -10],
+      //   height: 20,
+      //   width: Get.width - (2 * DesignConstants.horizontalPadding),
+      // );
       return ProgressBar(
         thumbColor: AppColorConstants.themeColor.darken(),
         progressBarColor: AppColorConstants.iconColor,

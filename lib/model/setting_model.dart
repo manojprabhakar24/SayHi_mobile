@@ -294,10 +294,10 @@ class SettingModel {
         textColorForDarkTheme: json["theme_dark_text_color"] ?? 'FFFFFF',
         font: json["theme_font"],
         chatGPTKey: json["chat_gpt_key"],
-        imglyApiKey: json["imglyApiKey"],
+        imglyApiKey: json["imgly_key"],
       );
 
   bool get canEditPhotoVideo {
-    return imglyApiKey != null && enablePostPhotoVideoEdit;
+    return enablePostPhotoVideoEdit;
   }
 }

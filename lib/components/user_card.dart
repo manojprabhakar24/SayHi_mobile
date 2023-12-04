@@ -11,6 +11,54 @@ import '../model/story_model.dart';
 import '../screens/profile/other_user_profile.dart';
 import '../screens/settings_menu/settings_controller.dart';
 
+class FollowUnfollowButton extends StatelessWidget {
+  final UserModel user;
+  final VoidCallback? followCallback;
+  final VoidCallback? unFollowCallback;
+
+  const FollowUnfollowButton(
+      {Key? key,
+      required this.user,
+      required this.followCallback,
+      required this.unFollowCallback})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: 35,
+      width: 120,
+      child: user.followingStatus == FollowingStatus.notFollowing
+          ? AppThemeBorderButton(
+              text: user.isFollower == true
+                  ? followBackString.tr
+                  : followString.tr,
+              onPress: () {
+                if (followCallback != null) {
+                  followCallback!();
+                }
+              })
+          : user.followingStatus == FollowingStatus.requested
+              ? AppThemeBorderButton(
+                  text: requestedString.tr,
+                  backgroundColor:
+                      AppColorConstants.themeColor.withOpacity(0.2),
+                  onPress: () {
+                    if (unFollowCallback != null) {
+                      unFollowCallback!();
+                    }
+                  })
+              : AppThemeButton(
+                  text: unFollowString.tr,
+                  onPress: () {
+                    if (unFollowCallback != null) {
+                      unFollowCallback!();
+                    }
+                  }),
+    );
+  }
+}
+
 class UserInfo extends StatelessWidget {
   final UserModel model;
 
@@ -142,31 +190,10 @@ class UserTile extends StatelessWidget {
         ),
         // const Spacer(),
         if (followCallback != null && profile.isMe == false)
-          SizedBox(
-            height: 35,
-            width: 120,
-            child: profile.isFollowing == false
-                ? AppThemeBorderButton(
-                    // icon: ThemeIcon.message,
-                    text: profile.isFollower == true
-                        ? followBackString.tr
-                        : followString.tr,
-                    textStyle: TextStyle(
-                        fontSize: FontSizes.b2,
-                        fontWeight: TextWeight.medium,
-                        color: AppColorConstants.themeColor),
-                    onPress: () {
-                      if (followCallback != null) {
-                        followCallback!();
-                      }
-                    })
-                : AppThemeButton(
-                    text: unFollowString.tr,
-                    onPress: () {
-                      if (unFollowCallback != null) {
-                        unFollowCallback!();
-                      }
-                    }),
+          FollowUnfollowButton(
+            user: profile,
+            followCallback: followCallback,
+            unFollowCallback: unFollowCallback,
           ),
         if (chatCallback != null)
           Row(
@@ -269,14 +296,14 @@ class UserCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      Heading6Text(
+                      BodyLargeText(
                         profile.userName,
                         weight: TextWeight.semiBold,
-                        // weight: TextWeight.regular,
                         maxLines: 1,
                       ),
-                      if (profile.isVerified) verifiedUserTag()
+                      if (profile.isVerified) verifiedUserTag(),
                     ],
                   ).bP4,
                   BodyMediumText(
@@ -286,39 +313,16 @@ class UserCard extends StatelessWidget {
                 ],
               ),
             ),
-            if (followCallback != null && profile.isMe == false)
-              profile.isFollowing == true
-                  ? Container(
-                      height: 40,
-                      width: 40,
-                      color: AppColorConstants.themeColor,
-                      child: ThemeIconWidget(
-                        ThemeIcon.checkMark,
-                        color: Colors.white,
-                        size: 25,
-                      ),
-                    ).round(10).ripple(() {
-                      if (unFollowCallback != null) {
-                        unFollowCallback!();
-                      }
-                    })
-                  : Container(
-                      height: 40,
-                      width: 40,
-                      color: AppColorConstants.cardColor,
-                      child: ThemeIconWidget(
-                        ThemeIcon.plus,
-                        size: 25,
-                        // color: Colors.white,
-                      ),
-                    ).round(10).ripple(() {
-                      if (followCallback != null) {
-                        followCallback!();
-                      }
-                    }),
           ],
         ),
-        // const Spacer(),
+        const SizedBox(
+          height: 10,
+        ),
+        FollowUnfollowButton(
+          user: profile,
+          followCallback: followCallback,
+          unFollowCallback: unFollowCallback,
+        ),
       ],
     );
   }
@@ -997,5 +1001,100 @@ class StoryViewerTile extends StatelessWidget {
         // const Spacer(),
       ],
     );
+  }
+}
+
+class FollowRequestSenderUserTile extends StatelessWidget {
+  final UserModel profile;
+
+  final VoidCallback acceptCallback;
+  final VoidCallback declineCallback;
+
+  const FollowRequestSenderUserTile({
+    Key? key,
+    required this.profile,
+    required this.acceptCallback,
+    required this.declineCallback,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      color: AppColorConstants.cardColor,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              UserAvatarView(
+                user: profile,
+                size: 40,
+                hideLiveIndicator: true,
+                hideOnlineIndicator: true,
+              ),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        BodyLargeText(
+                          profile.userName,
+                          // weight: TextWeight.regular,
+                          maxLines: 1,
+                        ),
+                        if (profile.isVerified) verifiedUserTag()
+                      ],
+                    ).bP4,
+                    profile.country != null
+                        ? BodyMediumText(
+                            '${profile.city!}, ${profile.country!}',
+                          )
+                        : Container()
+                  ],
+                ).hP8,
+              ),
+              // const Spacer(),
+            ],
+          ).ripple(() {
+            Get.to(() => OtherUserProfile(
+                  userId: profile.id,
+                  user: profile,
+                ));
+          }),
+          const SizedBox(
+            height: 20,
+          ),
+          Row(
+            children: [
+              SizedBox(
+                height: 35,
+                width: 120,
+                child: AppThemeButton(
+                    // icon: ThemeIcon.message,
+                    text: acceptString.tr,
+                    onPress: () {
+                      acceptCallback();
+                    }),
+              ),
+              const SizedBox(
+                width: 10,
+              ),
+              SizedBox(
+                height: 35,
+                width: 120,
+                child: AppThemeBorderButton(
+                    backgroundColor: AppColorConstants.cardColor,
+                    // icon: ThemeIcon.message,
+                    text: declineString.tr,
+                    onPress: () {
+                      declineCallback();
+                    }),
+              )
+            ],
+          ),
+        ],
+      ).p(DesignConstants.horizontalPadding),
+    ).round(20);
   }
 }

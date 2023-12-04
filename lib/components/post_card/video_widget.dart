@@ -13,6 +13,7 @@ class VideoPostTile extends StatefulWidget {
   final String url;
   final bool isLocalFile;
   final bool play;
+  final VoidCallback onTapActionHandler;
 
   const VideoPostTile(
       {Key? key,
@@ -20,7 +21,8 @@ class VideoPostTile extends StatefulWidget {
       required this.width,
       required this.url,
       required this.isLocalFile,
-      required this.play})
+      required this.play,
+      required this.onTapActionHandler})
       : super(key: key);
 
   @override
@@ -75,6 +77,7 @@ class _VideoPostTileState extends State<VideoPostTile> {
         } else {
           muteAudio();
         }
+        widget.onTapActionHandler();
       },
       child: Stack(
         children: [

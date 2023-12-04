@@ -129,6 +129,7 @@ class PostMediaTile extends StatelessWidget {
             url: media.filePath,
             isLocalFile: false,
             play: homeController.currentVisibleVideoId.value == media.id,
+            onTapActionHandler: () {},
           )),
     );
   }

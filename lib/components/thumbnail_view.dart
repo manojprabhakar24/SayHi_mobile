@@ -47,7 +47,7 @@ class _MediaThumbnailViewState extends State<MediaThumbnailView> {
                     future: genThumbnail(widget.media.video!),
                     builder: (BuildContext context, AsyncSnapshot snapshot) {
                       if (snapshot.hasData) {
-                        final image = snapshot.data.image;
+                        final image = snapshot.data.userImage;
 
                         return Column(
                           mainAxisAlignment: MainAxisAlignment.center,

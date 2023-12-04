@@ -1359,3 +1359,21 @@ String youRepliedToStory = 'You replied to their story';
 
 String reactedToYourStory = 'Reacted to your story';
 String repliedToYourStory = 'Replied to your story';
+
+String privateAccountString = 'Private Account';
+String privateAccountMsgString =
+    'When your account is private, only people you approve can see your posts';
+
+String followRequestsString = 'Follow requests';
+String acceptFollowRequestsString = 'Accept reject the pending Follow requests';
+
+String startedFollowingYouString = 'started following you';
+String sentYourFollowRequestString = 'sent you follow request';
+String commentedOnYourPostString = 'commented on your post';
+String likedYourPostString = 'liked your post';
+String adminAddedNewCompetitionString = 'Admin Added new competition';
+String adminRepliedOnYourSupportRequestString = 'Replied on your support request';
+String congratsYourVerificationIsApprovedString = 'Congratulations, Your verification request has been approved.';
+String shareOnlineStatusStaring = 'Share online status';
+String shareOnlineStatusMsgString =
+    'If you don\'t share your last seen and online,you won\'t be able to see other people\'s last seen and online status also';

@@ -12,6 +12,7 @@ import 'package:google_mlkit_smart_reply/google_mlkit_smart_reply.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:profanity_filter/profanity_filter.dart';
 import '../../components/notification_banner.dart';
+import '../../helper/enum_linking.dart';
 import '../../helper/permission_utils.dart';
 import '../../manager/db_manager_realm.dart';
 import '../../manager/socket_manager.dart';
@@ -1595,7 +1596,7 @@ class ChatDetailController extends GetxController {
       if (chatRoom.value?.isGroupChat == false) {
         chatRoom.value!.roomMembers = chatRoom.value!.roomMembers.map((member) {
           if (member.userDetail.id == userId) {
-            member.userDetail.isOnline = true;
+            member.userDetail.isOnline = isOnline;
           }
           return member;
         }).toList();

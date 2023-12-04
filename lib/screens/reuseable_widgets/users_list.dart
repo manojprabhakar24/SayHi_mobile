@@ -31,7 +31,7 @@ class UsersList extends StatelessWidget {
                     crossAxisCount: 2,
                     crossAxisSpacing: 15.0,
                     mainAxisSpacing: 15.0,
-                    childAspectRatio: 0.7),
+                    childAspectRatio: 0.6),
                 controller: scrollController,
                 padding: EdgeInsets.only(
                     top: 20,

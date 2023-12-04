@@ -28,6 +28,7 @@ class _ChatDetailState extends State<ChatDetail> {
   final RefreshController _refreshController =
       RefreshController(initialRefresh: false);
   final SettingsController _settingsController = Get.find();
+  final UserProfileManager _userProfileManager = Get.find();
 
   @override
   void initState() {
@@ -220,19 +221,30 @@ class _ChatDetailState extends State<ChatDetail> {
                                   _chatDetailController
                                               .chatRoom.value!.isGroupChat ==
                                           false
-                                      ? Container(
-                                          height: 8,
-                                          width: 8,
-                                          color: _chatDetailController
+                                      ? _chatDetailController
                                                       .chatRoom
                                                       .value!
                                                       .opponent
                                                       .userDetail
-                                                      .isOnline ==
-                                                  true
-                                              ? AppColorConstants.themeColor
-                                              : AppColorConstants.disabledColor,
-                                        ).circular
+                                                      .isShareOnlineStatus ==
+                                                  true &&
+                                              _userProfileManager.user.value!
+                                                  .isShareOnlineStatus
+                                          ? Container(
+                                              height: 8,
+                                              width: 8,
+                                              color: _chatDetailController
+                                                          .chatRoom
+                                                          .value!
+                                                          .opponent
+                                                          .userDetail
+                                                          .isOnline ==
+                                                      true
+                                                  ? AppColorConstants.themeColor
+                                                  : AppColorConstants
+                                                      .disabledColor,
+                                            ).circular
+                                          : Container()
                                       : Container(),
                                 ],
                               ),
@@ -250,19 +262,31 @@ class _ChatDetailState extends State<ChatDetail> {
                                       ? BodyMediumText(
                                           typingString.tr,
                                         )
-                                      : BodyMediumText(
-                                          _chatDetailController
+                                      : _chatDetailController
                                                       .chatRoom
                                                       .value!
                                                       .opponent
                                                       .userDetail
-                                                      .isOnline ==
-                                                  true
-                                              ? onlineString.tr
-                                              : _chatDetailController.opponent
-                                                      .value?.lastSeenAtTime ??
-                                                  '',
-                                          weight: TextWeight.medium)
+                                                      .isShareOnlineStatus ==
+                                                  true &&
+                                              _userProfileManager.user.value!
+                                                  .isShareOnlineStatus
+                                          ? BodyMediumText(
+                                              _chatDetailController
+                                                          .chatRoom
+                                                          .value!
+                                                          .opponent
+                                                          .userDetail
+                                                          .isOnline ==
+                                                      true
+                                                  ? onlineString.tr
+                                                  : _chatDetailController
+                                                          .opponent
+                                                          .value
+                                                          ?.lastSeenAtTime ??
+                                                      '',
+                                              weight: TextWeight.medium)
+                                          : Container()
                                   : SizedBox(
                                       width: Get.width - 120,
                                       child: BodyMediumText(

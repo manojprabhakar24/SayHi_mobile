@@ -95,17 +95,20 @@ class NotificationTileType4 extends StatelessWidget {
 
   String notificationMessage(NotificationType type) {
     if (type == NotificationType.follow) {
-      return 'started following you';
+      return startedFollowingYouString.tr;
+    } else if (type == NotificationType.followRequest) {
+      return sentYourFollowRequestString.tr;
     } else if (type == NotificationType.comment) {
-      return 'commented on your post';
+      return commentedOnYourPostString.tr;
     } else if (type == NotificationType.like) {
-      return 'liked your post';
+      return likedYourPostString.tr;
     } else if (type == NotificationType.competitionAdded) {
-      return 'Added new competition';
+
+      return adminAddedNewCompetitionString.tr;
     } else if (type == NotificationType.supportRequest) {
-      return 'Replied on your support request';
+      return adminRepliedOnYourSupportRequestString.tr;
     } else if (type == NotificationType.verification) {
-      return 'Congratulations, Your verification request has been approved.';
+      return congratsYourVerificationIsApprovedString.tr;
     }
     return '';
   }

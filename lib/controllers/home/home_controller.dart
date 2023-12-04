@@ -389,7 +389,7 @@ class HomeController extends GetxController {
         name: '',
         userName: _userProfileManager.user.value!.userName,
         // email: '',
-        image: _userProfileManager.user.value!.picture,
+        userImage: _userProfileManager.user.value!.picture,
         media: responses[0] as List<StoryMediaModel>);
 
     if ((responses[0] as List<StoryMediaModel>).isNotEmpty) {

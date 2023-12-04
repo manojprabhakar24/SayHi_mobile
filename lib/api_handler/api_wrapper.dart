@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
 import '../helper/enum.dart';
+import '../helper/enum_linking.dart';
 import '../helper/localization_strings.dart';
 import '../util/constant_util.dart';
 import '../util/shared_prefs.dart';
@@ -54,6 +55,7 @@ class ApiWrapper {
 
     return http.get(Uri.parse(urlString)).then((http.Response response) async {
       dynamic data = _decoder.convert(response.body);
+      print(data);
       Loader.dismiss();
 
       return ApiResponse.fromJson(data);
@@ -83,6 +85,7 @@ class ApiWrapper {
 
     String urlString = '${NetworkConstantsUtil.baseUrl}$url';
 
+    print(urlString);
     return http.post(Uri.parse(urlString), body: jsonEncode(param), headers: {
       "Authorization": "Bearer ${authKey!}",
       'Content-Type': 'application/json'

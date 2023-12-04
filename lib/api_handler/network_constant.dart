@@ -36,11 +36,13 @@ class NetworkConstantsUtil {
   static String deleteAccount = 'users/delete-account';
   static String profileCategoryTypes = 'profile-category-types';
   static String userView = 'users/view-counter';
+  static String updateAccountPrivacy = 'users/profile-visibility';
+  static String updateOnlineStatusSetting = 'users/show-chat-online-status';
 
   //*********** User *************//
   static String getSuggestedUsers =
       'users/sugested-user?expand=isFollowing,isFollower,userLiveDetail';
-  static String followUser = 'followers';
+  static String followUser = 'followers/request';
   static String unfollowUser = 'followers/unfollow';
   static String followMultipleUser = 'followers/follow-multiple';
 
@@ -69,9 +71,12 @@ class NetworkConstantsUtil {
   static String supportRequests = 'support-requests?is_reply=';
   static String supportRequestView = 'support-requests/id';
   static String notificationSettings = 'users/push-notification-status';
-
+  static String followRequests =
+      'followers/my-received-following-request?expand=followerUserDetail,followerUserDetail.isFollowing,followerUserDetail.isFollower';
   static String currentLiveUsers =
       'followers/my-following-live?expand=followingUserDetail,followingUserDetail.isFollowing,,followingUserDetail.isFollower,followingUserDetail.userLiveDetail&user_id=';
+  static String acceptFollowRequestString = 'followers/accept-request';
+  static String declineFollowRequestString = 'followers/cancel-request';
 
   static String getSettings = 'settings';
   static String reportGenericComment = 'reported-contents';

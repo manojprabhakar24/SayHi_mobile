@@ -37,17 +37,15 @@ class StoryUpdatesBar extends StatelessWidget {
                   height: storyCircleSize,
                   width: storyCircleSize,
                   child: ThemeIconWidget(
-                    ThemeIcon.plus,
-                    size: storyCircleSize,
+                    ThemeIcon.plusSymbol,
+                    size: 28,
                     color: AppColorConstants.themeColor.darken(),
                   ),
-                )
-                    .borderWithRadius(value: 2, radius: storyCircleSize / 2)
-                    .ripple(() {
+                ).borderWithRadius(value: 2, radius: 50).ripple(() {
                   addStoryCallback();
                 }),
                 const SizedBox(
-                  height: 5,
+                  height: 2,
                 ),
                 BodySmallText(yourStoryString.tr, weight: TextWeight.medium)
               ],
@@ -71,7 +69,7 @@ class StoryUpdatesBar extends StatelessWidget {
                     ),
                     Expanded(
                         child: BodySmallText(liveUsers[index - 1].userName,
-                            maxLines: 1, weight: TextWeight.medium)
+                                maxLines: 1, weight: TextWeight.medium)
                             .hP4)
                   ],
                 ));
@@ -82,9 +80,9 @@ class StoryUpdatesBar extends StatelessWidget {
                   children: [
                     MediaThumbnailView(
                       borderColor:
-                      stories[index - liveUsers.length - 1].isViewed == true
-                          ? AppColorConstants.disabledColor
-                          : AppColorConstants.themeColor,
+                          stories[index - liveUsers.length - 1].isViewed == true
+                              ? AppColorConstants.disabledColor
+                              : AppColorConstants.themeColor,
                       media: stories[index - liveUsers.length - 1].media.last,
                     ).ripple(() {
                       viewStoryCallback(stories[index - liveUsers.length - 1]);
@@ -96,9 +94,9 @@ class StoryUpdatesBar extends StatelessWidget {
                     ),
                     Expanded(
                       child: BodySmallText(
-                          stories[index - liveUsers.length - 1].userName,
-                          maxLines: 1,
-                          weight: TextWeight.medium)
+                              stories[index - liveUsers.length - 1].userName,
+                              maxLines: 1,
+                              weight: TextWeight.medium)
                           .hP4,
                     ),
                   ],

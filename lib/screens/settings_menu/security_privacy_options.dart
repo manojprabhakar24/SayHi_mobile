@@ -33,6 +33,14 @@ class _PrivacyOptionsState extends State<PrivacyOptions> {
                   children: [
                     // shareLocationTile(),
                     bioMetricLoginTile(),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    accountPrivacyTile(),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    onlineStatusTile()
                   ],
                 ),
                 const SizedBox(
@@ -82,45 +90,120 @@ class _PrivacyOptionsState extends State<PrivacyOptions> {
   bioMetricLoginTile() {
     return Obx(() => settingsController.bioMetricType.value == 0
         ? Container()
-        : Column(
-            children: [
-              SizedBox(
-                height: 50,
-                child: Row(children: [
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        BodyLargeText(faceIdOrTouchIdString.tr,
-                                weight: TextWeight.medium)
-                            .bP4,
-                        BodySmallText(
-                          unlockYourAppUsingBiometricLoginString.tr,
-                        ),
-                      ],
+        : SizedBox(
+            height: 50,
+            child: Row(children: [
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    BodyLargeText(faceIdOrTouchIdString.tr,
+                            weight: TextWeight.medium)
+                        .bP4,
+                    BodySmallText(
+                      unlockYourAppUsingBiometricLoginString.tr,
                     ),
-                  ),
-                  // const Spacer(),
-                  FlutterSwitch(
-                    inactiveColor: AppColorConstants.disabledColor,
-                    activeColor: AppColorConstants.themeColor,
-                    width: 50.0,
-                    height: 30.0,
-                    valueFontSize: 15.0,
-                    toggleSize: 20.0,
-                    value: settingsController.bioMetricAuthStatus.value,
-                    borderRadius: 30.0,
-                    padding: 8.0,
-                    // showOnOff: true,
-                    onToggle: (value) {
-                      settingsController.biometricLogin(value);
-                    },
-                  ),
-                ]).hp(DesignConstants.horizontalPadding),
+                  ],
+                ),
               ),
-              divider()
-            ],
+              // const Spacer(),
+              FlutterSwitch(
+                inactiveColor: AppColorConstants.disabledColor,
+                activeColor: AppColorConstants.themeColor,
+                width: 50.0,
+                height: 30.0,
+                valueFontSize: 15.0,
+                toggleSize: 20.0,
+                value: settingsController.bioMetricAuthStatus.value,
+                borderRadius: 30.0,
+                padding: 8.0,
+                // showOnOff: true,
+                onToggle: (value) {
+                  settingsController.biometricLogin(value);
+                },
+              ),
+            ]).hp(DesignConstants.horizontalPadding),
           ));
+  }
+
+  accountPrivacyTile() {
+    return Obx(() => SizedBox(
+          height: 60,
+          child: Row(children: [
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  BodyLargeText(privateAccountString.tr,
+                          weight: TextWeight.medium)
+                      .bP4,
+                  BodySmallText(
+                    privateAccountMsgString.tr,
+                  ),
+                ],
+              ),
+            ),
+            // const Spacer(),
+            FlutterSwitch(
+              inactiveColor: AppColorConstants.disabledColor,
+              activeColor: AppColorConstants.themeColor,
+              width: 50.0,
+              height: 30.0,
+              valueFontSize: 15.0,
+              toggleSize: 20.0,
+              value: settingsController.isPrivateAccount.value,
+              borderRadius: 30.0,
+              padding: 8.0,
+              onToggle: (isPrivate) {
+                settingsController.toggleAccountPrivacy(isPrivate);
+              },
+            ),
+          ]).hp(DesignConstants.horizontalPadding),
+        ));
+  }
+
+  onlineStatusTile() {
+    return Obx(() => SizedBox(
+          height: 80,
+          child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
+            ThemeIconWidget(
+              ThemeIcon.chat,
+              size: 20,
+              color: AppColorConstants.mainTextColor,
+            ),
+            const SizedBox(width: 10),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  BodyLargeText(shareOnlineStatusStaring.tr,
+                          weight: TextWeight.medium)
+                      .bP4,
+                  BodySmallText(
+                    shareOnlineStatusMsgString.tr,
+                  ),
+                ],
+              ),
+            ),
+            // const Spacer(),
+            FlutterSwitch(
+              inactiveColor: AppColorConstants.disabledColor,
+              activeColor: AppColorConstants.themeColor,
+              width: 50.0,
+              height: 30.0,
+              valueFontSize: 15.0,
+              toggleSize: 20.0,
+              value: settingsController.isShareOnlineStatus.value,
+              borderRadius: 30.0,
+              padding: 8.0,
+              onToggle: (status) {
+                settingsController.toggleShowOnlineStatusSetting(status);
+              },
+            ),
+          ]).hp(DesignConstants.horizontalPadding),
+        ));
   }
 }

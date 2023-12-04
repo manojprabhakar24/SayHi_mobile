@@ -72,7 +72,8 @@ class _AudioPostTileState extends State<AudioPostTile> {
                     (widget.isResharedPost ? 140 : 50),
                 height: 20,
                 child: AudioProgressBar(
-                    id: widget.post.gallery.first.id.toString()),
+                    id: widget.post.gallery.first.id.toString()
+                ),
               ),
             ],
           ),

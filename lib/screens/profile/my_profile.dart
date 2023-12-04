@@ -3,6 +3,7 @@ import 'package:foap/helper/imports/reel_imports.dart';
 import 'package:foap/helper/number_extension.dart';
 import 'package:foap/screens/profile/update_profile.dart';
 import 'package:foap/screens/profile/users_club_listing.dart';
+import 'package:foap/screens/settings_menu/notifications.dart';
 import 'package:foap/screens/settings_menu/settings.dart';
 import '../../components/highlights_bar.dart';
 import '../../controllers/post/post_controller.dart';
@@ -86,8 +87,8 @@ class MyProfileState extends State<MyProfile>
               SingleChildScrollView(
                 child: Column(children: [
                   if (_settingsController.appearanceChanged!.value) Container(),
-                  addProfileView(),
-                  addHighlightsView(),
+                  addProfileView().bP16,
+                  addHighlightsView().bP16,
                   contentWidget(),
                   const SizedBox(
                     height: 20,
@@ -250,7 +251,7 @@ class MyProfileState extends State<MyProfile>
     ).round(15);
   }
 
-  addHighlightsView() {
+  Widget addHighlightsView() {
     return GetBuilder<HighlightsController>(
         init: _highlightsController,
         builder: (ctx) {
@@ -267,27 +268,61 @@ class MyProfileState extends State<MyProfile>
                       loadData();
                     });
                   },
-                ).vP25;
+                );
         });
   }
 
   Widget appBar() {
     return SizedBox(
-      height: 100,
+      height: 120,
       child: widget.showBack == true
           ? backNavigationBarWithTrailingWidget(
               title: '',
-              widget: ThemeIconWidget(
-                ThemeIcon.setting,
-                color: AppColorConstants.themeColor,
-              ).ripple(() {
-                Get.to(() => const Settings());
-              }),
+              widget: Row(
+                children: [
+                  ThemeIconWidget(
+                    ThemeIcon.notification,
+                    size: 25,
+                    color: AppColorConstants.themeColor,
+                  ).ripple(() {
+                    Get.to(() => const NotificationsScreen());
+                  }),
+                  const SizedBox(
+                    width: 20,
+                  ),
+                  ThemeIconWidget(
+                    ThemeIcon.setting,
+                    size: 25,
+                    color: AppColorConstants.themeColor,
+                  ).ripple(() {
+                    Get.to(() => const Settings());
+                  })
+                ],
+              ),
             )
-          : titleNavigationBarWithIcon(
+          : titleNavigationBarWithWidget(
               title: '',
-              icon: ThemeIcon.setting,
-              iconColor: AppColorConstants.themeColor,
+              widget: Row(
+                children: [
+                  ThemeIconWidget(
+                    ThemeIcon.notification,
+                    size: 25,
+                    color: AppColorConstants.themeColor,
+                  ).ripple(() {
+                    Get.to(() => const NotificationsScreen());
+                  }),
+                  const SizedBox(
+                    width: 20,
+                  ),
+                  ThemeIconWidget(
+                    ThemeIcon.setting,
+                    size: 25,
+                    color: AppColorConstants.themeColor,
+                  ).ripple(() {
+                    Get.to(() => const Settings());
+                  })
+                ],
+              ),
               completion: () {
                 Get.to(() => const Settings());
               }),
@@ -304,38 +339,25 @@ class MyProfileState extends State<MyProfile>
             Container(
               width:
                   (Get.width - (2 * DesignConstants.horizontalPadding) - 5) / 2,
-              height: 100,
+              height: 50,
               color: AppColorConstants.cardColor,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  ThemeIconWidget(
-                    ThemeIcon.gallery,
-                    size: 30,
-                    // color: AppColorConstants.themeColor,
+                  BodyLargeText(
+                    postsString,
+                    weight: TextWeight.semiBold,
                   ),
                   const SizedBox(
-                    width: 20,
+                    height: 10,
                   ),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      BodyLargeText(
-                        postsString,
-                        weight: TextWeight.bold,
-                      ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      BodyLargeText(
-                        _userProfileManager.user.value!.totalPost.formatNumber,
-                        weight: TextWeight.bold,
-                      ),
-                    ],
+                  BodyMediumText(
+                    '(${_userProfileManager.user.value!.totalPost.formatNumber})',
+                    weight: TextWeight.bold,
                   ),
                 ],
               ),
-            ).round(20).ripple(() {
+            ).round(10).ripple(() {
               if (_userProfileManager.user.value!.totalPost > 0) {
                 Get.to(() => Posts(
                       userId: _userProfileManager.user.value!.id,
@@ -349,38 +371,25 @@ class MyProfileState extends State<MyProfile>
             Container(
               width:
                   (Get.width - (2 * DesignConstants.horizontalPadding) - 5) / 2,
-              height: 100,
+              height: 50,
               color: AppColorConstants.cardColor,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  ThemeIconWidget(
-                    ThemeIcon.videoCamera,
-                    size: 30,
-                    // color: AppColorConstants.themeColor,
+                  BodyLargeText(
+                    reelsString,
+                    weight: TextWeight.semiBold,
                   ),
                   const SizedBox(
-                    width: 20,
+                    height: 10,
                   ),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      BodyLargeText(
-                        reelsString,
-                        weight: TextWeight.bold,
-                      ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      BodyLargeText(
-                        _userProfileManager.user.value!.totalReels.formatNumber,
-                        weight: TextWeight.bold,
-                      ),
-                    ],
+                  BodyMediumText(
+                    '(${_userProfileManager.user.value!.totalReels.formatNumber})',
+                    weight: TextWeight.bold,
                   ),
                 ],
               ),
-            ).round(20).ripple(() {
+            ).round(10).ripple(() {
               if (_userProfileManager.user.value!.totalReels > 0) {
                 ReelsController reelsController = Get.find();
 
@@ -403,39 +412,25 @@ class MyProfileState extends State<MyProfile>
             Container(
               width:
                   (Get.width - (2 * DesignConstants.horizontalPadding) - 5) / 2,
-              height: 100,
+              height: 50,
               color: AppColorConstants.cardColor,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  ThemeIconWidget(
-                    ThemeIcon.mention,
-                    size: 30,
-                    // color: AppColorConstants.themeColor,
+                  BodyLargeText(
+                    mentionsString,
+                    weight: TextWeight.semiBold,
                   ),
                   const SizedBox(
-                    width: 20,
+                    height: 10,
                   ),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      BodyLargeText(
-                        mentionsString,
-                        weight: TextWeight.bold,
-                      ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      BodyLargeText(
-                        _userProfileManager
-                            .user.value!.totalMentions.formatNumber,
-                        weight: TextWeight.bold,
-                      ),
-                    ],
+                  BodyMediumText(
+                    '(${_userProfileManager.user.value!.totalMentions.formatNumber})',
+                    weight: TextWeight.bold,
                   ),
                 ],
               ),
-            ).round(20).ripple(() {
+            ).round(10).ripple(() {
               if (_userProfileManager.user.value!.totalMentions > 0) {
                 Get.to(
                     () => Mentions(userId: _profileController.user.value!.id));
@@ -447,34 +442,21 @@ class MyProfileState extends State<MyProfile>
             Container(
               width:
                   (Get.width - (2 * DesignConstants.horizontalPadding) - 5) / 2,
-              height: 100,
+              height: 50,
               color: AppColorConstants.cardColor,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  ThemeIconWidget(
-                    ThemeIcon.group,
-                    size: 30,
-                    // color: AppColorConstants.themeColor,
+                  BodyLargeText(
+                    clubsString,
+                    weight: TextWeight.semiBold,
                   ),
                   const SizedBox(
-                    width: 20,
+                    height: 10,
                   ),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      BodyLargeText(
-                        clubsString,
-                        weight: TextWeight.bold,
-                      ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      BodyLargeText(
-                        _userProfileManager.user.value!.totalClubs.formatNumber,
-                        weight: TextWeight.bold,
-                      ),
-                    ],
+                  BodyMediumText(
+                    '(${_userProfileManager.user.value!.totalClubs.formatNumber})',
+                    weight: TextWeight.bold,
                   ),
                 ],
               ),

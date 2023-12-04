@@ -30,7 +30,7 @@ class UserModel {
   int commentPushNotificationStatus = 0;
   int likePushNotificationStatus = 0;
 
-  bool isFollowing = false;
+  FollowingStatus followingStatus = FollowingStatus.notFollowing;
   bool isFollower = false;
   bool isVerified = false;
 
@@ -78,9 +78,10 @@ class UserModel {
   List<UserSetting>? userSetting;
 
   GenderType? genderType;
+  bool isPrivate = false;
+  bool isShareOnlineStatus = false;
 
   UserModel();
-
 
   factory UserModel.fromJson(dynamic json) {
     UserModel model = UserModel();
@@ -96,7 +97,11 @@ class UserModel {
     model.coverImage = json['coverImageUrl'];
 
     model.bio = json['bio'];
-    model.isFollowing = json['isFollowing'] == 1;
+    model.followingStatus = json['isFollowing'] == 0
+        ? FollowingStatus.notFollowing
+        : json['isFollowing'] == 1
+            ? FollowingStatus.following
+            : FollowingStatus.requested;
     model.isFollower = json['isFollower'] == 1;
 
     model.latitude = json['latitude'];
@@ -125,6 +130,9 @@ class UserModel {
 
     model.isReported = json['is_reported'] == 1;
     model.isOnline = json['is_chat_user_online'] == 1;
+    model.isPrivate = json['profile_visibility'] == 2;
+    model.isShareOnlineStatus = json['is_show_online_chat_status'] == 1;
+
     model.chatLastTimeOnline = json['chat_last_time_online'];
     model.accountCreatedWith = json['account_created_with'] ?? 1;
     model.isVerified = json['is_verified'] == 1;
@@ -206,7 +214,7 @@ class UserModel {
     model.email = loadingString.tr;
     model.picture = loadingString.tr;
     model.bio = loadingString.tr;
-    model.isFollowing = false;
+    model.followingStatus = FollowingStatus.notFollowing;
     model.isFollower = false;
 
     model.phone = loadingString.tr;
@@ -281,7 +289,7 @@ class UserModel {
     if (relationsRevealSetting == RelationsRevealSetting.none) {
       return false;
     } else if (relationsRevealSetting == RelationsRevealSetting.followers &&
-        isFollowing) {
+        followingStatus == FollowingStatus.following) {
       return true;
     } else {
       return true;

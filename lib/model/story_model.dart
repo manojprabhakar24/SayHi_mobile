@@ -9,7 +9,7 @@ class StoryModel {
   String userName;
 
   // String email;
-  String? image;
+  String? userImage;
   List<StoryMediaModel> media;
   bool isViewed = false;
 
@@ -19,7 +19,7 @@ class StoryModel {
     required this.name,
     required this.userName,
     // required this.email,
-    this.image,
+    this.userImage,
     required this.media,
   });
 
@@ -30,7 +30,7 @@ class StoryModel {
       name: json['name'],
       userName: json['username'],
       // email: json['email'],
-      image: json['picture'],
+      userImage: json['picture'],
       media: (json['userStory'] as List<dynamic>)
           .map((e) => StoryMediaModel.fromJson(e))
           .toList(),

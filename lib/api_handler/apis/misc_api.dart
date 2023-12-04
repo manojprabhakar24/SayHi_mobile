@@ -1,6 +1,7 @@
 import 'package:foap/api_handler/api_wrapper.dart';
 import 'package:foap/helper/imports/common_import.dart';
 import 'package:foap/helper/imports/models.dart';
+import '../../model/follow_request.dart';
 import '../../model/support_request_response.dart';
 
 class MiscApi {
@@ -70,6 +71,37 @@ class MiscApi {
             APIMetaData.fromJson(result.data['notification']['_meta']));
       }
     });
+  }
+
+  static getFollowRequests(
+      {required int page,
+      required Function(List<FollowRequestModel>, APIMetaData)
+          resultCallback}) async {
+    var url = '${NetworkConstantsUtil.followRequests}&page=$page';
+
+    await ApiWrapper().getApi(url: url).then((result) {
+      if (result?.success == true) {
+        var items = result!.data['followingRequest']['items'];
+        resultCallback(
+            List<FollowRequestModel>.from(
+                items.map((x) => FollowRequestModel.fromJson(x))),
+            APIMetaData.fromJson(result.data['followingRequest']['_meta']));
+      }
+    });
+  }
+
+  static acceptFollowRequest({required int userId}) async {
+    var url = NetworkConstantsUtil.acceptFollowRequestString;
+
+    await ApiWrapper().postApi(
+        url: url, param: {"user_id": userId.toString()}).then((result) {});
+  }
+
+  static declineFollowRequest({required int userId}) async {
+    var url = NetworkConstantsUtil.declineFollowRequestString;
+
+    await ApiWrapper().postApi(
+        url: url, param: {"user_id": userId.toString()}).then((result) {});
   }
 
   static updateNotificationSettings(

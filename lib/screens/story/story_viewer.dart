@@ -3,8 +3,6 @@ import 'package:foap/helper/imports/story_imports.dart';
 import 'package:foap/screens/story/story_reaction_options.dart';
 import 'package:foap/screens/story/story_view_users.dart';
 import 'package:keyboard_attachable/keyboard_attachable.dart';
-import 'package:story_view/utils.dart';
-
 import '../profile/my_profile.dart';
 import '../profile/other_user_profile.dart';
 import '../settings_menu/settings_controller.dart';
@@ -21,11 +19,11 @@ class StoryViewer extends StatefulWidget {
 }
 
 class _StoryViewerState extends State<StoryViewer> {
-  final controller = StoryController();
   final AppStoryController storyController = Get.find();
   final SettingsController settingsController = Get.find();
   final UserProfileManager _userProfileManager = Get.find();
   final TextEditingController replyController = TextEditingController();
+  final controller = FlutterStoryViewController();
 
   @override
   void initState() {
@@ -49,46 +47,33 @@ class _StoryViewerState extends State<StoryViewer> {
         Expanded(
           child: Stack(
             children: [
-              StoryView(
-                  storyItems: [
-                    for (StoryMediaModel media in widget.story.media.reversed)
-                      media.isVideoPost() == true
-                          ? StoryItem.pageVideo(
-                              media.video!,
-                              controller: controller,
-                              duration: media.videoDuration != null
-                                  ? Duration(
-                                      seconds: media.videoDuration! ~/ 1000)
-                                  : null,
-                              key: Key(media.id.toString()),
-                            )
-                          : StoryItem.pageImage(
-                              key: Key(media.id.toString()),
-                              url: media.image!,
-                              controller: controller,
-                            ),
-                  ],
-                  controller: controller,
-                  // pass controller here too
-                  repeat: true,
-                  // should the stories be slid forever
-                  onStoryShow: (s) {
-                    WidgetsBinding.instance.addPostFrameCallback((_) {
-                      storyController.setCurrentStoryMedia(widget.story.media
-                          .where((element) =>
-                              Key(element.id.toString()) == s.view.key)
-                          .first);
-                    });
-                  },
-                  onComplete: () {
-                    Get.back();
-                  },
-                  onVerticalSwipeComplete: (direction) {
-                    if (direction == Direction.down) {
-                      Get.back();
-                    }
-                  } // To disable vertical swipe gestures, ignore this parameter.
-                  ),
+              FlutterStoryView(
+                controller: controller,
+                storyItems: [
+                  for (StoryMediaModel media in widget.story.media.reversed)
+                    media.isVideoPost() == true
+                        ? StoryItem(
+                            url: media.video!,
+                            type: StoryItemType.video,
+                            viewers: [],
+                            duration: media.videoDuration != null
+                                ? media.videoDuration! ~/ 1000
+                                : null)
+                        : StoryItem(
+                            url: media.image!,
+                            type: StoryItemType.image,
+                            viewers: [],
+                          )
+                ],
+                onPageChanged: (s) {
+                  WidgetsBinding.instance.addPostFrameCallback((_) {
+                    storyController.setCurrentStoryMedia(widget.story.media[s]);
+                  });
+                },
+                onComplete: () {
+                  Get.back();
+                },
+              ),
               Positioned(top: 70, left: 20, right: 0, child: userProfileView()),
               Obx(() => (storyController.currentStoryMediaModel.value?.userId ==
                       _userProfileManager.user.value!.id)
@@ -140,7 +125,7 @@ class _StoryViewerState extends State<StoryViewer> {
                             controller.pause();
                           } else {
                             FocusScope.of(context).requestFocus(FocusNode());
-                            controller.play();
+                            controller.resume();
                           }
                         },
                       ),
@@ -167,7 +152,8 @@ class _StoryViewerState extends State<StoryViewer> {
         Row(
           children: [
             AvatarView(
-              url: widget.story.image,
+              url: widget.story.userImage,
+              name: widget.story.userName,
               size: 30,
             ).rP8,
             Column(
@@ -199,19 +185,34 @@ class _StoryViewerState extends State<StoryViewer> {
         const SizedBox(
           width: 50,
         ),
-        if (widget.story.media.first.userId ==
-            _userProfileManager.user.value!.id)
-          SizedBox(
-            height: 25,
-            width: 40,
-            child: ThemeIconWidget(
-              ThemeIcon.more,
-              color: Colors.white,
-              size: 20,
-            ).ripple(() {
-              openActionPopup();
-            }),
-          ).rP25
+        Row(
+          children: [
+            if (widget.story.media.first.userId ==
+                _userProfileManager.user.value!.id)
+              SizedBox(
+                height: 25,
+                width: 40,
+                child: ThemeIconWidget(
+                  ThemeIcon.more,
+                  color: Colors.white,
+                  size: 20,
+                ).ripple(() {
+                  openActionPopup();
+                }),
+              ).rP16,
+            SizedBox(
+              height: 25,
+              width: 40,
+              child: ThemeIconWidget(
+                ThemeIcon.close,
+                color: Colors.white,
+                size: 20,
+              ).ripple(() {
+                Get.back();
+              }),
+            ).rP16,
+          ],
+        )
       ],
     );
   }
@@ -229,7 +230,7 @@ class _StoryViewerState extends State<StoryViewer> {
                       title: Center(child: BodyLargeText(deleteStoryString.tr)),
                       onTap: () async {
                         Get.back();
-                        controller.play();
+                        controller.resume();
 
                         storyController.deleteStory(() {
                           widget.storyDeleted();
@@ -239,13 +240,13 @@ class _StoryViewerState extends State<StoryViewer> {
                   ListTile(
                       title: Center(child: BodyLargeText(cancelString.tr)),
                       onTap: () {
-                        controller.play();
+                        controller.resume();
                         Get.back();
                       }),
                 ],
               ),
             )).then((value) {
-      controller.play();
+      controller.resume();
     });
   }
 
@@ -268,7 +269,7 @@ class _StoryViewerState extends State<StoryViewer> {
           ).ripple(() {
             controller.pause();
             Get.bottomSheet(StoryViewUsers()).then((value) {
-              controller.play();
+              controller.resume();
             });
           })
         : Container());

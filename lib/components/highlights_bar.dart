@@ -34,11 +34,11 @@ class HighlightsBar extends StatelessWidget {
                       height: 60,
                       width: 60,
                       child: ThemeIconWidget(
-                        ThemeIcon.plus,
+                        ThemeIcon.plusSymbol,
                         size: 25,
                         color: AppColorConstants.iconColor,
                       ),
-                    ).borderWithRadius(value: 2, radius: 20),
+                    ).borderWithRadius(value: 2, radius: 50),
                     const Spacer(),
                     BodySmallText(addString.tr, weight: TextWeight.medium),
                   ],

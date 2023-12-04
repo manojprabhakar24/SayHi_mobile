@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'dart:typed_data';
 import 'package:foap/helper/imports/models.dart';
 import 'package:latlng/latlng.dart';
@@ -58,7 +57,7 @@ class ProfileApi {
   static updatePhone(
       {required String countryCode,
       required String phone,
-      required Function(String) resultCallback})async  {
+      required Function(String) resultCallback}) async {
     var url = NetworkConstantsUtil.updatePhone;
 
     await ApiWrapper().postApi(
@@ -71,7 +70,7 @@ class ProfileApi {
   }
 
   static updatePaymentDetails(
-      {required String paypalId, required Function() resultCallback})async  {
+      {required String paypalId, required Function() resultCallback}) async {
     var url = NetworkConstantsUtil.updatePaymentDetail;
     var params = {"paypal_id": paypalId};
 
@@ -85,7 +84,7 @@ class ProfileApi {
   static updateCountryCity(
       {required String country,
       required String city,
-      required Function() resultCallback})async  {
+      required Function() resultCallback}) async {
     var url = NetworkConstantsUtil.updateUserProfile;
 
     await ApiWrapper().postApi(
@@ -145,7 +144,7 @@ class ProfileApi {
   static postRelationInviteUnInvite(
       {required int relationShipId,
       required int userId,
-      required VoidCallback resultCallback})async  {
+      required VoidCallback resultCallback}) async {
     var url = NetworkConstantsUtil.postInviteUnInvite;
 
     await ApiWrapper().postApi(url: url, param: {
@@ -244,6 +243,28 @@ class ProfileApi {
     });
   }
 
+  static updateAccountPrivacy(
+      {required bool isPrivate, required VoidCallback resultCallback}) async {
+    var url = NetworkConstantsUtil.updateAccountPrivacy;
+
+    await ApiWrapper().postApi(url: url, param: {
+      'profile_visibility': isPrivate ? 2 : 1,
+    }).then((result) {
+      resultCallback();
+    });
+  }
+
+  static updateOnlineStatusSetting(
+      {required int status, required VoidCallback resultCallback}) async {
+    var url = NetworkConstantsUtil.updateOnlineStatusSetting;
+
+    await ApiWrapper().postApi(url: url, param: {
+      'is_show_online_chat_status': status.toString(),
+    }).then((result) {
+      resultCallback();
+    });
+  }
+
   static sendProfileVerificationRequest(
       {required String userMessage,
       required String documentType,
@@ -289,7 +310,7 @@ class ProfileApi {
   }
 
   static uploadProfileImage(Uint8List imageData,
-      {required VoidCallback resultCallback})async  {
+      {required VoidCallback resultCallback}) async {
     Loader.show(status: loadingString.tr);
 
     await ApiWrapper()

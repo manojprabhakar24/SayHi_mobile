@@ -45,8 +45,15 @@ class AvatarView extends StatelessWidget {
                 Icons.error,
               ),
             ).round(size ?? 60)
-          : Center(
-              child: BodySmallText(initials, weight: TextWeight.medium).p8,
+          : Container(
+              color: AppColorConstants.backgroundColor,
+              child: Center(
+                child: BodySmallText(
+                  initials,
+                  weight: TextWeight.medium,
+                  color: AppColorConstants.mainTextColor,
+                ).p8,
+              ),
             ),
     ).borderWithRadius(
         value: 2,
@@ -75,6 +82,8 @@ class UserAvatarView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final UserProfileManager userProfileManager = Get.find();
+
     return SizedBox(
       height: size ?? 60,
       width: size ?? 60,
@@ -92,7 +101,9 @@ class UserAvatarView extends StatelessWidget {
                   size: size ?? 60,
                 ),
           (user.liveCallDetail == null || hideLiveIndicator == true) &&
-                  hideOnlineIndicator == false
+                  hideOnlineIndicator == false &&
+                  user.isShareOnlineStatus == true &&
+                  userProfileManager.user.value!.isShareOnlineStatus
               ? Positioned(
                   right: 0,
                   bottom: 0,

@@ -30,10 +30,10 @@ class UserNetworkController extends GetxController {
           resultCallback: (result, metadata) {
             isLoading.value = false;
             followers.addAll(result);
-            followers.unique((e)=> e.id);
+            followers.unique((e) => e.id);
 
             page += 1;
-            canLoadMore =  result.length >= metadata.perPage;
+            canLoadMore = result.length >= metadata.perPage;
 
             update();
           });
@@ -50,18 +50,19 @@ class UserNetworkController extends GetxController {
           resultCallback: (result, metadata) {
             isLoading.value = false;
             following.addAll(result);
-            following.unique((e)=> e.id);
+            following.unique((e) => e.id);
 
             page += 1;
             canLoadMore = result.length >= metadata.perPage;
-
+            print('update');
             update();
           });
     }
   }
 
   followUser(UserModel user) {
-    user.isFollowing = true;
+    user.followingStatus =
+        user.isPrivate ? FollowingStatus.requested : FollowingStatus.following;
     if (following.where((e) => e.id == user.id).isNotEmpty) {
       following[following.indexWhere((element) => element.id == user.id)] =
           user;
@@ -78,15 +79,19 @@ class UserNetworkController extends GetxController {
   }
 
   unFollowUser(UserModel user) {
-    user.isFollowing = false;
+    user.followingStatus = FollowingStatus.notFollowing;
     if (following.where((e) => e.id == user.id).isNotEmpty) {
-      following[following.indexWhere((element) => element.id == user.id)] =
-          user;
+      UserModel matchedUser =
+          following.where((element) => element.id == user.id).first;
+      matchedUser.followingStatus = FollowingStatus.notFollowing;
     }
     if (followers.where((e) => e.id == user.id).isNotEmpty) {
-      followers[followers.indexWhere((element) => element.id == user.id)] =
-          user;
+      UserModel matchedUser =
+          followers.where((element) => element.id == user.id).first;
+      matchedUser.followingStatus = FollowingStatus.notFollowing;
     }
+    followers.refresh();
+
     update();
     UsersApi.followUnfollowUser(isFollowing: false, userId: user.id)
         .then((value) {

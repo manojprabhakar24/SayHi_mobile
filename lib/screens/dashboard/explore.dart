@@ -77,27 +77,6 @@ class _ExploreState extends State<Explore> {
                           },
                           onSearchCompleted: (searchTerm) {}),
                     ),
-                    Obx(() => exploreController.searchText.isNotEmpty
-                        ? Row(
-                            children: [
-                              const SizedBox(
-                                width: 10,
-                              ),
-                              Container(
-                                height: 50,
-                                width: 50,
-                                color: AppColorConstants.themeColor,
-                                child: ThemeIconWidget(
-                                  ThemeIcon.close,
-                                  color: AppColorConstants.backgroundColor,
-                                  size: 25,
-                                ),
-                              ).round(20).ripple(() {
-                                exploreController.closeSearch();
-                              }),
-                            ],
-                          )
-                        : Container())
                   ],
                 ).setPadding(
                     left: DesignConstants.horizontalPadding,

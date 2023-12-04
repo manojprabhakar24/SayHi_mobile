@@ -81,6 +81,9 @@ class NotificationModel {
     if (type == 13) {
       return NotificationType.relationInvite;
     }
+    if (type == 15) {
+      return NotificationType.followRequest;
+    }
     return NotificationType.none;
   }
 }

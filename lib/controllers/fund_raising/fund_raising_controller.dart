@@ -246,7 +246,7 @@ class FundRaisingController extends GetxController {
   }
 
   followDonor(UserModel user) {
-    user.isFollowing = true;
+    user.followingStatus = FollowingStatus.following;
     if (donors.where((e) => e.id == user.id).isNotEmpty) {
       donors[donors.indexWhere((element) => element.id == user.id)] = user;
     }
@@ -257,7 +257,7 @@ class FundRaisingController extends GetxController {
   }
 
   unFollowDonor(UserModel user) {
-    user.isFollowing = false;
+    user.followingStatus = FollowingStatus.notFollowing;
     if (donors.where((e) => e.id == user.id).isNotEmpty) {
       donors[donors.indexWhere((element) => element.id == user.id)] = user;
     }

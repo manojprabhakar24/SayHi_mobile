@@ -7,5 +7,7 @@ export 'package:foap/controllers/story/text_story_maker_controller.dart';
 
 export 'package:foap/model/story_model.dart';
 
-export 'package:story_view/controller/story_controller.dart';
-export 'package:story_view/widgets/story_view.dart';
+export 'package:foap/components/story_view/flutter_story_view.dart';
+export 'package:foap/components/story_view/models/story_item.dart';
+export 'package:foap/components/story_view/models/user_info.dart';
+
