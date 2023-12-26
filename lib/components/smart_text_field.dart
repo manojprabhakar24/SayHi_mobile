@@ -104,11 +104,11 @@ class SmartTextFieldController extends GetxController {
       MiscApi.searchHashtag(
           page: hashtagDataWrapper.page,
           hashtag: text.replaceAll('#', ''),
-          resultCallback: (result, metadata) {
+          resultCallback: (result) {
             hashTags.addAll(result);
             hashTags.unique((e) => e.name);
 
-            hashtagDataWrapper.processCompletedWithData(metadata);
+            // hashtagDataWrapper.processCompletedWithData(metadata);
 
             update();
             if (callBackHandler != null) {

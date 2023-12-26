@@ -2,12 +2,12 @@ import 'package:detectable_text_field/detector/sample_regular_expressions.dart';
 import 'package:detectable_text_field/widgets/detectable_text.dart';
 import 'package:foap/api_handler/apis/users_api.dart';
 import 'package:foap/helper/imports/common_import.dart';
-import '../model/comment_model.dart';
-import '../model/post_gallery.dart';
-import '../model/search_model.dart';
-import '../screens/dashboard/posts.dart';
-import '../screens/home_feed/post_media_full_screen.dart';
-import '../screens/profile/other_user_profile.dart';
+import '../../model/comment_model.dart';
+import '../../model/post_gallery.dart';
+import '../../model/search_model.dart';
+import '../../screens/dashboard/posts.dart';
+import '../../screens/home_feed/post_media_full_screen.dart';
+import '../../screens/profile/other_user_profile.dart';
 
 class CommentTile extends StatefulWidget {
   final CommentModel model;
@@ -192,7 +192,7 @@ class _CommentTileState extends State<CommentTile> {
 
   showCommentMedia() {
     return CachedNetworkImage(
-      imageUrl: widget.model.filename,
+      imageUrl: widget.model.filePath,
       height: 150,
       width: 150,
       fit: BoxFit.cover,
@@ -206,7 +206,7 @@ class _CommentTileState extends State<CommentTile> {
               id: 0,
               postId: 0,
               fileName: "",
-              filePath: widget.model.filename,
+              filePath: widget.model.filePath,
               height: 0,
               width: 0,
               mediaType: 1, //  image=1, video=2, audio=3

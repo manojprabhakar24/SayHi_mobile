@@ -2,7 +2,7 @@ import 'dart:async';
 import 'package:foap/helper/imports/common_import.dart';
 import 'package:profanity_filter/profanity_filter.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
-import '../../components/comment_card.dart';
+import '../../components/post_card/comment_card.dart';
 import '../../controllers/coupons/near_by_offers.dart';
 
 class OfferCommentsScreen extends StatefulWidget {

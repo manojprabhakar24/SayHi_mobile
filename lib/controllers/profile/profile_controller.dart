@@ -335,7 +335,7 @@ class ProfileController extends GetxController {
                 this.user.value!.followingStatus == FollowingStatus.notFollowing
                     ? false
                     : true,
-            userId: user.id)
+            user: user)
         .then((value) {
       update();
     });
@@ -402,7 +402,7 @@ class ProfileController extends GetxController {
     user.followingStatus =
         user.isPrivate ? FollowingStatus.requested : FollowingStatus.following;
     update();
-    UsersApi.followUnfollowUser(isFollowing: true, userId: user.id)
+    UsersApi.followUnfollowUser(isFollowing: true, user: user)
         .then((value) {
       update();
     });
@@ -412,7 +412,7 @@ class ProfileController extends GetxController {
     user.followingStatus = FollowingStatus.notFollowing;
 
     update();
-    UsersApi.followUnfollowUser(isFollowing: false, userId: user.id)
+    UsersApi.followUnfollowUser(isFollowing: false, user: user)
         .then((value) {
       update();
     });

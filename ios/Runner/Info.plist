@@ -45,7 +45,7 @@
 			<string>Editor</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>giveriver</string>
+				<string>fwdtechnology.co</string>
 			</array>
 		</dict>
 	</array>
@@ -61,6 +61,8 @@
 	<false/>
 	<key>FirebaseMessagingAutoInitEnabled</key>
 	<false/>
+	<key>FlutterDeepLinkingEnabled</key>
+	<true/>
 	<key>GADApplicationIdentifier</key>
 	<string>ca-app-pub-1748815945631578~1256886289</string>
 	<key>LSApplicationQueriesSchemes</key>
@@ -292,5 +294,9 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<key>com.apple.developer.associated-domains</key>
+    	<array>
+    		<string>applinks:fwdtechnology.co</string>
+    	</array>
 </dict>
 </plist>

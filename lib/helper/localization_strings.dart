@@ -1377,3 +1377,7 @@ String congratsYourVerificationIsApprovedString = 'Congratulations, Your verific
 String shareOnlineStatusStaring = 'Share online status';
 String shareOnlineStatusMsgString =
     'If you don\'t share your last seen and online,you won\'t be able to see other people\'s last seen and online status also';
+
+String copyLinkString = 'Copy link';
+
+String createdByString = 'Created by SinghCoders';

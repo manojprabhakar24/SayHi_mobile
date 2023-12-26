@@ -171,15 +171,14 @@ class MiscApi {
   static searchHashtag(
       {required String hashtag,
       required int page,
-      required Function(List<Hashtag>, APIMetaData) resultCallback}) async {
+      required Function(List<Hashtag>) resultCallback}) async {
     var url = '${NetworkConstantsUtil.searchHashtag}$hashtag&page=$page';
 
     await ApiWrapper().getApi(url: url).then((result) {
       if (result?.success == true) {
         var items = result!.data['results']['items'];
         resultCallback(
-            List<Hashtag>.from(items.map((x) => Hashtag.fromJson(x))),
-            APIMetaData.fromJson(result.data['results']['_meta']));
+            List<Hashtag>.from(items.map((x) => Hashtag.fromJson(x))));
       }
     });
   }

@@ -95,7 +95,7 @@ class UsersController extends GetxController {
 
     update();
 
-    UsersApi.followUnfollowUser(isFollowing: true, userId: user.id);
+    UsersApi.followUnfollowUser(isFollowing: true, user: user);
   }
 
   unFollowUser(UserModel user) {
@@ -109,6 +109,6 @@ class UsersController extends GetxController {
     //   suggestedUsers.indexWhere((element) => element.id == user.id)] = user;
     // }
     update();
-    UsersApi.followUnfollowUser(isFollowing: false, userId: user.id);
+    UsersApi.followUnfollowUser(isFollowing: false, user: user);
   }
 }

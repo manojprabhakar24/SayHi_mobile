@@ -104,7 +104,7 @@ class ExploreEventsState extends State<ExploreEvents> {
                                             height: 25,
                                           ),
                                           SizedBox(
-                                            height: 285,
+                                            height: 300,
                                             child: ListView.separated(
                                               padding: EdgeInsets.only(
                                                   left: DesignConstants

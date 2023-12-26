@@ -65,6 +65,8 @@ class SocketConstants {
   static const String sendGiftLiveCall = "sendGiftLiveCall";
   static const String newGiftReceivedInLiveCall = "newGiftReceivedliveCall";
 
+  static const String actionOnUserInLive = "liveChatUpdateUserAction";
+
   // livetv
   static const String joinLiveTv = "addUserLiveTv";
   static const String sendMessageInLiveTv = "sendMessageLiveTv";

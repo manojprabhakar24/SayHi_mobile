@@ -1,9 +1,11 @@
 import 'dart:io';
-
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:foap/components/loader.dart';
-
+import 'package:foap/helper/device_info.dart';
+import 'package:foap/helper/imports/common_import.dart';
 import 'package:get/get.dart';
+import 'package:get_ip_address/get_ip_address.dart';
 import '../../helper/localization_strings.dart';
 import '../../util/app_util.dart';
 import '../../util/shared_prefs.dart';
@@ -12,17 +14,23 @@ import '../api_wrapper.dart';
 class AuthApi {
   static login(
       {required String email,
-        required String password,
-        required Function(String) successCallback,
-        required Function(String) verifyOtpCallback}) async {
+      required String password,
+      required Function(String) successCallback,
+      required Function(String) verifyOtpCallback}) async {
     String? fcmToken = await SharedPrefs().getFCMToken();
     String? voipToken = await SharedPrefs().getVoipToken();
+
     dynamic param = {
       "email": email,
       "password": password,
-      "device_type": Platform.isAndroid ? '1' : '2',
+      "device_type": DeviceInfoManager.info.deviceType,
       "device_token": fcmToken ?? '',
-      "device_token_voip_ios": voipToken ?? ''
+      "device_token_voip_ios": voipToken ?? '',
+      'device_model': DeviceInfoManager.info.model,
+      'device_os_version': DeviceInfoManager.info.osVersion,
+      'device_app_release_version': AppConfigConstants.currentVersion,
+      'login_ip': DeviceInfoManager.info.ip,
+      'login_location': '',
     };
 
     Loader.show(status: loadingString.tr);
@@ -75,9 +83,14 @@ class AuthApi {
     dynamic param = {
       "country_code": code,
       "phone": phone,
-      "device_type": Platform.isAndroid ? '1' : '2',
       "device_token": fcmToken ?? '',
-      "device_token_voip_ios": voipToken ?? ''
+      "device_token_voip_ios": voipToken ?? '',
+      "device_type": DeviceInfoManager.info.deviceType,
+      'device_model': DeviceInfoManager.info.model,
+      'device_os_version': DeviceInfoManager.info.osVersion,
+      'device_app_release_version': AppConfigConstants.currentVersion,
+      'login_ip': DeviceInfoManager.info.ip,
+      'login_location': '',
     };
     Loader.show(status: loadingString.tr);
 
@@ -117,9 +130,14 @@ class AuthApi {
       "social_type": socialType,
       "social_id": socialId,
       "email": email,
-      "device_type": Platform.isAndroid ? '1' : '2',
       "device_token": fcmToken ?? '',
-      "device_token_voip_ios": voipToken ?? ''
+      "device_token_voip_ios": voipToken ?? '',
+      "device_type": DeviceInfoManager.info.deviceType,
+      'device_model': DeviceInfoManager.info.model,
+      'device_os_version': DeviceInfoManager.info.osVersion,
+      'device_app_release_version': AppConfigConstants.currentVersion,
+      'login_ip': DeviceInfoManager.info.ip,
+      'login_location': '',
     }).then((response) {
       Loader.dismiss();
 
@@ -149,9 +167,15 @@ class AuthApi {
       "name": name,
       "email": email,
       "password": password,
-      "device_type": Platform.isAndroid ? '1' : '2',
       "device_token": fcmToken ?? '',
-      "device_token_voip_ios": voipToken ?? ''
+      "device_token_voip_ios": voipToken ?? '',
+      'role': '3',
+      "device_type": DeviceInfoManager.info.deviceType,
+      'device_model': DeviceInfoManager.info.model,
+      'device_os_version': DeviceInfoManager.info.osVersion,
+      'device_app_release_version': AppConfigConstants.currentVersion,
+      'login_ip': DeviceInfoManager.info.ip,
+      'login_location': '',
     }).then((response) {
       Loader.dismiss();
       if (response?.success == true) {
@@ -190,7 +214,7 @@ class AuthApi {
 
     await ApiWrapper()
         .postApi(url: NetworkConstantsUtil.updatedDeviceToken, param: {
-      "device_type": Platform.isAndroid ? '1' : '2',
+      "device_type": DeviceInfoManager.info.deviceType,
       "device_token": fcmToken ?? '',
       "device_token_voip_ios": voipToken ?? ''
     }).then((response) {
@@ -307,6 +331,12 @@ class AuthApi {
         param: {
           "otp": otp,
           "token": token,
+          "device_type": DeviceInfoManager.info.deviceType,
+          'device_model': DeviceInfoManager.info.model,
+          'device_os_version': DeviceInfoManager.info.osVersion,
+          'device_app_release_version': AppConfigConstants.currentVersion,
+          'login_ip': DeviceInfoManager.info.ip,
+          'login_location': '',
         }).then((response) {
       Loader.dismiss();
 

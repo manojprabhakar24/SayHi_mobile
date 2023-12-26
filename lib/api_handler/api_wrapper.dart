@@ -138,10 +138,13 @@ class ApiWrapper {
     // Loader.show(status: loadingString.tr);
 
     print(param);
+    print('${NetworkConstantsUtil.baseUrl}$url');
+
     return http
         .post(Uri.parse('${NetworkConstantsUtil.baseUrl}$url'), body: param)
         .then((http.Response response) async {
       dynamic data = _decoder.convert(response.body);
+      print(data);
 
       // Loader.dismiss();
 

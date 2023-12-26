@@ -138,24 +138,24 @@ class CommentsController extends GetxController {
       {required int postId,
       required VoidCallback commentPosted,
       required CommentType type}) async {
-    String filename = type == CommentType.image
+    List<String> uploadedImageData = type == CommentType.image
         ? await uploadMedia(selectedMedia.value!)
-        : selectedMedia.value!.filePath!;
+        : [selectedMedia.value!.filePath!];
 
     PostApi.postComment(
         type: type,
         postId: postId,
-        filename: filename,
+        filename: uploadedImageData.first,
         resultCallback: (id) {
           comments.add(CommentModel.fromNewMessage(
               type, _userProfileManager.user.value!,
-              filename: filename, id: id));
+              filePath: uploadedImageData.last, id: id));
           update();
         });
   }
 
-  Future<String> uploadMedia(Media media) async {
-    String imagePath = '';
+  Future<List<String>> uploadMedia(Media media) async {
+    List<String> uploadedImageData = [];
 
     await AppUtil.checkInternet().then((value) async {
       if (value) {
@@ -170,14 +170,15 @@ class CommentsController extends GetxController {
 
         await PostApi.uploadFile(file.path, mediaType: media.mediaType!,
             resultCallback: (fileName, filePath) async {
-          imagePath = fileName;
+          uploadedImageData.add(fileName);
+          uploadedImageData.add(filePath);
           await file.delete();
         });
       } else {
         AppUtil.showToast(message: noInternetString.tr, isSuccess: false);
       }
     });
-    return imagePath;
+    return uploadedImageData;
   }
 
   selectPhoto(

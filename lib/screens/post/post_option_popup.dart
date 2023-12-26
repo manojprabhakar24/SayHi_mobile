@@ -1,4 +1,6 @@
 import 'dart:io';
+import 'package:audio_waveforms/audio_waveforms.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_video_info/flutter_video_info.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:video_thumbnail/video_thumbnail.dart';
@@ -9,6 +11,10 @@ import '../chat/drawing_screen.dart';
 import '../chat/media.dart';
 import '../chat/voice_record.dart';
 import '../settings_menu/settings_controller.dart';
+import 'dart:developer' as developer;
+import 'dart:io';
+import 'dart:math';
+import 'package:path/path.dart' as p;
 
 enum PostContext { none, dailyDrop, challenge, riverRun, chat }
 
@@ -130,13 +136,25 @@ class PostOptionsPopup extends StatelessWidget {
   }
 
   void openVoiceRecord() {
+    PlayerController controller = PlayerController(); // Initialise
+
     showModalBottomSheet(
         backgroundColor: Colors.transparent,
         context: Get.context!,
         builder: (context) => FractionallySizedBox(
               heightFactor: 0.7,
               child: VoiceRecord(
-                recordingCallback: (media) {
+                recordingCallback: (media) async {
+                  print('recordingCallback');
+
+                  final waveformData = await controller.extractWaveformData(
+                    path: media.filePath!,
+                    noOfSamples: 50,
+                  );
+                  print('waveformData');
+
+                  developer.log(waveformData.toString());
+
                   if (recordedAudio != null) {
                     recordedAudio!(media);
                   }

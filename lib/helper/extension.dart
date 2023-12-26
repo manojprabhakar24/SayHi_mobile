@@ -398,7 +398,6 @@ extension GradietBackground on Widget {
 
 extension PinchZoomImage on Widget {
   Widget addPinchAndZoom() => PinchZoom(
-        resetDuration: const Duration(milliseconds: 100),
         maxScale: 2.5,
         onZoomStart: () {},
         onZoomEnd: () {},

@@ -1,6 +1,5 @@
 import 'package:connectivity/connectivity.dart';
 import 'package:foap/helper/imports/common_import.dart';
-
 import '../components/timer_view.dart';
 
 class AppUtil {
@@ -11,7 +10,8 @@ class AppUtil {
         backgroundColor: isSuccess == true
             ? AppColorConstants.themeColor.darken()
             : AppColorConstants.red.lighten(),
-        icon: Icon(Icons.error, color: AppColorConstants.iconColor));
+        icon: Icon(isSuccess ? Icons.done_all : Icons.error,
+            color: isSuccess ? Colors.white : AppColorConstants.red));
   }
 
   static void hideKeyboard(BuildContext context) {
@@ -165,8 +165,7 @@ class AppUtil {
                       okString,
                       color: Colors.white,
                     )
-                        .makeChip(
-                            backGroundColor: AppColorConstants.themeColor)
+                        .makeChip(backGroundColor: AppColorConstants.themeColor)
                         .ripple(() {
                       Get.back(closeOverlays: true);
                       okHandler();

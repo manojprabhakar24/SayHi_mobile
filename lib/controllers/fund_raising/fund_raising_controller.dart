@@ -253,7 +253,7 @@ class FundRaisingController extends GetxController {
 
     update();
 
-    UsersApi.followUnfollowUser(isFollowing: true, userId: user.id);
+    UsersApi.followUnfollowUser(isFollowing: true, user: user);
   }
 
   unFollowDonor(UserModel user) {
@@ -263,7 +263,7 @@ class FundRaisingController extends GetxController {
     }
 
     update();
-    UsersApi.followUnfollowUser(isFollowing: false, userId: user.id);
+    UsersApi.followUnfollowUser(isFollowing: false, user: user);
   }
 
   postComment(String comment) {

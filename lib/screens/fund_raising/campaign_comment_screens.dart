@@ -3,7 +3,7 @@ import 'package:foap/controllers/fund_raising/fund_raising_controller.dart';
 import 'package:foap/helper/imports/common_import.dart';
 import 'package:profanity_filter/profanity_filter.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
-import '../../components/comment_card.dart';
+import '../../components/post_card/comment_card.dart';
 
 class CampaignCommentsScreen extends StatefulWidget {
   const CampaignCommentsScreen({

@@ -3,7 +3,7 @@ import 'package:foap/helper/imports/common_import.dart';
 import 'package:foap/helper/imports/models.dart';
 import 'package:profanity_filter/profanity_filter.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
-import '../../components/comment_card.dart';
+import '../../components/post_card/comment_card.dart';
 import '../../components/smart_text_field.dart';
 import '../../controllers/misc/users_controller.dart';
 import '../../controllers/post/comments_controller.dart';

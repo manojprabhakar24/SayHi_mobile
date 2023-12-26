@@ -30,6 +30,7 @@ class PostModel {
 
   ReelMusicModel? audio;
   ClubModel? club;
+  String shareLink = '';
 
   String postTime = '';
   DateTime? createDate;
@@ -61,6 +62,7 @@ class PostModel {
     model.isSharePost = json['is_share_post'] == 1;
     model.isSaved = json['isFavorite'] == 1;
     model.commentsEnabled = json['is_comment_enable'] == 1;
+    model.shareLink = json['share_link'];
 
     model.tags = [];
     if (json['hashtags'] != null && json['hashtags'].length > 0) {

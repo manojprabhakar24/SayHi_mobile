@@ -72,7 +72,7 @@ class UserNetworkController extends GetxController {
           user;
     }
     update();
-    UsersApi.followUnfollowUser(isFollowing: true, userId: user.id)
+    UsersApi.followUnfollowUser(isFollowing: true, user: user)
         .then((value) {
       update();
     });
@@ -93,7 +93,7 @@ class UserNetworkController extends GetxController {
     followers.refresh();
 
     update();
-    UsersApi.followUnfollowUser(isFollowing: false, userId: user.id)
+    UsersApi.followUnfollowUser(isFollowing: false, user: user)
         .then((value) {
       update();
     });

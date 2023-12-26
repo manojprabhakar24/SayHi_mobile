@@ -26,7 +26,7 @@ class NetworkConstantsUtil {
       'users/{{id}}?expand=isFollowing,isFollower,totalFollowing,totalFollower,totalPost,totalWinnerPost,totalReel,totalClub,totalMention,userLiveDetail,giftSummary,userSetting';
 
   static String getMyProfile =
-      'users/profile?expand=totalFollowing,totalFollower,totalActivePost,totalReel,totalClub,totalMention,userLiveDetail,giftSummary,userSetting,interest,language';
+      'users/profile?expand=totalFollowing,totalFollower,totalActivePost,totalReel,totalClub,totalMention,userLiveDetail,giftSummary,userSetting,interest,language,featureList';
   static String updateUserProfile = 'users/profile-update';
   static String updateProfileImage = 'users/update-profile-image';
   static String updateProfileCoverImage = 'users/update-profile-cover-image';
@@ -42,7 +42,8 @@ class NetworkConstantsUtil {
   //*********** User *************//
   static String getSuggestedUsers =
       'users/sugested-user?expand=isFollowing,isFollower,userLiveDetail';
-  static String followUser = 'followers/request';
+  static String followUser = 'followers';
+  static String followRequest = 'followers/request';
   static String unfollowUser = 'followers/unfollow';
   static String followMultipleUser = 'followers/follow-multiple';
 
@@ -78,7 +79,7 @@ class NetworkConstantsUtil {
   static String acceptFollowRequestString = 'followers/accept-request';
   static String declineFollowRequestString = 'followers/cancel-request';
 
-  static String getSettings = 'settings';
+  static String getSettings = 'settings?expand=featureList';
   static String reportGenericComment = 'reported-contents';
   static String likeComment = 'comments/like';
   static String unLikeComment = 'comments/unlike';
@@ -111,7 +112,7 @@ class NetworkConstantsUtil {
   static String uploadFileImage = 'file-uploads/upload-file';
   static String addCompetitionPost = 'posts/competition-image';
   static String searchPost =
-      'posts/search-post?expand=user,user.userLiveDetail,clubDetail.createdByUser,clubDetail.totalJoinedUser,originPost.user,isFavorite,originPost,pollDetails,pollDetails.pollOptions';
+      'posts/search-post?expand=user.isFollowing,user.userLiveDetail,clubDetail.createdByUser,clubDetail.totalJoinedUser,originPost.user,isFavorite,originPost,pollDetails,pollDetails.pollOptions';
   static String searchVideoPost = 'posts/post-video-list';
   static String postView = 'posts/view-counter';
 
@@ -122,7 +123,7 @@ class NetworkConstantsUtil {
   static String likePost = 'posts/like';
   static String unlikePost = 'posts/unlike';
   static String postLikedByUsers =
-      'posts/post-like-user-list?post_id={{post_id}}&expand=user';
+      'posts/post-like-user-list?post_id={{post_id}}&expand=user.isFollowing';
 
   static String savePost = 'favorites/add-favorite';
   static String removeSavedPost = 'favorites/remove-favorite';

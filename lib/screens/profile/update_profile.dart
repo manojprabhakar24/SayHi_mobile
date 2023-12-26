@@ -103,29 +103,34 @@ class UpdateProfileState extends State<UpdateProfile> {
                     });
                   }),
                   divider().vP16,
-                  Row(
-                    children: [
-                      BodyLargeText(
-                        passwordString.tr,
-                        weight: TextWeight.medium,
-                      ),
-                      const Spacer(),
-                      const BodyMediumText(
-                        '********',
-                      ),
-                      const SizedBox(
-                        width: 20,
-                      ),
-                      ThemeIconWidget(
-                        ThemeIcon.edit,
-                        color: AppColorConstants.iconColor,
-                        size: 15,
-                      )
-                    ],
-                  ).ripple(() {
-                    Get.to(() => const ChangePassword());
-                  }),
-                  divider().vP16,
+                  if (profileController.user.value!.accountCreatedWith == 1)
+                    Column(
+                      children: [
+                        Row(
+                          children: [
+                            BodyLargeText(
+                              passwordString.tr,
+                              weight: TextWeight.medium,
+                            ),
+                            const Spacer(),
+                            const BodyMediumText(
+                              '********',
+                            ),
+                            const SizedBox(
+                              width: 20,
+                            ),
+                            ThemeIconWidget(
+                              ThemeIcon.edit,
+                              color: AppColorConstants.iconColor,
+                              size: 15,
+                            )
+                          ],
+                        ).ripple(() {
+                          Get.to(() => const ChangePassword());
+                        }),
+                        divider().vP16
+                      ],
+                    ),
                   Row(
                     children: [
                       BodyLargeText(

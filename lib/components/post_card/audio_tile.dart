@@ -1,7 +1,7 @@
 import 'package:foap/helper/imports/common_import.dart';
 import 'package:foap/helper/imports/models.dart';
-import '../../manager/player_manager.dart';
-import 'audio_progress_bar.dart';
+import '../../../manager/player_manager.dart';
+import '../audio_progress_bar.dart';
 
 class AudioPostTile extends StatefulWidget {
   final PostModel post;

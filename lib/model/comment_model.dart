@@ -18,7 +18,7 @@ class CommentModel {
   String commentTime = '';
   UserModel? user;
   CommentType type = CommentType.text; // text=1, image=2, video = 3, gif =4
-  String filename = '';
+  String filePath = '';
   int level = 1;
   bool isFavourite = false;
   List<CommentModel> replies = [];
@@ -62,7 +62,7 @@ class CommentModel {
             : json['type'] == 2
                 ? CommentType.image
                 : CommentType.text;
-    model.filename = json['filenameUrl'] ?? '';
+    model.filePath = json['filenameUrl'] ?? '';
 
     DateTime createDate =
         DateTime.fromMillisecondsSinceEpoch(json['created_at'] * 1000).toUtc();
@@ -71,14 +71,12 @@ class CommentModel {
   }
 
   factory CommentModel.fromNewMessage(CommentType type, UserModel user,
-      {required int id, String? comment, String? filename}) {
+      {required int id, String? comment, String? filePath}) {
     CommentModel model = CommentModel();
     model.id = id;
     model.type = type;
     model.comment = comment ?? '';
-    model.filename = type == CommentType.image
-        ? '${AppConfigConstants.restApiBaseUrl}/uploads/image/${filename ?? ''}'
-        : filename ?? '';
+    model.filePath = filePath ?? '';
 
     model.userId = user.id;
     model.userName = user.userName;

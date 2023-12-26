@@ -1,5 +1,6 @@
 import 'package:foap/helper/date_extension.dart';
 import 'package:foap/helper/imports/common_import.dart';
+import 'package:foap/model/setting_model.dart';
 import 'chat_room_model.dart';
 
 class UserModel {
@@ -80,6 +81,7 @@ class UserModel {
   GenderType? genderType;
   bool isPrivate = false;
   bool isShareOnlineStatus = false;
+  List<FeatureModel> features = [];
 
   UserModel();
 
@@ -184,7 +186,11 @@ class UserModel {
         ? List<UserSetting>.from(
             json['userSetting'].map((x) => UserSetting.fromJson(x)))
         : null;
-
+    model.features = json["featureList"] == null
+        ? []
+        : (json["featureList"] as List)
+            .map((e) => FeatureModel.fromJson(e))
+            .toList();
     return model;
   }
 

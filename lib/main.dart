@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:app_links/app_links.dart';
 import 'package:auto_orientation/auto_orientation.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/services.dart';
@@ -7,6 +8,7 @@ import 'package:foap/api_handler/apis/auth_api.dart';
 import 'package:foap/controllers/fund_raising/fund_raising_controller.dart';
 import 'package:foap/controllers/job/job_controller.dart';
 import 'package:foap/controllers/shop/shop_controller.dart';
+import 'package:foap/helper/device_info.dart';
 import 'package:foap/helper/imports/common_import.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:foap/screens/add_on/controller/dating/dating_controller.dart';
@@ -14,7 +16,6 @@ import 'package:foap/screens/add_on/controller/event/event_controller.dart';
 import 'package:foap/screens/add_on/controller/relationship/relationship_controller.dart';
 import 'package:foap/screens/add_on/controller/relationship/relationship_search_controller.dart';
 import 'package:foap/controllers/live/live_users_controller.dart';
-import 'package:foap/screens/dashboard/loading.dart';
 import 'package:foap/screens/login_sign_up/ask_to_follow.dart';
 import 'package:foap/screens/settings_menu/help_support_contorller.dart';
 import 'package:giphy_get/l10n.dart';
@@ -59,6 +60,7 @@ import 'controllers/misc/request_verification_controller.dart';
 import 'controllers/misc/subscription_packages_controller.dart';
 import 'helper/languages.dart';
 import 'manager/db_manager_realm.dart';
+import 'manager/deep_link_manager.dart';
 import 'manager/location_manager.dart';
 import 'manager/notification_manager.dart';
 import 'manager/player_manager.dart';
@@ -84,11 +86,14 @@ Future<void> main() async {
   await Firebase.initializeApp();
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
+  DeviceInfoManager.collectDeviceInfo();
+
   String? token = await FlutterCallkitIncoming.getDevicePushTokenVoIP();
   if (token != null) {
     SharedPrefs().setVoipToken(token);
   }
 
+  DeepLinkManager.init();
   AutoOrientation.portraitAutoMode();
 
   isDarkMode = await SharedPrefs().isDarkMode();
@@ -200,20 +205,13 @@ class _SocialifiedAppState extends State<SocialifiedApp> {
                 return GetMaterialApp(
                   translations: Languages(),
                   locale: snapshot.data!,
-                  // locale: const Locale('pt',/ 'BR'),
                   fallbackLocale: const Locale('en', 'US'),
-                  // debugShowCheckedModeBanner: false,
-                  // navigatorKey: navigationKey,
+                  debugShowCheckedModeBanner: false,
                   home: widget.startScreen,
-                  // builder: Loader.init(),
-                  // theme: AppTheme.lightTheme,
-                  // darkTheme: AppTheme.darkTheme,
                   themeMode: ThemeMode.dark,
-                  // localizationsDelegates: context.localizationDelegates,
                   localizationsDelegates: [
                     GlobalMaterialLocalizations.delegate,
                     GlobalWidgetsLocalizations.delegate,
-                    // GlobalCupertinoLocalizations.delegate,
                     // Add this line
                     GiphyGetUILocalizations.delegate,
                   ],

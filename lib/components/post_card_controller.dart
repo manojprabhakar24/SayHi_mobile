@@ -38,7 +38,9 @@ class PostCardController extends GetxController {
   }
 
   sharePost({required PostModel post}) {
-    downloadAndShareMedia(post);
+    Share.share(post.shareLink);
+
+    // downloadAndShareMedia(post);
   }
 
   void blockUser({required int userId, required VoidCallback callback}) {
@@ -74,24 +76,24 @@ class PostCardController extends GetxController {
     PostApi.saveUnSavePost(save: post.isSaved, postId: post.id);
   }
 
-  downloadAndShareMedia(PostModel post) async {
-    Loader.show(status: loadingString.tr);
-
-    if (post.gallery.isNotEmpty) {
-      final response = await http.get(Uri.parse(post.gallery.first.filePath));
-
-      final directory = await getApplicationDocumentsDirectory();
-      final fileName = post.gallery.first.filePath.split('/').last;
-
-      final file = File('${directory.path}/$fileName');
-      await file.writeAsBytes(response.bodyBytes);
-
-      Loader.dismiss();
-      Share.shareXFiles([XFile(file.path)], text: post.title);
-    } else {
-      Share.share(post.title);
-    }
-  }
+  // downloadAndShareMedia(PostModel post) async {
+  //   Loader.show(status: loadingString.tr);
+  //
+  //   if (post.gallery.isNotEmpty) {
+  //     final response = await http.get(Uri.parse(post.gallery.first.filePath));
+  //
+  //     final directory = await getApplicationDocumentsDirectory();
+  //     final fileName = post.gallery.first.filePath.split('/').last;
+  //
+  //     final file = File('${directory.path}/$fileName');
+  //     await file.writeAsBytes(response.bodyBytes);
+  //
+  //     Loader.dismiss();
+  //     Share.shareXFiles([XFile(file.path)], text: post.title);
+  //   } else {
+  //     Share.share(post.title);
+  //   }
+  // }
 
   reSharePost(
       {required int postId,
@@ -111,7 +113,9 @@ class PostCardController extends GetxController {
   }
 
   postView(
-      {required int postId, required ItemViewSource source, int? postPromotionId}) {
+      {required int postId,
+      required ItemViewSource source,
+      int? postPromotionId}) {
     PostApi.postView(
         postId: postId,
         sourceType: itemViewSourceToId(source),

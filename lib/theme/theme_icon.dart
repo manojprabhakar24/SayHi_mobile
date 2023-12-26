@@ -75,6 +75,7 @@ enum ThemeIcon {
   notification,
   discount,
   share,
+  copyToClipboard,
   addressType,
   addressPin,
   plus,
@@ -239,6 +240,12 @@ class ThemeIconWidget extends StatelessWidget {
       case ThemeIcon.review:
         return Icon(
           Icons.library_books_outlined,
+          size: size ?? 20,
+          color: color ?? AppColorConstants.iconColor,
+        );
+      case ThemeIcon.copyToClipboard:
+        return Icon(
+          Icons.copy,
           size: size ?? 20,
           color: color ?? AppColorConstants.iconColor,
         );
@@ -915,7 +922,7 @@ class ThemeIconWidget extends StatelessWidget {
         );
       case ThemeIcon.arrowUp:
         return Transform.rotate(
-          angle: math.pi/2 ,
+          angle: math.pi / 2,
           child: Icon(
             Icons.arrow_back_ios,
             size: size ?? 20,

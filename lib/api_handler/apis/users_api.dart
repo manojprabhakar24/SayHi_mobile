@@ -4,9 +4,8 @@ import '../../model/api_meta_data.dart';
 import '../../model/search_model.dart';
 
 class UsersApi {
-  static getSuggestedUsers(
-      {required int page,
-      required Function(List<UserModel>) resultCallback}) async {
+  static getSuggestedUsers({required int page,
+    required Function(List<UserModel>) resultCallback}) async {
     var url = '${NetworkConstantsUtil.getSuggestedUsers}&page=$page';
 
     await ApiWrapper().getApi(url: url).then((result) {
@@ -20,21 +19,24 @@ class UsersApi {
     });
   }
 
-  static searchUsers(
-      {required UserSearchModel searchModel,
-      required int page,
-      required Function(List<UserModel>, APIMetaData) resultCallback}) async {
+  static searchUsers({required UserSearchModel searchModel,
+    required int page,
+    required Function(List<UserModel>, APIMetaData) resultCallback}) async {
     var url = NetworkConstantsUtil.findFriends;
     //searchFrom  ----- 1=username,2=email,3=phone
     String searchFromValue = searchModel.searchFrom == null
         ? ''
         : searchModel.searchFrom == SearchFrom.username
-            ? '1'
-            : searchModel.searchFrom == SearchFrom.email
-                ? '2'
-                : '3';
+        ? '1'
+        : searchModel.searchFrom == SearchFrom.email
+        ? '2'
+        : '3';
     url =
-        '${url}searchText=${searchModel.searchText ?? ''}&searchFrom=$searchFromValue&isExactMatch=${searchModel.isExactMatch ?? ''}&is_chat_user_online=${searchModel.isOnline == 1 ? '1' : ''}&page=$page';
+    '${url}searchText=${searchModel.searchText ??
+        ''}&searchFrom=$searchFromValue&isExactMatch=${searchModel
+        .isExactMatch ?? ''}&is_chat_user_online=${searchModel.isOnline == 1
+        ? '1'
+        : ''}&page=$page';
     await ApiWrapper().getApi(url: url).then((result) {
       if (result?.success == true) {
         var topUsers = result!.data['user']['items'];
@@ -45,9 +47,8 @@ class UsersApi {
     });
   }
 
-  static Future<void> getOtherUser(
-      {required int userId,
-      required Function(UserModel) resultCallback}) async {
+  static Future<void> getOtherUser({required int userId,
+    required Function(UserModel) resultCallback}) async {
     var url = NetworkConstantsUtil.otherUser;
     url = url.replaceFirst('{{id}}', userId.toString());
 
@@ -69,14 +70,16 @@ class UsersApi {
     });
   }
 
-  static Future<void> followUnfollowUser(
-      {required bool isFollowing, required int userId}) async {
+  static Future<void> followUnfollowUser({required bool isFollowing,
+    required UserModel user}) async {
     var url = (isFollowing
-        ? NetworkConstantsUtil.followUser
+        ? user.isPrivate
+        ? NetworkConstantsUtil.followRequest
+        : NetworkConstantsUtil.followUser
         : NetworkConstantsUtil.unfollowUser);
 
     await ApiWrapper().postApi(url: url, param: {
-      "user_id": userId.toString(),
+      "user_id": user.id.toString(),
     }).then((result) {
       if (result?.success == true) {
         return;
@@ -145,9 +148,8 @@ class UsersApi {
     });
   }
 
-  static getBlockedUsers(
-      {required int page,
-      required Function(List<UserModel>, APIMetaData) resultCallback}) async {
+  static getBlockedUsers({required int page,
+    required Function(List<UserModel>, APIMetaData) resultCallback}) async {
     var url = '${NetworkConstantsUtil.blockedUsers}&page=$page';
 
     // Loader.show(status: loadingString.tr);
@@ -168,14 +170,14 @@ class UsersApi {
     });
   }
 
-  static getFollowerUsers(
-      {required int? userId,
-      int page = 1,
-      required Function(List<UserModel>, APIMetaData) resultCallback}) async {
+  static getFollowerUsers({required int? userId,
+    int page = 1,
+    required Function(List<UserModel>, APIMetaData) resultCallback}) async {
     final UserProfileManager userProfileManager = Get.find();
 
     var url =
-        '${NetworkConstantsUtil.followers}${userId ?? userProfileManager.user.value!.id}&page=$page';
+        '${NetworkConstantsUtil.followers}${userId ??
+        userProfileManager.user.value!.id}&page=$page';
 
     await ApiWrapper().getApi(url: url).then((result) {
       if (result?.success == true) {
@@ -189,14 +191,14 @@ class UsersApi {
     });
   }
 
-  static getFollowingUsers(
-      {int? userId,
-      int page = 1,
-      required Function(List<UserModel>, APIMetaData) resultCallback}) async {
+  static getFollowingUsers({int? userId,
+    int page = 1,
+    required Function(List<UserModel>, APIMetaData) resultCallback}) async {
     final UserProfileManager userProfileManager = Get.find();
 
     var url =
-        '${NetworkConstantsUtil.following}${userId ?? userProfileManager.user.value!.id}&page=$page';
+        '${NetworkConstantsUtil.following}${userId ??
+        userProfileManager.user.value!.id}&page=$page';
 
     await ApiWrapper().getApi(url: url).then((result) {
       if (result?.success == true) {

@@ -15,7 +15,6 @@ import '../../util/ad_helper.dart';
 import '../../util/constant_util.dart';
 import '../../util/shared_prefs.dart';
 
-
 class AgoraCallController extends GetxController {
   final UserProfileManager _userProfileManager = Get.find();
 

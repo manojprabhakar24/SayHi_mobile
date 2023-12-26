@@ -73,7 +73,9 @@ class HomeFeedState extends State<HomeFeedScreen> {
   void loadData() {
     loadPosts();
     _homeController.getPolls();
-    _homeController.getStories();
+    if (_settingsController.setting.value!.enableStories) {
+      _homeController.getStories();
+    }
   }
 
   @override
@@ -264,21 +266,23 @@ class HomeFeedState extends State<HomeFeedScreen> {
   }
 
   postsView() {
+    int offset = _settingsController.setting.value!.enableStories ? 2 : 1;
     return Obx(() {
       return ListView.separated(
               controller: _controller,
               padding: const EdgeInsets.only(bottom: 100),
-              itemCount: _homeController.posts.length + 2,
+              itemCount: _homeController.posts.length + offset,
               itemBuilder: (context, index) {
-                if (index == 0) {
+                if (index == 0 &&
+                    _settingsController.setting.value!.enableStories) {
                   return Obx(() =>
                       _homeController.isRefreshingStories.value == true
                           ? const StoryAndHighlightsShimmer()
                           : storiesView());
-                } else if (index == 1) {
+                } else if (index == offset - 1) {
                   return postingView().hP16;
                 } else {
-                  PostModel model = _homeController.posts[index - 2];
+                  PostModel model = _homeController.posts[index - offset];
                   return PostCard(
                     model: model,
                     removePostHandler: () {
@@ -308,10 +312,10 @@ class HomeFeedState extends State<HomeFeedScreen> {
                         },
                       ),
                       divider(
-                        height: index > 1 ? 10 : 0,
+                        height: index > (offset - 1) ? 10 : 0,
                       ).tP16
                     ],
-                  ).vp(index > 1 ? 16 : 8);
+                  ).vp(index > (offset - 1) ? 16 : 8);
                 } else if (index > 0 &&
                     index % 8 == 0 &&
                     _homeController.polls.length >= index / 8) {
@@ -357,13 +361,13 @@ class HomeFeedState extends State<HomeFeedScreen> {
       child: FlutterPolls(
         pollId: poll.id.toString(),
         hasVoted: poll.isVote! > 0,
-        userVotedOptionId: poll.isVote! > 0 ? poll.isVote : null,
+        userVotedOptionId: poll.isVote! > 0 ? poll.isVote.toString() : null,
         onVoted: (PollOption pollOption, int newTotalVotes) async {
           await Future.delayed(const Duration(seconds: 1));
           _homeController.postPollAnswer(
               poll.id!,
               // _homeController.polls[pollIndex].id!,
-              pollOption.id!);
+              int.parse(pollOption.id!));
 
           /// If HTTP status is success, return true else false
           return true;
@@ -392,7 +396,7 @@ class HomeFeedState extends State<HomeFeedScreen> {
           (poll.pollOptions ?? []).map(
             (option) {
               var a = PollOption(
-                id: option.id,
+                id: option.id.toString(),
                 title: BodyLargeText(option.title ?? '',
                     weight: TextWeight.medium),
                 votes: option.totalOptionVoteCount ?? 0,

@@ -161,10 +161,9 @@ class AgoraLiveController extends GetxController {
     }
   }
 
-  checkFeasibilityToLive(
-      {required bool isOpenSettings,
-      required Live? battle,
-      required VoidCallback successCallbackHandler}) async {
+  checkFeasibilityToLive({required bool isOpenSettings,
+    required Live? battle,
+    required VoidCallback successCallbackHandler}) async {
     AppUtil.checkInternet().then((value) {
       if (value) {
         PermissionUtils.requestPermission(
@@ -254,9 +253,9 @@ class AgoraLiveController extends GetxController {
 
       live.amIHostInLive
           ? await engine?.setClientRole(
-              role: ClientRoleType.clientRoleBroadcaster)
+          role: ClientRoleType.clientRoleBroadcaster)
           : await engine?.setClientRole(
-              role: ClientRoleType.clientRoleAudience);
+          role: ClientRoleType.clientRoleAudience);
 
       await engine?.joinChannel(
         token: live.token,
@@ -272,8 +271,7 @@ class AgoraLiveController extends GetxController {
           onToggleCamera();
         });
         // onToggleCamera();
-      } else {
-      }
+      } else {}
 
       liveStartTime = DateTime.now();
       channelName = live.channelName;
@@ -312,63 +310,73 @@ class AgoraLiveController extends GetxController {
     engine?.registerEventHandler(
       RtcEngineEventHandler(
           onJoinChannelSuccess: (RtcConnection connection, int elapsed) async {
-        debugPrint(
-            "local user ${connection.localUid} joined , on channel ${connection.channelId}");
-        update();
-      }, onLeaveChannel: (RtcConnection connection, RtcStats status) {
-      }, onUserJoined: (RtcConnection connection, int remoteUid, int elapsed) {
-        debugPrint("remote user $remoteUid joined");
-        remoteJoinedUsers.add(remoteUid);
-        update();
-      }, onUserOffline: (RtcConnection connection, int remoteUid,
+            debugPrint(
+                "local user ${connection
+                    .localUid} joined , on channel ${connection.channelId}");
+            update();
+          },
+          onLeaveChannel: (RtcConnection connection, RtcStats status) {},
+          onUserJoined: (RtcConnection connection, int remoteUid, int elapsed) {
+            debugPrint("remote user $remoteUid joined");
+            remoteJoinedUsers.add(remoteUid);
+            update();
+          },
+          onUserOffline: (RtcConnection connection, int remoteUid,
               UserOfflineReasonType reason) {
-        debugPrint("remote user $remoteUid left channel");
-        remoteJoinedUsers.remove(remoteUid);
+            debugPrint("remote user $remoteUid left channel");
+            remoteJoinedUsers.remove(remoteUid);
 
-        update();
-      }, onTokenPrivilegeWillExpire: (RtcConnection connection, String token) {
-        debugPrint(
-            '[onTokenPrivilegeWillExpire] connection: ${connection.toJson()}, token: $token');
-      }, onConnectionStateChanged: (RtcConnection connection,
+            update();
+          },
+          onTokenPrivilegeWillExpire: (RtcConnection connection, String token) {
+            debugPrint(
+                '[onTokenPrivilegeWillExpire] connection: ${connection
+                    .toJson()}, token: $token');
+          },
+          onConnectionStateChanged: (RtcConnection connection,
               ConnectionStateType state,
               ConnectionChangedReasonType reason) async {
-        if (state == ConnectionStateType.connectionStateConnected) {
-        } else if (state == ConnectionStateType.connectionStateReconnecting ||
-            state == ConnectionStateType.connectionStateConnecting) {
-          // reConnectingRemoteView.value = true;
-        }
-      }, onFirstRemoteVideoFrame: (RtcConnection connection, int remoteUid,
-              int width, int height, int elapsed) {
-      }, onRemoteVideoStateChanged: (RtcConnection connection,
+            if (state == ConnectionStateType.connectionStateConnected) {} else
+            if (state ==
+                ConnectionStateType.connectionStateReconnecting ||
+                state == ConnectionStateType.connectionStateConnecting) {
+              // reConnectingRemoteView.value = true;
+            }
+          },
+          onFirstRemoteVideoFrame: (RtcConnection connection, int remoteUid,
+              int width, int height, int elapsed) {},
+          onRemoteVideoStateChanged: (RtcConnection connection,
               int remoteUid,
               RemoteVideoState state,
               RemoteVideoStateReason reason,
               int elapsed) async {
-        if ((state == RemoteVideoState.remoteVideoStateFailed ||
+            if ((state == RemoteVideoState.remoteVideoStateFailed ||
                 state == RemoteVideoState.remoteVideoStateStopped ||
                 state == RemoteVideoState.remoteVideoStateFrozen) &&
-            reason ==
-                RemoteVideoStateReason.remoteVideoStateReasonRemoteMuted) {
-          videoPaused.value = true;
-          videoPausedUsers.add(remoteUid);
-        } else {
-          videoPaused.value = false;
-          videoPausedUsers.remove(remoteUid);
-        }
-      }, onLocalVideoStateChanged: (VideoSourceType source,
-              LocalVideoStreamState state, LocalVideoStreamError error) {
-      }, onCameraReady: () {
-      }, onVideoDeviceStateChanged: (String deviceId,
-              MediaDeviceType deviceType, MediaDeviceStateType deviceState) {
-      }, onLocalVideoStats:
+                reason ==
+                    RemoteVideoStateReason.remoteVideoStateReasonRemoteMuted) {
+              videoPaused.value = true;
+              videoPausedUsers.add(remoteUid);
+            } else {
+              videoPaused.value = false;
+              videoPausedUsers.remove(remoteUid);
+            }
+          },
+          onLocalVideoStateChanged: (VideoSourceType source,
+              LocalVideoStreamState state, LocalVideoStreamError error) {},
+          onCameraReady: () {},
+          onVideoDeviceStateChanged: (String deviceId,
+              MediaDeviceType deviceType, MediaDeviceStateType deviceState) {},
+          onLocalVideoStats:
               (VideoSourceType sourceType, LocalVideoStats stats) {
-        // print('onLocalVideoStats $stats');
-      }, onFirstLocalVideoFrame:
+            // print('onLocalVideoStats $stats');
+          },
+          onFirstLocalVideoFrame:
               (VideoSourceType source, int width, int height, int elapsed) {
-        cameraInitiated = true;
-      }, onFirstLocalVideoFramePublished:
-              (VideoSourceType sourceType, int elapsed) {
-      }),
+            cameraInitiated = true;
+          },
+          onFirstLocalVideoFramePublished:
+              (VideoSourceType sourceType, int elapsed) {}),
     );
   }
 
@@ -444,7 +452,9 @@ class AgoraLiveController extends GetxController {
       'picture': _userProfileManager.user.value!.picture,
       'username': _userProfileManager.user.value!.userName,
       'is_encrypted': 1,
-      'created_at': (DateTime.now().millisecondsSinceEpoch / 1000).round()
+      'created_at': (DateTime
+          .now()
+          .millisecondsSinceEpoch / 1000).round()
     };
 
     //save message to socket server
@@ -461,7 +471,9 @@ class AgoraLiveController extends GetxController {
     localMessageModel.messageContent = messageText;
 
     localMessageModel.createdAt =
-        (DateTime.now().millisecondsSinceEpoch / 1000).round();
+        (DateTime
+            .now()
+            .millisecondsSinceEpoch / 1000).round();
 
     messages.add(localMessageModel);
     messageTf.value.text = '';
@@ -483,7 +495,9 @@ class AgoraLiveController extends GetxController {
       'picture': _userProfileManager.user.value!.picture,
       'username': _userProfileManager.user.value!.userName,
       'is_encrypted': 1,
-      'created_at': (DateTime.now().millisecondsSinceEpoch / 1000).round()
+      'created_at': (DateTime
+          .now()
+          .millisecondsSinceEpoch / 1000).round()
     };
 
     //save message to socket server
@@ -500,7 +514,9 @@ class AgoraLiveController extends GetxController {
     localMessageModel.messageContent = json.encode(content);
 
     localMessageModel.createdAt =
-        (DateTime.now().millisecondsSinceEpoch / 1000).round();
+        (DateTime
+            .now()
+            .millisecondsSinceEpoch / 1000).round();
 
     messages.add(localMessageModel);
     messageTf.value.text = '';
@@ -540,7 +556,7 @@ class AgoraLiveController extends GetxController {
       AppUtil.showDemoAppConfirmationAlert(
           title: 'Demo app',
           subTitle:
-              'This is demo app so you can not make payment to test it, but still you will get some coins',
+          'This is demo app so you can not make payment to test it, but still you will get some coins',
           okHandler: () {
             packageController.subscribeToDummyPackage(randomId());
           });
@@ -553,7 +569,7 @@ class AgoraLiveController extends GetxController {
           : package.inAppPurchaseIdAndroid;
       List<ProductDetails> matchedProductArr = packageController.products
           .where((element) =>
-              element.id == packageController.selectedPurchaseId.value)
+      element.id == packageController.selectedPurchaseId.value)
           .toList();
       if (matchedProductArr.isNotEmpty) {
         ProductDetails matchedProduct = matchedProductArr.first;
@@ -637,10 +653,9 @@ class AgoraLiveController extends GetxController {
 
   //*************** updates from socket *******************//
 
-  inviteUserToLive(
-      {required UserModel user,
-      required int battleTime,
-      required VoidCallback alreadyInvitedHandler}) {
+  inviteUserToLive({required UserModel user,
+    required int battleTime,
+    required VoidCallback alreadyInvitedHandler}) {
     if (live.value?.canInvite == true) {
       getIt<SocketManager>().emit(SocketConstants.inviteInLive, {
         'userId': user.id,
@@ -654,15 +669,15 @@ class AgoraLiveController extends GetxController {
       Timer(
           const Duration(
               seconds: AppConfigConstants.liveBattleConfirmationWaitTime + 5),
-          () {
-        if (live.value != null &&
-            live.value?.battleDetail == null &&
-            live.value?.invitedUserDetail != null) {
-          noResponseLiveBattle(
-            liveId: live.value!.id,
-          );
-        }
-      });
+              () {
+            if (live.value != null &&
+                live.value?.battleDetail == null &&
+                live.value?.invitedUserDetail != null) {
+              noResponseLiveBattle(
+                liveId: live.value!.id,
+              );
+            }
+          });
     } else {
       alreadyInvitedHandler();
     }
@@ -735,7 +750,8 @@ class AgoraLiveController extends GetxController {
             isMainHost: false));
         // _joinLive(live: live);
 
-        Get.to(() => CheckingLiveFeasibility(
+        Get.to(() =>
+            CheckingLiveFeasibility(
               battle: live,
               successCallbackHandler: () {
                 startLive(battleDetail: battleDetail);
@@ -830,10 +846,9 @@ class AgoraLiveController extends GetxController {
     }
   }
 
-  liveCallHostsUpdated(
-      {required int liveId,
-      required BattleDetail? battleDetail,
-      required List<LiveCallHostUser> hosts}) {
+  liveCallHostsUpdated({required int liveId,
+    required BattleDetail? battleDetail,
+    required List<LiveCallHostUser> hosts}) {
     if (live.value?.id == liveId) {
       if (live.value?.battleDetail != null && hosts.isEmpty) {
         liveBattleEnded(
@@ -842,8 +857,7 @@ class AgoraLiveController extends GetxController {
         return;
       }
       if (hosts.isEmpty &&
-          (live.value!.battleDetail?.amIMainHostInLive == false)) {
-      } else {
+          (live.value!.battleDetail?.amIMainHostInLive == false)) {} else {
         if (live.value!.battleDetail == null) {
           live.value!.battleDetail = battleDetail;
         }
@@ -860,11 +874,10 @@ class AgoraLiveController extends GetxController {
     showBattleResultAndClearData();
   }
 
-  onGiftReceived(
-      {required int liveId,
-      required GiftModel gift,
-      required UserModel sentBy,
-      required int sentToUserId}) {
+  onGiftReceived({required int liveId,
+    required GiftModel gift,
+    required UserModel sentBy,
+    required int sentToUserId}) {
     if (live.value?.id == liveId) {
       if (sentToUserId == _userProfileManager.user.value!.id) {
         populateGift.value =
@@ -920,7 +933,7 @@ class AgoraLiveController extends GetxController {
       sender.userName = message.userName;
       sender.picture = message.userPicture;
       ReceivedGiftModel receivedGiftDetail =
-          ReceivedGiftModel(giftDetail: gift, sender: sender);
+      ReceivedGiftModel(giftDetail: gift, sender: sender);
 
       populateGift.value = ReceivedGiftModel(giftDetail: gift, sender: sender);
       giftsReceived.add(receivedGiftDetail);
@@ -980,5 +993,53 @@ class AgoraLiveController extends GetxController {
             update();
           });
     }
+  }
+
+  banUser(UserModel user, int? time) {
+    getIt<SocketManager>().emit(
+        SocketConstants.actionOnUserInLive,
+        ({
+          'actionUserId': _userProfileManager.user.value!.id,
+          'liveCallId': live.value?.id,
+          'actionType': '1',
+          'totalExpelTime': time == null ? '0' : time.toString(),
+          'role': '',
+        }));
+  }
+
+  unbanUser(UserModel user) {
+    getIt<SocketManager>().emit(
+        SocketConstants.actionOnUserInLive,
+        ({
+          'actionUserId': _userProfileManager.user.value!.id,
+          'liveCallId': live.value?.id,
+          'actionType': '2',
+          'totalExpelTime': '',
+          'role': '',
+        }));
+  }
+
+  makeModerator(UserModel user) {
+    getIt<SocketManager>().emit(
+        SocketConstants.actionOnUserInLive,
+        ({
+          'actionUserId': _userProfileManager.user.value!.id,
+          'liveCallId': live.value?.id,
+          'actionType': '3',
+          'totalExpelTime': '',
+          'role': '3',
+        }));
+  }
+
+  removeAsModerator(UserModel user) {
+    getIt<SocketManager>().emit(
+        SocketConstants.actionOnUserInLive,
+        ({
+          'actionUserId': _userProfileManager.user.value!.id,
+          'liveCallId': live.value?.id,
+          'actionType': '3',
+          'totalExpelTime': '',
+          'role': '2',
+        }));
   }
 }

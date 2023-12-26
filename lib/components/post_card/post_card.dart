@@ -2,6 +2,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flare_flutter/flare_actor.dart';
 import 'package:flare_flutter/flare_controls.dart';
+import 'package:flutter/services.dart';
 import 'package:foap/components/post_card/post_user_info.dart';
 import 'package:foap/components/post_card/reshare_post.dart';
 import 'package:foap/components/post_card/reshared_post_card.dart';
@@ -30,7 +31,7 @@ import '../../screens/post/post_promotion/post_promotion.dart';
 import '../../screens/post/received_gifts.dart';
 import '../../screens/post/view_post_insight.dart';
 import '../../screens/profile/other_user_profile.dart';
-import '../audio_tile.dart';
+import 'audio_tile.dart';
 
 class PostMediaTile extends StatelessWidget {
   final PostCardController postCardController = Get.find();
@@ -98,8 +99,7 @@ class PostMediaTile extends StatelessWidget {
                   post: model,
                   isResharedPost: isSharedPostMedia,
                 )
-              : SizedBox(
-                  height: 350, child: photoPostTile(model.gallery.first));
+              : photoPostTile(model.gallery.first);
     }
   }
 
@@ -691,7 +691,7 @@ class PostCardState extends State<PostCard> {
             context: context,
             isScrollControlled: true,
             builder: (context) =>
-                FractionallySizedBox(heightFactor: 0.8, child: sharePost()));
+                FractionallySizedBox(heightFactor: 0.95, child: sharePost()));
       }),
       if (!widget.model.isMyPost)
         Row(
@@ -730,32 +730,89 @@ class PostCardState extends State<PostCard> {
       color: AppColorConstants.cardColor,
       child: Column(
         children: [
-          BodyLargeText(
-            shareToFeed.tr,
-            weight: TextWeight.semiBold,
+          Expanded(
+            child: Column(
+              children: [
+                BodyMediumText(
+                  shareToFeed.tr,
+                  weight: TextWeight.semiBold,
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                ReSharePost(
+                  post: widget.model,
+                ),
+                divider(height: 0.5).vP16,
+                BodyMediumText(
+                  sendSeparatelyToFriends.tr,
+                  weight: TextWeight.semiBold,
+                ),
+                Expanded(child: SelectFollowingUserForMessageSending(
+                    // post: widget.model,
+                    sendToUserCallback: (user) {
+                  selectUserForChatController.sendMessage(
+                      toUser: user, post: widget.model);
+                })),
+              ],
+            ).p(DesignConstants.horizontalPadding),
           ),
-          const SizedBox(
-            height: 20,
-          ),
-          ReSharePost(
-            post: widget.model,
-          ),
-          divider(height: 0.5).vP16,
-          BodyLargeText(
-            sendSeparatelyToFriends.tr,
-            weight: TextWeight.semiBold,
-          ),
-          const SizedBox(
-            height: 20,
-          ),
-          Expanded(child: SelectFollowingUserForMessageSending(
-              // post: widget.model,
-              sendToUserCallback: (user) {
-            selectUserForChatController.sendMessage(
-                toUser: user, post: widget.model);
-          }))
+          Container(
+            color: AppColorConstants.backgroundColor,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Column(
+                  children: [
+                    Container(
+                      height: 40,
+                      width: 40,
+                      color: AppColorConstants.themeColor,
+                      child: ThemeIconWidget(
+                        ThemeIcon.share,
+                        color: Colors.white,
+                      ),
+                    ).circular,
+                    const SizedBox(
+                      height: 5,
+                    ),
+                    BodySmallText(shareToString.tr)
+                  ],
+                ).ripple(() {
+                  postCardController.sharePost(post: widget.model);
+                }),
+                const SizedBox(
+                  width: 20,
+                ),
+                Column(
+                  children: [
+                    Container(
+                      height: 40,
+                      width: 40,
+                      color: AppColorConstants.themeColor,
+                      child: ThemeIconWidget(
+                        ThemeIcon.copyToClipboard,
+                        color: Colors.white,
+                      ),
+                    ).circular,
+                    const SizedBox(
+                      height: 5,
+                    ),
+                    BodySmallText(copyLinkString.tr)
+                  ],
+                ).ripple(() async {
+                  await Clipboard.setData(
+                      ClipboardData(text: widget.model.shareLink));
+                })
+              ],
+            ).setPadding(
+                left: 100,
+                right: 100,
+                top: DesignConstants.horizontalPadding,
+                bottom: DesignConstants.horizontalPadding),
+          )
         ],
-      ).p(DesignConstants.horizontalPadding),
+      ),
     ).topRounded(40);
   }
 

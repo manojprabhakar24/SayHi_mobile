@@ -1,6 +1,5 @@
 import 'dart:ui';
 import 'package:foap/api_handler/api_wrapper.dart';
-
 import '../../model/highlights.dart';
 
 class HighlightsApi {

@@ -333,76 +333,79 @@ class MyProfileState extends State<MyProfile>
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Container(
-              width:
-                  (Get.width - (2 * DesignConstants.horizontalPadding) - 5) / 2,
-              height: 50,
-              color: AppColorConstants.cardColor,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  BodyLargeText(
-                    postsString,
-                    weight: TextWeight.semiBold,
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  BodyMediumText(
-                    '(${_userProfileManager.user.value!.totalPost.formatNumber})',
-                    weight: TextWeight.bold,
-                  ),
-                ],
+        if (_userProfileManager.user.value != null)
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Container(
+                width:
+                    (Get.width - (2 * DesignConstants.horizontalPadding) - 5) /
+                        2,
+                height: 50,
+                color: AppColorConstants.cardColor,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    BodyLargeText(
+                      postsString,
+                      weight: TextWeight.semiBold,
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    BodyMediumText(
+                      '(${_userProfileManager.user.value!.totalPost.formatNumber})',
+                      weight: TextWeight.bold,
+                    ),
+                  ],
+                ),
+              ).round(10).ripple(() {
+                if (_userProfileManager.user.value!.totalPost > 0) {
+                  Get.to(() => Posts(
+                        userId: _userProfileManager.user.value!.id,
+                        title: _userProfileManager.user.value!.userName,
+                      ));
+                }
+              }),
+              const SizedBox(
+                width: 5,
               ),
-            ).round(10).ripple(() {
-              if (_userProfileManager.user.value!.totalPost > 0) {
-                Get.to(() => Posts(
-                      userId: _userProfileManager.user.value!.id,
-                      title: _userProfileManager.user.value!.userName,
-                    ));
-              }
-            }),
-            const SizedBox(
-              width: 5,
-            ),
-            Container(
-              width:
-                  (Get.width - (2 * DesignConstants.horizontalPadding) - 5) / 2,
-              height: 50,
-              color: AppColorConstants.cardColor,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  BodyLargeText(
-                    reelsString,
-                    weight: TextWeight.semiBold,
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  BodyMediumText(
-                    '(${_userProfileManager.user.value!.totalReels.formatNumber})',
-                    weight: TextWeight.bold,
-                  ),
-                ],
-              ),
-            ).round(10).ripple(() {
-              if (_userProfileManager.user.value!.totalReels > 0) {
-                ReelsController reelsController = Get.find();
+              Container(
+                width:
+                    (Get.width - (2 * DesignConstants.horizontalPadding) - 5) /
+                        2,
+                height: 50,
+                color: AppColorConstants.cardColor,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    BodyLargeText(
+                      reelsString,
+                      weight: TextWeight.semiBold,
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    BodyMediumText(
+                      '(${_userProfileManager.user.value!.totalReels.formatNumber})',
+                      weight: TextWeight.bold,
+                    ),
+                  ],
+                ),
+              ).round(10).ripple(() {
+                if (_userProfileManager.user.value!.totalReels > 0) {
+                  ReelsController reelsController = Get.find();
 
-                PostSearchQuery query = PostSearchQuery();
-                query.userId = _userProfileManager.user.value!.id;
-                reelsController.setReelsSearchQuery(query);
-                Get.to(() => const Reels(
-                      needBackBtn: true,
-                    ));
-              }
-            }),
-          ],
-        ),
+                  PostSearchQuery query = PostSearchQuery();
+                  query.userId = _userProfileManager.user.value!.id;
+                  reelsController.setReelsSearchQuery(query);
+                  Get.to(() => const Reels(
+                        needBackBtn: true,
+                      ));
+                }
+              }),
+            ],
+          ),
         const SizedBox(
           height: 5,
         ),

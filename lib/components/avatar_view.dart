@@ -47,13 +47,7 @@ class AvatarView extends StatelessWidget {
             ).round(size ?? 60)
           : Container(
               color: AppColorConstants.backgroundColor,
-              child: Center(
-                child: BodySmallText(
-                  initials,
-                  weight: TextWeight.medium,
-                  color: AppColorConstants.mainTextColor,
-                ).p8,
-              ),
+              child: userNameInitialView(initials,size ?? 60),
             ),
     ).borderWithRadius(
         value: 2,
@@ -145,16 +139,7 @@ class UserAvatarView extends StatelessWidget {
             value: hideBorder ? 0 : 1,
             radius: size,
             color: AppColorConstants.themeColor)
-        : SizedBox(
-            height: double.infinity,
-            width: double.infinity,
-            child: Center(
-              child: BodySmallText(
-                user.getInitials,
-                weight: TextWeight.medium,
-              ),
-            ),
-          ).borderWithRadius(
+        : userNameInitialView(user.getInitials,size).borderWithRadius(
             value: hideBorder ? 0 : 1,
             radius: size,
             color: AppColorConstants.themeColor);
@@ -227,30 +212,36 @@ class UserPlaneImageView extends StatelessWidget {
                   size: size / 2,
                 )),
           ).round(20)
-        : SizedBox(
-            height: double.infinity,
-            width: double.infinity,
-            child: Center(
-              child: size < 40
-                  ? BodySmallText(
-                      user.getInitials,
-                      weight: TextWeight.medium,
-                    )
-                  : size < 60
-                      ? BodyMediumText(
-                          user.getInitials,
-                          weight: TextWeight.medium,
-                        )
-                      : size < 80
-                          ? BodyExtraLargeText(
-                              user.getInitials,
-                              weight: TextWeight.medium,
-                            )
-                          : Heading2Text(
-                              user.getInitials,
-                              weight: TextWeight.medium,
-                            ),
-            ),
-          ).borderWithRadius(value: 1, radius: 20);
+        : userNameInitialView(user.getInitials,size).borderWithRadius(value: 1, radius: 20);
   }
+
+
+}
+
+Widget userNameInitialView(String initials, double size){
+  return SizedBox(
+    height: double.infinity,
+    width: double.infinity,
+    child: Center(
+      child: size < 40
+          ? BodySmallText(
+        initials,
+        weight: TextWeight.medium,
+      )
+          : size < 60
+          ? BodyMediumText(
+        initials,
+        weight: TextWeight.medium,
+      )
+          : size < 80
+          ? BodyExtraLargeText(
+        initials,
+        weight: TextWeight.medium,
+      )
+          : Heading2Text(
+        initials,
+        weight: TextWeight.medium,
+      ),
+    ),
+  );
 }

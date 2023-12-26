@@ -34,6 +34,7 @@ class _SinglePostDetailState extends State<SinglePostDetail> {
       body: Column(
         children: [
           backNavigationBar(title: postString.tr),
+          const SizedBox(height: 20),
           GetBuilder<SinglePostDetailController>(
               init: singlePostDetailController,
               builder: (ctx) {

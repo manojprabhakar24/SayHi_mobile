@@ -23,7 +23,7 @@ class _VoiceRecordState extends State<VoiceRecord> {
   String? recordingPath;
 
   // final FlutterSoundRecorder recorder = FlutterSoundRecorder();
-  final record = Record();
+  final record = AudioRecorder();
 
   int _seconds = 0;
   late Timer _timer;
@@ -51,9 +51,8 @@ class _VoiceRecordState extends State<VoiceRecord> {
 
     if (await record.hasPermission()) {
       await record.start(
-        path: recordingPath,
-        encoder: AudioEncoder.aacLc, // by default
-        bitRate: 128000, // by default
+        const RecordConfig(bitRate: 128000, encoder: AudioEncoder.aacLc),
+        path: recordingPath!, // by default
         // sampleRate: 44100, // by default
       );
       _startTimer();

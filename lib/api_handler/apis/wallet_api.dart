@@ -1,7 +1,5 @@
 import 'dart:ui';
-
 import 'package:foap/api_handler/api_wrapper.dart';
-
 import '../../model/api_meta_data.dart';
 import '../../model/package_model.dart';
 import '../../model/payment_model.dart';

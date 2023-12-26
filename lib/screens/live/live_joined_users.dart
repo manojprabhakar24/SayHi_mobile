@@ -38,9 +38,16 @@ class _LiveJoinedUsersState extends State<LiveJoinedUsers> {
                   return ListView.separated(
                       padding: const EdgeInsets.only(top: 20),
                       itemBuilder: (ctx, index) {
+                        UserModel user =
+                            agoraLiveController.currentJoinedUsers[index];
                         return UserTile(
-                            profile:
-                                agoraLiveController.currentJoinedUsers[index]);
+                          profile: user,
+                          viewCallback: () {
+                            if (!user.isMe) {
+                              openActionSheetForUser(user);
+                            }
+                          },
+                        );
                       },
                       separatorBuilder: (ctx, index) {
                         return const SizedBox(
@@ -53,5 +60,115 @@ class _LiveJoinedUsersState extends State<LiveJoinedUsers> {
         ],
       ).hp(DesignConstants.horizontalPadding),
     ).topRounded(40);
+  }
+
+  void openActionSheetForUser(UserModel user) {
+    showModalBottomSheet<void>(
+        context: context,
+        builder: (BuildContext context) {
+          return FractionallySizedBox(
+              heightFactor: 0.6,
+              child: Container(
+                color: AppColorConstants.cardColor,
+                width: Get.width,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                            height: 55,
+                            width: double.infinity,
+                            child: BodyLargeText('Ban'))
+                        .ripple(() {
+                      print('Ban');
+                      banUser(user);
+                    }),
+                    Container(
+                            height: 55,
+                            width: double.infinity,
+                            child: BodyLargeText('Remove Ban'))
+                        .ripple(() {
+                      print('Remove Ban');
+                      unbanUser(user);
+                    }),
+                    Container(
+                        height: 55,
+                        width: double.infinity,
+                        child: BodyLargeText('Make moderator').ripple(() {
+                          makeModerator(user);
+                        })),
+                    Container(
+                        height: 55,
+                        width: double.infinity,
+                        child:
+                            BodyLargeText('Remove from moderator').ripple(() {
+                          makeModerator(user);
+                        })),
+                  ],
+                ).p(DesignConstants.horizontalPadding),
+              ).topRounded(40));
+        });
+  }
+
+  banUser(UserModel user) {
+    Get.back();
+
+    showModalBottomSheet<void>(
+        context: context,
+        builder: (BuildContext context) {
+          return FractionallySizedBox(
+              heightFactor: 0.6,
+              child: Container(
+                color: AppColorConstants.cardColor,
+                width: Get.width,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                            height: 55,
+                            width: double.infinity,
+                            child: BodyLargeText('Ban for 10 minute'))
+                        .ripple(() {
+                      banUserForTime(user, 600);
+                    }),
+                    Container(
+                            height: 55,
+                            width: double.infinity,
+                            child: BodyLargeText('Ban for 15 minute'))
+                        .ripple(() {
+                      banUserForTime(user, 900);
+                    }),
+                    Container(
+                        height: 55,
+                        width: double.infinity,
+                        child: BodyLargeText('Ban for 30 minute').ripple(() {
+                          banUserForTime(user, 1800);
+                        })),
+                    Container(
+                        height: 55,
+                        width: double.infinity,
+                        child:
+                            BodyLargeText('Permanent ban from live').ripple(() {
+                          banUserForTime(user, null);
+                        })),
+                  ],
+                ).p(DesignConstants.horizontalPadding),
+              ).topRounded(40));
+        });
+  }
+
+  banUserForTime(UserModel user, int? time) {
+    agoraLiveController.banUser(user, time);
+  }
+
+  unbanUser(UserModel user) {
+    agoraLiveController.unbanUser(user);
+  }
+
+  makeModerator(UserModel user) {
+    agoraLiveController.makeModerator(user);
+  }
+
+  removeAsModerator(UserModel user) {
+    agoraLiveController.removeAsModerator(user);
   }
 }

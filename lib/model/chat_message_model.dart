@@ -4,7 +4,6 @@ import 'package:foap/helper/date_extension.dart';
 import 'package:foap/helper/imports/common_import.dart';
 import 'package:foap/helper/imports/models.dart';
 import 'package:foap/helper/string_extension.dart';
-import 'package:foap/model/location.dart';
 import 'package:foap/screens/chat/media.dart';
 import 'package:intl/intl.dart';
 

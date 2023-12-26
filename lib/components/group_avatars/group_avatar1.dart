@@ -21,7 +21,10 @@ class CategoryAvatarType1 extends StatelessWidget {
           CachedNetworkImage(
             imageUrl: category.coverImage,
             fit: BoxFit.cover,
-          ).overlay(Colors.black45),
+          ),
+          Container(
+            color: Colors.black45,
+          ),
           Positioned(
               bottom: 5,
               left: 5,
@@ -87,7 +90,10 @@ class OfferCategoryCard extends StatelessWidget {
                 CachedNetworkImage(
                   imageUrl: category.coverImage,
                   fit: BoxFit.cover,
-                ).overlay(Colors.black45),
+                ),
+                Container(
+                  color: Colors.black45,
+                ),
                 Positioned(
                     bottom: 5,
                     left: 5,
@@ -125,9 +131,9 @@ class OfferCategoryCard extends StatelessWidget {
             ).hP4,
           ).ripple(() {
             Get.to(() => ExploreBusiness(
-              addBackBtn: true,
-              category: category,
-            ));
+                  addBackBtn: true,
+                  category: category,
+                ));
           }),
           divider(height: 1).vP4,
           SizedBox(

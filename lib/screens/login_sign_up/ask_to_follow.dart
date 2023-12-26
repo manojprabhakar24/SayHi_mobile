@@ -37,7 +37,7 @@ class AskToFollow extends StatelessWidget {
               text: followString.tr,
               onPress: () async {
                 await launchUrl(
-                    Uri.parse('https://www.instagram.com/singhcoders/'));
+                    Uri.parse('https://instagram.com/singhcoders/'));
               }),
           const Spacer(),
           BodyLargeText(skipString.tr).ripple(() {

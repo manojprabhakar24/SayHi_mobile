@@ -3,6 +3,7 @@ import 'package:foap/helper/imports/common_import.dart';
 import 'package:foap/helper/imports/setting_imports.dart';
 import 'package:foap/screens/post/saved_posts.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'help_screen.dart';
 
 class Settings extends StatefulWidget {
@@ -24,7 +25,8 @@ class _SettingsState extends State<Settings> {
 
   @override
   Widget build(BuildContext context) {
-    return Obx(() => AppScaffold(
+    return Obx(() =>
+        AppScaffold(
           backgroundColor: AppColorConstants.backgroundColor,
           body: Column(
             children: [
@@ -68,10 +70,18 @@ class _SettingsState extends State<Settings> {
                           if (_settingsController
                               .setting.value!.enableDarkLightModeSwitch)
                             darkModeTile(),
-                          addTileEvent(shareString.tr, () {
-                            Share.share(
-                                '${installThisCoolAppString.tr} ${AppConfigConstants.liveAppLink}');
-                          }, false),
+                          if (_settingsController.setting.value!.iosAppLink !=
+                              null ||
+                              _settingsController
+                                  .setting.value!.androidAppLink !=
+                                  null)
+                            addTileEvent(shareString.tr, () {
+                              Share.share(
+                                  '${installThisCoolAppString
+                                      .tr}\n${_settingsController.setting.value!
+                                      .iosAppLink ?? ''}\n ${_settingsController
+                                      .setting.value!.androidAppLink ?? ''}');
+                            }, false),
                           addTileEvent(logoutString.tr, () {
                             AppUtil.showNewConfirmationAlert(
                                 title: logoutString.tr,
@@ -94,6 +104,11 @@ class _SettingsState extends State<Settings> {
                                   _settingsController.deleteAccount();
                                 });
                           }, false),
+                          addTileEvent(createdByString.tr, () async {
+                            await launchUrl(
+                                Uri.parse(
+                                    'https://instagram.com/singhcoders/'));
+                          }, true),
                         ],
                       ),
                       const SizedBox(
@@ -153,7 +168,8 @@ class _SettingsState extends State<Settings> {
               ),
             ),
             // const Spacer(),
-            Obx(() => FlutterSwitch(
+            Obx(() =>
+                FlutterSwitch(
                   inactiveColor: AppColorConstants.disabledColor,
                   activeColor: AppColorConstants.themeColor,
                   width: 50.0,

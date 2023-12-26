@@ -211,7 +211,7 @@ class PostApi {
           resultCallback}) async {
     var url = NetworkConstantsUtil.getComments;
     if (parentId != null) {
-      url = '$url?expand=user&post_id=$postId&parent_id=$parentId&page=$page';
+      url = '$url?expand=user,isLike&post_id=$postId&parent_id=$parentId&page=$page';
     } else {
       url =
           '$url?expand=user,isLike,totalChildComment,childCommentDetail.isLike,childCommentDetail.user&post_id=$postId&page=$page';
