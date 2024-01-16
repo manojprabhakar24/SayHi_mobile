@@ -9,9 +9,7 @@ class CheckingLiveFeasibility extends StatefulWidget {
   final VoidCallback successCallbackHandler;
 
   const CheckingLiveFeasibility(
-      {Key? key,
-        this.battle,
-        required this.successCallbackHandler})
+      {Key? key, this.battle, required this.successCallbackHandler})
       : super(key: key);
 
   @override
@@ -57,155 +55,161 @@ class _CheckingLiveFeasibilityState extends State<CheckingLiveFeasibility> {
     return AppScaffold(
         backgroundColor: AppColorConstants.backgroundColor,
         body: Obx(() => Stack(
-          children: [
-            if (_agoraLiveController.startLiveStreaming.value == 1 ||
-                _agoraLiveController.startLiveStreaming.value == 2)
-              const LiveBroadcastScreen(),
-            if (_agoraLiveController.startLiveStreaming.value != 2)
-              Positioned(
-                  left: 0,
-                  right: 0,
-                  top: 0,
-                  bottom: 0,
-                  child: Container(
-                    color: AppColorConstants.backgroundColor,
-                    child: Obx(() => _agoraLiveController.canLive.value == 0
-                        ? Center(
-                      child: AnimatedTextKit(
-                        animatedTexts: [
-                          ColorizeAnimatedText(
-                            checkingConnectionString.tr,
-                            textStyle: TextStyle(
-                                fontSize: FontSizes.h3,
-                                fontWeight: FontWeight.bold),
-                            colors: colorizeColors,
-                          ),
-                        ],
-                        isRepeatingAnimation: true,
-                        onTap: () {},
-                      ),
-                    )
-                        : _agoraLiveController.canLive.value == -1
-                        ? Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment:
-                      CrossAxisAlignment.center,
-                      children: [
-                        Container(
-                          height: 200,
-                          width: 200,
-                          color: AppColorConstants.red
-                              .withOpacity(0.5),
-                          child: ThemeIconWidget(
-                            ThemeIcon.camera,
-                            size: 100,
-                          ),
-                        ).circular,
-                        const SizedBox(
-                          height: 150,
-                        ),
-                        Text(
-                          _agoraLiveController.errorMessage!,
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                              fontSize: FontSizes.h4,
-                              color: AppColorConstants.mainTextColor,
-                              fontWeight: TextWeight.regular),
-                        ),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        SizedBox(
-                          width: 200,
-                          height: 50,
-                          child: AppThemeButton(
-                            text: allowString.tr,
-                            onPress: () {
-                              openAppSettings();
-                            },
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        SizedBox(
-                          width: 200,
-                          height: 45,
-                          child: Center(
-                            child: Heading4Text(
-                              backString.tr,
-                            ),
-                          ),
-                        ).ripple(() {
-                          Get.back();
-                        })
-                      ],
-                    ).hp(DesignConstants.horizontalPadding)
-                        : Row(
-                      mainAxisSize: MainAxisSize.min,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        const SizedBox(
-                            width: 20.0, height: 100.0),
-                        Heading3Text(
-                          goingLiveString.tr,
-                        ),
-                        const SizedBox(
-                            width: 20.0, height: 100.0),
-                        DefaultTextStyle(
-                          style: TextStyle(
-                              fontSize: FontSizes.h3,
-                              fontWeight: TextWeight.semiBold,
-                              color:
-                              AppColorConstants.themeColor),
-                          child: AnimatedTextKit(
-                            pause:
-                            const Duration(milliseconds: 10),
-                            totalRepeatCount: 1,
-                            animatedTexts: [
-                              RotateAnimatedText('3',
-                                  duration:
-                                  const Duration(seconds: 1),
-                                  textStyle: TextStyle(
-                                      fontSize: FontSizes.h3,
-                                      fontWeight:
-                                      TextWeight.regular)),
-                              RotateAnimatedText('2',
-                                  duration:
-                                  const Duration(seconds: 1),
-                                  textStyle: TextStyle(
-                                      fontSize: FontSizes.h3,
-                                      fontWeight:
-                                      TextWeight.regular)),
-                              RotateAnimatedText('1',
-                                  duration:
-                                  const Duration(seconds: 1),
-                                  textStyle: TextStyle(
-                                      fontSize: FontSizes.h3,
-                                      fontWeight:
-                                      TextWeight.regular)),
-                              RotateAnimatedText(goString.tr,
-                                  duration:
-                                  const Duration(seconds: 1),
-                                  textStyle: TextStyle(
-                                      fontSize: FontSizes.h3,
-                                      fontWeight:
-                                      TextWeight.regular)),
-                            ],
-                            onTap: () {},
-                            onFinished: () {
-                              goToLive();
-                            },
-                          ),
-                        ),
-                      ],
-                    )),
-                  )),
-          ],
-        )));
+              children: [
+                if (_agoraLiveController.startLiveStreaming.value ==
+                    LiveStreamingStatus.streaming)
+                  const LiveBroadcastScreen(),
+                if (_agoraLiveController.startLiveStreaming.value !=
+                    LiveStreamingStatus.streaming)
+                  Positioned(
+                      left: 0,
+                      right: 0,
+                      top: 0,
+                      bottom: 0,
+                      child: Container(
+                        color: AppColorConstants.backgroundColor,
+                        child: Obx(() => _agoraLiveController
+                                    .startLiveStreaming.value ==
+                                LiveStreamingStatus.checking
+                            ? Center(
+                                child: AnimatedTextKit(
+                                  animatedTexts: [
+                                    ColorizeAnimatedText(
+                                      checkingConnectionString.tr,
+                                      textStyle: TextStyle(
+                                          fontSize: FontSizes.h3,
+                                          fontWeight: FontWeight.bold),
+                                      colors: colorizeColors,
+                                    ),
+                                  ],
+                                  isRepeatingAnimation: true,
+                                  onTap: () {},
+                                ),
+                              )
+                            : _agoraLiveController.startLiveStreaming.value ==
+                                    LiveStreamingStatus.failed
+                                ? Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      Container(
+                                        height: 200,
+                                        width: 200,
+                                        color: AppColorConstants.red
+                                            .withOpacity(0.5),
+                                        child: ThemeIconWidget(
+                                          ThemeIcon.camera,
+                                          size: 100,
+                                        ),
+                                      ).circular,
+                                      const SizedBox(
+                                        height: 150,
+                                      ),
+                                      Text(
+                                        _agoraLiveController.errorMessage!,
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                            fontSize: FontSizes.h4,
+                                            color:
+                                                AppColorConstants.mainTextColor,
+                                            fontWeight: TextWeight.regular),
+                                      ),
+                                      const SizedBox(
+                                        height: 20,
+                                      ),
+                                      SizedBox(
+                                        width: 200,
+                                        height: 50,
+                                        child: AppThemeButton(
+                                          text: allowString.tr,
+                                          onPress: () {
+                                            openAppSettings();
+                                          },
+                                        ),
+                                      ),
+                                      const SizedBox(
+                                        height: 20,
+                                      ),
+                                      SizedBox(
+                                        width: 200,
+                                        height: 45,
+                                        child: Center(
+                                          child: Heading4Text(
+                                            backString.tr,
+                                          ),
+                                        ),
+                                      ).ripple(() {
+                                        Get.back();
+                                      })
+                                    ],
+                                  ).hp(DesignConstants.horizontalPadding)
+                                : Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: <Widget>[
+                                      const SizedBox(
+                                          width: 20.0, height: 100.0),
+                                      Heading3Text(
+                                        goingLiveString.tr,
+                                      ),
+                                      const SizedBox(
+                                          width: 20.0, height: 100.0),
+                                      DefaultTextStyle(
+                                        style: TextStyle(
+                                            fontSize: FontSizes.h3,
+                                            fontWeight: TextWeight.semiBold,
+                                            color:
+                                                AppColorConstants.themeColor),
+                                        child: AnimatedTextKit(
+                                          pause:
+                                              const Duration(milliseconds: 10),
+                                          totalRepeatCount: 1,
+                                          animatedTexts: [
+                                            RotateAnimatedText('3',
+                                                duration:
+                                                    const Duration(seconds: 1),
+                                                textStyle: TextStyle(
+                                                    fontSize: FontSizes.h3,
+                                                    fontWeight:
+                                                        TextWeight.regular)),
+                                            RotateAnimatedText('2',
+                                                duration:
+                                                    const Duration(seconds: 1),
+                                                textStyle: TextStyle(
+                                                    fontSize: FontSizes.h3,
+                                                    fontWeight:
+                                                        TextWeight.regular)),
+                                            RotateAnimatedText('1',
+                                                duration:
+                                                    const Duration(seconds: 1),
+                                                textStyle: TextStyle(
+                                                    fontSize: FontSizes.h3,
+                                                    fontWeight:
+                                                        TextWeight.regular)),
+                                            RotateAnimatedText(goString.tr,
+                                                duration:
+                                                    const Duration(seconds: 1),
+                                                textStyle: TextStyle(
+                                                    fontSize: FontSizes.h3,
+                                                    fontWeight:
+                                                        TextWeight.regular)),
+                                          ],
+                                          onTap: () {},
+                                          onFinished: () {
+                                            goToLive();
+                                          },
+                                        ),
+                                      ),
+                                    ],
+                                  )),
+                      )),
+              ],
+            )));
   }
 
   goToLive() {
+    // print('goToLive');
     _agoraLiveController.showLiveStreaming();
     // if (widget.battle != null) {
     //   // join a battle

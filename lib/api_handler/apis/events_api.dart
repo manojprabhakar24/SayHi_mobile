@@ -197,4 +197,30 @@ class EventApi {
       }
     });
   }
+
+  static getEventBookingDetail(
+      {required int bookingId,
+        required Function(EventBookingModel) resultCallback}) async {
+    var url = NetworkConstantsUtil.eventBookingDetail;
+    url = '$url$bookingId&expand=payment,event.eventOrganisor,giftedToUser,giftedByUser';
+
+    await ApiWrapper().getApi(url: url).then((result) {
+      if (result?.success == true) {
+        var item = result!.data['eventBooking'];
+        resultCallback(EventBookingModel.fromJson(item));
+      }
+    });
+  }
+
+  static linkTicketToEventBooking(
+      {required int bookingId, required String ticketName}) async {
+    var url = NetworkConstantsUtil.linkTicketToBooking;
+
+    await ApiWrapper().postApi(url: url, param: {
+      'id': bookingId.toString(),
+      'image': ticketName,
+    }).then((result) {
+      if (result?.success == true) {}
+    });
+  }
 }

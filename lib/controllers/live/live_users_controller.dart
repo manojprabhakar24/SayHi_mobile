@@ -5,7 +5,6 @@ import 'package:foap/model/data_wrapper.dart';
 
 class LiveUserController extends GetxController {
   RxList<UserLiveCallDetail> liveStreamUser = <UserLiveCallDetail>[].obs;
-  RxInt totalLiveUsers = 0.obs;
 
   DataWrapper liveUserDataWrapper = DataWrapper();
 

@@ -325,7 +325,7 @@ class SelectFollowingUserForMessageSendingState
                         title: noUserFoundString.tr,
                         subTitle: followFriendsToSendPostString.tr,
                       );
-          }).round(20),
-    ).round(40);
+          }),
+    );
   }
 }

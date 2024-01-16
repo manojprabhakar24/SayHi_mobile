@@ -726,6 +726,7 @@ String usingOlderVersionMessageString =
 String maxVideoLengthMessageString =
     'Maximum 1 minute video is allowed to select';
 String copyString = 'Copy';
+
 String groupUpdatedString = 'Group is updated';
 String strangerChatString = 'Stranger chat';
 String haveFunByRandomChattingString =
@@ -1381,3 +1382,20 @@ String shareOnlineStatusMsgString =
 String copyLinkString = 'Copy link';
 
 String createdByString = 'Created by SinghCoders';
+String bannedUsersString = 'Banned users';
+String hostString = 'Host';
+String moderatorString = 'Moderator';
+String banString = 'Ban';
+String removeBanString = 'Remove ban';
+String makeModeratorString = 'Make moderator';
+String removeFromModeratorString = 'Remove from moderator';
+String banForOneHourString = "Ban for 60 minute";
+String permanentBanString = "Permanent ban";
+
+String notAllowedToJoinLiveString = 'You are not allowed to join this live';
+
+String isModeratorNowString = 'is a moderator now';
+String isRemovedFromModeratorString = 'is removed from moderators';
+
+String copiedString = 'Copied';
+String addLocationString = 'Add location';

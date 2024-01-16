@@ -17,10 +17,10 @@ class DeepLinkManager {
   }
 
   static handleLink(Uri uri) {
-    String? postId = uri.queryParameters['pid'];
+    String? postUniqueId = uri.queryParameters['pid'];
 
-    if(postId != null){
-      Get.to(()=> SinglePostDetail(postId: int.parse(postId)));
+    if (postUniqueId != null) {
+      Get.to(() => SinglePostDetail(postUniqueId: postUniqueId));
     }
   }
 }

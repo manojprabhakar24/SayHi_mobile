@@ -626,6 +626,7 @@ class EventBookingDetailState extends State<EventBookingDetail> {
               ).round(5).ripple(() {
                 Get.to(() => ETicket(
                       booking: widget.booking,
+                      autoSendTicket: false,
                     ));
               }),
           ],

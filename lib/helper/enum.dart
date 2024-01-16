@@ -56,6 +56,7 @@ enum UploadMediaType {
   club,
   verification,
   uploadResume,
+  event
 }
 
 ///Media picker selection type
@@ -193,3 +194,5 @@ enum FollowingStatus {
 }
 
 enum PlayStateState { paused, playing, loading, idle }
+enum LiveUserRole { host, moderator, viewer }
+enum LiveStreamingStatus {none,checking, preparing,streaming, ended, failed }

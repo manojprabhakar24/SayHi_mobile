@@ -69,7 +69,6 @@ class _PreviewReelsState extends State<PreviewReelsScreen> {
         backgroundColor: AppColorConstants.backgroundColor,
         body: Column(
             // alignment: Alignment.topCenter,
-            // fit: StackFit.loose,
             children: [
               const SizedBox(
                 height: 50,

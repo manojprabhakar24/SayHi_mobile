@@ -330,31 +330,6 @@ class _ChatMediaSharingOptionPopupState
             heightFactor: 0.9, child: DrawingScreen()));
   }
 
-  // void openGallery() {
-  //   showModalBottomSheet(
-  //       backgroundColor: Colors.transparent,
-  //       context: context,
-  //       builder: (context) => ChooseMediaForChat(
-  //             selectedMediaCompletetion: (medias) {
-  //               for (Media media in medias) {
-  //                 if (media.mediaType == GalleryMediaType.photo) {
-  //                   _chatDetailController.sendImageMessage(
-  //                       media: media,
-  //                       mode: _chatDetailController.actionMode.value,
-  //                       room: _chatDetailController.chatRoom.value!);
-  //                   Navigator.of(context).pop();
-  //                 } else {
-  //                   Get.back();
-  //                   _chatDetailController.sendVideoMessage(
-  //                       media: media,
-  //                       mode: _chatDetailController.actionMode.value,
-  //                       room: _chatDetailController.chatRoom.value!);
-  //                 }
-  //               }
-  //             },
-  //           ));
-  // }
-
   void openUsersList() {
     showModalBottomSheet(
         backgroundColor: Colors.transparent,

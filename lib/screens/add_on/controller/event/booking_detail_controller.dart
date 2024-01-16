@@ -6,6 +6,8 @@ import 'package:foap/helper/imports/event_imports.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:path_provider/path_provider.dart';
 
+import '../../../../api_handler/apis/misc_api.dart';
+
 enum ProcessingBookingStatus { inProcess, gifted, cancelled, failed }
 
 class EventBookingDetailController extends GetxController {
@@ -23,18 +25,12 @@ class EventBookingDetailController extends GetxController {
     update();
   }
 
-  saveETicket(Uint8List bytes, BuildContext context) async {
-    final directory = await getApplicationDocumentsDirectory();
-    final pathOfImage = await File('${directory.path}/ticket.png').create();
-    await pathOfImage.writeAsBytes(bytes);
-
-    Share.shareXFiles([XFile(pathOfImage.path)]).then((result) {
+  saveETicket(File file) async {
+    Share.shareXFiles([XFile(file.path)]).then((result) {
       if (result.status == ShareResultStatus.success) {
-        AppUtil.showToast(
-            message: ticketSavedString.tr, isSuccess: true);
+        AppUtil.showToast(message: ticketSavedString.tr, isSuccess: true);
       } else {
-        AppUtil.showToast(
-            message: errorMessageString.tr, isSuccess: false);
+        AppUtil.showToast(message: errorMessageString.tr, isSuccess: false);
       }
     });
   }
@@ -69,6 +65,15 @@ class EventBookingDetailController extends GetxController {
             processingBooking.value = ProcessingBookingStatus.failed;
           }
           update();
+        });
+  }
+
+  linkTicketToBooking({required int bookingId, required File file}) {
+    MiscApi.uploadFile(file.path,
+        type: UploadMediaType.event, mediaType: GalleryMediaType.photo,
+        resultCallback: (filename, filepath) {
+          EventApi.linkTicketToEventBooking(
+              bookingId: bookingId, ticketName: filename);
         });
   }
 }

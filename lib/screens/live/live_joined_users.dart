@@ -32,37 +32,37 @@ class _LiveJoinedUsersState extends State<LiveJoinedUsers> {
           ),
           divider(),
           Expanded(
-            child: GetBuilder<AgoraLiveController>(
-                init: agoraLiveController,
-                builder: (ctx) {
-                  return ListView.separated(
-                      padding: const EdgeInsets.only(top: 20),
-                      itemBuilder: (ctx, index) {
-                        UserModel user =
-                            agoraLiveController.currentJoinedUsers[index];
-                        return UserTile(
-                          profile: user,
-                          viewCallback: () {
-                            if (!user.isMe) {
-                              openActionSheetForUser(user);
-                            }
-                          },
-                        );
-                      },
-                      separatorBuilder: (ctx, index) {
-                        return const SizedBox(
-                          height: 20,
-                        );
-                      },
-                      itemCount: agoraLiveController.currentJoinedUsers.length);
-                }),
+            child: Obx(() => ListView.separated(
+                padding: const EdgeInsets.only(top: 20),
+                itemBuilder: (ctx, index) {
+                  LiveViewer viewer = agoraLiveController.liveViewers[index];
+                  return SizedBox(
+                    height: 50,
+                    child: LiveUserTile(
+                      viewer: viewer,
+                    ),
+                  ).ripple(() {
+                    if (!viewer.user.isMe &&
+                        (agoraLiveController.live.value!.amIMainHostInLive ||
+                            agoraLiveController.amIModeratorInLive) &&
+                        viewer.user.id !=
+                            agoraLiveController
+                                .live.value!.mainHostUserDetail.id) {
+                      openActionSheetForUser(viewer);
+                    }
+                  });
+                },
+                separatorBuilder: (ctx, index) {
+                  return divider();
+                },
+                itemCount: agoraLiveController.liveViewers.length)),
           ),
         ],
       ).hp(DesignConstants.horizontalPadding),
     ).topRounded(40);
   }
 
-  void openActionSheetForUser(UserModel user) {
+  void openActionSheetForUser(LiveViewer viewer) {
     showModalBottomSheet<void>(
         context: context,
         builder: (BuildContext context) {
@@ -74,81 +74,84 @@ class _LiveJoinedUsersState extends State<LiveJoinedUsers> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Container(
-                            height: 55,
-                            width: double.infinity,
-                            child: BodyLargeText('Ban'))
-                        .ripple(() {
-                      print('Ban');
-                      banUser(user);
-                    }),
-                    Container(
-                            height: 55,
-                            width: double.infinity,
-                            child: BodyLargeText('Remove Ban'))
-                        .ripple(() {
-                      print('Remove Ban');
-                      unbanUser(user);
-                    }),
-                    Container(
-                        height: 55,
-                        width: double.infinity,
-                        child: BodyLargeText('Make moderator').ripple(() {
-                          makeModerator(user);
-                        })),
-                    Container(
-                        height: 55,
-                        width: double.infinity,
-                        child:
-                            BodyLargeText('Remove from moderator').ripple(() {
-                          makeModerator(user);
-                        })),
+                    if (viewer.isBanned == false)
+                      SizedBox(
+                              height: 55,
+                              width: double.infinity,
+                              child: BodyLargeText(banString.tr))
+                          .ripple(() {
+                        banUser(viewer);
+                      }),
+                    if (viewer.isBanned == true)
+                      SizedBox(
+                              height: 55,
+                              width: double.infinity,
+                              child: BodyLargeText(removeBanString.tr))
+                          .ripple(() {
+                        unbanUser(viewer.user);
+                      }),
+                    if (viewer.role != LiveUserRole.moderator &&
+                        viewer.isBanned != true)
+                      SizedBox(
+                          height: 55,
+                          width: double.infinity,
+                          child:
+                              BodyLargeText(makeModeratorString.tr).ripple(() {
+                            makeModerator(viewer.user);
+                          })),
+                    if (viewer.role == LiveUserRole.moderator)
+                      SizedBox(
+                          height: 55,
+                          width: double.infinity,
+                          child: BodyLargeText(removeFromModeratorString.tr)
+                              .ripple(() {
+                            removeAsModerator(viewer.user);
+                          })),
                   ],
                 ).p(DesignConstants.horizontalPadding),
               ).topRounded(40));
         });
   }
 
-  banUser(UserModel user) {
+  banUser(LiveViewer viewer) {
     Get.back();
 
     showModalBottomSheet<void>(
         context: context,
         builder: (BuildContext context) {
           return FractionallySizedBox(
-              heightFactor: 0.6,
+              heightFactor: 0.4,
               child: Container(
                 color: AppColorConstants.cardColor,
                 width: Get.width,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Container(
-                            height: 55,
-                            width: double.infinity,
-                            child: BodyLargeText('Ban for 10 minute'))
-                        .ripple(() {
-                      banUserForTime(user, 600);
-                    }),
-                    Container(
-                            height: 55,
-                            width: double.infinity,
-                            child: BodyLargeText('Ban for 15 minute'))
-                        .ripple(() {
-                      banUserForTime(user, 900);
-                    }),
-                    Container(
+                    // Container(
+                    //         height: 55,
+                    //         width: double.infinity,
+                    //         child: BodyLargeText('Ban for 10 minute'))
+                    //     .ripple(() {
+                    //   banUserForTime(viewer.user, 20);
+                    // }),
+                    // Container(
+                    //         height: 55,
+                    //         width: double.infinity,
+                    //         child: BodyLargeText('Ban for 15 minute'))
+                    //     .ripple(() {
+                    //   banUserForTime(viewer.user, 900);
+                    // }),
+                    SizedBox(
                         height: 55,
                         width: double.infinity,
-                        child: BodyLargeText('Ban for 30 minute').ripple(() {
-                          banUserForTime(user, 1800);
+                        child: BodyLargeText(banForOneHourString.tr).ripple(() {
+                          banUserForTime(viewer.user, 1800);
                         })),
-                    Container(
+                    SizedBox(
                         height: 55,
                         width: double.infinity,
-                        child:
-                            BodyLargeText('Permanent ban from live').ripple(() {
-                          banUserForTime(user, null);
+                        child: BodyLargeText(permanentBanString.tr).ripple(() {
+                          banUserForTime(viewer.user, null);
                         })),
                   ],
                 ).p(DesignConstants.horizontalPadding),
@@ -157,18 +160,22 @@ class _LiveJoinedUsersState extends State<LiveJoinedUsers> {
   }
 
   banUserForTime(UserModel user, int? time) {
+    Get.back();
     agoraLiveController.banUser(user, time);
   }
 
   unbanUser(UserModel user) {
+    Get.back();
     agoraLiveController.unbanUser(user);
   }
 
   makeModerator(UserModel user) {
+    Get.back();
     agoraLiveController.makeModerator(user);
   }
 
   removeAsModerator(UserModel user) {
+    Get.back();
     agoraLiveController.removeAsModerator(user);
   }
 }

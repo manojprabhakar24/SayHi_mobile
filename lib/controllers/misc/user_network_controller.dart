@@ -71,9 +71,11 @@ class UserNetworkController extends GetxController {
       followers[followers.indexWhere((element) => element.id == user.id)] =
           user;
     }
+    following.refresh();
+    followers.refresh();
+
     update();
-    UsersApi.followUnfollowUser(isFollowing: true, user: user)
-        .then((value) {
+    UsersApi.followUnfollowUser(isFollowing: true, user: user).then((value) {
       update();
     });
   }
@@ -90,11 +92,11 @@ class UserNetworkController extends GetxController {
           followers.where((element) => element.id == user.id).first;
       matchedUser.followingStatus = FollowingStatus.notFollowing;
     }
+    following.refresh();
     followers.refresh();
 
     update();
-    UsersApi.followUnfollowUser(isFollowing: false, user: user)
-        .then((value) {
+    UsersApi.followUnfollowUser(isFollowing: false, user: user).then((value) {
       update();
     });
   }

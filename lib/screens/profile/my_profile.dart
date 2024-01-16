@@ -2,6 +2,7 @@ import 'package:foap/helper/imports/common_import.dart';
 import 'package:foap/helper/imports/reel_imports.dart';
 import 'package:foap/helper/number_extension.dart';
 import 'package:foap/screens/profile/update_profile.dart';
+import 'package:foap/screens/profile/user_profile_stat.dart';
 import 'package:foap/screens/profile/users_club_listing.dart';
 import 'package:foap/screens/settings_menu/notifications.dart';
 import 'package:foap/screens/settings_menu/settings.dart';
@@ -154,7 +155,9 @@ class MyProfileState extends State<MyProfile>
                               const SizedBox(
                                 height: 20,
                               ),
-                              statsView(),
+                              UserProfileStatistics(
+                                user: _profileController.user.value!,
+                              ),
                               const SizedBox(
                                 height: 20,
                               ),
@@ -174,81 +177,6 @@ class MyProfileState extends State<MyProfile>
                 : Container();
           }),
     );
-  }
-
-  Widget statsView() {
-    return Container(
-      color: AppColorConstants.cardColor,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Heading4Text(
-                _profileController.user.value!.totalPost.toString(),
-                weight: TextWeight.medium,
-              ).bP8,
-              BodySmallText(
-                postsString.tr,
-              ),
-            ],
-          ).ripple(() {
-            if (_userProfileManager.user.value!.totalPost > 0) {
-              Get.to(() => Posts(
-                    userId: _userProfileManager.user.value!.id,
-                    title: _userProfileManager.user.value!.userName,
-                  ));
-            }
-          }),
-          // const Spacer(),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Heading4Text(
-                '${_profileController.user.value!.totalFollower}',
-                weight: TextWeight.medium,
-              ).bP8,
-              BodySmallText(
-                followersString.tr,
-              ),
-            ],
-          ).ripple(() {
-            if (_profileController.user.value!.totalFollower > 0) {
-              Get.to(() => FollowerFollowingList(
-                        isFollowersList: true,
-                        userId: _userProfileManager.user.value!.id,
-                      ))!
-                  .then((value) {
-                loadData();
-              });
-            }
-          }),
-          // const Spacer(),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Heading4Text(
-                '${_profileController.user.value!.totalFollowing}',
-                weight: TextWeight.medium,
-              ).bP8,
-              BodySmallText(
-                followingString.tr,
-              ),
-            ],
-          ).ripple(() {
-            if (_profileController.user.value!.totalFollowing > 0) {
-              Get.to(() => FollowerFollowingList(
-                      isFollowersList: false,
-                      userId: _userProfileManager.user.value!.id))!
-                  .then((value) {
-                loadData();
-              });
-            }
-          }),
-        ],
-      ).p16,
-    ).round(15);
   }
 
   Widget addHighlightsView() {

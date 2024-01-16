@@ -70,7 +70,7 @@ class UserInfo extends StatelessWidget {
       children: [
         UserAvatarView(
           user: model,
-          size: 40,
+          size: 25,
         ),
         const SizedBox(width: 10),
         Expanded(
@@ -79,7 +79,7 @@ class UserInfo extends StatelessWidget {
             children: [
               Row(
                 children: [
-                  BodyLargeText(
+                  BodySmallText(
                     model.name ?? model.userName,
                     weight: TextWeight.semiBold,
                     maxLines: 1,
@@ -141,7 +141,7 @@ class UserTile extends StatelessWidget {
             children: [
               UserAvatarView(
                 user: profile,
-                size: 40,
+                size: 30,
                 onTapHandler: () {
                   Live live = Live(
                       channelName: profile.liveCallDetail!.channelName,
@@ -790,23 +790,24 @@ class SendMessageUserTile extends StatelessWidget {
                       iconedButtons: {
                         ButtonState.idle: IconedButton(
                             text: sendString.tr,
-                            icon: const Icon(
+                            icon: Icon(
                               Icons.send,
-                              color: Colors.white,
+                              color: AppColorConstants.iconColor,
                               size: 15,
                             ),
                             color: AppColorConstants.themeColor.lighten(0.1)),
                         ButtonState.loading: IconedButton(
-                            text: loadingString.tr, color: Colors.white),
+                            text: loadingString.tr,
+                            color: AppColorConstants.iconColor),
                         ButtonState.fail: IconedButton(
                             text: failedString.tr,
-                            icon: const Icon(Icons.cancel,
-                                color: Colors.white, size: 15),
+                            icon: Icon(Icons.cancel,
+                                color: AppColorConstants.iconColor, size: 15),
                             color: AppColorConstants.red),
                         ButtonState.success: IconedButton(
                             text: sentString.tr,
-                            icon: const Icon(Icons.check_circle,
-                                color: Colors.white, size: 15),
+                            icon: Icon(Icons.check_circle,
+                                color: AppColorConstants.iconColor, size: 15),
                             color: AppColorConstants.themeColor.darken())
                       },
                       onPressed: sendCallback,
@@ -869,21 +870,21 @@ class GifterUserTile extends StatelessWidget {
         const Spacer(),
         CachedNetworkImage(
           imageUrl: gift.giftDetail.logo,
-          height: 40,
-          width: 40,
+          height: 25,
+          width: 25,
         ),
         const SizedBox(
-          width: 5,
+          width: 15,
         ),
         ThemeIconWidget(
           ThemeIcon.diamond,
-          color: Colors.yellow,
+          color: AppColorConstants.themeColor,
           size: 18,
         ),
         const SizedBox(
           width: 5,
         ),
-        BodyLargeText(gift.giftDetail.coins.toString(),
+        BodyMediumText(gift.giftDetail.coins.toString(),
             weight: TextWeight.semiBold)
       ],
     );
@@ -1096,5 +1097,67 @@ class FollowRequestSenderUserTile extends StatelessWidget {
         ],
       ).p(DesignConstants.horizontalPadding),
     ).round(20);
+  }
+}
+
+class LiveUserTile extends StatelessWidget {
+  final LiveViewer viewer;
+
+  const LiveUserTile({
+    Key? key,
+    required this.viewer,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Expanded(
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              UserAvatarView(
+                user: viewer.user,
+                size: 30,
+                onTapHandler: () {},
+              ),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Row(
+                      children: [
+                        BodyMediumText(
+                          viewer.user.isMe
+                              ? youString.tr
+                              : viewer.user.userName,
+                          // weight: TextWeight.regular,
+                          maxLines: 1,
+                        ),
+                        if (viewer.user.isVerified) verifiedUserTag()
+                      ],
+                    ).bP4,
+                    viewer.user.country != null
+                        ? BodySmallText(
+                            '${viewer.user.city!}, ${viewer.user.country!}',
+                          )
+                        : Container()
+                  ],
+                ).hP8,
+              ),
+              // const Spacer(),
+            ],
+          ),
+        ),
+        BodyLargeText(viewer.role == LiveUserRole.host
+            ? hostString.tr
+            : viewer.role == LiveUserRole.moderator
+                ? moderatorString.tr
+                : '')
+      ],
+    );
   }
 }

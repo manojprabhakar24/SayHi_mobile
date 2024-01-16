@@ -1,12 +1,16 @@
+import 'dart:io';
 import 'package:foap/helper/imports/common_import.dart';
 import 'package:foap/helper/imports/event_imports.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:widgets_to_image/widgets_to_image.dart';
+import 'package:path_provider/path_provider.dart';
 
 class ETicket extends StatefulWidget {
   final EventBookingModel booking;
+  final bool autoSendTicket;
 
-  const ETicket({Key? key, required this.booking}) : super(key: key);
+  const ETicket({Key? key, required this.booking, required this.autoSendTicket})
+      : super(key: key);
 
   @override
   State<ETicket> createState() => _ETicketState();
@@ -14,9 +18,21 @@ class ETicket extends StatefulWidget {
 
 class _ETicketState extends State<ETicket> {
   final EventBookingDetailController _eventBookingDetailController =
-      EventBookingDetailController();
+  EventBookingDetailController();
 
   WidgetsToImageController controller = WidgetsToImageController();
+
+  @override
+  void initState() {
+    if (widget.autoSendTicket) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        Future.delayed(const Duration(milliseconds: 500), () {
+          sendingTicket();
+        });
+      });
+    }
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +42,6 @@ class _ETicketState extends State<ETicket> {
           backNavigationBar(
             title: eTicketString.tr,
           ),
-
           Expanded(
             child: Stack(
               children: [
@@ -134,23 +149,29 @@ class _ETicketState extends State<ETicket> {
           const SizedBox(
             height: 20,
           ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              BodySmallText(eventOrganizerString.tr, weight: TextWeight.medium),
-              const SizedBox(
-                height: 10,
-              ),
-              for (EventOrganizer sponsor in widget.booking.event.organizers)
-                Wrap(
-                  children: [
-                    BodyLargeText(sponsor.name, weight: TextWeight.bold)
-                  ],
+          if (widget.booking.event.organizers.isNotEmpty)
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                BodySmallText(eventOrganizerString.tr,
+                    weight: TextWeight.medium),
+                const SizedBox(
+                  height: 10,
                 ),
-            ],
-          )
+                for (EventOrganizer sponsor in widget.booking.event.organizers)
+                  Wrap(
+                    children: [
+                      BodyLargeText(sponsor.name, weight: TextWeight.bold)
+                    ],
+                  ),
+              ],
+            )
         ],
-      ).setPadding(top: 25, bottom: 25, left: DesignConstants.horizontalPadding, right: DesignConstants.horizontalPadding),
+      ).setPadding(
+          top: 25,
+          bottom: 25,
+          left: DesignConstants.horizontalPadding,
+          right: DesignConstants.horizontalPadding),
     ).round(20).hp(DesignConstants.horizontalPadding);
   }
 
@@ -266,15 +287,35 @@ class _ETicketState extends State<ETicket> {
             ],
           ),
         ],
-      ).setPadding(top: 25, bottom: 25, left: DesignConstants.horizontalPadding, right: DesignConstants.horizontalPadding),
+      ).setPadding(
+          top: 25,
+          bottom: 25,
+          left: DesignConstants.horizontalPadding,
+          right: DesignConstants.horizontalPadding),
     ).round(20).hp(DesignConstants.horizontalPadding);
   }
 
   saveTicket() {
     Loader.show(status: loadingString.tr);
-    controller.capture().then((bytes) {
-      _eventBookingDetailController.saveETicket(bytes!, context);
+    controller.capture().then((bytes) async {
+      final directory = await getApplicationDocumentsDirectory();
+      final pathOfImage = await File('${directory.path}/ticket.png').create();
+      await pathOfImage.writeAsBytes(bytes!);
+
+      _eventBookingDetailController.saveETicket(pathOfImage);
       Loader.dismiss();
+    });
+  }
+
+  sendingTicket() {
+    // Loader.show(status: loadingString.tr);
+    controller.capture().then((bytes) async {
+      final directory = await getApplicationDocumentsDirectory();
+      final pathOfImage = await File('${directory.path}/ticket.png').create();
+      await pathOfImage.writeAsBytes(bytes!);
+
+      _eventBookingDetailController.linkTicketToBooking(
+          bookingId: widget.booking.id, file: pathOfImage);
     });
   }
 }

@@ -77,6 +77,7 @@ class MyHttpOverrides extends HttpOverrides {
 
 late List<CameraDescription> cameras;
 bool isLaunchedFromCallNotification = false;
+bool isAnyPageInStack = false;
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();

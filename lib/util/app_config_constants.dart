@@ -16,10 +16,10 @@ class AppConfigConstants {
   static const googleMapApiKey = 'AIzaSyA4vcqErGvq5NRbvhvq8JKSp0VFpNBBPjE';
 
   static const restApiBaseUrl =
-      'https://development.fwdtechnology.co/social_media_plus/api/web/v1/';
+      'https://sayhi.codepearl.in/api/web/v1/';
 
   // Socket api url
-  static const socketApiBaseUrl = "https://development.fwdtechnology.co:4000/";
+  static const socketApiBaseUrl = "https://sayhi.codepearl.in:4000/";
 
   // static const restApiBaseUrl = 'https://sayhi.codepearl.in/api/web/v1/';
   //

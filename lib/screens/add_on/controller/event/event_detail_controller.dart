@@ -63,19 +63,25 @@ class EventDetailController extends GetxController {
     EventApi.buyTicket(
         orderRequest: ticketOrder,
         resultCallback: (bookingId) {
-          if (ticketOrder.gifToUser != null && bookingId != null) {
-            EventApi.giftEventTicket(
-                ticketId: bookingId,
-                toUserId: ticketOrder.gifToUser!.id,
-                resultCallback: (status) {
-                  if (status) {
-                    _checkoutController.orderPlaced();
-                  } else {
-                    _checkoutController.orderFailed();
-                  }
-                });
-          } else if (bookingId != null) {
+          if (bookingId != null) {
             _checkoutController.orderPlaced();
+
+            if (ticketOrder.gifToUser != null) {
+              EventApi.giftEventTicket(
+                  ticketId: bookingId,
+                  toUserId: ticketOrder.gifToUser!.id,
+                  resultCallback: (status) {});
+            }
+            Future.delayed(const Duration(seconds: 2), () {
+              EventApi.getEventBookingDetail(
+                  bookingId: bookingId,
+                  resultCallback: (booking) {
+                    Get.to(() => ETicket(
+                      booking: booking,
+                      autoSendTicket: true,
+                    ));
+                  });
+            });
           } else if (bookingId == null) {
             _checkoutController.orderFailed();
           }

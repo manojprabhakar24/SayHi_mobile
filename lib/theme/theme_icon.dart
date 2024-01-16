@@ -8,6 +8,7 @@ enum ThemeIcon {
   cart,
   setting,
   account,
+  bannedAccount,
   group,
   camera,
   gallery,
@@ -325,6 +326,12 @@ class ThemeIconWidget extends StatelessWidget {
       case ThemeIcon.account:
         return Icon(
           Icons.person_outline,
+          size: size ?? 20,
+          color: color ?? AppColorConstants.iconColor,
+        );
+      case ThemeIcon.bannedAccount:
+        return Icon(
+          Icons.person_off,
           size: size ?? 20,
           color: color ?? AppColorConstants.iconColor,
         );

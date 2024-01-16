@@ -650,7 +650,8 @@ class _ChatDetailState extends State<ChatDetail> {
       bottomOffsetHeight: 80.0,
       // Offset height to consider, for showing the menu item ( for example bottom navigation bar), so that the popup menu will be shown on top of selected item.
       menuItems: [
-        if (message.copyContent != null)
+        if (message.copyContent != null &&
+            message.messageContentType == MessageContentType.text)
           FocusedMenuItem(
               backgroundColor: AppColorConstants.backgroundColor,
               title: BodyLargeText(
@@ -658,7 +659,8 @@ class _ChatDetailState extends State<ChatDetail> {
               ),
               trailingIcon: const Icon(Icons.file_copy, size: 18),
               onPressed: () async {
-                await Clipboard.setData(ClipboardData(text: message.decrypt));
+                await Clipboard.setData(
+                    ClipboardData(text: message.textMessage));
               }),
         if (_chatDetailController.chatRoom.value?.canIChat == true &&
             _settingsController.setting.value!.enableReplyInChat)

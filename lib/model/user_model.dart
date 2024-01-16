@@ -339,6 +339,7 @@ class UserLiveCallDetail {
   String token = '';
   String channelName = '';
   List<UserModel>? host;
+  int? totalUsers;
 
   UserLiveCallDetail();
 
@@ -352,6 +353,7 @@ class UserLiveCallDetail {
     model.totalTime = json['total_time'];
     model.token = json['token'] ?? '';
     model.channelName = json['channel_name'] ?? '';
+    model.totalUsers = json['totalJoinedUsers'] ?? 1;
 
     if (json['userdetails'] != null) {
       model.host = <UserModel>[];
@@ -412,6 +414,45 @@ class LanguageModel {
         id: json["id"] ?? json["language_id"],
         name: json["name"],
       );
+}
+
+class LiveViewer {
+  int id;
+  int userId;
+  int liveId;
+  LiveUserRole role;
+  bool isBanned;
+  int? banType;
+  int? totalExpelTime;
+  int? expelExpiryTime;
+  UserModel user;
+
+  LiveViewer({
+    required this.id,
+    required this.userId,
+    required this.liveId,
+    required this.isBanned,
+    required this.banType,
+    required this.role,
+    required this.totalExpelTime,
+    required this.expelExpiryTime,
+    required this.user,
+  });
+
+  factory LiveViewer.fromJson(Map<String, dynamic> json) => LiveViewer(
+      id: json['id'],
+      userId: json['user_id'],
+      liveId: json['live_call_id'],
+      isBanned: json['is_ban'] == 1,
+      banType: json['ban_type'],
+      totalExpelTime: json['total_expel_time'],
+      expelExpiryTime: json['expel_expiry_time'],
+      role: json['role'] == 1
+          ? LiveUserRole.host
+          : json['role'] == 3
+              ? LiveUserRole.moderator
+              : LiveUserRole.viewer,
+      user: UserModel.fromJson(json['user']));
 }
 
 class UserSetting {

@@ -672,27 +672,28 @@ class PostCardState extends State<PostCard> {
           openComments();
         }),
 
-      Row(
-        children: [
-          ThemeIconWidget(
-            ThemeIcon.share,
-            size: 15,
-          ),
-          const SizedBox(
-            width: 10,
-          ),
-          BodyMediumText(
-            shareString,
-          )
-        ],
-      ).ripple(() {
-        showModalBottomSheet(
-            backgroundColor: Colors.transparent,
-            context: context,
-            isScrollControlled: true,
-            builder: (context) =>
-                FractionallySizedBox(heightFactor: 0.95, child: sharePost()));
-      }),
+      if (widget.model.sharedPost == null)
+        Row(
+          children: [
+            ThemeIconWidget(
+              ThemeIcon.share,
+              size: 15,
+            ),
+            const SizedBox(
+              width: 10,
+            ),
+            BodyMediumText(
+              shareString,
+            )
+          ],
+        ).ripple(() {
+          showModalBottomSheet(
+              backgroundColor: Colors.transparent,
+              context: context,
+              isScrollControlled: true,
+              builder: (context) =>
+                  FractionallySizedBox(heightFactor: 0.95, child: sharePost()));
+        }),
       if (!widget.model.isMyPost)
         Row(
           children: [
@@ -801,6 +802,8 @@ class PostCardState extends State<PostCard> {
                     BodySmallText(copyLinkString.tr)
                   ],
                 ).ripple(() async {
+                  AppUtil.showToast(message: copiedString.tr, isSuccess: true);
+
                   await Clipboard.setData(
                       ClipboardData(text: widget.model.shareLink));
                 })

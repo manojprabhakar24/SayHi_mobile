@@ -19,7 +19,7 @@ Widget backNavigationBar({required String title}) {
               color: AppColorConstants.iconColor,
             ),
           ),
-        ).lP8.ripple(() {
+        ).ripple(() {
           Get.back();
         }),
         Expanded(

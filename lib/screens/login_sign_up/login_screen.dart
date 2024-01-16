@@ -3,6 +3,8 @@ import 'package:foap/helper/imports/login_signup_imports.dart';
 import 'package:foap/screens/login_sign_up/set_user_name.dart';
 import 'package:lottie/lottie.dart';
 
+import '../../main.dart';
+
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
 
@@ -20,6 +22,7 @@ class LoginScreenState extends State<LoginScreen> {
 
   @override
   void initState() {
+    isAnyPageInStack = false;
     super.initState();
   }
 

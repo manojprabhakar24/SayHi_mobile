@@ -95,11 +95,10 @@ class _LiveUserScreenState extends State<LiveUserScreen> {
                                         ThemeIcon.group,
                                         color: Colors.white,
                                       ).p4,
-                                      Obx(() => BodyLargeText(
-                                            _liveUserController.totalLiveUsers
-                                                .value.formatNumber,
-                                            color: Colors.white,
-                                          ))
+                                      BodyLargeText(
+                                        liveStreaming.totalUsers!.formatNumber,
+                                        color: Colors.white,
+                                      )
                                     ],
                                   ),
                                 ).round(20),

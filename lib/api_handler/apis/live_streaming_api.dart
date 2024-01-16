@@ -46,7 +46,7 @@ class LiveStreamingApi {
       }
     });
   }
-  
+
   static getLiveHistory(
       {required int page,
       required Function(List<LiveModel>, APIMetaData) resultCallback}) async {
@@ -58,6 +58,32 @@ class LiveStreamingApi {
         resultCallback(
             List<LiveModel>.from(items.map((x) => LiveModel.fromJson(x))),
             APIMetaData.fromJson(result.data['live_history']['_meta']));
+      }
+    });
+  }
+
+  static getLiveViewers(
+      {required int liveId,
+      int? role,
+      bool? isBanned,
+      required Function(List<LiveViewer>, APIMetaData) resultCallback}) async {
+    var url = '${NetworkConstantsUtil.liveCallViewers}$liveId';
+
+    if(role != null){
+      url = '$url&role=$role';
+    }
+    if(isBanned != null){
+      url = '$url&is_ban=1';
+      
+    }
+    await ApiWrapper().getApi(url: url).then((result) {
+      if (result?.success == true) {
+        var items = result!.data['live_user_view']['items'];
+        if (items.isNotEmpty) {
+          resultCallback(
+              List<LiveViewer>.from(items.map((x) => LiveViewer.fromJson(x))),
+              APIMetaData.fromJson(result.data['live_user_view']['_meta']));
+        }
       }
     });
   }

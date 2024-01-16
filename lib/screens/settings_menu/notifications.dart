@@ -310,12 +310,13 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
       Get.to(() => OtherUserProfile(userId: userId));
     } else if (notification.type == NotificationType.comment) {
       int postId = notification.post!.id;
-      Get.to(() => CommentsScreen(
-            postId: postId,
-            isPopup: false,
-            handler: () {},
-            commentPostedCallback: () {},
-          ));
+      // Get.to(() => CommentsScreen(
+      //       postId: postId,
+      //       isPopup: false,
+      //       handler: () {},
+      //       commentPostedCallback: () {},
+      //     ));
+      Get.to(() => SinglePostDetail(postId: postId));
     } else if (notification.type == NotificationType.like) {
       Get.to(() => SinglePostDetail(postId: notification.post!.id));
     } else if (notification.type == NotificationType.competitionAdded) {

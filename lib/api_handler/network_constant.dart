@@ -118,6 +118,8 @@ class NetworkConstantsUtil {
 
   static String postDetail =
       'posts/{id}?expand=user,user.userLiveDetail,clubDetail,giftSummary';
+  static String postDetailByUniqueId =
+      'posts/view-by-unique-id?unique_id=';
   static String mentionedPosts =
       'posts/my-post-mention-user?expand=user&user_id=';
   static String likePost = 'posts/like';
@@ -188,6 +190,8 @@ class NetworkConstantsUtil {
   static String liveHistory = 'user-live-histories?expand=giftSummary';
   static String liveGiftsReceived =
       'gifts/live-call-gift-recieved?expand=giftDetail,senderDetail&';
+
+  static String liveCallViewers = 'chats/live-call-viewer?expand=user&live_call_id=';
 
   //***********Podcast***********//
   static String getPodcastCategories =
@@ -268,6 +272,8 @@ class NetworkConstantsUtil {
   static String cancelEventBooking = 'events/cancel-ticket-booking';
 
   static String giftTicket = 'events/gift-ticket';
+  static String eventBookingDetail = 'events/detail-ticket-booking?id=';
+  static String linkTicketToBooking = 'events/attach-image-ticket-booking';
 
   //***********random live and chat***********//
   // static String randomLives =

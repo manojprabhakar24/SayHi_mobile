@@ -215,6 +215,7 @@ class _VoiceRecordState extends State<VoiceRecord> {
         filePath: recordingPath!,
         fileSize: data.length,
         mainFileBytes: data,
+        duration: _seconds,
         id: randomId(),
         creationTime: DateTime.now(),
         mediaType: GalleryMediaType.audio,

@@ -156,6 +156,7 @@ dependencies:
   get_ip_address: ^0.0.6
   app_links: ^3.5.0
   flutter_stripe: ^10.0.0
+  flutter_easyloading: ^3.0.5
 
 dev_dependencies:
   flutter_test:

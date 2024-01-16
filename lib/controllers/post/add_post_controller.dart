@@ -7,6 +7,7 @@ import 'package:foap/helper/imports/common_import.dart';
 import 'package:foap/helper/string_extension.dart';
 import 'package:video_compress_ds/video_compress_ds.dart';
 import '../../helper/enum_linking.dart';
+import '../../model/location.dart';
 import '../../screens/chat/media.dart';
 import '../../screens/dashboard/dashboard_screen.dart';
 import '../home/home_controller.dart';
@@ -27,29 +28,17 @@ class AddPostController extends GetxController {
 
   RxBool isPreviewMode = false.obs;
 
-  int hashtagsPage = 1;
-  bool canLoadMoreHashtags = true;
-  bool hashtagsIsLoading = false;
-
-  // int accountsPage = 1;
-  // bool canLoadMoreAccounts = true;
-  // bool accountsIsLoading = false;
+  Rx<LocationModel?> taggedLocation = Rx<LocationModel?>(null);
 
   PostType? currentPostType;
 
   clear() {
     currentIndex.value = 0;
-
     isPosting.value = false;
     isErrorInPosting.value = false;
-
     isPreviewMode.value = false;
-
-    hashtagsPage = 1;
-    canLoadMoreHashtags = true;
-    hashtagsIsLoading = false;
-
     enableComments.value = true;
+    taggedLocation.value = null;
 
     update();
   }
@@ -120,6 +109,7 @@ class AddPostController extends GetxController {
       galleryItems: responses,
       title: title,
       tags: title.getHashtags(),
+      location: taggedLocation.value,
       mentions: title.getMentions(),
       allowComments: allowComments,
       competitionId: competitionId,
@@ -210,6 +200,8 @@ class AddPostController extends GetxController {
         'is_default': '1',
         'height': (media.size?.height ?? 0).toString(),
         'width': (media.size?.width ?? 0).toString(),
+        'audio_time': media.duration.toString()
+
       };
       completer.complete(gallery);
     });
@@ -222,6 +214,7 @@ class AddPostController extends GetxController {
     required List<String> tags,
     required List<String> mentions,
     required bool allowComments,
+    LocationModel? location,
     int? competitionId,
     int? clubId,
     bool isReel = false,
@@ -236,6 +229,7 @@ class AddPostController extends GetxController {
         allowComments: allowComments,
         hashTag: tags.join(','),
         mentions: mentions.join(','),
+        location: location,
         competitionId: competitionId,
         clubId: clubId,
         audioId: audioId,
@@ -284,5 +278,9 @@ class AddPostController extends GetxController {
           });
           Get.back();
         });
+  }
+
+  setTaggedLocation(LocationModel? location) {
+    taggedLocation.value = location;
   }
 }

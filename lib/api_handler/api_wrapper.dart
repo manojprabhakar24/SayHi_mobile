@@ -7,6 +7,8 @@ import 'package:http_parser/http_parser.dart';
 import '../helper/enum.dart';
 import '../helper/enum_linking.dart';
 import '../helper/localization_strings.dart';
+import '../main.dart';
+import '../screens/login_sign_up/login_screen.dart';
 import '../util/constant_util.dart';
 import '../util/shared_prefs.dart';
 import 'network_constant.dart';
@@ -26,6 +28,13 @@ class ApiResponse {
     model.data = json['data'];
     model.message = json['message'];
 
+    if (json['status'] == 401) {
+      // go to login
+
+      if (isAnyPageInStack) {
+        Get.offAll(() => const LoginScreen());
+      }
+    }
     if (model.success != true &&
         model.data != null &&
         model.message?.isEmpty == true) {
@@ -72,7 +81,7 @@ class ApiWrapper {
     return http.get(Uri.parse(urlString), headers: {
       "Authorization": "Bearer ${authKey!}"
     }).then((http.Response response) async {
-      print(response.body);
+      // print(response.body);
       dynamic data = _decoder.convert(response.body);
       Loader.dismiss();
       return ApiResponse.fromJson(data);

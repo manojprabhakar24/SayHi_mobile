@@ -129,8 +129,14 @@ class _PrivacyOptionsState extends State<PrivacyOptions> {
 
   accountPrivacyTile() {
     return Obx(() => SizedBox(
-          height: 60,
-          child: Row(children: [
+          height: 65,
+          child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
+            ThemeIconWidget(
+              ThemeIcon.account,
+              size: 20,
+              color: AppColorConstants.mainTextColor,
+            ),
+            const SizedBox(width: 10),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,

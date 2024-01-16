@@ -1,9 +1,7 @@
 import 'package:foap/helper/date_extension.dart';
 import 'package:get/get.dart';
-
 import '../helper/enum.dart';
 import '../helper/localization_strings.dart';
-import '../util/app_config_constants.dart';
 import 'user_model.dart';
 
 class CommentModel {
@@ -38,7 +36,6 @@ class CommentModel {
     model.userId = json['user_id'];
     model.level = json['level'] ?? 1;
     model.isFavourite = json['isLike'] == 1;
-
     // model.replies = json['childCommentDetail'] == null
     //     ? []
     //     : (json['childCommentDetail'] as List)

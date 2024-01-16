@@ -127,4 +127,14 @@ class EventBookingsController extends GetxController {
           });
     }
   }
+
+  getBookingDetail(
+      {required int bookingId,
+        required Function(EventBookingModel) successCallback}) {
+    EventApi.getEventBookingDetail(
+        bookingId: bookingId,
+        resultCallback: (result) {
+          successCallback(result);
+        });
+  }
 }

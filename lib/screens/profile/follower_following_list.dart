@@ -57,8 +57,6 @@ class FollowerFollowingState extends State<FollowerFollowingList> {
                     : followingString.tr),
             Expanded(
               child: Obx(() {
-                print('UserNetworkController update');
-
                 ScrollController scrollController = ScrollController();
                 scrollController.addListener(() {
                   if (scrollController.position.maxScrollExtent ==

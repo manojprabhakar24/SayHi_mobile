@@ -214,7 +214,20 @@ int uploadMediaTypeId(UploadMediaType type) {
       return 5;
     case UploadMediaType.verification:
       return 12;
+    case UploadMediaType.event:
+      return 13;
     case UploadMediaType.uploadResume:
       return 28;
+  }
+}
+
+int liveViewerRole(LiveUserRole role) {
+  switch (role) {
+    case LiveUserRole.viewer:
+      return 2;
+    case LiveUserRole.moderator:
+      return 3;
+    case LiveUserRole.host:
+      return 1;
   }
 }

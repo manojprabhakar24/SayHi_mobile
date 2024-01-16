@@ -19,7 +19,7 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>7.2</string>
+	<string>7.4</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleURLTypes</key>
@@ -103,7 +103,7 @@
 	<key>NSContactsUsageDescription</key>
 	<string>SayHi Social wants to access contact for sharing in chat</string>
 	<key>NSFaceIDUsageDescription</key>
-	<string>SayHi Social want to access biometric authentication for login</string>
+	<string>SayHi Social wants to access biometric authentication for login</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
 	<string>SayHi Social wants to access Location to capture images for sharing in chat</string>
 	<key>NSLocationAlwaysUsageDescription</key>
@@ -295,8 +295,8 @@
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
 	<key>com.apple.developer.associated-domains</key>
-    	<array>
-    		<string>applinks:fwdtechnology.co</string>
-    	</array>
+	<array>
+		<string>applinks:fwdtechnology.co</string>
+	</array>
 </dict>
 </plist>

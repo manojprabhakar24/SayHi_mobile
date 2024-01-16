@@ -3,9 +3,11 @@ import '../../components/post_card/post_card.dart';
 import '../../controllers/post/single_post_detail_controller.dart';
 
 class SinglePostDetail extends StatefulWidget {
-  final int postId;
+  final int? postId;
+  final String? postUniqueId;
 
-  const SinglePostDetail({Key? key, required this.postId}) : super(key: key);
+  const SinglePostDetail({Key? key, this.postId, this.postUniqueId})
+      : super(key: key);
 
   @override
   State<SinglePostDetail> createState() => _SinglePostDetailState();
@@ -17,7 +19,12 @@ class _SinglePostDetailState extends State<SinglePostDetail> {
 
   @override
   void initState() {
-    singlePostDetailController.getPostDetail(widget.postId);
+    if (widget.postId != null) {
+      singlePostDetailController.getPostDetail(widget.postId!);
+    }
+    if (widget.postUniqueId != null) {
+      singlePostDetailController.getPostDetailByUniqueId(widget.postUniqueId!);
+    }
     super.initState();
   }
 
@@ -58,6 +65,7 @@ class _SinglePostDetailState extends State<SinglePostDetail> {
                             })
                         : Container();
               }),
+
         ],
       ),
     );

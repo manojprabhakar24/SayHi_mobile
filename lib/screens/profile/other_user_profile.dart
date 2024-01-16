@@ -1,6 +1,7 @@
 import 'package:foap/controllers/post/post_controller.dart';
 import 'package:foap/helper/imports/common_import.dart';
 import 'package:foap/helper/number_extension.dart';
+import 'package:foap/screens/profile/user_profile_stat.dart';
 import 'package:foap/screens/profile/users_club_listing.dart';
 import '../../components/highlights_bar.dart';
 import '../../controllers/chat_and_call/chat_detail_controller.dart';
@@ -121,12 +122,14 @@ class OtherUserProfileState extends State<OtherUserProfile>
                     const SizedBox(
                       height: 20,
                     ),
-                    statsView().hp(DesignConstants.horizontalPadding),
+                    UserProfileStatistics(
+                      user: _profileController.user.value!,
+                    ).hp(DesignConstants.horizontalPadding),
                     const SizedBox(
                       height: 40,
                     ),
                     divider(height: 1),
-                    buttonsView().hp(DesignConstants.horizontalPadding),
+                    actionButtonsView().hp(DesignConstants.horizontalPadding),
                     divider(height: 1),
                   ],
                 )
@@ -194,7 +197,7 @@ class OtherUserProfileState extends State<OtherUserProfile>
           );
   }
 
-  Widget buttonsView() {
+  Widget actionButtonsView() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -269,83 +272,6 @@ class OtherUserProfileState extends State<OtherUserProfile>
           }),
       ],
     );
-  }
-
-  Widget statsView() {
-    return Container(
-      color: AppColorConstants.cardColor,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Heading4Text(
-                _profileController.user.value!.totalPost.toString(),
-              ).bP8,
-              BodySmallText(
-                postsString.tr,
-              ),
-            ],
-          ).ripple(() {
-            if (_profileController.user.value!.totalPost > 0) {
-              Get.to(() => Posts(
-                    userId: _profileController.user.value!.id,
-                    title: _profileController.user.value!.userName,
-                  ));
-            }
-          }),
-          // const SizedBox(
-          //   width: 20,
-          // ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Heading4Text(
-                '${_profileController.user.value!.totalFollower}',
-              ).bP8,
-              BodySmallText(
-                followersString.tr,
-              ),
-            ],
-          ).ripple(() {
-            if (_profileController.user.value!.totalFollower > 0) {
-              Get.to(() => FollowerFollowingList(
-                        isFollowersList: true,
-                        userId: widget.userId,
-                      ))!
-                  .then((value) {
-                initialLoad();
-              });
-            }
-          }),
-          // const SizedBox(
-          //   width: 20,
-          // ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Heading4Text(
-                '${_profileController.user.value!.totalFollowing}',
-              ).bP8,
-              BodySmallText(
-                followingString.tr,
-              ),
-            ],
-          ).ripple(() {
-            if (_profileController.user.value!.totalFollowing > 0) {
-              Get.to(() => FollowerFollowingList(
-                        isFollowersList: false,
-                        userId: widget.userId,
-                      ))!
-                  .then((value) {
-                initialLoad();
-              });
-            }
-          }),
-        ],
-      ).p16,
-    ).round(15);
   }
 
   Widget appBar() {

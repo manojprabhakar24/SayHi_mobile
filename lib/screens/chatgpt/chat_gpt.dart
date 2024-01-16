@@ -67,6 +67,7 @@ class _ChatGPTState extends State<ChatGPT> {
                             color: AppColorConstants.iconColor,
                           ),
                           onPressed: () async {
+                            AppUtil.showToast(message: copiedString.tr, isSuccess: true);
                             await Clipboard.setData(
                                 ClipboardData(text: message.content));
                           }),

@@ -47,8 +47,10 @@ class _AudioPostTileState extends State<AudioPostTile> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               _playerManager.currentlyPlayingAudio.value?.id ==
-                          widget.post.gallery.first.id.toString() &&
-                      _playerManager.isPlaying.value
+                  (widget.isResharedPost
+                      ? '${widget.post.id.toString()}_${widget.post.gallery.first.id.toString()}'
+                      : widget.post.gallery.first.id.toString()) &&
+                  _playerManager.isPlaying.value
                   ? ThemeIconWidget(
                       ThemeIcon.pause,
                       // color: Colors.white,
@@ -72,7 +74,9 @@ class _AudioPostTileState extends State<AudioPostTile> {
                     (widget.isResharedPost ? 140 : 50),
                 height: 20,
                 child: AudioProgressBar(
-                    id: widget.post.gallery.first.id.toString()
+                    id: widget.isResharedPost
+                        ? '${widget.post.id.toString()}_${widget.post.gallery.first.id.toString()}'
+                        : widget.post.gallery.first.id.toString()
                 ),
               ),
             ],

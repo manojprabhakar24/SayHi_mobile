@@ -2,6 +2,7 @@ import 'package:foap/helper/imports/common_import.dart';
 import '../../helper/enum_linking.dart';
 import '../../model/api_meta_data.dart';
 import '../../model/comment_model.dart';
+import '../../model/location.dart';
 import '../../model/post_model.dart';
 import '../api_wrapper.dart';
 
@@ -11,6 +12,7 @@ class PostApi {
       required String title,
       required List<Map<String, String>> gallery,
       required bool allowComments,
+      LocationModel? location,
       String? hashTag,
       String? mentions,
       int? competitionId,
@@ -39,7 +41,10 @@ class PostApi {
       'audio_start_time': audioStartTime,
       'audio_end_time': audioEndTime,
       'is_add_to_post': addToPost == true ? 1 : 0,
-      'is_comment_enable': allowComments == true ? 1 : 0
+      'is_comment_enable': allowComments == true ? 1 : 0,
+      'latitude': location == null ? '' : location.latitude.toString(),
+      'longitude': location == null ? '' : location.longitude.toString(),
+      'address': location == null ? '' : location.name.toString()
     };
 
     await ApiWrapper().postApi(url: url, param: parameters).then((result) {
@@ -203,6 +208,23 @@ class PostApi {
     });
   }
 
+  static Future<void> getPostDetailByUniqueId(String id,
+      {required Function(PostModel?) resultCallback}) async {
+    var url = NetworkConstantsUtil.postDetailByUniqueId;
+    url =
+        '$url$id&expand=user,user.userLiveDetail,clubDetail,audio,giftSummary,clubDetail.createdByUser';
+    await ApiWrapper().getApi(url: url).then((response) {
+      if (response?.success == true) {
+        var post = response!.data['post'];
+        if (post != null) {
+          resultCallback(PostModel.fromJson(post));
+        } else {
+          resultCallback(null);
+        }
+      } else {}
+    });
+  }
+
   static Future<void> getComments(
       {required int postId,
       int? parentId,
@@ -211,7 +233,8 @@ class PostApi {
           resultCallback}) async {
     var url = NetworkConstantsUtil.getComments;
     if (parentId != null) {
-      url = '$url?expand=user,isLike&post_id=$postId&parent_id=$parentId&page=$page';
+      url =
+          '$url?expand=user,isLike&post_id=$postId&parent_id=$parentId&page=$page';
     } else {
       url =
           '$url?expand=user,isLike,totalChildComment,childCommentDetail.isLike,childCommentDetail.user&post_id=$postId&page=$page';

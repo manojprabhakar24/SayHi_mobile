@@ -1,5 +1,4 @@
 import 'package:foap/helper/imports/common_import.dart';
-
 import '../../model/api_meta_data.dart';
 import '../../model/category_model.dart';
 import '../../model/comment_model.dart';

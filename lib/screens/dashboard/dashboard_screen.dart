@@ -3,6 +3,7 @@ import 'package:foap/helper/imports/common_import.dart';
 import 'package:foap/screens/post/watch_videos.dart';
 import 'package:awesome_bottom_bar/awesome_bottom_bar.dart';
 import '../../components/force_update_view.dart';
+import '../../main.dart';
 import '../add_on/ui/reel/reels.dart';
 import '../home_feed/home_feed_screen.dart';
 import '../profile/my_profile.dart';
@@ -39,6 +40,8 @@ class DashboardState extends State<DashboardScreen> {
 
   @override
   void initState() {
+    isAnyPageInStack = true;
+
     widgets = [
       const HomeFeedScreen(),
       const Explore(),
