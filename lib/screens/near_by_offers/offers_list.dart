@@ -8,7 +8,7 @@ class OffersList extends StatelessWidget {
   final OfferSource source;
   final NearByOffersController _nearByOffersController = Get.find();
 
-  OffersList({Key? key, required this.source}) : super(key: key);
+  OffersList({super.key, required this.source});
 
   @override
   Widget build(BuildContext context) {

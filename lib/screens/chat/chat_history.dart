@@ -98,9 +98,6 @@ class _ChatHistoryState extends State<ChatHistory> {
                         tabs: tabs,
                         canScroll: false,
                       )),
-                  const SizedBox(
-                    height: 10,
-                  ),
                   Expanded(
                       child: TabBarView(
                           children: [chatListView(), OpenGroupListing()]))

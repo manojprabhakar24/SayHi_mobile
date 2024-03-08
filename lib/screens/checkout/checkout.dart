@@ -10,13 +10,14 @@ class Checkout extends StatefulWidget {
   final String itemName;
   final double amountToPay;
   final Function(List<Payment>) transactionCallbackHandler;
+  final VoidCallback? shareToFeedCallback;
 
   const Checkout(
-      {Key? key,
+      {super.key,
       required this.itemName,
       required this.amountToPay,
-      required this.transactionCallbackHandler})
-      : super(key: key);
+      this.shareToFeedCallback,
+      required this.transactionCallbackHandler});
 
   @override
   State<Checkout> createState() => _CheckoutState();
@@ -240,7 +241,6 @@ class _CheckoutState extends State<Checkout> {
                 isSelected: _checkoutController.selectedPaymentGateway.value ==
                     PaymentGateway.stripe,
                 press: () {
-
                   // _checkoutController.launchRazorpayPayment();
                   _checkoutController
                       .selectPaymentGateway(PaymentGateway.stripe);
@@ -378,11 +378,23 @@ class _CheckoutState extends State<Checkout> {
           SizedBox(
               width: 200,
               height: 50,
-              child: AppThemeBorderButton(
+              child: AppThemeButton(
                   text: thanks.tr,
                   onPress: () {
                     Get.close(2);
-                  }))
+                  })),
+          const SizedBox(
+            height: 20,
+          ),
+          if (widget.shareToFeedCallback != null)
+            SizedBox(
+                width: 200,
+                height: 50,
+                child: AppThemeBorderButton(
+                    text: shareToFeedString.tr,
+                    onPress: () {
+                      widget.shareToFeedCallback!();
+                    }))
         ],
       ).hp(DesignConstants.horizontalPadding),
     );

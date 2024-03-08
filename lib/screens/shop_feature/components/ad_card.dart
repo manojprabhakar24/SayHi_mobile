@@ -7,11 +7,10 @@ class AdCard extends StatefulWidget {
   final VoidCallback favPressed;
 
   const AdCard(
-      {Key? key,
+      {super.key,
       required this.ad,
       required this.pressed,
-      required this.favPressed})
-      : super(key: key);
+      required this.favPressed});
 
   @override
   State<AdCard> createState() => _AdCardState();
@@ -128,11 +127,10 @@ class HorizontalAdCard extends StatefulWidget {
   final VoidCallback favPressed;
 
   const HorizontalAdCard(
-      {Key? key,
+      {super.key,
       required this.ad,
       required this.pressed,
-      required this.favPressed})
-      : super(key: key);
+      required this.favPressed});
 
   @override
   State<HorizontalAdCard> createState() => _HorizontalAdCardState();
@@ -214,8 +212,7 @@ class MyAdCard extends StatefulWidget {
   final AdModel ad;
   final Function actionHandler;
 
-  const MyAdCard({Key? key, required this.ad, required this.actionHandler})
-      : super(key: key);
+  const MyAdCard({super.key, required this.ad, required this.actionHandler});
 
   @override
   State<MyAdCard> createState() => _MyAdCardState();

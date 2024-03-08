@@ -2,7 +2,7 @@ import 'package:foap/helper/imports/common_import.dart';
 import 'package:foap/helper/imports/setting_imports.dart';
 
 class PaymentAndCoins extends StatefulWidget {
-  const PaymentAndCoins({Key? key}) : super(key: key);
+  const PaymentAndCoins({super.key});
 
   @override
   State<PaymentAndCoins> createState() => _PaymentAndCoinsState();

@@ -7,7 +7,7 @@ import 'fund_raising_campaign_detail.dart';
 class FundRaisingCampaignList extends StatelessWidget {
   final FundRaisingController _fundRaisingController = Get.find();
 
-  FundRaisingCampaignList({Key? key}) : super(key: key);
+  FundRaisingCampaignList({super.key});
 
   @override
   Widget build(BuildContext context) {

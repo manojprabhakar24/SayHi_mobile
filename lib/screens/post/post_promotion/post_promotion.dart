@@ -8,7 +8,7 @@ import 'package:step_progress_indicator/step_progress_indicator.dart';
 import '../../../controllers/post/promotion_controller.dart';
 
 class PostPromotionScreen extends StatelessWidget {
-  PostPromotionScreen({Key? key}) : super(key: key);
+  PostPromotionScreen({super.key});
   final PromotionController _promotionController = Get.find();
 
   @override

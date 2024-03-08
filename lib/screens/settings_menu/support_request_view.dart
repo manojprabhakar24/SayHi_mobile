@@ -2,7 +2,7 @@ import 'package:foap/helper/imports/common_import.dart';
 import '../../model/support_request_response.dart';
 
 class SupportRequestView extends StatefulWidget {
-  const SupportRequestView({Key? key}) : super(key: key);
+  const SupportRequestView({super.key});
 
   @override
   State<SupportRequestView> createState() => _SupportRequestViewState();

@@ -4,7 +4,7 @@ import '../live/live_history.dart';
 import 'package:foap/helper/imports/setting_imports.dart';
 
 class AppAccount extends StatefulWidget {
-  const AppAccount({Key? key}) : super(key: key);
+  const AppAccount({super.key});
 
   @override
   State<AppAccount> createState() => _AppAccountState();

@@ -2,12 +2,12 @@ import 'package:foap/helper/imports/common_import.dart';
 import 'package:foap/helper/imports/club_imports.dart';
 import 'package:image_picker/image_picker.dart';
 
+import 'club_created_success.dart';
+
 class ChooseClubCoverPhoto extends StatefulWidget {
   final ClubModel club;
 
-  const ChooseClubCoverPhoto(
-      {Key? key, required this.club})
-      : super(key: key);
+  const ChooseClubCoverPhoto({super.key, required this.club});
 
   @override
   ChooseClubCoverPhotoState createState() => ChooseClubCoverPhotoState();
@@ -27,7 +27,6 @@ class ChooseClubCoverPhotoState extends State<ChooseClubCoverPhoto> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           backNavigationBar(
-
             title: addClubCoverPhotoString.tr,
           ),
           const SizedBox(
@@ -64,8 +63,7 @@ class ChooseClubCoverPhotoState extends State<ChooseClubCoverPhoto> {
                                   ThemeIcon.gallery,
                                   size: 100,
                                 ).round(5),
-                              ).borderWithRadius(
-                                value: 2, radius: 10)
+                              ).borderWithRadius(value: 2, radius: 10)
                             : CachedNetworkImage(
                                 imageUrl: widget.club.image!,
                                 fit: BoxFit.cover,
@@ -92,15 +90,14 @@ class ChooseClubCoverPhotoState extends State<ChooseClubCoverPhoto> {
                             ],
                           )
                               .setPadding(left: 8, right: 8, top: 4, bottom: 4)
-                              .borderWithRadius(
-                                  value: 2, radius: 5),
+                              .borderWithRadius(value: 2, radius: 5),
                         ).ripple(() {
                           picker
                               .pickImage(source: ImageSource.gallery)
                               .then((pickedFile) {
                             if (pickedFile != null) {
-                              _createClubsController.editClubImageAction(
-                                  pickedFile, context);
+                              _createClubsController
+                                  .editClubImageAction(pickedFile);
                             } else {}
                           });
                         }))
@@ -130,19 +127,17 @@ class ChooseClubCoverPhotoState extends State<ChooseClubCoverPhoto> {
   createBtnClicked() {
     if (_createClubsController.imageFile.value == null) {
       AppUtil.showToast(
-          message: pleaseEnterSelectCubImageString.tr,
-          isSuccess: false);
+          message: pleaseEnterSelectCubImageString.tr, isSuccess: false);
       return;
     }
-    _createClubsController.createClub(widget.club, context, () {
+    _createClubsController.createClub(widget.club, (clubId) {
+      Get.to(() => ClubCreatedSuccess(clubId: clubId));
     });
   }
 
   updateBtnClicked() {
-    _createClubsController.updateClubImage(widget.club, context, (club) {
-      // widget.submittedCallback(widget.club);
+    _createClubsController.updateClubImage(widget.club, (club) {
       _clubDetailController.setClub(widget.club);
-
     });
   }
 }

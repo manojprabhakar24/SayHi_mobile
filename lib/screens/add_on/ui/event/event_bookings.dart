@@ -3,7 +3,7 @@ import 'package:foap/segmentAndMenu/horizontal_menu.dart';
 import 'package:foap/helper/imports/event_imports.dart';
 
 class EventBookingScreen extends StatefulWidget {
-  const EventBookingScreen({Key? key}) : super(key: key);
+  const EventBookingScreen({super.key});
 
   @override
   State<EventBookingScreen> createState() => _EventBookingScreenState();
@@ -27,7 +27,7 @@ class _EventBookingScreenState extends State<EventBookingScreen> {
           backNavigationBar(
             title: bookingsString.tr,
           ),
-          divider().vP16,
+          const SizedBox(height: 10),
           segmentView(),
           Expanded(
               child: GetBuilder<EventBookingsController>(

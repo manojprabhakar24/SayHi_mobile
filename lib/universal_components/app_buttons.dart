@@ -102,7 +102,7 @@ class AppThemeBorderButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: width,
-      height: height ?? 50,
+      height: height ?? 45,
       color: backgroundColor,
       child: Center(
         child: Text(

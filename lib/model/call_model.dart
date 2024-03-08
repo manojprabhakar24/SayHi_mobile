@@ -20,58 +20,58 @@ class Call {
       required this.callId});
 }
 
-class Live {
-  UserProfileManager userProfileManager = Get.find();
-  final String channelName;
-
-  // List<LiveCallHostUser> battleUsers = [];
-  UserModel? invitedUserDetail;
-  UserModel mainHostUserDetail;
-  BattleDetail? battleDetail;
-
-  final String token;
-  final int id;
-
-  Live({
-    required this.channelName,
-    required this.mainHostUserDetail,
-    // required this.battleUsers,
-    this.invitedUserDetail,
-    required this.token,
-    required this.id,
-  });
-
-  bool isPendingInvitation() {
-    return invitedUserDetail != null;
-  }
-
-  bool get amIMainHostInLive {
-    return mainHostUserDetail.id == userProfileManager.user.value!.id;
-  }
-
-  bool get amIHostInLive {
-    if ((battleDetail?.battleUsers ?? []).isNotEmpty) {
-      return battleDetail!.amIHostInLive;
-    }
-    return mainHostUserDetail.id == userProfileManager.user.value!.id;
-  }
-
-  BattleStatus get battleStatus {
-    if (battleDetail == null) {
-      return BattleStatus.none;
-    }
-    return battleDetail!.battleStatus;
-  }
-
-  bool get canInvite {
-    return invitedUserDetail == null && battleStatus == BattleStatus.none;
-  }
-
-  clearBattleData() {
-    battleDetail = null;
-    invitedUserDetail = null;
-  }
-}
+// class Live {
+//   UserProfileManager userProfileManager = Get.find();
+//   final String channelName;
+//
+//   // List<LiveCallHostUser> battleUsers = [];
+//   UserModel? invitedUserDetail;
+//   UserModel mainHostUserDetail;
+//   BattleDetail? battleDetail;
+//
+//   final String token;
+//   final int id;
+//
+//   Live({
+//     required this.channelName,
+//     required this.mainHostUserDetail,
+//     // required this.battleUsers,
+//     this.invitedUserDetail,
+//     required this.token,
+//     required this.id,
+//   });
+//
+//   bool isPendingInvitation() {
+//     return invitedUserDetail != null;
+//   }
+//
+//   bool get amIMainHostInLive {
+//     return mainHostUserDetail.id == userProfileManager.user.value!.id;
+//   }
+//
+//   bool get amIHostInLive {
+//     if ((battleDetail?.battleUsers ?? []).isNotEmpty) {
+//       return battleDetail!.amIHostInLive;
+//     }
+//     return mainHostUserDetail.id == userProfileManager.user.value!.id;
+//   }
+//
+//   BattleStatus get battleStatus {
+//     if (battleDetail == null) {
+//       return BattleStatus.none;
+//     }
+//     return battleDetail!.battleStatus;
+//   }
+//
+//   bool get canInvite {
+//     return invitedUserDetail == null && battleStatus == BattleStatus.none;
+//   }
+//
+//   clearBattleData() {
+//     battleDetail = null;
+//     invitedUserDetail = null;
+//   }
+// }
 
 class BattleDetail {
   UserProfileManager userProfileManager = Get.find();

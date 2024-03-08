@@ -10,7 +10,7 @@ import 'ad_detail_screen.dart';
 class SeeAllAdListing extends StatefulWidget {
   final String? header;
 
-  const SeeAllAdListing({this.header, Key? key}) : super(key: key);
+  const SeeAllAdListing({this.header, super.key});
 
   @override
   SeeAllPropertyState createState() => SeeAllPropertyState();

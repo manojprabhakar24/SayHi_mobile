@@ -1,18 +1,22 @@
 import 'dart:math';
+import 'package:foap/components/post_card/post_card.dart';
+import 'package:foap/components/sm_tab_bar.dart';
 import 'package:foap/components/static_map_widget.dart';
 import 'package:foap/helper/imports/event_imports.dart';
 import 'package:map_launcher/map_launcher.dart';
 import 'package:foap/helper/imports/common_import.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
+import '../../../post/add_post_screen.dart';
 
 class EventDetail extends StatefulWidget {
   final EventModel event;
   final VoidCallback needRefreshCallback;
 
   const EventDetail({
-    Key? key,
+    super.key,
     required this.event,
     required this.needRefreshCallback,
-  }) : super(key: key);
+  });
 
   @override
   EventDetailState createState() => EventDetailState();
@@ -21,6 +25,9 @@ class EventDetail extends StatefulWidget {
 class EventDetailState extends State<EventDetail> {
   final EventDetailController _eventDetailController = EventDetailController();
   final UserProfileManager _userProfileManager = Get.find();
+  final RefreshController _refreshController =
+      RefreshController(initialRefresh: false);
+  List<String> tabs = [aboutString.tr, postsString.tr];
 
   @override
   void initState() {
@@ -39,76 +46,78 @@ class EventDetailState extends State<EventDetail> {
   Widget build(BuildContext context) {
     return AppScaffold(
       backgroundColor: AppColorConstants.backgroundColor,
-      body: GetBuilder<EventDetailController>(
-          init: _eventDetailController,
-          builder: (ctx) {
-            return Stack(
-              children: [
-                CustomScrollView(
-                  slivers: [
-                    SliverList(
-                        delegate: SliverChildListDelegate([
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          SizedBox(
-                              height: 280,
-                              child: CachedNetworkImage(
-                                imageUrl: widget.event.image,
-                                fit: BoxFit.cover,
-                              )),
-                          const SizedBox(
-                            height: 24,
-                          ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Heading4Text(
-                                widget.event.name,
-                                weight: TextWeight.semiBold,
-                              ),
-                              const SizedBox(
-                                height: 20,
-                              ),
-                              attendingUsersList(),
-                              divider().vp(20),
-                              eventInfo(),
-                              divider().vp(20),
-                              eventOrganiserWidget(),
-                              divider().vp(20),
-                              eventGallery(),
-                              const SizedBox(
-                                height: 24,
-                              ),
-                              if (widget.event.latitude.isNotEmpty &&
-                                  widget.event.longitude.isNotEmpty)
-                                eventLocation(),
-                              const SizedBox(
-                                height: 150,
-                              ),
-                            ],
-                          ).hp(DesignConstants.horizontalPadding),
-                        ],
-                      ),
-                    ]))
-                  ],
-                ),
-                appBar(),
-                if (!widget.event.isFree)
-                  Obx(() => _eventDetailController.isLoading.value == true
-                      ? Container()
-                      : _eventDetailController.event.value?.isClosed == true
-                          ? eventClosedWidget()
-                          : _eventDetailController.event.value?.ticketsAdded ==
-                                  true
-                              ? _eventDetailController.event.value?.isSoldOut ==
-                                      true
-                                  ? soldOutWidget()
-                                  : buyTicketWidget()
-                              : ticketNotAddedWidget())
-              ],
-            );
-          }),
+      body: DefaultTabController(
+          length: tabs.length,
+          child: Column(
+            children: [
+              Stack(
+                children: [
+                  SizedBox(
+                      height: 280,
+                      width: Get.width,
+                      child: CachedNetworkImage(
+                        imageUrl: widget.event.image,
+                        fit: BoxFit.cover,
+                      )),
+                  appBar(),
+                ],
+              ),
+              SMTabBar(tabs: tabs, canScroll: false),
+              Expanded(
+                child: TabBarView(children: [about(), postsView()]),
+              )
+            ],
+          )),
+    );
+  }
+
+  Widget about() {
+    return Stack(
+      children: [
+        SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const SizedBox(
+                height: 20,
+              ),
+              Heading4Text(
+                widget.event.name,
+                weight: TextWeight.semiBold,
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              attendingUsersList(),
+              divider().vp(20),
+              eventInfo(),
+              divider().vp(20),
+              eventOrganiserWidget(),
+              divider().vp(20),
+              eventGallery(),
+              const SizedBox(
+                height: 24,
+              ),
+              if (widget.event.latitude.isNotEmpty &&
+                  widget.event.longitude.isNotEmpty)
+                eventLocation(),
+              const SizedBox(
+                height: 150,
+              ),
+            ],
+          ).hp(DesignConstants.horizontalPadding),
+        ),
+        if (!widget.event.isFree)
+          Obx(() => _eventDetailController.isLoading.value == true
+              ? Container()
+              : _eventDetailController.event.value?.isCompleted == true
+                  ? eventClosedWidget()
+                  : _eventDetailController.event.value?.ticketsAdded == true
+                      ? _eventDetailController.event.value?.isSoldOut == true
+                          ? soldOutWidget()
+                          : buyTicketWidget()
+                      : ticketNotAddedWidget())
+      ],
     );
   }
 
@@ -201,6 +210,42 @@ class EventDetailState extends State<EventDetail> {
           ).tp(20),
       ],
     );
+  }
+
+  Widget postsView() {
+    return Obx(() => ListView.separated(
+            padding: const EdgeInsets.only(top: 25, bottom: 100),
+            itemBuilder: (BuildContext context, index) {
+              return PostCard(
+                model: _eventDetailController.posts[index],
+                removePostHandler: () {},
+                blockUserHandler: () {},
+              );
+            },
+            separatorBuilder: (BuildContext context, index) {
+              return const SizedBox(
+                height: 40,
+              );
+            },
+            itemCount: _eventDetailController.posts.length)
+        .addPullToRefresh(
+            refreshController: _refreshController,
+            onRefresh: () {
+              _eventDetailController.refreshPosts(
+                  id: widget.event.id,
+                  callback: () {
+                    _refreshController.refreshCompleted();
+                  });
+            },
+            onLoading: () {
+              _eventDetailController.loadMorePosts(
+                  id: widget.event.id,
+                  callback: () {
+                    _refreshController.loadComplete();
+                  });
+            },
+            enablePullUp: true,
+            enablePullDown: true));
   }
 
   Widget eventOrganiserWidget() {
@@ -520,11 +565,6 @@ class EventDetailState extends State<EventDetail> {
                     title: Heading5Text(
                       '${openInString.tr} ${map.mapName}',
                     ),
-                    // leading: SvgPicture.asset(
-                    //   map.icon,
-                    //   height: 30.0,
-                    //   width: 30.0,
-                    // ),
                   ),
               ],
             ),
@@ -564,8 +604,29 @@ class EventDetailState extends State<EventDetail> {
             ).ripple(() {
               Get.back();
             }),
+            if (widget.event.isTicketBooked || widget.event.isFree)
+              ThemeIconWidget(
+                ThemeIcon.plus,
+                size: 25,
+                color: Colors.white,
+              ).ripple(() {
+                Future.delayed(
+                  Duration.zero,
+                  () => showGeneralDialog(
+                      context: context,
+                      pageBuilder: (context, animation, secondaryAnimation) =>
+                          AddPostScreen(
+                            postType: PostType.event,
+                            event: widget.event,
+                            postCompletionHandler: () {
+                              _eventDetailController.refreshPosts(
+                                  id: widget.event.id, callback: () {});
+                            },
+                          )),
+                );
+              }),
           ],
-        ).hp(DesignConstants.horizontalPadding * 2),
+        ).hp(DesignConstants.horizontalPadding),
       ),
     );
   }

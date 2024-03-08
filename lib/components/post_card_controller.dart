@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'package:foap/api_handler/apis/post_api.dart';
 import 'package:foap/api_handler/apis/users_api.dart';
 import 'package:foap/helper/imports/common_import.dart';
@@ -6,8 +5,6 @@ import 'package:share_plus/share_plus.dart';
 import '../controllers/post/post_controller.dart';
 import '../helper/enum_linking.dart';
 import '../model/post_model.dart';
-import 'package:http/http.dart' as http;
-import 'package:path_provider/path_provider.dart';
 
 class PostCardController extends GetxController {
   final PostController postController = Get.find();
@@ -76,25 +73,6 @@ class PostCardController extends GetxController {
     PostApi.saveUnSavePost(save: post.isSaved, postId: post.id);
   }
 
-  // downloadAndShareMedia(PostModel post) async {
-  //   Loader.show(status: loadingString.tr);
-  //
-  //   if (post.gallery.isNotEmpty) {
-  //     final response = await http.get(Uri.parse(post.gallery.first.filePath));
-  //
-  //     final directory = await getApplicationDocumentsDirectory();
-  //     final fileName = post.gallery.first.filePath.split('/').last;
-  //
-  //     final file = File('${directory.path}/$fileName');
-  //     await file.writeAsBytes(response.bodyBytes);
-  //
-  //     Loader.dismiss();
-  //     Share.shareXFiles([XFile(file.path)], text: post.title);
-  //   } else {
-  //     Share.share(post.title);
-  //   }
-  // }
-
   reSharePost(
       {required int postId,
       required String comment,
@@ -104,6 +82,7 @@ class PostCardController extends GetxController {
         sharingPostId: postId,
         allowComments: enableComments,
         postType: PostType.reshare,
+        postContentType: PostContentType.text,
         gallery: [],
         title: comment,
         resultCallback: (value) {

@@ -1,12 +1,14 @@
 import 'package:foap/helper/imports/event_imports.dart';
 import '../../controllers/fund_raising/fund_raising_controller.dart';
+import '../../controllers/post/add_post_controller.dart';
 import '../../helper/imports/common_import.dart';
 import '../../model/fund_raising_campaign.dart';
 
 class EnterDonationAmount extends StatelessWidget {
   final FundRaisingController fundRaisingController = Get.find();
+  final AddPostController addPostController = Get.find();
 
-  EnterDonationAmount({Key? key}) : super(key: key);
+  EnterDonationAmount({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -85,17 +87,24 @@ class EnterDonationAmount extends StatelessWidget {
                     onPress: () {
                       if (fundRaisingController
                           .donationAmountTE.text.isNotEmpty) {
-                        Get.put(CheckoutController());
                         FundraisingDonationRequest orderToPlace =
                             fundRaisingController.order;
-                        Get.to(() => Checkout(
+                        Get.to(() =>
+                            Checkout(
                               amountToPay: orderToPlace.totalAmount!,
                               itemName:
-                                  '${donationsString.tr} : ${orderToPlace.itemName}',
+                              '${donationsString.tr} : ${orderToPlace
+                                  .itemName}',
                               transactionCallbackHandler: (payments) {
                                 orderToPlace.payments = payments;
                                 fundRaisingController
                                     .makeDonation(orderToPlace);
+                              },
+                              shareToFeedCallback: () {
+                                addPostController.shareToFeed(
+                                    productId: fundRaisingController.order.campaignId!,
+                                    contentType: PostContentType.donation);
+                                Get.close(2);
                               },
                             ));
                       } else {

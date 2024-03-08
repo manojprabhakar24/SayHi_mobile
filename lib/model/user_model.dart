@@ -8,9 +8,7 @@ class UserModel {
 
   String? name;
   String userName = '';
-
-  // String category = '';
-
+  UserRole role = UserRole.user;
   String? email = '';
   String? picture;
   String? coverImage;
@@ -89,6 +87,7 @@ class UserModel {
     UserModel model = UserModel();
     model.id = json['id'];
     model.name = json['name'];
+    model.role = json['role'] == 3 ? UserRole.user : UserRole.admin;
     model.userName = json['username'] == null
         ? ''
         : json['username'].toString().toLowerCase();

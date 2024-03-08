@@ -2,7 +2,7 @@ import 'package:foap/helper/imports/common_import.dart';
 import '../../controllers/profile/profile_controller.dart';
 
 class ChangeLocation extends StatefulWidget {
-  const ChangeLocation({Key? key}) : super(key: key);
+  const ChangeLocation({super.key});
 
   @override
   State<ChangeLocation> createState() => _ChangeLocationState();

@@ -11,7 +11,7 @@ import 'ad_detail_screen.dart';
 import 'see_all_ads_screen.dart';
 
 class Marketplace extends StatefulWidget {
-  const Marketplace({Key? key}) : super(key: key);
+  const Marketplace({super.key});
 
   @override
   State<Marketplace> createState() => _MarketplaceState();

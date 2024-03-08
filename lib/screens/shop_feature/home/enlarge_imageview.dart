@@ -6,7 +6,7 @@ import '../../../components/app_scaffold.dart';
 class EnlargeImageViewScreen extends StatefulWidget {
   final String filePath;
 
-  const EnlargeImageViewScreen(this.filePath, {Key? key}) : super(key: key);
+  const EnlargeImageViewScreen(this.filePath, {super.key});
 
   @override
   EnlargeImageViewState createState() => EnlargeImageViewState();

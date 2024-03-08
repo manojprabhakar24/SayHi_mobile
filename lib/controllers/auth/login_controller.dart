@@ -1,8 +1,7 @@
-import 'package:foap/screens/add_on/ui/dating/profile/set_location.dart';
 import 'package:foap/helper/imports/common_import.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../api_handler/apis/auth_api.dart';
-import '../../screens/login_sign_up/verify_phone_login_otp.dart';
+import '../../screens/login_sign_up/verify_otp.dart';
 import '../../util/shared_prefs.dart';
 import 'dart:async';
 import 'package:foap/manager/socket_manager.dart';
@@ -10,6 +9,8 @@ import 'package:foap/util/form_validator.dart';
 import 'package:foap/screens/dashboard/dashboard_screen.dart';
 import 'package:foap/screens/settings_menu/settings_controller.dart';
 import 'package:foap/screens/login_sign_up/reset_password.dart';
+
+import '../profile/profile_controller.dart';
 
 bool isLoginFirstTime = false;
 
@@ -55,10 +56,9 @@ class LoginController extends GetxController {
             getIt<SocketManager>().connect();
           },
           verifyOtpCallback: (token) {
-            Get.to(() => VerifyRegistrationOTP(
-                  // isVerifyingEmail: true,
-                  // isVerifyingPhone: false,
+            Get.to(() => VerifyOTP(
                   token: token,
+                  isFromForgotPassword: false,
                 ));
           });
     }
@@ -72,8 +72,9 @@ class LoginController extends GetxController {
           code: countryCode,
           phone: phone,
           successCallback: (token) {
-            Get.to(() => VerifyRegistrationOTP(
+            Get.to(() => VerifyOTP(
                   token: token,
+                  isFromForgotPassword: false,
                 ));
           });
     }
@@ -110,13 +111,17 @@ class LoginController extends GetxController {
 
   void register({
     required String email,
-    required String name,
+    required String userName,
     required String password,
   }) {
-    if (FormValidator().isTextEmpty(name)) {
-      showErrorMessage(
-        pleaseEnterValidUserNameString.tr,
-      );
+    final ProfileController profileController = Get.find();
+
+    if (FormValidator().isTextEmpty(userName)) {
+      AppUtil.showToast(
+          message: pleaseEnterUserNameString.tr, isSuccess: false);
+    } else if (profileController.userNameCheckStatus.value != 1) {
+      AppUtil.showToast(
+          message: pleaseEnterValidUserNameString.tr, isSuccess: false);
     } else if (FormValidator().isTextEmpty(email)) {
       showErrorMessage(
         pleaseEnterValidEmailString.tr,
@@ -132,13 +137,12 @@ class LoginController extends GetxController {
     } else {
       AuthApi.register(
           email: email,
-          name: name,
+          name: userName,
           password: password,
           successCallback: (token) {
-            Get.to(() => VerifyRegistrationOTP(
-                  // isVerifyingEmail: true,
-                  // isVerifyingPhone: false,
+            Get.to(() => VerifyOTP(
                   token: token,
+                  isFromForgotPassword: false,
                 ));
           });
     }
@@ -220,52 +224,21 @@ class LoginController extends GetxController {
         });
   }
 
-  void callVerifyOTP({
-    required bool isVerifyingEmail,
-    required bool isVerifyingPhone,
+  void callForgotPwdVerifyOTP({
     required String otp,
     required String token,
   }) {
     Loader.show(status: loadingString.tr);
+    AuthApi.verifyForgotPasswordOTP(
+        otp: otp,
+        token: token,
+        successCallback: (token) {
+          Loader.dismiss();
 
-    if (isVerifyingEmail == true || isVerifyingPhone == true) {
-      AuthApi.verifyRegistrationOTP(
-          otp: otp,
-          token: token,
-          successCallback: (authKey) {
-            Loader.dismiss();
-
-            Future.delayed(const Duration(milliseconds: 500), () async {
-              SharedPrefs().setUserLoggedIn(true);
-              await SharedPrefs().setAuthorizationKey(authKey);
-              await _userProfileManager.refreshProfile();
-              await _settingsController.getSettings();
-              if (_userProfileManager.user.value != null) {
-                // if (_userProfileManager.user.value!.userName.isEmpty) {
-                //   isLoginFirstTime = true;
-                //   Get.offAll(() => const SetUserName());
-                // } else {
-                // ask for location
-                // AppUtil.showToast(
-                //     message: registeredSuccessFully,
-                //     isSuccess: true);
-                Get.to(() => const DashboardScreen());
-                // }
-              }
-            });
+          Future.delayed(const Duration(milliseconds: 500), () async {
+            Get.to(() => ResetPasswordScreen(token: token));
           });
-    } else {
-      AuthApi.verifyForgotPasswordOTP(
-          otp: otp,
-          token: token,
-          successCallback: (token) {
-            Loader.dismiss();
-
-            Future.delayed(const Duration(milliseconds: 500), () async {
-              Get.to(() => ResetPasswordScreen(token: token));
-            });
-          });
-    }
+        });
   }
 
   void callVerifyOTPForPhoneLogin({
@@ -321,10 +294,9 @@ class LoginController extends GetxController {
       AuthApi.forgotPassword(
           email: email,
           successCallback: (token) {
-            Get.to(() => VerifyRegistrationOTP(
-                  // isVerifyingEmail: false,
-                  // isVerifyingPhone: false,
+            Get.to(() => VerifyOTP(
                   token: token,
+                  isFromForgotPassword: true,
                 ));
           });
     }

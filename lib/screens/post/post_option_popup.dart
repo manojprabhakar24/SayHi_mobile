@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'package:audio_waveforms/audio_waveforms.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_video_info/flutter_video_info.dart';
 import 'package:image_picker/image_picker.dart';
@@ -11,12 +10,6 @@ import '../chat/drawing_screen.dart';
 import '../chat/media.dart';
 import '../chat/voice_record.dart';
 import '../settings_menu/settings_controller.dart';
-import 'dart:developer' as developer;
-import 'dart:io';
-import 'dart:math';
-import 'package:path/path.dart' as p;
-
-enum PostContext { none, dailyDrop, challenge, riverRun, chat }
 
 class PostOptionsPopup extends StatelessWidget {
   final SettingsController _settingsController = Get.find();
@@ -26,11 +19,11 @@ class PostOptionsPopup extends StatelessWidget {
   final ImagePicker _picker = ImagePicker();
 
   PostOptionsPopup({
-    Key? key,
+    super.key,
     this.selectedMediaList,
     this.selectGif,
     this.recordedAudio,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -49,23 +42,31 @@ class PostOptionsPopup extends StatelessWidget {
     options.add(audioButton());
     options.add(gifButton());
 
-    return Container(
-      height: 120,
-      color: AppColorConstants.cardColor,
-      child: Center(
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: options,
-        ),
+    return SizedBox(
+      height: 30,
+      child: ListView.separated(
+        padding: EdgeInsets.only(
+            left: DesignConstants.horizontalPadding,
+            right: DesignConstants.horizontalPadding),
+        scrollDirection: Axis.horizontal,
+        itemCount: options.length,
+        itemBuilder: (ctx, index) {
+          return options[index];
+        },
+        separatorBuilder: (ctx, index) {
+          return const SizedBox(
+            width: 8,
+          );
+        },
       ),
-    ).topRounded(40);
+    );
   }
 
   Widget cameraButton() {
     return ModalComponents(
       check: true,
       icon: ThemeIcon.camera,
-      // name: isInTabBar ? null : LocalizationString.cameraModal,
+      name: cameraString.tr,
       onPress: () async {
         selectPhoto(
           source: ImageSource.camera,
@@ -78,7 +79,7 @@ class PostOptionsPopup extends StatelessWidget {
     return ModalComponents(
       check: true,
       icon: ThemeIcon.gallery,
-      // name: isInTabBar ? null : LocalizationString.cameraModal,
+      name: galleryString,
       onPress: () async {
         selectPhoto(
           source: ImageSource.gallery,
@@ -91,7 +92,7 @@ class PostOptionsPopup extends StatelessWidget {
     return ModalComponents(
       check: true,
       icon: ThemeIcon.videoCamera,
-      // name: isInTabBar ? null : LocalizationString.cameraModal,
+      name: videoString.tr,
       onPress: () async {
         selectVideo(
           source: ImageSource.gallery,
@@ -104,8 +105,8 @@ class PostOptionsPopup extends StatelessWidget {
     return ModalComponents(
       check: true,
       icon: ThemeIcon.drawing,
+      name: drawingString.tr,
       imageUrl: 'assets/images/dashboard/draw_icon.svg',
-      // name: isInTabBar ? null : LocalizationString.draw,
       onPress: () {
         openDrawingBoard();
       },
@@ -116,7 +117,7 @@ class PostOptionsPopup extends StatelessWidget {
     return ModalComponents(
       check: true,
       icon: ThemeIcon.mic,
-      // name: isInTabBar ? null : LocalizationString.audio,
+      name: audioString.tr,
       onPress: () {
         openVoiceRecord();
       },
@@ -127,16 +128,14 @@ class PostOptionsPopup extends StatelessWidget {
     return ModalComponents(
       check: true,
       icon: ThemeIcon.gif,
-      // name: isInTabBar ? null : LocalizationString.gifModal,
+      name: gifString.tr,
       onPress: () {
-        // Get.back();
         openGify();
       },
     );
   }
 
   void openVoiceRecord() {
-    PlayerController controller = PlayerController(); // Initialise
 
     showModalBottomSheet(
         backgroundColor: Colors.transparent,
@@ -145,15 +144,10 @@ class PostOptionsPopup extends StatelessWidget {
               heightFactor: 0.7,
               child: VoiceRecord(
                 recordingCallback: (media) async {
-                  print('recordingCallback');
-
-                  final waveformData = await controller.extractWaveformData(
-                    path: media.filePath!,
-                    noOfSamples: 50,
-                  );
-                  print('waveformData');
-
-                  developer.log(waveformData.toString());
+                  // final waveformData = await controller.extractWaveformData(
+                  //   path: media.filePath!,
+                  //   noOfSamples: 50,
+                  // );
 
                   if (recordedAudio != null) {
                     recordedAudio!(media);
@@ -273,35 +267,32 @@ class ModalComponents extends StatelessWidget {
   final bool check;
   final String? imageUrl;
   final ThemeIcon icon;
-  final String? name;
+  final String name;
   final VoidCallback? onPress;
 
   const ModalComponents(
-      {Key? key,
+      {super.key,
       required this.check,
       this.imageUrl,
       required this.icon,
-      this.name,
-      this.onPress})
-      : super(key: key);
+      required this.name,
+      this.onPress});
 
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        ThemeIconWidget(icon).ripple(() {
-          onPress!();
-        }),
-        if (name != null)
-          Text(
-            name!,
-            style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                fontWeight: FontWeight.w400,
-                letterSpacing: 0.5,
-                color: AppColorConstants.iconColor),
-          ),
+        ThemeIconWidget(icon),
+        const SizedBox(
+          width: 10,
+        ),
+        BodySmallText(
+          name,
+        ),
       ],
-    );
+    ).hP8.borderWithRadius(value: 0.5, radius: 5).ripple(() {
+      onPress!();
+    });
   }
 }

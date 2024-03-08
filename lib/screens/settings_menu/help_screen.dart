@@ -3,7 +3,7 @@ import 'package:foap/helper/imports/common_import.dart';
 import 'help_support_contorller.dart';
 
 class HelpScreen extends StatefulWidget {
-  const HelpScreen({Key? key}) : super(key: key);
+  const HelpScreen({super.key});
 
   @override
   State<HelpScreen> createState() => _HelpScreenState();

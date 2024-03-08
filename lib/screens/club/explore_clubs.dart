@@ -3,7 +3,6 @@ import 'package:foap/screens/club/search_club.dart';
 import '../../components/actionSheets/action_sheet1.dart';
 import '../../components/group_avatars/group_avatar1.dart';
 import '../../components/group_avatars/group_avatar2.dart';
-import '../../components/line_dot_indicator.dart';
 import '../../controllers/clubs/clubs_controller.dart';
 import '../../model/category_model.dart';
 import '../../model/club_invitation.dart';
@@ -18,7 +17,7 @@ import 'club_detail.dart';
 import 'package:foap/helper/imports/common_import.dart';
 
 class ExploreClubs extends StatefulWidget {
-  const ExploreClubs({Key? key}) : super(key: key);
+  const ExploreClubs({super.key});
 
   @override
   ExploreClubsState createState() => ExploreClubsState();
@@ -241,7 +240,7 @@ class ExploreClubsState extends State<ExploreClubs> {
                 height: 15,
               ),
               SizedBox(
-                height: 200,
+                height: 150,
                 child: Stack(
                   children: [
                     CarouselSlider(
@@ -276,7 +275,7 @@ class ExploreClubsState extends State<ExploreClubs> {
                         enlargeCenterPage: false,
                         enableInfiniteScroll: false,
                         height: double.infinity,
-                        viewportFraction: 1,
+                        viewportFraction: 0.9,
                         onPageChanged: (index, reason) {
                           _clubsController.updateSlider(index);
                         },
@@ -288,20 +287,20 @@ class ExploreClubsState extends State<ExploreClubs> {
               const SizedBox(
                 height: 20,
               ),
-              Align(
-                alignment: Alignment.centerLeft,
-                child: Obx(
-                  () {
-                    return LineDotsIndicator(
-                      itemCount: _clubsController.topClubs.length,
-                      currentIndex: _clubsController.currentSliderIndex.value,
-                    );
-                  },
-                ),
-              ),
-              const SizedBox(
-                height: 25,
-              ),
+              // Align(
+              //   alignment: Alignment.centerLeft,
+              //   child: Obx(
+              //     () {
+              //       return LineDotsIndicator(
+              //         itemCount: _clubsController.topClubs.length,
+              //         currentIndex: _clubsController.currentSliderIndex.value,
+              //       );
+              //     },
+              //   ),
+              // ),
+              // const SizedBox(
+              //   height: 25,
+              // ),
             ],
           ).hP16);
   }

@@ -15,16 +15,16 @@ class AppConfigConstants {
   static String appTagline = 'Share your day activity with friends';
   static const googleMapApiKey = 'AIzaSyA4vcqErGvq5NRbvhvq8JKSp0VFpNBBPjE';
 
-  static const restApiBaseUrl =
-      'https://sayhi.codepearl.in/api/web/v1/';
+  // static const restApiBaseUrl =
+  //     'https://development.fwdtechnology.co/social_media_plus/api/web/v1/';
+  //
+  // // Socket api url
+  // static const socketApiBaseUrl = "https://development.fwdtechnology.co:4000/";
+
+  static const restApiBaseUrl = 'https://sayhi.codepearl.in/api/web/v1/';
 
   // Socket api url
   static const socketApiBaseUrl = "https://sayhi.codepearl.in:4000/";
-
-  // static const restApiBaseUrl = 'https://sayhi.codepearl.in/api/web/v1/';
-  //
-  // // Socket api url
-  // static const socketApiBaseUrl = "https://sayhi.codepearl.in:4000/";
 
   // Chat encryption key -- DO NOT CHANGE THIS
   static const encryptionKey = 'bbC2H19lkVbQDfakxcrtNMQdd0FloLyw';
@@ -62,7 +62,7 @@ class AppConfigConstants {
 }
 
 class DesignConstants {
-  static double horizontalPadding = 25;
+  static double horizontalPadding = 20;
 }
 
 class AppColorConstants {
@@ -226,22 +226,35 @@ class AppColorConstants {
 }
 
 class DatingProfileConstants {
-  static List<String> genders = ['Male', 'Female', 'Other'];
-  static List<String> colors = ['Black', 'White', 'Brown', 'Fair'];
-  static List<String> religions = [
-    'Christian',
-    'Muslim',
-    'Hindu',
-    'Buddhist',
-    'Sikh',
-    'Jainism',
-    'Judaism'
+  static List<String> genders = [
+    maleString.tr,
+    femaleString.tr,
+    otherString.tr
   ];
-  static List<String> maritalStatus = ['Single', 'Married', 'Divorced'];
+  static List<String> colors = [
+    blackString.tr,
+    whiteString.tr,
+    brownString.tr,
+    fairString.tr
+  ];
+  static List<String> religions = [
+    christianString.tr,
+    muslimString.tr,
+    hinduString.tr,
+    buddhistString.tr,
+    sikhString.tr,
+    jainismString.tr,
+    judaismString.tr
+  ];
+  static List<String> maritalStatus = [
+    singleString.tr,
+    marriedString.tr,
+    divorcedString.tr
+  ];
   static List<String> drinkHabits = [
-    'No',
-    'Regular',
-    'Planning to quit',
-    'Socially'
+    noString.tr,
+    regularString.tr,
+    planningToQuitString.tr,
+    sociallyString.tr
   ];
 }

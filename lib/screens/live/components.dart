@@ -1,20 +1,18 @@
 import 'package:foap/helper/imports/common_import.dart';
 import 'package:foap/helper/number_extension.dart';
-
+import 'package:foap/model/live_model.dart';
 import '../../components/timer_view.dart';
-import '../../model/call_model.dart';
 
 class BattleInvitation extends StatelessWidget {
-  final Live live;
+  final LiveModel live;
   final VoidCallback okHandler;
   final VoidCallback cancelHandler;
 
   const BattleInvitation(
-      {Key? key,
+      {super.key,
       required this.live,
       required this.okHandler,
-      required this.cancelHandler})
-      : super(key: key);
+      required this.cancelHandler});
 
   @override
   Widget build(BuildContext context) {
@@ -65,7 +63,7 @@ class BattleInvitation extends StatelessWidget {
             height: 20,
           ),
           UserAvatarView(
-            user: live.mainHostUserDetail,
+            user: live.mainHostUserDetail!,
             size: 70,
             hideLiveIndicator: true,
             hideOnlineIndicator: true,
@@ -74,7 +72,7 @@ class BattleInvitation extends StatelessWidget {
             height: 20,
           ),
           Heading6Text(
-            '${live.mainHostUserDetail.userName} invited you for ${live.battleDetail!.totalBattleTime.convertSecondsToTimeString} live battle',
+            '${live.mainHostUserDetail!.userName} invited you for ${live.battleDetail!.totalBattleTime.convertSecondsToTimeString} live battle',
             weight: TextWeight.regular,
           ),
           const SizedBox(
@@ -122,8 +120,7 @@ class AlreadyInvitedTimerView extends StatelessWidget {
   final int time;
 
   const AlreadyInvitedTimerView(
-      {Key? key, required this.user, required this.time})
-      : super(key: key);
+      {super.key, required this.user, required this.time});
 
   @override
   Widget build(BuildContext context) {
@@ -180,8 +177,7 @@ class AlreadyInvitedTimerView extends StatelessWidget {
 class InvitationDeclinedView extends StatelessWidget {
   final UserModel user;
 
-  const InvitationDeclinedView({Key? key, required this.user})
-      : super(key: key);
+  const InvitationDeclinedView({super.key, required this.user});
 
   @override
   Widget build(BuildContext context) {
@@ -219,8 +215,7 @@ class InvitationDeclinedView extends StatelessWidget {
 class NoResponseOnInvitationView extends StatelessWidget {
   final UserModel user;
 
-  const NoResponseOnInvitationView({Key? key, required this.user})
-      : super(key: key);
+  const NoResponseOnInvitationView({super.key, required this.user});
 
   @override
   Widget build(BuildContext context) {

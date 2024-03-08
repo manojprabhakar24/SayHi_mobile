@@ -3,7 +3,7 @@ import '../../components/user_card.dart';
 import '../../controllers/misc/blocked_users_controller.dart';
 
 class BlockedUsersList extends StatefulWidget {
-  const BlockedUsersList({Key? key}) : super(key: key);
+  const BlockedUsersList({super.key});
 
   @override
   BlockedUsersListState createState() => BlockedUsersListState();

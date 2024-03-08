@@ -40,7 +40,7 @@ class CompetitionModel {
   int awardType = 0;
 
   int joiningFee = 0;
-  int isJoined = 0;
+  bool isJoined = false;
   int competitionMediaType = 0;
 
   bool isWinner = false;
@@ -68,7 +68,7 @@ class CompetitionModel {
     // model.awardPrice = json['award_type'] == 1 ? json['price'] : 0;
     // model.awardCoin = json['award_type'] == 1 ? 0 : json['coin'];
     model.joiningFee = json['joining_fee'] ?? 0;
-    model.isJoined = json['is_joined'];
+    model.isJoined = json['is_joined'] == 1;
     model.competitionMediaType = json['competition_media_type'];
 
     var startDate =

@@ -34,7 +34,7 @@ class EventModel {
 
   List<EventOrganizer> organizers;
   List<EventTicketType> ticketType;
-  bool isClosed;
+  bool isCompleted;
 
   EventModel({
     required this.id,
@@ -63,7 +63,7 @@ class EventModel {
     required this.organizers,
     required this.eventCurrentStatus,
     required this.isTicketBooked,
-    required this.isClosed,
+    required this.isCompleted,
   });
 
   factory EventModel.fromJson(Map<String, dynamic> json) => EventModel(
@@ -81,11 +81,10 @@ class EventModel {
         description: json["description"],
         status: json["status"],
         eventCurrentStatus: json["eventCurrentStatus"],
-
         isFree: json["is_paid"] == 0,
         isTicketBooked: json["is_ticket_booked"] == 1,
-        isClosed: json["eventCurrentStatus"] == 2,
-
+        isCompleted:
+            json["eventCurrentStatus"] == 3 || json["eventCurrentStatus"] == 4,
         createdAt: json["created_at"],
         createdBy: json["created_by"],
         updatedAt: json["updated_at"],
@@ -98,11 +97,6 @@ class EventModel {
         organizers: json["eventOrganisor"] != null
             ? [EventOrganizer.fromJson(json["eventOrganisor"])]
             : [],
-        // organizers: json["eventOrganisor"] == null
-        //     ? []
-        //     : (json["eventOrganisor"] as List<dynamic>)
-        //         .map((e) => EventOrganisor.fromJson(e))
-        //         .toList(),
         ticketType: json["eventTicket"] == null
             ? []
             : (json["eventTicket"] as List<dynamic>)
@@ -121,6 +115,8 @@ class EventModel {
       case 2:
         return EventStatus.active;
       case 3:
+        return EventStatus.completed;
+      case 4:
         return EventStatus.completed;
     }
     return EventStatus.upcoming;
@@ -317,7 +313,7 @@ class EventTicketOrderRequest {
   double get paidAmount {
     return payments.fold(0, (total, payment) {
       if (payment.amount != null) {
-        return (total ) + (double.tryParse(payment.amount!) ?? 0);
+        return (total) + (double.tryParse(payment.amount!) ?? 0);
       } else {
         return total;
       }

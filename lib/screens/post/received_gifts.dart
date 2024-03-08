@@ -15,7 +15,7 @@ class ReceivedGiftsList extends StatelessWidget {
   final RefreshController _refreshController =
       RefreshController(initialRefresh: false);
 
-  ReceivedGiftsList({Key? key, required this.postId}) : super(key: key);
+  ReceivedGiftsList({super.key, required this.postId});
 
   @override
   Widget build(BuildContext context) {

@@ -5,7 +5,7 @@ import 'follower_following_list.dart';
 class UserProfileStatistics extends StatelessWidget {
   final UserModel user;
 
-  const UserProfileStatistics({Key? key, required this.user}) : super(key: key);
+  const UserProfileStatistics({super.key, required this.user});
 
   @override
   Widget build(BuildContext context) {

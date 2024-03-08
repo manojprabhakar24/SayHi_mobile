@@ -4,8 +4,7 @@ import '../../../model/verification_request_model.dart';
 class VerificationRejectReason extends StatelessWidget {
   final VerificationRequest request;
 
-  const VerificationRejectReason({Key? key, required this.request})
-      : super(key: key);
+  const VerificationRejectReason({super.key, required this.request});
 
   @override
   Widget build(BuildContext context) {

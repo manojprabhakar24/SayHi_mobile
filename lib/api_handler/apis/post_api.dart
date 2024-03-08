@@ -9,6 +9,7 @@ import '../api_wrapper.dart';
 class PostApi {
   static addPost(
       {required PostType postType,
+      required PostContentType postContentType,
       required String title,
       required List<Map<String, String>> gallery,
       required bool allowComments,
@@ -17,11 +18,13 @@ class PostApi {
       String? mentions,
       int? competitionId,
       int? sharingPostId,
+      int? contentRefId,
       int? clubId,
+      int? eventId,
+      int? fundRaisingCampaignId,
       int? audioId,
       double? audioStartTime,
       double? audioEndTime,
-      bool? addToPost,
       required Function(int?) resultCallback}) async {
     var url = competitionId == null
         ? NetworkConstantsUtil.addPost
@@ -35,12 +38,15 @@ class PostApi {
       "mentionUser": mentions,
       "gallary": gallery,
       'competition_id': competitionId,
+      'content_type_reference_id': contentRefId,
       'club_id': clubId,
-      'post_content_type': gallery.isEmpty ? 1 : 2,
+      'event_id': eventId,
+      'campaign_id': fundRaisingCampaignId,
+      'post_content_type': postContentTypeIdFrom(postContentType).toString(),
       'audio_id': audioId,
       'audio_start_time': audioStartTime,
       'audio_end_time': audioEndTime,
-      'is_add_to_post': addToPost == true ? 1 : 0,
+      'is_add_to_post': 1,
       'is_comment_enable': allowComments == true ? 1 : 0,
       'latitude': location == null ? '' : location.latitude.toString(),
       'longitude': location == null ? '' : location.longitude.toString(),
@@ -76,13 +82,15 @@ class PostApi {
   }
 
   static getPosts(
-      {int? userId,
+      {PostType? postType,
+      int? userId,
       int? isPopular,
       int? isFollowing,
       int? clubId,
+      int? eventId,
+      int? fundRaisingCampaignId,
       int? isSold,
       int? isSaved,
-      int? isReel,
       int? audioId,
       int? isVideo,
       int? isMine,
@@ -93,6 +101,9 @@ class PostApi {
       required Function(List<PostModel>, APIMetaData) resultCallback}) async {
     var url = NetworkConstantsUtil.searchPost;
 
+    if (postType != null) {
+      url = '$url&type=${postTypeValueFrom(postType).toString()}';
+    }
     if (userId != null) {
       url = '$url&user_id=$userId';
     }
@@ -104,6 +115,8 @@ class PostApi {
     }
     if (isRecent != null) {
       url = '$url&is_recent=$isRecent';
+    } else {
+      url = '$url&is_recent=1';
     }
     if (isFollowing != null) {
       url = '$url&is_following_user_post=$isFollowing';
@@ -120,8 +133,11 @@ class PostApi {
     if (clubId != null) {
       url = '$url&club_id=$clubId';
     }
-    if (isReel != null) {
-      url = '$url&is_reel=$isReel';
+    if (eventId != null) {
+      url = '$url&event_id=$eventId';
+    }
+    if (fundRaisingCampaignId != null) {
+      url = '$url&campaign_id=$fundRaisingCampaignId';
     }
     if (audioId != null) {
       url = '$url&audio_id=$audioId';
@@ -175,10 +191,8 @@ class PostApi {
       int page = 1,
       required Function(List<PostModel>, APIMetaData) resultCallback}) async {
     var url = '${NetworkConstantsUtil.mentionedPosts}$userId&page=$page';
-    // Loader.show();
 
     await ApiWrapper().getApi(url: url).then((response) {
-      // Loader.dismiss();
 
       if (response?.data != null) {
         List<PostModel> posts = [];
@@ -397,7 +411,6 @@ class PostApi {
   static Future uploadFile(String filePath,
       {required GalleryMediaType mediaType,
       required Function(String, String) resultCallback}) async {
-    Loader.show(status: loadingString.tr);
 
     await ApiWrapper()
         .uploadPostFile(
@@ -406,7 +419,6 @@ class PostApi {
       mediaType: mediaType,
     )
         .then((result) {
-      Loader.dismiss();
       if (result?.success == true) {
         resultCallback(result!.data['filename'], result.data['fileUrl']);
       }

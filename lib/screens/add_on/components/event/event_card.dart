@@ -8,12 +8,11 @@ class EventCard extends StatelessWidget {
   final VoidCallback leaveBtnClicked;
 
   const EventCard(
-      {Key? key,
+      {super.key,
       required this.event,
       required this.joinBtnClicked,
       required this.leaveBtnClicked,
-      required this.previewBtnClicked})
-      : super(key: key);
+      required this.previewBtnClicked});
 
   @override
   Widget build(BuildContext context) {
@@ -84,7 +83,7 @@ class EventCard extends StatelessWidget {
             ],
           ),
         ],
-      ).p(12),
+      ).p8,
     ).round(25);
   }
 }

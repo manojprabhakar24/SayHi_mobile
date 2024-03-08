@@ -1,13 +1,5 @@
-import 'dart:io';
-import 'package:device_info_plus/device_info_plus.dart';
-import 'package:flutter/material.dart';
-import 'package:foap/components/loader.dart';
 import 'package:foap/helper/device_info.dart';
 import 'package:foap/helper/imports/common_import.dart';
-import 'package:get/get.dart';
-import 'package:get_ip_address/get_ip_address.dart';
-import '../../helper/localization_strings.dart';
-import '../../util/app_util.dart';
 import '../../util/shared_prefs.dart';
 import '../api_wrapper.dart';
 
@@ -366,7 +358,7 @@ class AuthApi {
       Loader.dismiss();
 
       if (response?.success == true) {
-        String token = response!.data!['verify_token'];
+        String token = response!.data!['token'];
 
         successCallback(token);
       } else {

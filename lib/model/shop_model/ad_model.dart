@@ -148,6 +148,14 @@ class AdModel {
       return '${currency ?? '\$'} $dealPrice';
     }
   }
+
+  bool get isSold {
+    return status == 4;
+  }
+
+  bool get isDeleted {
+    return status == 0;
+  }
 }
 
 class Location {

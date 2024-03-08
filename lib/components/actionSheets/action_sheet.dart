@@ -5,8 +5,7 @@ class ActionSheet extends StatefulWidget {
   final List<GenericItem> items;
   final Function(GenericItem) itemCallBack;
 
-  const ActionSheet({Key? key, required this.items, required this.itemCallBack})
-      : super(key: key);
+  const ActionSheet({super.key, required this.items, required this.itemCallBack});
 
   @override
   ActionSheetState createState() => ActionSheetState();

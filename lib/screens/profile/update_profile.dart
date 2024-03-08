@@ -5,7 +5,7 @@ import 'package:foap/screens/login_sign_up/set_profile_category_type.dart';
 import 'package:image_picker/image_picker.dart';
 
 class UpdateProfile extends StatefulWidget {
-  const UpdateProfile({Key? key}) : super(key: key);
+  const UpdateProfile({super.key});
 
   @override
   UpdateProfileState createState() => UpdateProfileState();

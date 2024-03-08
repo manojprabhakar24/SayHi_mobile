@@ -3,7 +3,7 @@ import 'package:foap/helper/imports/setting_imports.dart';
 import '../../controllers/misc/subscription_packages_controller.dart';
 
 class PackagesScreen extends StatefulWidget {
-  const PackagesScreen({Key? key}) : super(key: key);
+  const PackagesScreen({super.key});
 
   @override
   PackagesScreenState createState() => PackagesScreenState();

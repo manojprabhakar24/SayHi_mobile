@@ -1,13 +1,10 @@
 import 'package:foap/helper/imports/chat_imports.dart';
 import 'package:foap/helper/imports/common_import.dart';
-import 'package:foap/helper/string_extension.dart';
-import '../../api_handler/apis/post_api.dart';
-import '../../model/post_model.dart';
 
 class StoryReplyChatTile extends StatelessWidget {
   final ChatMessageModel message;
 
-  const StoryReplyChatTile({Key? key, required this.message}) : super(key: key);
+  const StoryReplyChatTile({super.key, required this.message});
 
   @override
   Widget build(BuildContext context) {
@@ -51,7 +48,7 @@ class StoryReplyChatTile extends StatelessWidget {
                               child: SizedBox(
                                 height: double.infinity,
                                 child: CachedNetworkImage(
-                                  imageUrl: message.storyMedia.image!,
+                                  imageUrl: message.repliedOnStory.media.first.image!,
                                   httpHeaders: const {'accept': 'image/*'},
                                   fit: BoxFit.cover,
                                   placeholder: (context, url) =>
@@ -86,7 +83,7 @@ class StoryReplyChatTile extends StatelessWidget {
                             child: SizedBox(
                               height: 150,
                               child: CachedNetworkImage(
-                                imageUrl: message.storyMedia.image!,
+                                imageUrl: message.repliedOnStory.media.first.image!,
                                 httpHeaders: const {'accept': 'image/*'},
                                 fit: BoxFit.cover,
                                 placeholder: (context, url) =>

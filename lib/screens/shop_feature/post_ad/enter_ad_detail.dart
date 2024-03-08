@@ -6,7 +6,7 @@ import '../../../model/shop_model/ad_model.dart';
 class EnterAdDetail extends StatefulWidget {
   final AdModel adModel;
 
-  const EnterAdDetail(this.adModel, {Key? key}) : super(key: key);
+  const EnterAdDetail(this.adModel, {super.key});
 
   @override
   State<EnterAdDetail> createState() => EnterAdDetailState();

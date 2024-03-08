@@ -5,8 +5,7 @@ import '../../controllers/auth/login_controller.dart';
 class VerifyOTPPhoneNumberChange extends StatefulWidget {
   final String token;
 
-  const VerifyOTPPhoneNumberChange({Key? key, required this.token})
-      : super(key: key);
+  const VerifyOTPPhoneNumberChange({super.key, required this.token});
 
   @override
   VerifyOTPPhoneNumberChangeState createState() =>

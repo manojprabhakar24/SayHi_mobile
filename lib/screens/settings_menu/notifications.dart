@@ -4,13 +4,12 @@ import '../../controllers/profile/profile_controller.dart';
 import '../../helper/imports/common_import.dart';
 import '../../model/notification_modal.dart';
 import '../competitions/competition_detail_screen.dart';
-import '../home_feed/comments_screen.dart';
 import '../post/single_post_detail.dart';
 import '../profile/follow_requests.dart';
 import '../profile/other_user_profile.dart';
 
 class NotificationsScreen extends StatefulWidget {
-  const NotificationsScreen({Key? key}) : super(key: key);
+  const NotificationsScreen({super.key});
 
   @override
   State<NotificationsScreen> createState() => _NotificationsScreenState();

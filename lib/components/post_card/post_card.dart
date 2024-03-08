@@ -3,20 +3,30 @@ import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flare_flutter/flare_actor.dart';
 import 'package:flare_flutter/flare_controls.dart';
 import 'package:flutter/services.dart';
+import 'package:foap/components/post_card/poll_post_tile.dart';
 import 'package:foap/components/post_card/post_user_info.dart';
 import 'package:foap/components/post_card/reshare_post.dart';
 import 'package:foap/components/post_card/reshared_post_card.dart';
 import 'package:foap/components/post_card/post_text_widget.dart';
+import 'package:foap/controllers/clubs/clubs_controller.dart';
+import 'package:foap/helper/imports/competition_imports.dart';
+import 'package:foap/helper/imports/event_imports.dart';
+import 'package:foap/screens/fund_raising/fund_raising_campaign_detail.dart';
+import 'package:foap/screens/jobs_listing/job_detail.dart';
+import 'package:foap/screens/near_by_offers/offer_detail.dart';
 import 'package:foap/screens/post/edit_post.dart';
 import 'package:foap/controllers/post/post_gift_controller.dart';
 import 'package:foap/components/post_card/video_widget.dart';
 import 'package:foap/helper/imports/common_import.dart';
 import 'package:foap/helper/imports/post_imports.dart';
+import 'package:foap/screens/shop_feature/home/ad_detail_screen.dart';
 import 'package:profanity_filter/profanity_filter.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 import '../../controllers/chat_and_call/chat_detail_controller.dart';
 import '../../controllers/chat_and_call/select_user_for_chat_controller.dart';
+import '../../controllers/coupons/near_by_offers.dart';
+import '../../controllers/fund_raising/fund_raising_controller.dart';
 import '../../controllers/home/home_controller.dart';
 import '../../controllers/post/comments_controller.dart';
 import '../../screens/post/liked_by_users.dart';
@@ -25,13 +35,19 @@ import '../../screens/chat/chat_detail.dart';
 import '../../screens/chat/select_users.dart';
 import '../../screens/club/club_detail.dart';
 import '../../screens/home_feed/comments_screen.dart';
-import '../../screens/home_feed/post_media_full_screen.dart';
 import '../../screens/live/gifts_list.dart';
 import '../../screens/post/post_promotion/post_promotion.dart';
 import '../../screens/post/received_gifts.dart';
 import '../../screens/post/view_post_insight.dart';
 import '../../screens/profile/other_user_profile.dart';
 import 'audio_tile.dart';
+import 'classified_product_post_tile.dart';
+import 'club_post_tile.dart';
+import 'competition_post_tile.dart';
+import 'event_post_tile.dart';
+import 'fund_raising_campaign_tile.dart';
+import 'job_post_tile.dart';
+import 'offer_post_tile.dart';
 
 class PostMediaTile extends StatelessWidget {
   final PostCardController postCardController = Get.find();
@@ -41,8 +57,7 @@ class PostMediaTile extends StatelessWidget {
   final bool isSharedPostMedia;
 
   PostMediaTile(
-      {Key? key, required this.model, required this.isSharedPostMedia})
-      : super(key: key);
+      {super.key, required this.model, required this.isSharedPostMedia});
 
   @override
   Widget build(BuildContext context) {
@@ -91,15 +106,68 @@ class PostMediaTile extends StatelessWidget {
         ),
       );
     } else {
-      return model.gallery.first.isVideoPost == true
-          ? videoPostTile(
-              media: model.gallery.first, isReshared: isSharedPostMedia)
-          : model.gallery.first.isAudioPost
-              ? AudioPostTile(
+      return model.contentType == PostContentType.media
+          ? model.gallery.first.isVideoPost == true
+              ? videoPostTile(
+                  media: model.gallery.first, isReshared: isSharedPostMedia)
+              : model.gallery.first.isAudioPost
+                  ? AudioPostTile(
+                      post: model,
+                      isResharedPost: isSharedPostMedia,
+                    )
+                  : photoPostTile(model.gallery.first)
+          : model.contentType == PostContentType.event
+              ? EventPostTile(
                   post: model,
                   isResharedPost: isSharedPostMedia,
                 )
-              : photoPostTile(model.gallery.first);
+              : model.contentType == PostContentType.competitionAdded ||
+                      model.contentType ==
+                          PostContentType.competitionResultDeclared
+                  ? CompetitionPostTile(
+                      post: model,
+                      isResharedPost: isSharedPostMedia,
+                    )
+                  : model.contentType == PostContentType.fundRaising
+                      ? FundRaisingCampaignPostTile(
+                          post: model,
+                          isResharedPost: isSharedPostMedia,
+                        )
+                      : model.contentType == PostContentType.job
+                          ? JobPostTile(
+                              post: model,
+                              isResharedPost: isSharedPostMedia,
+                            )
+                          : model.contentType == PostContentType.offer
+                              ? OfferPostTile(
+                                  post: model,
+                                  isResharedPost: isSharedPostMedia,
+                                )
+                              : model.contentType == PostContentType.classified
+                                  ? ClassifiedProductPostTile(
+                                      post: model,
+                                      isResharedPost: isSharedPostMedia,
+                                    )
+                                  : model.contentType ==
+                                          PostContentType.donation
+                                      ? FundRaisingCampaignPostTile(
+                                          post: model,
+                                          isResharedPost: isSharedPostMedia,
+                                        )
+                                      : model.contentType ==
+                                              PostContentType.club
+                                          ? ClubPostTile(
+                                              post: model,
+                                              isResharedPost: isSharedPostMedia,
+                                            )
+                                          : model.contentType ==
+                                                  PostContentType.poll
+                                              ? PollPostTile(
+                                                  post: model,
+                                                  isResharedPost:
+                                                      isSharedPostMedia,
+                                                )
+                                              : Container();
     }
   }
 
@@ -155,12 +223,11 @@ class PostContent extends StatelessWidget {
   final bool isSponsored;
 
   PostContent(
-      {Key? key,
+      {super.key,
       required this.model,
       required this.isSponsored,
       required this.removePostHandler,
-      required this.blockUserHandler})
-      : super(key: key);
+      required this.blockUserHandler});
 
   @override
   Widget build(BuildContext context) {
@@ -207,8 +274,8 @@ class PostContent extends StatelessWidget {
             })
           ],
         ).setPadding(
-            left: DesignConstants.horizontalPadding,
-            right: DesignConstants.horizontalPadding,
+            left: DesignConstants.horizontalPadding / 2,
+            right: DesignConstants.horizontalPadding / 2,
             bottom: 16),
         GestureDetector(
             onDoubleTap: () {
@@ -217,32 +284,21 @@ class PostContent extends StatelessWidget {
               // widget.likeTapHandler();
               flareControls.play("like");
             },
-            // onTap: () {
-            //   Navigator.push(
-            //     context,
-            //     PageRouteBuilder(
-            //       pageBuilder: (context, animation1, animation2) =>
-            //           PostMediaFullScreen(gallery: model.gallery),
-            //       transitionDuration: Duration.zero,
-            //       reverseTransitionDuration: Duration.zero,
-            //     ),
-            //   );
-            // },
             child: Stack(
               children: [
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    if (model.title.isNotEmpty)
+                    if (model.postTitle.isNotEmpty)
                       RichTextPostTitle(model: model).setPadding(
-                          left: DesignConstants.horizontalPadding,
-                          right: DesignConstants.horizontalPadding,
+                          left: DesignConstants.horizontalPadding / 2,
+                          right: DesignConstants.horizontalPadding / 2,
                           bottom: 25),
-                    if (model.gallery.isNotEmpty)
-                      PostMediaTile(
-                        model: model,
-                        isSharedPostMedia: model.sharedPost != null,
-                      ),
+                    // if (model.gallery.isNotEmpty)
+                    PostMediaTile(
+                      model: model,
+                      isSharedPostMedia: model.sharedPost != null,
+                    ),
                     if (model.sharedPost != null)
                       ResharedPostCard(model: model.sharedPost!).setPadding(
                           left: DesignConstants.horizontalPadding,
@@ -417,12 +473,12 @@ class PostContent extends StatelessWidget {
                 )
               ],
             ),
-    ).round(40));
+    ).topRounded(40));
   }
 
   void openClubDetail() async {
     Get.to(() => ClubDetail(
-        club: model.club!,
+        club: model.postedInClub!,
         needRefreshCallback: () {},
         deleteCallback: (club) {}));
   }
@@ -435,11 +491,11 @@ class PostCard extends StatefulWidget {
   final VoidCallback blockUserHandler;
 
   const PostCard({
-    Key? key,
+    super.key,
     required this.model,
     required this.removePostHandler,
     required this.blockUserHandler,
-  }) : super(key: key);
+  });
 
   @override
   PostCardState createState() => PostCardState();
@@ -503,7 +559,6 @@ class PostCardState extends State<PostCard> {
                       text: boostPost.tr,
                       cornerRadius: 5,
                       height: 36,
-                      // width: 80,
                       onPress: () {
                         _promotionController.setPromotingPost(widget.model);
                         Get.to(() => PostPromotionScreen());
@@ -515,9 +570,9 @@ class PostCardState extends State<PostCard> {
             height: 20,
           ),
           if (widget.model.postPromotionData != null) sponsoredPostView().bP16,
-          commentsCountWidget().hp(DesignConstants.horizontalPadding),
+          commentsCountWidget().hp(DesignConstants.horizontalPadding / 2),
           divider(height: 0.8).vP16,
-          commentAndLikeWidget().hp(DesignConstants.horizontalPadding),
+          commentAndLikeWidget().hp(DesignConstants.horizontalPadding / 2),
         ]));
   }
 
@@ -527,7 +582,7 @@ class PostCardState extends State<PostCard> {
       child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
         BodyLargeText(
           widget.model.postPromotionData?.type == GoalType.website
-              ? widget.model.postPromotionData?.urlText ?? ''
+              ? widget.model.postPromotionData!.urlText!
               : widget.model.postPromotionData?.type == GoalType.message
                   ? sendMessagesString.tr
                   : viewProfileString.tr,
@@ -586,7 +641,7 @@ class PostCardState extends State<PostCard> {
 
   Widget commentsCountWidget() {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Obx(() {
           int totalLikes = 0;
@@ -646,7 +701,7 @@ class PostCardState extends State<PostCard> {
                 size: 15,
               )),
           const SizedBox(
-            width: 10,
+            width: 5,
           ),
           BodyMediumText(likeString)
         ],
@@ -655,7 +710,6 @@ class PostCardState extends State<PostCard> {
           post: widget.model,
         );
       }),
-
       if (widget.model.commentsEnabled)
         Row(
           children: [
@@ -664,14 +718,13 @@ class PostCardState extends State<PostCard> {
               size: 15,
             ),
             const SizedBox(
-              width: 10,
+              width: 5,
             ),
             BodyMediumText(commentString)
           ],
         ).ripple(() {
           openComments();
         }),
-
       if (widget.model.sharedPost == null)
         Row(
           children: [
@@ -680,7 +733,7 @@ class PostCardState extends State<PostCard> {
               size: 15,
             ),
             const SizedBox(
-              width: 10,
+              width: 5,
             ),
             BodyMediumText(
               shareString,
@@ -694,7 +747,7 @@ class PostCardState extends State<PostCard> {
               builder: (context) =>
                   FractionallySizedBox(heightFactor: 0.95, child: sharePost()));
         }),
-      if (!widget.model.isMyPost)
+      if (!widget.model.isMyPost && widget.model.user.role != UserRole.admin)
         Row(
           children: [
             ThemeIconWidget(
@@ -702,7 +755,7 @@ class PostCardState extends State<PostCard> {
               size: 15,
             ),
             const SizedBox(
-              width: 10,
+              width: 5,
             ),
             BodyMediumText(giftString)
           ],
@@ -719,10 +772,184 @@ class PostCardState extends State<PostCard> {
                       Get.back();
                     }));
               });
-        })
+        }),
+      if (widget.model.contentType == PostContentType.event)
+        Row(
+          children: [
+            ThemeIconWidget(
+              ThemeIcon.event,
+              size: 15,
+            ),
+            const SizedBox(
+              width: 5,
+            ),
+            BodyMediumText(!widget.model.event!.isCompleted &&
+                    !widget.model.event!.isTicketBooked
+                ? bookNow.tr
+                : viewString.tr)
+          ],
+        ).ripple(() {
+          Get.to(() => EventDetail(
+              event: widget.model.event!, needRefreshCallback: () {}));
+        }),
+      if (widget.model.contentType == PostContentType.competitionAdded)
+        Row(
+          children: [
+            ThemeIconWidget(
+              ThemeIcon.event,
+              size: 15,
+            ),
+            const SizedBox(
+              width: 5,
+            ),
+            BodyMediumText(widget.model.competition!.isPast ||
+                    widget.model.competition!.isJoined
+                ? viewString.tr
+                : joinString.tr)
+          ],
+        ).ripple(() {
+          Get.to(() => CompetitionDetailScreen(
+              competitionId: widget.model.competition!.id,
+              refreshPreviousScreen: () {}));
+        }),
+      if (widget.model.contentType == PostContentType.competitionResultDeclared)
+        Row(
+          children: [
+            ThemeIconWidget(
+              ThemeIcon.event,
+              size: 15,
+            ),
+            const SizedBox(
+              width: 5,
+            ),
+            BodyMediumText(viewResultString.tr)
+          ],
+        ).ripple(() {
+          Get.to(() => CompetitionDetailScreen(
+              competitionId: widget.model.competition!.id,
+              refreshPreviousScreen: () {}));
+        }),
+      if (widget.model.contentType == PostContentType.fundRaising)
+        Row(
+          children: [
+            ThemeIconWidget(
+              ThemeIcon.event,
+              size: 15,
+            ),
+            const SizedBox(
+              width: 5,
+            ),
+            BodyMediumText(donateNowString.tr)
+          ],
+        ).ripple(() {
+          final FundRaisingController fundRaisingController = Get.find();
 
-      // const Spacer(),
-      // viewGifts(),
+          fundRaisingController
+              .setCurrentCampaign(widget.model.fundRaisingCampaign!);
+          Get.to(() => FundRaisingCampaignDetail(
+                campaign: widget.model.fundRaisingCampaign!,
+              ));
+        }),
+      if (widget.model.contentType == PostContentType.job)
+        Row(
+          children: [
+            ThemeIconWidget(
+              ThemeIcon.event,
+              size: 15,
+            ),
+            const SizedBox(
+              width: 5,
+            ),
+            BodyMediumText(applyString.tr)
+          ],
+        ).ripple(() {
+          Get.to(() => JobDetail(
+                job: widget.model.job!,
+              ));
+        }),
+      if (widget.model.contentType == PostContentType.offer)
+        Row(
+          children: [
+            ThemeIconWidget(
+              ThemeIcon.event,
+              size: 15,
+            ),
+            const SizedBox(
+              width: 5,
+            ),
+            BodyMediumText(viewString.tr)
+          ],
+        ).ripple(() {
+          final NearByOffersController nearByOffersController = Get.find();
+          nearByOffersController.setCurrentOffer(widget.model.offer!);
+          Get.to(() => OfferDetail(
+                offer: widget.model.offer!,
+              ));
+        }),
+      if (widget.model.contentType == PostContentType.classified)
+        if (widget.model.product?.isSold != true &&
+            widget.model.product?.isDeleted != true)
+        Row(
+          children: [
+            ThemeIconWidget(
+              ThemeIcon.cart,
+              size: 15,
+            ),
+            const SizedBox(
+              width: 5,
+            ),
+            BodyMediumText(buyString.tr)
+          ],
+        ).ripple(() {
+          Get.to(() => AdDetailScreen(
+                widget.model.product!,
+              ));
+        }),
+      if (widget.model.contentType == PostContentType.donation)
+        Row(
+          children: [
+            ThemeIconWidget(
+              ThemeIcon.event,
+              size: 15,
+            ),
+            const SizedBox(
+              width: 5,
+            ),
+            BodyMediumText(donateNowString.tr)
+          ],
+        ).ripple(() {
+          final FundRaisingController fundRaisingController = Get.find();
+
+          fundRaisingController
+              .setCurrentCampaign(widget.model.fundRaisingCampaign!);
+          Get.to(() => FundRaisingCampaignDetail(
+                campaign: widget.model.fundRaisingCampaign!,
+              ));
+        }),
+      if (widget.model.contentType == PostContentType.club)
+        Row(
+          children: [
+            ThemeIconWidget(
+              ThemeIcon.event,
+              size: 15,
+            ),
+            const SizedBox(
+              width: 5,
+            ),
+            BodyMediumText(widget.model.createdClub!.isJoined == true
+                ? viewString.tr
+                : joinString.tr)
+          ],
+        ).ripple(() {
+          ClubsController clubController = Get.find();
+          clubController.getClubDetail(widget.model.createdClub!.id!, (club) {
+            Get.to(() => ClubDetail(
+                  club: club,
+                  needRefreshCallback: () {},
+                  deleteCallback: (club) {},
+                ));
+          });
+        })
     ]);
   }
 
@@ -735,7 +962,7 @@ class PostCardState extends State<PostCard> {
             child: Column(
               children: [
                 BodyMediumText(
-                  shareToFeed.tr,
+                  shareToFeedString.tr,
                   weight: TextWeight.semiBold,
                 ),
                 const SizedBox(

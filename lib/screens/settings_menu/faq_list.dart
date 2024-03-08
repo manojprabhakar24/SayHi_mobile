@@ -2,7 +2,7 @@ import 'package:foap/helper/imports/common_import.dart';
 import '../../controllers/misc/faq_controller.dart';
 
 class FaqList extends StatefulWidget {
-  const FaqList({Key? key}) : super(key: key);
+  const FaqList({super.key});
 
   @override
   State<FaqList> createState() => _FaqListState();

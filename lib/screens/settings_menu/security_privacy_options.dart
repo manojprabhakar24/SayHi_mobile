@@ -3,7 +3,7 @@ import 'package:foap/helper/imports/common_import.dart';
 import 'package:foap/helper/imports/setting_imports.dart';
 
 class PrivacyOptions extends StatefulWidget {
-  const PrivacyOptions({Key? key}) : super(key: key);
+  const PrivacyOptions({super.key});
 
   @override
   State<PrivacyOptions> createState() => _PrivacyOptionsState();

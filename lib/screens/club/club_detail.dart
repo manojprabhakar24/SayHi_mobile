@@ -3,9 +3,8 @@ import 'package:foap/helper/imports/common_import.dart';
 import 'package:foap/helper/imports/post_imports.dart';
 import 'package:foap/helper/number_extension.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
-import '../../components/actionSheets/action_sheet1.dart';
+import '../../components/sm_tab_bar.dart';
 import '../../controllers/chat_and_call/chat_detail_controller.dart';
-import '../../model/generic_item.dart';
 import '../chat/chat_detail.dart';
 
 class ClubDetail extends StatefulWidget {
@@ -14,11 +13,10 @@ class ClubDetail extends StatefulWidget {
   final Function(ClubModel) deleteCallback;
 
   const ClubDetail(
-      {Key? key,
+      {super.key,
       required this.club,
       required this.needRefreshCallback,
-      required this.deleteCallback})
-      : super(key: key);
+      required this.deleteCallback});
 
   @override
   ClubDetailState createState() => ClubDetailState();
@@ -29,9 +27,8 @@ class ClubDetailState extends State<ClubDetail> {
   final ChatDetailController _chatDetailController = Get.find();
   final RefreshController _refreshController =
       RefreshController(initialRefresh: false);
-  final PostController _postController = Get.find();
 
-  final _controller = ScrollController();
+  List<String> tabs = [aboutString.tr, postsString.tr];
 
   @override
   void initState() {
@@ -51,146 +48,163 @@ class ClubDetailState extends State<ClubDetail> {
   }
 
   refreshPosts() {
-    PostSearchQuery query = PostSearchQuery();
-    query.clubId = widget.club.id!;
-
-    _postController.setPostSearchQuery(
-        query: query,
-        callback: () {
-          _refreshController.refreshCompleted();
-        });
+    _clubDetailController.refreshPosts(
+        clubId: widget.club.id!, callback: () {});
   }
 
   @override
   Widget build(BuildContext context) {
     return AppScaffold(
       backgroundColor: AppColorConstants.backgroundColor,
-      floatingActionButton: _clubDetailController.club.value == null
-          ? null
-          : _clubDetailController.club.value!.createdByUser!.isMe
-              ? Container(
-                  height: 50,
-                  width: 50,
-                  color: AppColorConstants.themeColor,
-                  child: ThemeIconWidget(
-                    ThemeIcon.edit,
-                    size: 25,
-                    color: Colors.white,
+      floatingActionButton: widget.club.createdByUser!.isMe
+          ? Container(
+              height: 50,
+              width: 50,
+              color: AppColorConstants.themeColor,
+              child: ThemeIconWidget(
+                ThemeIcon.edit,
+                size: 25,
+                color: Colors.white,
+              ),
+            ).circular.ripple(() {
+              Future.delayed(
+                Duration.zero,
+                () => showGeneralDialog(
+                    context: context,
+                    pageBuilder: (context, animation, secondaryAnimation) =>
+                        AddPostScreen(
+                            postType: PostType.club,
+                            postCompletionHandler: () {
+                              refreshPosts();
+                            },
+                            club: _clubDetailController.club.value!)),
+              );
+            })
+          : null,
+      body: DefaultTabController(
+          length: tabs.length,
+          child: Stack(
+            children: [
+              Column(
+                children: [
+                  Obx(() => SizedBox(
+                      height: 350,
+                      width: Get.width,
+                      child: _clubDetailController.club.value == null
+                          ? Container()
+                          : CachedNetworkImage(
+                              imageUrl:
+                                  _clubDetailController.club.value!.image!,
+                              fit: BoxFit.cover,
+                            ))),
+                  SMTabBar(
+                    tabs: tabs,
+                    canScroll: false,
                   ),
-                ).circular.ripple(() {
-                  Future.delayed(
-                    Duration.zero,
-                    () => showGeneralDialog(
-                        context: context,
-                        pageBuilder: (context, animation, secondaryAnimation) =>
-                            AddPostScreen(
-                                postType: PostType.club,
-                                clubId: _clubDetailController.club.value!.id!)),
-                  );
-                })
-              : null,
-      body: Stack(
-        children: [
-          CustomScrollView(
-            slivers: [
-              SliverList(
-                  delegate: SliverChildListDelegate([
-                Obx(() {
-                  return _clubDetailController.club.value == null
-                      ? Container()
-                      : Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: [
-                            SizedBox(
-                                height: 350,
-                                child: CachedNetworkImage(
-                                  imageUrl:
-                                      _clubDetailController.club.value!.image!,
-                                  fit: BoxFit.cover,
-                                )
-                                // CachedNetworkImage(
-
-                                ),
-                            const SizedBox(
-                              height: 24,
-                            ),
-                            BodyLargeText(
-                                    _clubDetailController.club.value!.name!,
-                                    weight: TextWeight.medium)
-                                .hp(DesignConstants.horizontalPadding),
-                            const SizedBox(
-                              height: 12,
-                            ),
-                            Row(
-                              children: [
-                                ThemeIconWidget(ThemeIcon.userGroup),
-                                const SizedBox(
-                                  width: 5,
-                                ),
-                                BodyMediumText(
-                                  _clubDetailController.club.value!.groupType,
-                                  weight: TextWeight.medium,
-                                ),
-                                ThemeIconWidget(
-                                  ThemeIcon.circle,
-                                  size: 8,
-                                ).hP8,
-                                BodyMediumText(
-                                        '${_clubDetailController.club.value!.totalMembers!.formatNumber} ${clubMembersString.tr}',
-                                        weight: TextWeight.regular)
-                                    .ripple(() {
-                                  Get.to(() => ClubMembers(
-                                      club: _clubDetailController.club.value!));
-                                })
-                              ],
-                            ).hp(DesignConstants.horizontalPadding),
-                            const SizedBox(
-                              height: 12,
-                            ),
-                            buttonsWidget()
-                                .hp(DesignConstants.horizontalPadding),
-                          ],
-                        );
-                }),
-                Obx(() => SizedBox(
-                      height: (_clubDetailController.posts.length * 500) +
-                          (_clubDetailController.posts.length * 40),
-                      child: ListView.separated(
-                          physics: const NeverScrollableScrollPhysics(),
-                          padding: EdgeInsets.zero,
-                          itemBuilder: (BuildContext context, index) {
-                            return PostCard(
-                              model: _clubDetailController.posts[index],
-                              // likeTapHandler: () {},
-                              removePostHandler: () {},
-                              blockUserHandler: () {
-                                // _homeController.removeUsersAllPostFromList(model);
-                              },
-                            );
-                          },
-                          separatorBuilder: (BuildContext context, index) {
-                            return const SizedBox(
-                              height: 40,
-                            );
-                          },
-                          itemCount: _clubDetailController.posts.length),
-                    ).vP16)
-              ]))
+                  Expanded(
+                    child: TabBarView(children: [
+                      Obx(() {
+                        return _clubDetailController.club.value == null
+                            ? Container()
+                            : Column(
+                                crossAxisAlignment: CrossAxisAlignment.stretch,
+                                children: [
+                                  const SizedBox(
+                                    height: 24,
+                                  ),
+                                  BodyLargeText(
+                                          _clubDetailController
+                                              .club.value!.name!,
+                                          weight: TextWeight.medium)
+                                      .hp(DesignConstants.horizontalPadding),
+                                  const SizedBox(
+                                    height: 12,
+                                  ),
+                                  Row(
+                                    children: [
+                                      ThemeIconWidget(ThemeIcon.userGroup),
+                                      const SizedBox(
+                                        width: 5,
+                                      ),
+                                      BodyMediumText(
+                                        _clubDetailController
+                                            .club.value!.groupType,
+                                        weight: TextWeight.medium,
+                                      ),
+                                      ThemeIconWidget(
+                                        ThemeIcon.circle,
+                                        size: 8,
+                                      ).hP8,
+                                      BodyMediumText(
+                                              '${_clubDetailController.club.value!.totalMembers!.formatNumber} ${clubMembersString.tr}',
+                                              weight: TextWeight.regular)
+                                          .ripple(() {
+                                        Get.to(() => ClubMembers(
+                                            club: _clubDetailController
+                                                .club.value!));
+                                      })
+                                    ],
+                                  ).hp(DesignConstants.horizontalPadding),
+                                  const SizedBox(
+                                    height: 12,
+                                  ),
+                                  buttonsWidget()
+                                      .hp(DesignConstants.horizontalPadding),
+                                ],
+                              );
+                      }),
+                      postsView()
+                    ]),
+                  ),
+                ],
+              ),
+              appBar()
             ],
-          ),
-          appBar()
-        ],
-      ),
+          )),
     );
+  }
+
+  Widget postsView() {
+    return Obx(() => ListView.separated(
+            padding: const EdgeInsets.only(top: 25, bottom: 100),
+            itemBuilder: (BuildContext context, index) {
+              return PostCard(
+                model: _clubDetailController.posts[index],
+                removePostHandler: () {},
+                blockUserHandler: () {},
+              );
+            },
+            separatorBuilder: (BuildContext context, index) {
+              return const SizedBox(
+                height: 40,
+              );
+            },
+            itemCount: _clubDetailController.posts.length)
+        .addPullToRefresh(
+            refreshController: _refreshController,
+            onRefresh: () {
+              _clubDetailController.refreshPosts(
+                  clubId: widget.club.id!,
+                  callback: () {
+                    _refreshController.refreshCompleted();
+                  });
+            },
+            onLoading: () {
+              _clubDetailController.loadMorePosts(
+                  clubId: widget.club.id!,
+                  callback: () {
+                    _refreshController.loadComplete();
+                  });
+            },
+            enablePullUp: true,
+            enablePullDown: true));
   }
 
   Widget buttonsWidget() {
     return Row(
-      // mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         if (_clubDetailController.club.value!.createdByUser!.isMe == false)
           Container(
-                  // width: 40,
                   height: 30,
                   color: AppColorConstants.themeColor.withOpacity(0.2),
                   child: Row(
@@ -368,59 +382,5 @@ class ClubDetailState extends State<ClubDetail> {
         ).hp(DesignConstants.horizontalPadding),
       ),
     );
-  }
-
-  postsView() {
-    return Obx(() {
-      return ListView.separated(
-              controller: _controller,
-              padding: const EdgeInsets.only(top: 20, bottom: 100),
-              itemCount: _clubDetailController.posts.length,
-              itemBuilder: (context, index) {
-                PostModel model = _clubDetailController.posts[index - 3];
-
-                return PostCard(
-                  model: model,
-                  removePostHandler: () {
-                    _clubDetailController.removePostFromList(model);
-                  },
-                  blockUserHandler: () {
-                    _clubDetailController.removePostFromList(model);
-                  },
-                );
-              },
-              separatorBuilder: (context, index) {
-                if (index == 1) {
-                  return Container();
-                } else {
-                  return const SizedBox(
-                    height: 20,
-                  );
-                }
-              })
-          .addPullToRefresh(
-              refreshController: _refreshController,
-              enablePullUp: false,
-              enablePullDown: true,
-              onRefresh: refreshPosts,
-              onLoading: () {});
-    });
-  }
-
-  showActionSheet(PostModel post) {
-    showModalBottomSheet(
-        context: context,
-        backgroundColor: Colors.transparent,
-        builder: (context) => ActionSheet1(
-              items: [
-                GenericItem(
-                    id: '1', title: shareString.tr, icon: ThemeIcon.share),
-                GenericItem(
-                    id: '2', title: reportString.tr, icon: ThemeIcon.report),
-                GenericItem(
-                    id: '3', title: hideString.tr, icon: ThemeIcon.hide),
-              ],
-              itemCallBack: (item) {},
-            ));
   }
 }

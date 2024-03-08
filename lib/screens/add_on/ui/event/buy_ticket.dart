@@ -6,8 +6,7 @@ class BuyTicket extends StatefulWidget {
   final EventModel event;
   final UserModel? giftToUser;
 
-  const BuyTicket({Key? key, required this.event, this.giftToUser})
-      : super(key: key);
+  const BuyTicket({super.key, required this.event, this.giftToUser});
 
   @override
   State<BuyTicket> createState() => _BuyTicketState();
@@ -214,7 +213,7 @@ class _BuyTicketState extends State<BuyTicket> {
           height: 25,
         ),
         SizedBox(
-          height: 160,
+          height: 170,
           child: ListView.separated(
             padding: EdgeInsets.only(
                 left: DesignConstants.horizontalPadding,
@@ -269,7 +268,7 @@ class _BuyTicketState extends State<BuyTicket> {
                                   bottom: 4))
                   .round(5),
               const SizedBox(
-                height: 15,
+                height: 10,
               ),
               BodyLargeText('\$${ticket.price}', weight: TextWeight.bold),
               const SizedBox(

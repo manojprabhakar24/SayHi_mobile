@@ -11,7 +11,7 @@ class ShopCategories extends StatelessWidget {
   RefreshController refreshController =
       RefreshController(initialRefresh: false);
 
-  ShopCategories({Key? key}) : super(key: key);
+  ShopCategories({super.key});
 
   @override
   Widget build(BuildContext context) {

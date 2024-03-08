@@ -1,3 +1,4 @@
+import 'package:foap/controllers/clubs/clubs_controller.dart';
 import 'package:foap/helper/imports/common_import.dart';
 import 'package:foap/helper/imports/models.dart';
 import '../../controllers/profile/profile_controller.dart';
@@ -10,8 +11,7 @@ class PostUserInfo extends StatelessWidget {
   final bool isSponsored;
   final ProfileController _profileController = Get.find();
 
-  PostUserInfo({Key? key, required this.post, required this.isSponsored})
-      : super(key: key);
+  PostUserInfo({super.key, required this.post, required this.isSponsored});
 
   @override
   Widget build(BuildContext context) {
@@ -40,13 +40,16 @@ class PostUserInfo extends StatelessWidget {
                   post.user.userName,
                   weight: TextWeight.medium,
                 ).ripple(() {
-                  openProfile();
+                  print(post.user.role);
+                  if (post.user.role != UserRole.admin) {
+                    openProfile();
+                  }
                 }),
                 if (post.user.isVerified) verifiedUserTag().rP8,
-                if (post.club != null)
+                if (post.postedInClub != null)
                   Expanded(
                     child: BodyMediumText(
-                      '${sharedInString.tr} (${post.club!.name})',
+                      ' ${sharedInString.tr} (${post.postedInClub!.name})',
                       weight: TextWeight.semiBold,
                       color: AppColorConstants.themeColor,
                       maxLines: 1,
@@ -95,9 +98,11 @@ class PostUserInfo extends StatelessWidget {
   }
 
   void openClubDetail() async {
-    Get.to(() => ClubDetail(
-        club: post.club!,
-        needRefreshCallback: () {},
-        deleteCallback: (club) {}));
+    ClubsController clubsController = Get.find();
+
+    clubsController.getClubDetail(post.postedInClub!.id!, (club) {
+      Get.to(() => ClubDetail(
+          club: club, needRefreshCallback: () {}, deleteCallback: (club) {}));
+    });
   }
 }

@@ -1,6 +1,7 @@
 import 'dart:math';
 import 'package:foap/components/static_map_widget.dart';
 import 'package:foap/helper/imports/event_imports.dart';
+import 'package:foap/helper/number_extension.dart';
 import 'package:foap/screens/profile/other_user_profile.dart';
 import 'package:lottie/lottie.dart';
 import 'package:map_launcher/map_launcher.dart';
@@ -10,9 +11,9 @@ class EventBookingDetail extends StatefulWidget {
   final EventBookingModel booking;
 
   const EventBookingDetail({
-    Key? key,
+    super.key,
     required this.booking,
-  }) : super(key: key);
+  });
 
   @override
   EventBookingDetailState createState() => EventBookingDetailState();
@@ -264,26 +265,27 @@ class EventBookingDetailState extends State<EventBookingDetail> {
   Widget attendingUsersList() {
     return Row(
       children: [
-        SizedBox(
-          height: 20,
-          width: min(widget.booking.event.gallery.length, 5) * 17,
-          child: ListView.builder(
-            scrollDirection: Axis.horizontal,
-            itemBuilder: (ctx, index) {
-              return Align(
-                widthFactor: 0.6,
-                child: CachedNetworkImage(
-                  imageUrl: widget.booking.event.gallery[index],
-                  width: 20,
-                  height: 20,
-                  fit: BoxFit.cover,
-                ).borderWithRadius(value: 1, radius: 10),
-              );
-            },
-            itemCount: min(widget.booking.event.gallery.length, 5),
-          ),
-        ),
-        BodySmallText('20000 + going', weight: TextWeight.regular),
+        // SizedBox(
+        //   height: 20,
+        //   width: min(widget.booking.event.gallery.length, 5) * 17,
+        //   child: ListView.builder(
+        //     scrollDirection: Axis.horizontal,
+        //     itemBuilder: (ctx, index) {
+        //       return Align(
+        //         widthFactor: 0.6,
+        //         child: CachedNetworkImage(
+        //           imageUrl: widget.booking.event.gallery[index],
+        //           width: 20,
+        //           height: 20,
+        //           fit: BoxFit.cover,
+        //         ).borderWithRadius(value: 1, radius: 10),
+        //       );
+        //     },
+        //     itemCount: min(widget.booking.event.gallery.length, 5),
+        //   ),
+        // ),
+        // const SizedBox(width: 10,),
+        BodySmallText('${widget.booking.event.totalMembers.formatNumber}+ going', weight: TextWeight.regular),
         const Spacer()
       ],
     );

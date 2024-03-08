@@ -3,7 +3,7 @@ import '../../../controllers/post/promotion_controller.dart';
 import 'goal_website_url.dart';
 
 class PromotionGoalScreen extends StatelessWidget {
-  PromotionGoalScreen({Key? key}) : super(key: key);
+  PromotionGoalScreen({super.key});
   final PromotionController _promotionController = Get.find();
 
   @override

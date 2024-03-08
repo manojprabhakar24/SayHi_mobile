@@ -50,6 +50,7 @@ String likeString = 'Like';
 String offString = 'Off';
 String liveString = 'Live';
 String liveEndString = 'Live End';
+String thisLiveIsEndString = 'This Live End';
 
 String fromPeopleOrFollowString = 'From People | Follow';
 String fromEveryoneString = 'From Everyone';
@@ -128,7 +129,7 @@ String yourEmailString = 'Your Email';
 String forgotPwdString = 'Forgot Password?';
 String passwordIsEmptyString = 'Please enter password';
 String emailPwdIsIncorrectString = 'Email or password is incorrect';
-String passwordChangedString = 'Password changed successfully';
+String passwordChangedString = 'Your password has been changed successfully';
 String weHaveSentOTPString = 'We have sent an OTP';
 String enterOTPString = 'Enter OTP';
 String wrongOTPString = 'Wrong OTP, please enter the correct OTP';
@@ -190,7 +191,6 @@ String wallpapersString = 'Wallpapers';
 String friendsString = 'Friends';
 String shareString = 'Share';
 String reSharedString = 'Re-Shared';
-String shareToFeed = 'Share to feed';
 String sendSeparatelyToFriends = 'Send separately to friends';
 String sharesString = 'Shares';
 
@@ -208,6 +208,7 @@ String availableCoinsString = 'Available coins';
 
 String buyCoinsString = 'Buy more coins';
 String buyInString = 'Buy in';
+String buyString = 'Buy';
 
 String coinsAddedString = 'Coins added to your account';
 
@@ -566,6 +567,7 @@ String hideString = "Hide";
 String choosePrivacyString = "Choose Privacy";
 String inviteString = "Invite";
 String inviteUserString = "Invite user";
+String inviteFriendString = "Invite friends";
 
 String previewString = "Preview";
 String seeAllString = "See All";
@@ -854,6 +856,7 @@ String minWithdrawLimitString = 'Minimum withdrawal limit is {{cash}}\$';
 String enterValidAmountOfCoinsString = 'Please enter valid amount of coins';
 String enterNumberOfCoinsString = 'Enter number of coins to redeem';
 String postedInString = 'Posted in';
+String postedString = 'Posted';
 
 String liveHistoryString = 'Live History';
 String liveHistorySubHeadlineString = 'Your live history s';
@@ -1164,6 +1167,7 @@ String nonFollowersString = 'Non-Followers';
 
 String viewsString = 'Views';
 String viewString = 'View';
+String viewResultString = 'View result';
 
 String postInteractionsString = 'Post interactions';
 String savedString = 'Saved';
@@ -1373,8 +1377,10 @@ String sentYourFollowRequestString = 'sent you follow request';
 String commentedOnYourPostString = 'commented on your post';
 String likedYourPostString = 'liked your post';
 String adminAddedNewCompetitionString = 'Admin Added new competition';
-String adminRepliedOnYourSupportRequestString = 'Replied on your support request';
-String congratsYourVerificationIsApprovedString = 'Congratulations, Your verification request has been approved.';
+String adminRepliedOnYourSupportRequestString =
+    'Replied on your support request';
+String congratsYourVerificationIsApprovedString =
+    'Congratulations, Your verification request has been approved.';
 String shareOnlineStatusStaring = 'Share online status';
 String shareOnlineStatusMsgString =
     'If you don\'t share your last seen and online,you won\'t be able to see other people\'s last seen and online status also';
@@ -1399,3 +1405,44 @@ String isRemovedFromModeratorString = 'is removed from moderators';
 
 String copiedString = 'Copied';
 String addLocationString = 'Add location';
+
+String addedNewEventString = 'added a new event :';
+String addedNewCompetitionString = 'added a new competition :';
+String addedNewFundRaisingCampaignString =
+    'added a new fund raising campaign :';
+String addedNewJobOpeningString = 'added a new job opening :';
+String addedNewOfferString = 'added a new offer :';
+String addedNewProductString = 'added a new product for sale :';
+String donatedToString = 'donated to';
+
+String productAddedSuccessfullyString = 'Product added successfully';
+String clubCreatedSuccessfullyString = 'Club is created successfully';
+
+String addMoreProductsString = 'Add more products';
+String addMoreClubsString = 'Add more clubs';
+String createdAClubString = 'created a club';
+String postingInString = 'Posting in';
+
+String blackString = 'Black';
+String whiteString = 'White';
+String brownString = 'Brown';
+String fairString = 'Fair';
+
+String christianString = 'Christian';
+String muslimString = 'Muslim';
+String hinduString = 'Hindu';
+String buddhistString = 'Buddhist';
+String sikhString = 'Sikh';
+String jainismString = 'Jainism';
+String judaismString = 'Judaism';
+
+String singleString = 'Single';
+String marriedString = 'Married';
+String divorcedString = 'Divorced';
+
+String regularString = 'Regular';
+String planningToQuitString = 'Planning to quit';
+String sociallyString = 'Socially';
+String gotoSiteString = "Goto site";
+String invitedYouToClubString = "Invited to you club";
+

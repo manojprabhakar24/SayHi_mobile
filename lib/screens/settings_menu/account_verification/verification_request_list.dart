@@ -4,7 +4,7 @@ import '../../../controllers/misc/request_verification_controller.dart';
 import '../../../model/verification_request_model.dart';
 
 class RequestVerificationList extends StatefulWidget {
-  const RequestVerificationList({Key? key}) : super(key: key);
+  const RequestVerificationList({super.key});
 
   @override
   State<RequestVerificationList> createState() =>

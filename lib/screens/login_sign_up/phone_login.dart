@@ -1,9 +1,8 @@
 import 'package:foap/helper/imports/common_import.dart';
-import 'package:foap/screens/login_sign_up/set_user_name.dart';
 import 'package:foap/helper/imports/login_signup_imports.dart';
 
 class PhoneLoginScreen extends StatefulWidget {
-  const PhoneLoginScreen({Key? key}) : super(key: key);
+  const PhoneLoginScreen({super.key});
 
   @override
   PhoneLoginScreenState createState() => PhoneLoginScreenState();
@@ -119,7 +118,7 @@ class PhoneLoginScreenState extends State<PhoneLoginScreen> {
                           weight: TextWeight.medium,
                           color: AppColorConstants.themeColor,
                         ).ripple(() {
-                          Get.to(() => const SetUserName());
+                          Get.to(() => const SignUpScreen());
                         }),
                       ],
                     ),

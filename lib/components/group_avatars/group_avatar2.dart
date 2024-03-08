@@ -191,14 +191,14 @@ class TopClubCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 200,
+      height: 150,
       color: club.name!.generateColorFromText.darken(),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
           const SizedBox(
-            height: 10,
+            height: 8,
           ),
           Row(
             children: [
@@ -208,21 +208,22 @@ class TopClubCard extends StatelessWidget {
                 height: 50,
                 width: 50,
               ).circular,
-              const Spacer()
+              const SizedBox(
+                width: 10,
+              ),
+              Expanded(
+                child: BodyLargeText(
+                  club.name!,
+                  weight: TextWeight.semiBold,
+                  color: Colors.white,
+                ),
+              ),
             ],
           ),
           const SizedBox(
-            height: 10,
+            height: 15,
           ),
-          Heading5Text(
-            club.name!,
-            weight: TextWeight.bold,
-            color: Colors.white,
-          ),
-          const SizedBox(
-            height: 5,
-          ),
-          BodyMediumText(
+          BodySmallText(
             club.desc!,
             weight: TextWeight.medium,
             maxLines: 2,
@@ -248,7 +249,7 @@ class TopClubCard extends StatelessWidget {
             ],
           ),
           const SizedBox(
-            height: 20,
+            height: 10,
           ),
           // Row(
           //   mainAxisAlignment: MainAxisAlignment.spaceBetween,

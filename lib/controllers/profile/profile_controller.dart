@@ -425,6 +425,7 @@ class ProfileController extends GetxController {
       isLoadingReels = true;
       PostApi.getPosts(
           userId: userId,
+          postType: PostType.reel,
           page: reelsCurrentPage,
           resultCallback: (result, metadata) {
             posts.addAll(result);

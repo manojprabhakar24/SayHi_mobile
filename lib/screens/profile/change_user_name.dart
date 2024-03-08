@@ -2,7 +2,7 @@ import 'package:foap/helper/imports/common_import.dart';
 import '../../controllers/profile/profile_controller.dart';
 
 class ChangeUserName extends StatefulWidget {
-  const ChangeUserName({Key? key}) : super(key: key);
+  const ChangeUserName({super.key});
 
   @override
   State<ChangeUserName> createState() => _ChangeUserNameState();

@@ -46,14 +46,10 @@ class _VoiceRecordState extends State<VoiceRecord> {
       audioFile.createSync();
     }
 
-    // Map<Permission, PermissionStatus> statuses =
-    //     await [Permission.microphone].request();
-
     if (await record.hasPermission()) {
       await record.start(
         const RecordConfig(bitRate: 128000, encoder: AudioEncoder.aacLc),
         path: recordingPath!, // by default
-        // sampleRate: 44100, // by default
       );
       _startTimer();
     } else {

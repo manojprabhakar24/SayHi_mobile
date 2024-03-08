@@ -9,8 +9,7 @@ class AdvertisementCard extends StatefulWidget {
   final VoidCallback pressed;
 
   const AdvertisementCard(
-      {Key? key, required this.advertisement, required this.pressed})
-      : super(key: key);
+      {super.key, required this.advertisement, required this.pressed});
 
   @override
   State<AdvertisementCard> createState() => _AdvertisementCardState();

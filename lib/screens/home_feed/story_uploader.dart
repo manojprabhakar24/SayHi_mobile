@@ -1,5 +1,6 @@
 import 'package:foap/helper/file_extension.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:vs_story_designer/vs_story_designer.dart';
 import '../../controllers/story/story_controller.dart';
 import '../../helper/imports/common_import.dart';
 import '../chat/media.dart';
@@ -7,6 +8,7 @@ import '../chat/media.dart';
 final ImagePicker _picker = ImagePicker();
 
 void openStoryUploader() {
+
   showModalBottomSheet(
       backgroundColor: Colors.transparent,
       context: Get.context!,
@@ -31,7 +33,32 @@ void openStoryUploader() {
                   weight: TextWeight.regular,
                 ).makeChip().ripple(() {
                   Get.back();
-                  selectPhoto(source: ImageSource.gallery);
+                  // selectPhoto(source: ImageSource.gallery);
+                  Get.to(() => VSStoryDesigner(
+                    giphyKey: settingsController.setting.value!.giphyApiKey!,
+
+                    /// (String), //disabled feature for now
+                    onDone: (String uri) async {
+                      XFile image = XFile(uri);
+
+                      Media media = await image.toMedia(GalleryMediaType.photo);
+                      postStoryMedia([media]);
+
+                      Get.back();
+
+                      /// uri is the local path of final render Uint8List
+                      /// here your code
+                    },
+                    // onTextEditingStatusChange: (status) {},
+                    onDoneButtonStyle: Container(
+                        color: Colors.white,
+                        height: 50,
+                        width: 50,
+                        child: Center(child: BodyLargeText(postString.tr)))
+                        .round(10),
+                    centerText: '',
+                    middleBottomWidget: Container(),
+                  ));
                 }),
                 Heading4Text(
                   videoString.tr,

@@ -8,8 +8,7 @@ import '../profile/other_user_profile.dart';
 class WinnerDetailScreen extends StatefulWidget {
   final PostModel winnerPost;
 
-  const WinnerDetailScreen({Key? key, required this.winnerPost})
-      : super(key: key);
+  const WinnerDetailScreen({super.key, required this.winnerPost});
 
   @override
   WinnerDetailState createState() => WinnerDetailState();
@@ -47,7 +46,7 @@ class WinnerDetailState extends State<WinnerDetailScreen> {
             addUserInfo(),
             Padding(
                 padding: const EdgeInsets.only(left: 10, right: 10, top: 5),
-                child: BodyLargeText(model.title,
+                child: BodyLargeText(model.postTitle,
                     color: AppColorConstants.backgroundColor)),
             Padding(
                 padding: const EdgeInsets.only(

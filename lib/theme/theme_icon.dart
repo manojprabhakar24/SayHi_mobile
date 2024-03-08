@@ -135,7 +135,17 @@ enum ThemeIcon {
   product,
   event,
   search,
-  bookings
+  bookings,
+  text,
+  fontSize,
+  boomerang,
+  textLeftAlign,
+  textCenterAlign,
+  textRightAlign,
+  colorPicker,
+  textBackground,
+  done,
+  fundRaisingCampaign,
 }
 
 class ThemeIconWidget extends StatelessWidget {
@@ -143,8 +153,7 @@ class ThemeIconWidget extends StatelessWidget {
   final double? size;
   Color? color;
 
-  ThemeIconWidget(this.icon, {Key? key, this.size, this.color})
-      : super(key: key);
+  ThemeIconWidget(this.icon, {super.key, this.size, this.color});
 
   @override
   Widget build(BuildContext context) {
@@ -964,6 +973,67 @@ class ThemeIconWidget extends StatelessWidget {
       case ThemeIcon.bookings:
         return Icon(
           Icons.calendar_month,
+          size: size ?? 20,
+          color: color ?? AppColorConstants.iconColor,
+        );
+      case ThemeIcon.boomerang:
+        return Image.asset(
+          'assets/boomerang.png',
+          height: size ?? 20,
+          color: color ?? AppColorConstants.iconColor,
+        );
+      case ThemeIcon.text:
+        return Icon(
+          Icons.text_fields,
+          size: size ?? 20,
+          color: color ?? AppColorConstants.iconColor,
+        );
+
+      case ThemeIcon.textLeftAlign:
+        return Icon(
+          Icons.format_align_left_outlined,
+          size: size ?? 20,
+          color: color ?? AppColorConstants.iconColor,
+        );
+      case ThemeIcon.textCenterAlign:
+        return Icon(
+          Icons.format_align_center,
+          size: size ?? 20,
+          color: color ?? AppColorConstants.iconColor,
+        );
+      case ThemeIcon.textRightAlign:
+        return Icon(
+          Icons.format_align_right_outlined,
+          size: size ?? 20,
+          color: color ?? AppColorConstants.iconColor,
+        );
+      case ThemeIcon.colorPicker:
+        return Icon(
+          Icons.color_lens,
+          size: size ?? 20,
+          color: color ?? AppColorConstants.iconColor,
+        );
+      case ThemeIcon.textBackground:
+        return Icon(
+          Icons.format_color_text,
+          size: size ?? 20,
+          color: color ?? AppColorConstants.iconColor,
+        );
+      case ThemeIcon.done:
+        return Icon(
+          Icons.done,
+          size: size ?? 20,
+          color: color ?? AppColorConstants.iconColor,
+        );
+      case ThemeIcon.fontSize:
+        return Icon(
+          Icons.text_fields_rounded,
+          size: size ?? 20,
+          color: color ?? AppColorConstants.iconColor,
+        );
+      case ThemeIcon.fundRaisingCampaign:
+        return Icon(
+          Icons.campaign,
           size: size ?? 20,
           color: color ?? AppColorConstants.iconColor,
         );

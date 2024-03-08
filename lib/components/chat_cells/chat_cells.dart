@@ -1,3 +1,4 @@
+import 'package:foap/components/chat_cells/story_chat_cell.dart';
 import 'package:foap/components/chat_cells/story_reply_chat_cell.dart';
 import 'package:foap/helper/imports/chat_imports.dart';
 import 'package:foap/helper/imports/common_import.dart';
@@ -12,13 +13,12 @@ class ChatMessageTile extends StatelessWidget {
   final Function(ChatMessageModel) messageTapHandler;
 
   ChatMessageTile(
-      {Key? key,
+      {super.key,
       required this.message,
       required this.showName,
       required this.actionMode,
       required this.replyMessageTapHandler,
-      required this.messageTapHandler})
-      : super(key: key);
+      required this.messageTapHandler});
 
   @override
   Widget build(BuildContext context) {
@@ -53,13 +53,16 @@ class ChatMessageTile extends StatelessWidget {
                           message.messageContentType ==
                               MessageContentType.textReplyOnStory ||
                           message.messageContentType ==
-                              MessageContentType.reactedOnStory
+                              MessageContentType.reactedOnStory ||
+                          message.messageContentType == MessageContentType.story
                       ? Colors.transparent
                       : message.isMineMessage
                           ? AppColorConstants.themeColor.withOpacity(0.5)
                           : AppColorConstants.cardColor,
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                    crossAxisAlignment: message.isMineMessage
+                        ? CrossAxisAlignment.end
+                        : CrossAxisAlignment.start,
                     children: [
                       showName ? nameWidget(context) : Container(),
                       message.messageContentType == MessageContentType.forward
@@ -177,6 +180,8 @@ class ChatMessageTile extends StatelessWidget {
       return UserProfileChatTile(message: messageModel);
     } else if (messageModel.messageContentType == MessageContentType.file) {
       return FileChatTile(message: messageModel);
+    } else if (messageModel.messageContentType == MessageContentType.story) {
+      return StoryChatTile(message: messageModel);
     } else if (messageModel.messageContentType ==
             MessageContentType.textReplyOnStory ||
         messageModel.messageContentType == MessageContentType.reactedOnStory) {
@@ -196,8 +201,7 @@ class ChatMessageTile extends StatelessWidget {
 class MessageDeliveryStatusView extends StatelessWidget {
   final ChatMessageModel message;
 
-  const MessageDeliveryStatusView({Key? key, required this.message})
-      : super(key: key);
+  const MessageDeliveryStatusView({super.key, required this.message});
 
   @override
   Widget build(BuildContext context) {

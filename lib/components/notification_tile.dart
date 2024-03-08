@@ -13,15 +13,14 @@ class NotificationTileType4 extends StatelessWidget {
   final VoidCallback? followBackUserHandler;
 
   const NotificationTileType4(
-      {Key? key,
+      {super.key,
       required this.notification,
       this.backgroundColor,
       this.titleTextStyle,
       this.subTitleTextStyle,
       this.dateTextStyle,
       this.followBackUserHandler,
-      this.borderColor})
-      : super(key: key);
+      this.borderColor});
 
   @override
   Widget build(BuildContext context) {
@@ -55,7 +54,7 @@ class NotificationTileType4 extends StatelessWidget {
                         },
                     ),
                     TextSpan(
-                      text: ' ${notificationMessage(notification.type)}',
+                      text: ' ${notificationMessage(notification)}',
                       style: TextStyle(
                           fontSize: FontSizes.b3,
                           color: AppColorConstants.mainTextColor,
@@ -93,22 +92,25 @@ class NotificationTileType4 extends StatelessWidget {
     followBackUserHandler!();
   }
 
-  String notificationMessage(NotificationType type) {
-    if (type == NotificationType.follow) {
+  String notificationMessage(NotificationModel notification) {
+    if (notification.type == NotificationType.follow) {
       return startedFollowingYouString.tr;
-    } else if (type == NotificationType.followRequest) {
+    } else if (notification.type == NotificationType.followRequest) {
       return sentYourFollowRequestString.tr;
-    } else if (type == NotificationType.comment) {
+    } else if (notification.type == NotificationType.comment) {
       return commentedOnYourPostString.tr;
-    } else if (type == NotificationType.like) {
+    } else if (notification.type == NotificationType.like) {
       return likedYourPostString.tr;
-    } else if (type == NotificationType.competitionAdded) {
-
+    } else if (notification.type == NotificationType.competitionAdded) {
       return adminAddedNewCompetitionString.tr;
-    } else if (type == NotificationType.supportRequest) {
+    } else if (notification.type == NotificationType.supportRequest) {
       return adminRepliedOnYourSupportRequestString.tr;
-    } else if (type == NotificationType.verification) {
+    } else if (notification.type == NotificationType.verification) {
       return congratsYourVerificationIsApprovedString.tr;
+    } else if (notification.type == NotificationType.gift) {
+      return sentAGiftString.tr;
+    } else if (notification.type == NotificationType.clubInvitation) {
+      return '${invitedYouToClubString.tr} ${notification.club?.name ?? ''}';
     }
     return '';
   }

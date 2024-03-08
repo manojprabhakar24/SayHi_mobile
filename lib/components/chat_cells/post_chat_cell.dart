@@ -6,7 +6,7 @@ import '../../model/post_model.dart';
 class PostChatTile extends StatelessWidget {
   final ChatMessageModel message;
 
-  const PostChatTile({Key? key, required this.message}) : super(key: key);
+  const PostChatTile({super.key, required this.message});
 
   @override
   Widget build(BuildContext context) {
@@ -112,8 +112,7 @@ class PostChatTile extends StatelessWidget {
 class MinimalInfoPostChatTile extends StatelessWidget {
   final ChatMessageModel message;
 
-  const MinimalInfoPostChatTile({Key? key, required this.message})
-      : super(key: key);
+  const MinimalInfoPostChatTile({super.key, required this.message});
 
   @override
   Widget build(BuildContext context) {

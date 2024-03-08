@@ -48,7 +48,7 @@ class NetworkConstantsUtil {
   static String followMultipleUser = 'followers/follow-multiple';
 
   static String followers =
-      'followers/my-follower?expand=followerUserDetail,followerUserDetail.isFollowing,followerUserDetail.isFollower&user_id=';
+      'followers/my-follower?expand=followerUserDetail.isFollowing,followerUserDetail.isFollowing,followerUserDetail.isFollower&user_id=';
   static String following =
       'followers/my-following?expand=followingUserDetail,followingUserDetail.isFollowing,followerUserDetail.isFollower&user_id=';
   static String searchUsers =
@@ -62,8 +62,7 @@ class NetworkConstantsUtil {
   static String findFriends =
       'users/find-friend?expand=isFollowing,isFollower&';
 
-  //********************* Misc ***********//
-
+  //********************* Misc ******************//
   static String searchHashtag = 'posts/hash-counter-list?hashtag=';
   static String getCountries = 'countries';
   static String getNotifications =
@@ -112,14 +111,13 @@ class NetworkConstantsUtil {
   static String uploadFileImage = 'file-uploads/upload-file';
   static String addCompetitionPost = 'posts/competition-image';
   static String searchPost =
-      'posts/search-post?expand=user.isFollowing,user.userLiveDetail,clubDetail.createdByUser,clubDetail.totalJoinedUser,originPost.user,isFavorite,originPost,pollDetails,pollDetails.pollOptions';
+      'posts/search-post?expand=contentReferenceDetail.categoryDetails,contentReferenceDetail.pollOptions,user.isFollowing,user.userLiveDetail,clubDetail.createdByUser,clubDetail.totalJoinedUser,originPost.user,isFavorite,originPost,pollDetails,pollDetails.pollOptions';
   static String searchVideoPost = 'posts/post-video-list';
   static String postView = 'posts/view-counter';
 
   static String postDetail =
       'posts/{id}?expand=user,user.userLiveDetail,clubDetail,giftSummary';
-  static String postDetailByUniqueId =
-      'posts/view-by-unique-id?unique_id=';
+  static String postDetailByUniqueId = 'posts/view-by-unique-id?unique_id=';
   static String mentionedPosts =
       'posts/my-post-mention-user?expand=user&user_id=';
   static String likePost = 'posts/like';
@@ -161,7 +159,7 @@ class NetworkConstantsUtil {
       'chats/open-room?expand=createdByUser,chatRoomUser,chatRoomUser.user,lastMessage,chatRoomUser.user.userLiveDetail';
 
   static String deleteChatRoom = 'chats/delete-room?room_id=';
-  static String deleteChatRoomMessages = 'chats/delete-room-chat';
+  static String deleteChatRoomMessages = 'chats/delete-room-chat/';
 
   static String callHistory =
       'chats/call-history?expand=callerDetail,receiverDetail,receiverDetail.userLiveDetail';
@@ -190,8 +188,14 @@ class NetworkConstantsUtil {
   static String liveHistory = 'user-live-histories?expand=giftSummary';
   static String liveGiftsReceived =
       'gifts/live-call-gift-recieved?expand=giftDetail,senderDetail&';
-
-  static String liveCallViewers = 'chats/live-call-viewer?expand=user&live_call_id=';
+  static String liveCallViewers =
+      'chats/live-call-viewer?expand=user&live_call_id=';
+  static String randomOnlineUser = 'chats/online-user?profile_category_type=';
+  static String liveUsers = 'chats/live-streaming-user';
+  static String liveDetailById =
+      'user-live-histories/{{live_id}}?expand=giftSummary,userdetails,totalJoinedUsers';
+  static String liveDetailByChannel =
+      'user-live-histories/detail?expand=giftSummary,userdetails,totalJoinedUsers&id=';
 
   //***********Podcast***********//
   static String getPodcastCategories =
@@ -208,22 +212,7 @@ class NetworkConstantsUtil {
   static String getPodcasts = 'podcast-shows?expand=podcastShow';
   static String getPodcastEpisode = 'podcast-shows/podcast-show-episodes?';
 
-  //*********** Relations ***********//
-  static String relationshipNames = 'relations';
-  static String myRelations = 'relations/my-relation?expand=user,realationShip';
-  static String myInvitations =
-      'relations/my-invitation?expand=relationShip, createdBy';
-  static String postInviteUnInvite = 'relations/invite';
-  static String putAcceptRejectInvite = 'relations/update-invitation';
-  static String postRelationshipSetting = 'users/add-setting';
-  static String getRelationbyUser = 'relations/user-relation';
-
-  //static String getHosts = 'podcasts?expand=currentViewer';
-  //static String getPodcastShows = 'podcast-shows?expand=podcastShow';
-  //static String getPodcastShowsEpisode = 'podcast-shows/podcast-show-episodes?';
-
   //***********Polls***********//
-
   static String getPolls = 'polls?expand=pollOptions&category_id=&title=';
   static String postPoll = 'poll-question-answers/add-answer';
 
@@ -237,9 +226,10 @@ class NetworkConstantsUtil {
   static String updateClub = 'clubs/';
   static String deleteClub = 'clubs/';
   static String searchClubs = 'clubs?expand=createdByUser,totalJoinedUser';
+  static String clubDetail =
+      'clubs/{{club_id}}?expand=totalJoinedUser,createdByUser';
   static String topClubs =
       'clubs/top-club?expand=createdByUser,totalJoinedUser&type=2';
-
   static String trendingClubs =
       'clubs/top-club?expand=createdByUser,totalJoinedUser&type=1';
 
@@ -251,7 +241,6 @@ class NetworkConstantsUtil {
       'clubs/my-invitation?expand=club.totalJoinedUser,club.createdByUser';
   static String replyOnInvitation = 'clubs/invitation-reply';
   static String sendClubInvite = 'clubs/invite';
-
   static String sendClubJoinRequest = 'clubs/join-request';
   static String clubJoinRequestList =
       'clubs/join-request-list?club_id={{club_id}}&expand=user';
@@ -261,7 +250,6 @@ class NetworkConstantsUtil {
   static String joinEvent = 'clubs/join';
   static String leaveEvent = 'clubs/left';
   static String eventMembers = 'clubs/club-joined-user?expand=user&id=';
-
   static String eventsCategories = 'categories/event?expand=event';
   static String searchEvents = 'events?';
   static String eventCoupons = 'events/coupon';
@@ -270,16 +258,9 @@ class NetworkConstantsUtil {
   static String buyTicket = 'events/buy-ticket';
   static String eventBookings = 'events/my-booked-event?';
   static String cancelEventBooking = 'events/cancel-ticket-booking';
-
   static String giftTicket = 'events/gift-ticket';
   static String eventBookingDetail = 'events/detail-ticket-booking?id=';
   static String linkTicketToBooking = 'events/attach-image-ticket-booking';
-
-  //***********random live and chat***********//
-  // static String randomLives =
-  //     'chats/live-streaming-user?name=&profile_category_type=&is_following=';
-  static String randomOnlineUser = 'chats/online-user?profile_category_type=';
-  static String liveUsers = 'chats/live-streaming-user';
 
   //***********gifts***********//
   static String giftsCategories = 'categories/gift?expand=gift';
@@ -292,8 +273,6 @@ class NetworkConstantsUtil {
   static String postGifts =
       'gifts/timeline-gift-recieved?expand=senderDetail,giftTimelineDetail&send_on_type={{send_on_type}}&post_id={{post_id}}';
   static String sendPostGifts = 'gifts/send-timeline-gift';
-
-  // url : {{host}}/gifts/timeline-gift-recieved?expand=senderDetail,giftTimelineDetail&send_on_type=3&post_id=12
 
   //***********verification***********//
   static String requestVerification = 'user-verifications';
@@ -313,12 +292,9 @@ class NetworkConstantsUtil {
   static String transactionHistory = 'payments/payment-history?';
 
   //***********Package and coins***********//
-
   static String getPackages = 'packages';
   static String subscribePackage = 'payments/package-subscription';
-
   static String redeemCoins = 'payments/redeem-coin';
-
   static String rewardedAdCoins = 'posts/promotion-ad-view';
 
   //***********Dating***********//
@@ -348,26 +324,22 @@ class NetworkConstantsUtil {
       'campaigns/comment-list?expand=user,isLike,totalChildComment,childCommentDetail.isLike,childCommentDetail.user';
   static String addCommentOnCampaign = 'campaigns/add-comment';
   static String deleteCampaignComment = 'campaigns/delete-comment';
-
   static String favCampaign = 'campaigns/add-favorite';
   static String unFavCampaign = 'campaigns/remove-favorite';
   static String makeDonationPayment = 'campaigns/payment';
   static String donorsList =
-      'campaigns/donors-list?expand=userDetail,campaignDetails&user_id=&transaction_type=&campaign_id=';
+      'campaigns/donors-list?expand=userDetail.isFollowing,userDetail.totalFollowing,userDetail.totalFollower,campaignDetails&user_id=&transaction_type=&campaign_id=';
 
   //*********** Coupons ***********//
   static String businessCategories =
       'categories/business-category?expand=business,coupon';
   static String searchBusiness = 'businesses?expand=coupon';
   static String offersList = 'coupons?expand=business';
-
   static String offerCommentsList =
       'coupons/comment-list?expand=user,isLike,coupon,totalChildComment,childCommentDetail.isLike,childCommentDetail.user';
-
   static String addCommentOnOffer = 'coupons/add-comment';
   static String deleteOfferComment = 'coupons/delete-comment';
   static String getFavOffer = 'coupons/my-favorite-list?expand=business';
-
   static String favOffer = 'coupons/add-favorite';
   static String unFavOffer = 'coupons/remove-favorite';
 
@@ -376,10 +348,9 @@ class NetworkConstantsUtil {
   static String createAudiences = 'audiences';
   static String getAudiences =
       'audiences?expand=interestDetails,locationDetails';
-
   static String createPromotions = 'post-promotions';
   static String getPromotedPosts =
-      'posts/post-promotion-ad?expand=user,postPromotionData';
+      'posts/post-promotion-ad?expand=user,postPromotionData,user,postPromotionData,contentReferenceDetail.categoryDetails,contentReferenceDetail.pollOptions,user.isFollowing,user.userLiveDetail,clubDetail.createdByUser,clubDetail.totalJoinedUser,originPost.user,isFavorite,originPost,pollDetails,pollDetails.pollOptions';
 
   //*********** Shop ***********//
   static String postAd = "ads";
@@ -398,7 +369,6 @@ class NetworkConstantsUtil {
 
   //*********** Job ***********//
   static String jobCategories = "categories/job?expand=totalJob";
-
   static String jobsList = "jobs?";
   static String applyJob = "job-applications";
   static String appliedJobs = "job-applications";

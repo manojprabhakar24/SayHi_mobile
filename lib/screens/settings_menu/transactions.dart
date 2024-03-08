@@ -6,7 +6,7 @@ import '../../controllers/profile/profile_controller.dart';
 import '../../model/payment_model.dart';
 
 class Transactions extends StatefulWidget {
-  const Transactions({Key? key}) : super(key: key);
+  const Transactions({super.key});
 
   @override
   PaymentWithdrawalState createState() => PaymentWithdrawalState();

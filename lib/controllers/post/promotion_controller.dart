@@ -144,11 +144,18 @@ class PromotionController extends GetxController {
     bool validURL = Uri.parse(value).isAbsolute;
     isValidWebsite.value = validURL;
     order.goalType = validURL ? GoalType.website : null;
+    if (validURL) {
+      order.url = value;
+    } else {
+      order.url = null;
+    }
     update();
   }
 
   selectAction(int selection) {
     actionSelected.value = selection;
+    order.urlText = actionButtons[selection];
+
     update();
   }
 
@@ -371,7 +378,6 @@ class PromotionController extends GetxController {
   }
 
   createPostPromotionApi() {
-    Get.lazyPut(() => CheckoutController());
     final CheckoutController checkoutController = Get.find();
     final PromotionController promotionController = Get.find();
 

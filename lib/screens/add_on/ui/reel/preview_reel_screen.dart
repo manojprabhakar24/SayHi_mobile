@@ -1,4 +1,5 @@
 import 'package:chewie/chewie.dart';
+import 'package:flutter_video_info/flutter_video_info.dart';
 import 'package:foap/screens/chat/media.dart';
 import 'package:foap/screens/post/add_post_screen.dart';
 import 'package:foap/util/constant_util.dart';
@@ -134,12 +135,16 @@ class _PreviewReelsState extends State<PreviewReelsScreen> {
       deleteOrigin: false, // It's false by default
     );
 
+    final videoInfo = await FlutterVideoInfo().getVideoInfo(mediaInfo!.path!);
+    print(
+        'here is video size ${Size(videoInfo!.width!.toDouble(), videoInfo.height!.toDouble())}');
     Loader.dismiss();
     Media media = Media();
     media.id = randomId();
     media.file = File(mediaInfo!.path!);
     media.thumbnail = thumbnail;
-    media.size = null;
+    media.size =
+        Size(videoInfo!.width!.toDouble(), videoInfo.height!.toDouble());
     media.creationTime = DateTime.now();
     media.title = null;
     media.mediaType = GalleryMediaType.video;
@@ -155,6 +160,10 @@ class _PreviewReelsState extends State<PreviewReelsScreen> {
           audioStartTime: widget.audioStartTime,
           audioEndTime: widget.audioEndTime,
           postType: PostType.reel,
+          postCompletionHandler: () {
+            Get.close(2);
+          },
+
           // postType: PostType.reel,
         ));
   }

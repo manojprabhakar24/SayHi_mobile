@@ -4,7 +4,7 @@ import 'package:foap/screens/settings_menu/support_request_view.dart';
 import 'package:foap/helper/imports/common_import.dart';
 
 class SupportRequestsScreen extends StatefulWidget {
-  const SupportRequestsScreen({Key? key}) : super(key: key);
+  const SupportRequestsScreen({super.key});
 
   @override
   State<SupportRequestsScreen> createState() => _SupportRequestsScreenState();

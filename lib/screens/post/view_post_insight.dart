@@ -6,7 +6,7 @@ import '../../model/post_model.dart';
 class ViewPostInsights extends StatefulWidget {
   final PostModel post;
 
-  const ViewPostInsights({Key? key, required this.post}) : super(key: key);
+  const ViewPostInsights({super.key, required this.post});
 
   @override
   State<ViewPostInsights> createState() => _ViewPostInsightsState();

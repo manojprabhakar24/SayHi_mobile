@@ -5,7 +5,7 @@ import '../../../model/shop_model/ad_model.dart';
 class ContactDetail extends StatefulWidget {
   final AdModel adModel;
 
-  const ContactDetail({Key? key, required this.adModel}) : super(key: key);
+  const ContactDetail({super.key, required this.adModel});
 
   @override
   State<ContactDetail> createState() => _ContactDetailState();

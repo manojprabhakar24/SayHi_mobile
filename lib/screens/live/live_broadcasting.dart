@@ -5,6 +5,7 @@ import 'package:foap/helper/number_extension.dart';
 import 'package:foap/screens/live/banned_users.dart';
 import 'package:foap/screens/live/moderator_users.dart';
 import 'package:lottie/lottie.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:wakelock_plus/wakelock_plus.dart';
 import '../../components/timer_view.dart';
 import '../../controllers/live/agora_live_controller.dart';
@@ -19,11 +20,10 @@ import 'invite_users.dart';
 import 'live_joined_users.dart';
 import 'messages_in_live.dart';
 import 'package:foap/helper/imports/common_import.dart';
-
 import 'moderator_detail_popup.dart';
 
 class LiveBroadcastScreen extends StatefulWidget {
-  const LiveBroadcastScreen({Key? key}) : super(key: key);
+  const LiveBroadcastScreen({super.key});
 
   @override
   State<LiveBroadcastScreen> createState() => _LiveBroadcastScreenState();
@@ -253,7 +253,8 @@ class _LiveBroadcastScreenState extends State<LiveBroadcastScreen>
         : _agoraLiveController.live.value?.amIMainHostInLive == true
             ? SizedBox(height: Get.height, child: _renderLocalPreview())
             : _renderRemoteVideo(LiveCallHostUser(
-                userDetail: _agoraLiveController.live.value!.mainHostUserDetail,
+                userDetail:
+                    _agoraLiveController.live.value!.mainHostUserDetail!,
                 isMainHost: true,
                 // battleId: 0,
                 totalCoins: 0,
@@ -429,7 +430,7 @@ class _LiveBroadcastScreenState extends State<LiveBroadcastScreen>
                                     children: [
                                       UserAvatarView(
                                         user: _agoraLiveController
-                                            .live.value!.mainHostUserDetail,
+                                            .live.value!.mainHostUserDetail!,
                                         size: 28,
                                       ),
                                       const SizedBox(
@@ -438,7 +439,7 @@ class _LiveBroadcastScreenState extends State<LiveBroadcastScreen>
                                       Expanded(
                                         child: BodySmallText(
                                           _agoraLiveController.live.value!
-                                              .mainHostUserDetail.userName,
+                                              .mainHostUserDetail!.userName,
                                           maxLines: 1,
                                         ),
                                       )
@@ -920,7 +921,7 @@ class _LiveBroadcastScreenState extends State<LiveBroadcastScreen>
 
   Widget hostUserInfo() {
     UserModel mainHostDetail =
-        _agoraLiveController.live.value!.mainHostUserDetail;
+        _agoraLiveController.live.value!.mainHostUserDetail!;
     return Column(
       children: [
         const SizedBox(
@@ -1144,8 +1145,8 @@ class _LiveBroadcastScreenState extends State<LiveBroadcastScreen>
                   Row(
                     children: [
                       UserAvatarView(
-                        user:
-                            _agoraLiveController.live.value!.mainHostUserDetail,
+                        user: _agoraLiveController
+                            .live.value!.mainHostUserDetail!,
                         hideLiveIndicator: true,
                         hideOnlineIndicator: true,
                         size: 25,
@@ -1157,7 +1158,7 @@ class _LiveBroadcastScreenState extends State<LiveBroadcastScreen>
                         width: Get.width * 0.18,
                         child: BodySmallText(
                           _agoraLiveController
-                              .live.value!.mainHostUserDetail.userName,
+                              .live.value!.mainHostUserDetail!.userName,
                           maxLines: 1,
                         ),
                       )
@@ -1165,7 +1166,7 @@ class _LiveBroadcastScreenState extends State<LiveBroadcastScreen>
                   ).lp(10).ripple(() {
                     _profileController.getOtherUserDetail(
                         userId: _agoraLiveController
-                            .live.value!.mainHostUserDetail.id);
+                            .live.value!.mainHostUserDetail!.id);
                     showModalBottomSheet<void>(
                         backgroundColor: Colors.transparent,
                         context: context,
@@ -1180,10 +1181,19 @@ class _LiveBroadcastScreenState extends State<LiveBroadcastScreen>
                   const Spacer(),
                   SizedBox(
                       height: 25,
-                      width: Get.width * 0.28,
+                      width: Get.width * 0.2,
                       child: const ModeratorUsers()),
                   const SizedBox(
-                    width: 5,
+                    width: 10,
+                  ),
+                  ThemeIconWidget(
+                    ThemeIcon.share,
+                    size: 25,
+                  ).ripple(() {
+                    Share.share(_agoraLiveController.live.value!.shareLink);
+                  }),
+                  const SizedBox(
+                    width: 10,
                   ),
                   Obx(() => _agoraLiveController.amIModeratorInLive ||
                           _agoraLiveController.live.value!.amIHostInLive

@@ -5,6 +5,11 @@ enum RecordType {
   location,
 }
 
+enum UserRole {
+  admin,
+  user,
+}
+
 enum SearchFrom {
   username,
   email,
@@ -13,9 +18,24 @@ enum SearchFrom {
 
 enum PostSource { posts, mentions, videos, saved }
 
-enum PostType { basic, competition, club, reel, reshare }
+enum PostType { basic, competition, club, reel, reshare, event, fundRaising }
 
-enum PostContentType { text, media, location }
+enum PostContentType {
+  text,
+  media,
+  location,
+  poll,
+  event,
+  competitionAdded,
+  competitionResultDeclared,
+  job,
+  fundRaising,
+  offer,
+  classified,
+  club,
+  donation,
+  openGroup
+}
 
 enum PostMediaType { all, photo, video, audio }
 
@@ -194,5 +214,7 @@ enum FollowingStatus {
 }
 
 enum PlayStateState { paused, playing, loading, idle }
+
 enum LiveUserRole { host, moderator, viewer }
-enum LiveStreamingStatus {none,checking, preparing,streaming, ended, failed }
+
+enum LiveStreamingStatus { none, checking, preparing, streaming, ended, failed }

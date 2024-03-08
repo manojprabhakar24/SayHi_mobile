@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:developer';
 import 'package:foap/api_handler/apis/chat_api.dart';
 import 'package:foap/helper/date_extension.dart';
 import 'package:foap/helper/imports/chat_imports.dart';
@@ -101,7 +100,7 @@ class ChatHistoryController extends GetxController {
       if (room.isGroupChat) {
         return room.name!.toLowerCase().contains(text);
       } else {
-        return room.opponent.userDetail.userName.toLowerCase().contains(text);
+        return room.opponent!.userDetail.userName.toLowerCase().contains(text);
       }
     }).toList();
     groupRooms();
@@ -179,12 +178,12 @@ class ChatHistoryController extends GetxController {
 
   userAvailabilityStatusChange({required int userId, required bool isOnline}) {
     var matchedRooms =
-        allRooms.where((element) => element.opponent.id == userId);
+        allRooms.where((element) => element.opponent?.id == userId);
 
     if (matchedRooms.isNotEmpty) {
       var room = matchedRooms.first;
       room.isOnline = isOnline;
-      room.opponent.userDetail.isOnline = isOnline;
+      room.opponent!.userDetail.isOnline = isOnline;
       _searchedRooms.refresh();
     }
   }

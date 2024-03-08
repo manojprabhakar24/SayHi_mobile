@@ -14,6 +14,7 @@ import 'package:overlay_support/overlay_support.dart';
 import '../controllers/chat_and_call/agora_call_controller.dart';
 import '../controllers/live/agora_live_controller.dart';
 import '../main.dart';
+import '../model/live_model.dart';
 import '../screens/calling/accept_call.dart';
 import '../screens/competitions/competition_detail_screen.dart';
 import '../screens/home_feed/comments_screen.dart';
@@ -31,7 +32,7 @@ class NotificationManager {
 
   NotificationManager._internal();
 
-  initializeFCM() async{
+  initializeFCM() async {
     await FirebaseMessaging.instance.requestPermission();
 
     FirebaseMessaging.onMessage.listen(
@@ -290,6 +291,7 @@ class NotificationManager {
         // new competition added notification
       } else if (notificationType == 100) {
       } else if (notificationType == 101) {
+        print('hello live');
         int liveId = int.parse(data['liveCallId'] as String);
         String channelName = data['channelName'];
         String agoraToken = data['token'];
@@ -321,11 +323,11 @@ class NotificationManager {
                     ).vp(12).ripple(() {
                       OverlaySupportEntry.of(context)!.dismiss();
 
-                      Live live = Live(
-                          channelName: channelName,
-                          mainHostUserDetail: result,
-                          token: agoraToken,
-                          id: liveId);
+                      LiveModel live = LiveModel();
+                      live.channelName = channelName;
+                      live.mainHostUserDetail = result;
+                      live.token = agoraToken;
+                      live.id = liveId;
 
                       agoraLiveController.joinAsAudience(live: live);
                     }),
@@ -367,17 +369,16 @@ class NotificationManager {
         String channelName = data['channelName'];
         String agoraToken = data['token'];
         int userId = int.parse(data['userId'] as String);
+        print('hello live 1');
 
         UsersApi.getOtherUser(
             userId: userId,
             resultCallback: (result) {
-              Live live = Live(
-                  channelName: channelName,
-                  // isHosting: false,
-                  mainHostUserDetail: result,
-                  token: agoraToken,
-                  id: liveId);
-
+              LiveModel live = LiveModel();
+              live.channelName = channelName;
+              live.mainHostUserDetail = result;
+              live.token = agoraToken;
+              live.id = liveId;
               agoraLiveController.joinAsAudience(live: live);
             });
       }

@@ -6,7 +6,7 @@ import '../profile/other_user_profile.dart';
 class ClubJoinRequests extends StatefulWidget {
   final ClubModel club;
 
-  const ClubJoinRequests({Key? key, required this.club}) : super(key: key);
+  const ClubJoinRequests({super.key, required this.club});
 
   @override
   ClubJoinRequestsState createState() => ClubJoinRequestsState();
@@ -35,7 +35,8 @@ class ClubJoinRequestsState extends State<ClubJoinRequests> {
                   scrollController.addListener(() {
                     if (scrollController.position.maxScrollExtent ==
                         scrollController.position.pixels) {
-                      if (!_clubDetailController.isLoading.value) {
+                      if (!_clubDetailController
+                          .requestsDataWrapper.isLoading.value) {
                         _clubDetailController.getClubJoinRequests(
                             clubId: widget.club.id!);
                       }

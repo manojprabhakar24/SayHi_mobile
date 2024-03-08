@@ -45,6 +45,9 @@ class ClubApi {
       if (result?.success == true) {
         resultCallback(result!.data['club_id']);
       }
+      else {
+        AppUtil.showToast(message: result!.message!, isSuccess: false);
+      }
     });
   }
 
@@ -134,6 +137,22 @@ class ClubApi {
       'message': '',
     }).then((result) {
       if (result?.success == true) {}
+    });
+  }
+
+  static getClubDetail(
+      {required int clubId,
+      int page = 1,
+      required Function(ClubModel) resultCallback}) async {
+    var url = NetworkConstantsUtil.clubDetail;
+    url = url.replaceAll('{{club_id}}', clubId.toString());
+    url = '$url&page=$page';
+
+    await ApiWrapper().getApi(url: url).then((result) {
+      if (result?.success == true) {
+        var club = result!.data['club'];
+        resultCallback(ClubModel.fromJson(club));
+      }
     });
   }
 
@@ -227,7 +246,7 @@ class ClubApi {
       if (result?.success == true) {
         var items = result!.data['trendingClub'];
         resultCallback(
-            List<ClubModel>.from(items.map((x) => ClubModel.fromJson(x))),
+          List<ClubModel>.from(items.map((x) => ClubModel.fromJson(x))),
         );
       }
     });

@@ -4,7 +4,7 @@ import 'package:foap/helper/imports/chat_imports.dart';
 import 'package:image_picker/image_picker.dart';
 
 class EnterGroupInfo extends StatefulWidget {
-  const EnterGroupInfo({Key? key}) : super(key: key);
+  const EnterGroupInfo({super.key});
 
   @override
   State<EnterGroupInfo> createState() => _EnterGroupInfoState();

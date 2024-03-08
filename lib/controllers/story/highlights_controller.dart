@@ -5,8 +5,10 @@ import 'package:foap/api_handler/apis/misc_api.dart';
 import 'package:foap/api_handler/apis/story_api.dart';
 import 'package:foap/helper/imports/common_import.dart';
 import 'package:foap/helper/imports/highlights_imports.dart';
+import 'package:foap/util/constant_util.dart';
 import '../../model/story_model.dart';
 import 'package:foap/helper/file_extension.dart';
+import 'package:path_provider/path_provider.dart';
 
 class HighlightsController extends GetxController {
   final UserProfileManager _userProfileManager = Get.find();
@@ -17,11 +19,12 @@ class HighlightsController extends GetxController {
 
   Rx<HighlightMediaModel?> storyMediaModel = Rx<HighlightMediaModel?>(null);
   Rx<HighlightsModel?> currentHighlight = Rx<HighlightsModel?>(null);
+  List<HighlightMediaModel> currentHighlightStories = [];
 
   String coverImage = '';
   String coverImageName = '';
 
-  File? pickedImage;
+  Rx<File?> pickedImage = Rx<File?>(null);
   String? picture;
   UserModel? model;
 
@@ -33,6 +36,7 @@ class HighlightsController extends GetxController {
 
   setCurrentHighlight(HighlightsModel highlight) {
     currentHighlight.value = highlight;
+    currentHighlightStories.addAll(highlight.medias);
   }
 
   setCurrentStoryMedia(HighlightMediaModel storyMedia) {
@@ -41,8 +45,7 @@ class HighlightsController extends GetxController {
   }
 
   updateCoverImage(File? image) {
-    pickedImage = image;
-    update();
+    pickedImage.value = image;
   }
 
   updateCoverImagePath() {
@@ -79,7 +82,7 @@ class HighlightsController extends GetxController {
   }
 
   createHighlights({required String name}) async {
-    if (pickedImage != null) {
+    if (pickedImage.value != null) {
       await uploadCoverImage();
     }
 
@@ -98,9 +101,12 @@ class HighlightsController extends GetxController {
   }
 
   Future uploadCoverImage() async {
-    Uint8List compressedData = await pickedImage!.compress();
-    File file = File.fromRawPath(compressedData);
-    await MiscApi.uploadFile(file.path,              mediaType: GalleryMediaType.photo,
+    Uint8List compressedData = await pickedImage.value!.compress();
+    final tempDir = await getTemporaryDirectory();
+    File file = await File('${tempDir.path}/${randomId()}.png').create();
+    file.writeAsBytesSync(compressedData);
+    await MiscApi.uploadFile(file.path,
+        mediaType: GalleryMediaType.photo,
         type: UploadMediaType.storyOrHighlights,
         resultCallback: (fileName, filePath) {
       coverImageName = fileName;
@@ -108,8 +114,11 @@ class HighlightsController extends GetxController {
   }
 
   deleteStoryFromHighlight() async {
+    currentHighlightStories
+        .removeWhere((element) => element.id == storyMediaModel.value!.id);
     await HighlightsApi.deleteStoryFromHighlights(storyMediaModel.value!.id);
-    if (currentHighlight.value!.medias.length == 1) {
+
+    if (currentHighlightStories.isEmpty) {
       await HighlightsApi.deleteHighlight(currentHighlight.value!.id);
     }
   }

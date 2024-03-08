@@ -24,7 +24,7 @@ class HomeController extends GetxController {
   final UserProfileManager _userProfileManager = Get.find();
 
   RxList<PostModel> posts = <PostModel>[].obs;
-  RxList<PollsModel> polls = <PollsModel>[].obs;
+  RxList<PollModel> polls = <PollModel>[].obs;
   RxList<StoryModel> stories = <StoryModel>[].obs;
   RxList<UserModel> liveUsers = <UserModel>[].obs;
   RxList<GiftModel> timelineGift = <GiftModel>[].obs;
@@ -101,13 +101,13 @@ class HomeController extends GetxController {
           subHeading: liveUsersString.tr,
           linkType: QuickLinkType.liveUsers));
     }
-    if (_settingsController.setting.value!.enableLive) {
-      quickLinks.add(QuickLink(
-          icon: 'assets/explore/live.png',
-          heading: goLiveString.tr,
-          subHeading: goLiveString.tr,
-          linkType: QuickLinkType.goLive));
-    }
+    // if (_settingsController.setting.value!.enableLive) {
+    //   quickLinks.add(QuickLink(
+    //       icon: 'assets/explore/live.png',
+    //       heading: goLiveString.tr,
+    //       subHeading: goLiveString.tr,
+    //       linkType: QuickLinkType.goLive));
+    // }
     if (_settingsController.setting.value!.enableCompetitions) {
       quickLinks.add(QuickLink(
           icon: 'assets/explore/competition.png',

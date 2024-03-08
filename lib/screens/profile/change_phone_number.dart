@@ -2,7 +2,7 @@ import 'package:foap/helper/imports/common_import.dart';
 import '../../controllers/profile/profile_controller.dart';
 
 class ChangePhoneNumber extends StatefulWidget {
-  const ChangePhoneNumber({Key? key}) : super(key: key);
+  const ChangePhoneNumber({super.key});
 
   @override
   ChangePhoneNumberState createState() => ChangePhoneNumberState();

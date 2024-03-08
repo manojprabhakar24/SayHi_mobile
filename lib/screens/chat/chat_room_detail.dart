@@ -8,7 +8,7 @@ import '../settings_menu/settings_controller.dart';
 class ChatRoomDetail extends StatefulWidget {
   final ChatRoomModel chatRoom;
 
-  const ChatRoomDetail({Key? key, required this.chatRoom}) : super(key: key);
+  const ChatRoomDetail({super.key, required this.chatRoom});
 
   @override
   State<ChatRoomDetail> createState() => _ChatRoomDetailState();
@@ -54,7 +54,7 @@ class _ChatRoomDetailState extends State<ChatRoomDetail> {
                         _chatDetailController.chatRoom.value!.isGroupChat
                             ? _chatDetailController.chatRoom.value!.name!
                             : _chatDetailController
-                                .chatRoom.value!.opponent.userDetail.userName,
+                                .chatRoom.value!.opponent!.userDetail.userName,
                         weight: TextWeight.medium)),
                 Obx(() => _chatDetailController.chatRoom.value?.amIGroupAdmin ==
                             true &&
@@ -496,7 +496,7 @@ class _ChatRoomDetailState extends State<ChatRoomDetail> {
         : Column(
             children: [
               UserAvatarView(
-                user: _chatDetailController.chatRoom.value!.opponent.userDetail,
+                user: _chatDetailController.chatRoom.value!.opponent!.userDetail,
                 size: 100,
                 onTapHandler: () {
                   //open live
@@ -507,7 +507,7 @@ class _ChatRoomDetailState extends State<ChatRoomDetail> {
               ),
               Heading6Text(
                   _chatDetailController
-                      .chatRoom.value!.opponent.userDetail.userName,
+                      .chatRoom.value!.opponent!.userDetail.userName,
                   weight: TextWeight.bold)
             ],
           ));

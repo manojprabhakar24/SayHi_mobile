@@ -44,7 +44,9 @@ class NotificationModel {
             ? CompetitionModel.fromJson(json["refrenceDetails"])
             : null,
         post: json["type"] == 2 || json["type"] == 3 || json["type"] == 7
-            ? PostModel.fromJson(json["refrenceDetails"])
+            ? json["refrenceDetails"] == null
+                ? null
+                : PostModel.fromJson(json["refrenceDetails"])
             : null,
         // club: json["type"] == 11 ? ClubModel.fromJson(json["reference"]) : null,
       );

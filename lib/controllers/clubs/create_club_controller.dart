@@ -30,8 +30,7 @@ class CreateClubController extends GetxController {
     enableChat.value = !enableChat.value;
   }
 
-  createClub(
-      ClubModel club, BuildContext context, VoidCallback callback) async {
+  createClub(ClubModel club, Function(int) callback) async {
     Loader.show(status: loadingString.tr);
 
     await MiscApi.uploadFile(imageFile.value!.path,
@@ -48,26 +47,18 @@ class CreateClubController extends GetxController {
           resultCallback: (clubId) {
             Loader.dismiss();
             _clubsController.refreshClubs();
-            Get.close(3);
+            callback(clubId);
             clear();
-
-            Get.to(() => InviteUsersToClub(clubId: clubId));
           });
     });
-
-    await MiscApi.uploadFile(imageFile.value!.path,
-        mediaType: GalleryMediaType.photo,
-        type: UploadMediaType.club,
-        resultCallback: (fileName, filePath) {});
   }
 
-  void editClubImageAction(XFile pickedFile, BuildContext context) async {
+  void editClubImageAction(XFile pickedFile) async {
     imageFile.value = File(pickedFile.path);
     imageFile.refresh();
   }
 
-  updateClubImage(ClubModel club, BuildContext context,
-      Function(ClubModel) callback) async {
+  updateClubImage(ClubModel club, Function(ClubModel) callback) async {
     Loader.show(status: loadingString.tr);
 
     await MiscApi.uploadFile(imageFile.value!.path,

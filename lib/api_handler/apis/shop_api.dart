@@ -8,7 +8,7 @@ import '../api_wrapper.dart';
 
 class ShopApi {
   static submitAdPost(
-      {required AdModel ad, required VoidCallback successCallback}) async {
+      {required AdModel ad, required Function(int) successCallback}) async {
     if (ad.id != null) {
       //update post
       var url = '${NetworkConstantsUtil.updateAd}${ad.id}';
@@ -16,7 +16,7 @@ class ShopApi {
       await ApiWrapper().putApi(url: url, param: ad.toJson()).then((response) {
         Loader.dismiss();
         if (response?.success == true) {
-          successCallback();
+          successCallback(ad.id!);
           Future.delayed(const Duration(milliseconds: 500), () {
             AppUtil.showToast(
                 message: listingUpdatedSuccessfully.tr, isSuccess: true);
@@ -29,7 +29,7 @@ class ShopApi {
       await ApiWrapper().postApi(url: url, param: ad.toJson()).then((response) {
         Loader.dismiss();
         if (response?.success == true) {
-          successCallback();
+          successCallback(response!.data['ad_id']);
           Future.delayed(const Duration(milliseconds: 500), () {
             AppUtil.showToast(
                 message: listingCreatedSuccessfully.tr, isSuccess: true);

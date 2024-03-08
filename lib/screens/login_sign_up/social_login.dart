@@ -23,11 +23,9 @@ String sha256ofString(String input) {
 }
 
 class SocialLogin extends StatefulWidget {
-  final String? userName;
   final bool hidePhoneLogin;
 
-  const SocialLogin({Key? key, required this.hidePhoneLogin, this.userName})
-      : super(key: key);
+  const SocialLogin({super.key, required this.hidePhoneLogin});
 
   @override
   State<SocialLogin> createState() => _SocialLoginState();
@@ -164,31 +162,7 @@ class _SocialLoginState extends State<SocialLogin> {
 
         AppUtil.checkInternet().then((value) {
           if (value) {
-            // Loader.show(status: loadingString.tr);
-
             socialLogin('fb', socialId, name, email!);
-
-            // ApiController()
-            //     .socialLogin(name, 'fb', socialId, email!)
-            //     .then((response) async {
-            //   Loader.dismiss();
-            //   if (response.success) {
-            //     SharedPrefs().setUserLoggedIn(true);
-            //     _userProfileManager.refreshProfile();
-            //     SharedPrefs().setAuthorizationKey(response.authKey!);
-            //
-            //     // ask for location
-            //     getIt<LocationManager>().postLocation();
-            //
-            //     Get.offAll(() => const DashboardScreen());
-            //     getIt<SocketManager>().connect();
-            //   } else {
-            //     AppUtil.showToast(
-            //
-            //         message: response.message,
-            //         isSuccess: false);
-            //   }
-            // });
           } else {
             AppUtil.showToast(message: noInternetString.tr, isSuccess: false);
           }
@@ -210,7 +184,7 @@ class _SocialLoginState extends State<SocialLogin> {
 
     AuthApi.socialLogin(
         name: name,
-        userName: widget.userName ?? '',
+        userName: '',
         socialType: type,
         socialId: userId,
         email: email,
@@ -222,15 +196,9 @@ class _SocialLoginState extends State<SocialLogin> {
           await _settingsController.getSettings();
 
           if (_userProfileManager.user.value != null) {
-            // if (_userProfileManager.user.value!.userName.isEmpty) {
-            //   isLoginFirstTime = true;
-            //   Get.offAll(() => const SetUserName());
-            // } else {
-            // ask for location
             isLoginFirstTime = false;
             getIt<LocationManager>().postLocation();
             Get.offAll(() => const DashboardScreen());
-            // }
             getIt<SocketManager>().connect();
           }
         });
@@ -262,14 +230,8 @@ class _SocialLoginState extends State<SocialLogin> {
           email: appleCredential.email!);
     }
 
-    String? email = await SharedPrefs()
-        .getAppleIdEmail(forAppleId: '${appleCredential.userIdentifier}');
-    String? name = await SharedPrefs()
-        .getAppleIdName(forAppleId: '${appleCredential.userIdentifier}');
-
     if (appleCredential.userIdentifier != null) {
-      socialLogin(
-          'apple', appleCredential.userIdentifier!, '',  '');
+      socialLogin('apple', appleCredential.userIdentifier!, '', '');
     }
   }
 }

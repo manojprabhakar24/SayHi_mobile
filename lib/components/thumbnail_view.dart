@@ -15,11 +15,11 @@ class MediaThumbnailView extends StatefulWidget {
   final Color? borderColor;
 
   const MediaThumbnailView({
-    Key? key,
+    super.key,
     required this.media,
     this.size,
     this.borderColor,
-  }) : super(key: key);
+  });
 
   @override
   State<MediaThumbnailView> createState() => _MediaThumbnailViewState();

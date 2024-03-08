@@ -1,6 +1,6 @@
 import 'dart:convert';
-import 'dart:developer';
 import 'dart:typed_data';
+import 'package:connectivity/connectivity.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
@@ -9,7 +9,6 @@ import '../helper/enum_linking.dart';
 import '../helper/localization_strings.dart';
 import '../main.dart';
 import '../screens/login_sign_up/login_screen.dart';
-import '../util/constant_util.dart';
 import '../util/shared_prefs.dart';
 import 'network_constant.dart';
 export 'network_constant.dart';
@@ -30,7 +29,6 @@ class ApiResponse {
 
     if (json['status'] == 401) {
       // go to login
-
       if (isAnyPageInStack) {
         Get.offAll(() => const LoginScreen());
       }
@@ -62,13 +60,29 @@ class ApiWrapper {
   Future<ApiResponse?> getApiWithoutToken({required String url}) async {
     String urlString = '${NetworkConstantsUtil.baseUrl}$url';
 
-    return http.get(Uri.parse(urlString)).then((http.Response response) async {
-      dynamic data = _decoder.convert(response.body);
-      print(data);
-      Loader.dismiss();
+    final connectivityResult = await (Connectivity().checkConnectivity());
 
-      return ApiResponse.fromJson(data);
-    });
+    if (connectivityResult != ConnectivityResult.none) {
+      return http
+          .get(Uri.parse(urlString))
+          .then((http.Response response) async {
+        dynamic data = _decoder.convert(response.body);
+        Loader.dismiss();
+        SharedPrefs().setApiResponse(url: urlString, response: response.body);
+
+        return ApiResponse.fromJson(data);
+      });
+    } else {
+      Loader.dismiss();
+      String? cachedResponse =
+          await SharedPrefs().getCachedApiResponse(url: urlString);
+
+      if (cachedResponse != null) {
+        dynamic data = _decoder.convert(cachedResponse);
+        return ApiResponse.fromJson(data);
+      }
+    }
+    return null;
   }
 
   Future<ApiResponse?> getApi({required String url}) async {
@@ -78,14 +92,31 @@ class ApiWrapper {
     print(urlString);
     print(authKey);
 
-    return http.get(Uri.parse(urlString), headers: {
-      "Authorization": "Bearer ${authKey!}"
-    }).then((http.Response response) async {
-      // print(response.body);
-      dynamic data = _decoder.convert(response.body);
+    final connectivityResult = await (Connectivity().checkConnectivity());
+
+    if (connectivityResult != ConnectivityResult.none) {
+
+      return http.get(Uri.parse(urlString), headers: {
+        "Authorization": "Bearer ${authKey!}"
+      }).then((http.Response response) async {
+        // print(response.body);
+        dynamic data = _decoder.convert(response.body);
+        Loader.dismiss();
+        SharedPrefs().setApiResponse(url: urlString, response: response.body);
+
+        return ApiResponse.fromJson(data);
+      });
+    } else {
       Loader.dismiss();
-      return ApiResponse.fromJson(data);
-    });
+      String? cachedResponse =
+          await SharedPrefs().getCachedApiResponse(url: urlString);
+
+      if (cachedResponse != null) {
+        dynamic data = _decoder.convert(cachedResponse);
+        return ApiResponse.fromJson(data);
+      }
+    }
+    return null;
   }
 
   Future<ApiResponse?> postApi(
@@ -93,14 +124,20 @@ class ApiWrapper {
     String? authKey = await SharedPrefs().getAuthorizationKey();
 
     String urlString = '${NetworkConstantsUtil.baseUrl}$url';
+    final connectivityResult = await (Connectivity().checkConnectivity());
+    if (connectivityResult == ConnectivityResult.none) {
+      return null;
+    }
 
-    print(urlString);
+    print('urlString = $urlString');
+    print('param = $param');
+
     return http.post(Uri.parse(urlString), body: jsonEncode(param), headers: {
       "Authorization": "Bearer ${authKey!}",
       'Content-Type': 'application/json'
     }).then((http.Response response) async {
       dynamic data = _decoder.convert(response.body);
-      print(data);
+
       return ApiResponse.fromJson(data);
     });
   }
@@ -146,17 +183,10 @@ class ApiWrapper {
       {required String url, required dynamic param}) async {
     // Loader.show(status: loadingString.tr);
 
-    print(param);
-    print('${NetworkConstantsUtil.baseUrl}$url');
-
     return http
         .post(Uri.parse('${NetworkConstantsUtil.baseUrl}$url'), body: param)
         .then((http.Response response) async {
       dynamic data = _decoder.convert(response.body);
-      print(data);
-
-      // Loader.dismiss();
-
       return ApiResponse.fromJson(data);
     });
   }

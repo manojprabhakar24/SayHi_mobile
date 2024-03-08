@@ -1,13 +1,14 @@
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:foap/helper/imports/common_import.dart';
 import 'package:foap/helper/number_extension.dart';
+import 'package:foap/model/live_model.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import '../../controllers/live/agora_live_controller.dart';
-import '../../model/call_model.dart';
 import '../../controllers/live/live_users_controller.dart';
+import 'live_end_screen.dart';
 
 class LiveUserScreen extends StatefulWidget {
-  const LiveUserScreen({Key? key}) : super(key: key);
+  const LiveUserScreen({super.key});
 
   @override
   State<LiveUserScreen> createState() => _LiveUserScreenState();
@@ -106,17 +107,25 @@ class _LiveUserScreenState extends State<LiveUserScreen> {
                             ],
                           ),
                         ).round(20).ripple(() {
-                          Live live = Live(
+                          _liveUserController.getLiveDetail(
                               channelName: liveStreaming.channelName,
-                              // isHosting: false,
-                              mainHostUserDetail: liveStreaming.host!.first,
-                              // battleUsers: [],
-                              // battleId: ,
-                              token: liveStreaming.token,
-                              id: liveStreaming.id);
-                          _agoraLiveController.joinAsAudience(
-                            live: live,
-                          );
+                              resultCallback: (result) {
+                                LiveModel live = LiveModel();
+                                live.channelName = liveStreaming.channelName;
+                                live.mainHostUserDetail =
+                                    liveStreaming.host!.first;
+                                live.token = liveStreaming.token;
+                                live.id = liveStreaming.id;
+                                if (result.isOngoing) {
+                                  _agoraLiveController.joinAsAudience(
+                                    live: live,
+                                  );
+                                } else {
+                                  Get.to(() => LiveEndScreen(
+                                        live: live,
+                                      ));
+                                }
+                              });
                         });
                       }).addPullToRefresh(
                       refreshController: _refreshController,

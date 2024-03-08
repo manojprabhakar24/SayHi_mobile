@@ -8,8 +8,7 @@ class FollowerFollowingList extends StatefulWidget {
   final int userId;
 
   const FollowerFollowingList(
-      {Key? key, required this.isFollowersList, required this.userId})
-      : super(key: key);
+      {super.key, required this.isFollowersList, required this.userId});
 
   @override
   FollowerFollowingState createState() => FollowerFollowingState();

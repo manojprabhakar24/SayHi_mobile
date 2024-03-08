@@ -1,3 +1,4 @@
+import 'package:foap/screens/add_on/ui/event/event_feed.dart';
 import 'package:foap/screens/add_on/ui/event/search_events.dart';
 import 'event_bookings.dart';
 import 'explore_events.dart';
@@ -18,7 +19,7 @@ class EventsDashboardController extends GetxController {
 }
 
 class EventsDashboardScreen extends StatefulWidget {
-  const EventsDashboardScreen({Key? key}) : super(key: key);
+  const EventsDashboardScreen({super.key});
 
   @override
   EventsDashboardScreenState createState() => EventsDashboardScreenState();
@@ -35,6 +36,7 @@ class EventsDashboardScreenState extends State<EventsDashboardScreen> {
   void initState() {
     items = [
       const ExploreEvents(),
+      const EventFeedScreen(),
       const SearchEventListing(),
       const EventBookingScreen()
     ];
@@ -67,14 +69,20 @@ class EventsDashboardScreenState extends State<EventsDashboardScreen> {
                           : AppColorConstants.iconColor),
                   label: ''),
               BottomNavigationBarItem(
-                  icon: ThemeIconWidget(ThemeIcon.search,
+                  icon: ThemeIconWidget(ThemeIcon.home,
                       color: _dashboardController.currentIndex.value == 1
                           ? AppColorConstants.themeColor
                           : AppColorConstants.iconColor),
                   label: ''),
               BottomNavigationBarItem(
+                  icon: ThemeIconWidget(ThemeIcon.search,
+                      color: _dashboardController.currentIndex.value == 2
+                          ? AppColorConstants.themeColor
+                          : AppColorConstants.iconColor),
+                  label: ''),
+              BottomNavigationBarItem(
                 icon: ThemeIconWidget(ThemeIcon.bookings,
-                    color: _dashboardController.currentIndex.value == 2
+                    color: _dashboardController.currentIndex.value == 3
                         ? AppColorConstants.themeColor
                         : AppColorConstants.iconColor),
                 label: '',

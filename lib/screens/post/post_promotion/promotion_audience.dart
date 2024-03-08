@@ -4,7 +4,7 @@ import '../../../model/audience_model.dart';
 import 'audience/create_audience.dart';
 
 class PromotionAudienceScreen extends StatelessWidget {
-  PromotionAudienceScreen({Key? key}) : super(key: key);
+  PromotionAudienceScreen({super.key});
   final PromotionController _promotionController = Get.find();
 
   @override

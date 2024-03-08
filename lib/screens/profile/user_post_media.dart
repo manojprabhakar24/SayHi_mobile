@@ -12,7 +12,7 @@ import '../highlights/hightlights_viewer.dart';
 class HighlightsView extends StatelessWidget {
   final HighlightsController _highlightsController = Get.find();
 
-  HighlightsView({Key? key}) : super(key: key);
+  HighlightsView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -87,7 +87,7 @@ class HighlightsView extends StatelessWidget {
 class MentionsList extends StatelessWidget {
   final ProfileController _profileController = Get.find();
 
-  MentionsList({Key? key}) : super(key: key);
+  MentionsList({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -140,7 +140,7 @@ class MentionsList extends StatelessWidget {
 class ReelsGrid extends StatelessWidget {
   final ProfileController _profileController = Get.find();
 
-  ReelsGrid({Key? key}) : super(key: key);
+  ReelsGrid({super.key});
 
   @override
   Widget build(BuildContext context) {

@@ -9,7 +9,7 @@ import '../../screens/profile/other_user_profile.dart';
 class RichTextPostTitle extends StatelessWidget {
   final PostModel model;
 
-  const RichTextPostTitle({Key? key, required this.model}) : super(key: key);
+  const RichTextPostTitle({super.key, required this.model});
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +17,7 @@ class RichTextPostTitle extends StatelessWidget {
   }
 
   Align richTextPostTitle() {
-    List<String> split = model.title.split(' ');
+    List<String> split = model.postTitle.split(' ');
 
     return Align(
       alignment: Alignment.centerLeft,

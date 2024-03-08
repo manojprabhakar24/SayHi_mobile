@@ -19,7 +19,7 @@ class JobsDashboardController extends GetxController {
 }
 
 class JobDashboard extends StatelessWidget {
-  JobDashboard({Key? key}) : super(key: key);
+  JobDashboard({super.key});
 
   final JobsDashboardController _dashboardController =
       JobsDashboardController();

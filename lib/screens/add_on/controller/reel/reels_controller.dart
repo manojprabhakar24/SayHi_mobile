@@ -70,7 +70,7 @@ class ReelsController extends GetxController {
       isLoadingReels = true;
 
       PostApi.getPosts(
-          isReel: 1,
+          postType: PostType.reel,
           userId: reelSearchQuery.userId,
           isPopular: reelSearchQuery.isPopular,
           isFollowing: reelSearchQuery.isFollowing,
@@ -108,7 +108,7 @@ class ReelsController extends GetxController {
       isLoadingReelsWithAudio = true;
 
       PostApi.getPosts(
-          isReel: 1,
+          postType: PostType.reel,
           audioId: audioId,
           page: reelsWithAudioCurrentPage,
           resultCallback: (result, metadata) {

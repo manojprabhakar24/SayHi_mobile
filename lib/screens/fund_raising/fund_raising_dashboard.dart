@@ -3,6 +3,7 @@ import '../../helper/imports/common_import.dart';
 import 'explore_campaigns.dart';
 import 'fav_fund_rasing_campaigns_list.dart';
 import 'fund_raising_categories.dart';
+import 'fundraising_campaign_feed.dart';
 
 class FundRaisingDashboardController extends GetxController {
   RxInt currentIndex = 0.obs;
@@ -19,7 +20,7 @@ class FundRaisingDashboardController extends GetxController {
 }
 
 class FundRaisingDashboard extends StatelessWidget {
-  FundRaisingDashboard({Key? key}) : super(key: key);
+  FundRaisingDashboard({super.key});
 
   final FundRaisingDashboardController _dashboardController =
       FundRaisingDashboardController();
@@ -29,6 +30,7 @@ class FundRaisingDashboard extends StatelessWidget {
     const ExploreCampaigns(
       fromCategory: false,
     ),
+    const FundraisingFeedScreen(),
     FundRaisingCategories(),
     FavFundRaisingCampaignList(),
   ];
@@ -52,23 +54,30 @@ class FundRaisingDashboard extends StatelessWidget {
             onTap: (index) => {onTabTapped(index)},
             items: [
               BottomNavigationBarItem(
-                  icon: ThemeIconWidget(ThemeIcon.homeOutlined,
+                  icon: ThemeIconWidget(ThemeIcon.fundRaisingCampaign,
                       size: 20,
                       color: _dashboardController.currentIndex.value == 0
                           ? AppColorConstants.themeColor
                           : AppColorConstants.iconColor),
                   label: ''),
               BottomNavigationBarItem(
-                  icon: ThemeIconWidget(ThemeIcon.categories,
+                  icon: ThemeIconWidget(ThemeIcon.homeOutlined,
                       size: 20,
                       color: _dashboardController.currentIndex.value == 1
                           ? AppColorConstants.themeColor
                           : AppColorConstants.iconColor),
                   label: ''),
               BottomNavigationBarItem(
+                  icon: ThemeIconWidget(ThemeIcon.categories,
+                      size: 20,
+                      color: _dashboardController.currentIndex.value == 2
+                          ? AppColorConstants.themeColor
+                          : AppColorConstants.iconColor),
+                  label: ''),
+              BottomNavigationBarItem(
                 icon: ThemeIconWidget(ThemeIcon.fav,
                     size: 20,
-                    color: _dashboardController.currentIndex.value == 2
+                    color: _dashboardController.currentIndex.value == 3
                         ? AppColorConstants.themeColor
                         : AppColorConstants.iconColor),
                 label: '',

@@ -5,6 +5,8 @@ import 'package:foap/model/data_wrapper.dart';
 import '../../model/category_model.dart';
 import 'package:foap/helper/list_extension.dart';
 
+import '../../model/post_model.dart';
+
 class ClubsController extends GetxController {
   RxList<ClubModel> clubs = <ClubModel>[].obs;
   RxList<ClubModel> topClubs = <ClubModel>[].obs;
@@ -19,14 +21,9 @@ class ClubsController extends GetxController {
   DataWrapper clubsDataWrapper = DataWrapper();
   DataWrapper topClubsDataWrapper = DataWrapper();
   DataWrapper invitationsDataWrapper = DataWrapper();
-
-  int trendingClubsPage = 1;
-  bool canLoadMoreTrendingClubs = true;
-  RxBool isLoadingTrendingClubs = false.obs;
-
-  int membersPage = 1;
-  bool canLoadMoreMembers = true;
-  bool isLoadingMembers = false;
+  DataWrapper trendingClubDataWrapper = DataWrapper();
+  DataWrapper membersDataWrapper = DataWrapper();
+  DataWrapper postDataWrapper = DataWrapper();
 
   RxInt segmentIndex = (0).obs;
   RxInt currentSliderIndex = (0).obs;
@@ -43,14 +40,7 @@ class ClubsController extends GetxController {
     invitationsDataWrapper = DataWrapper();
     invitations.clear();
 
-    // topClubsPage = 1;
-    // canLoadMoreTopClubs = true;
-    // isLoadingTopClubs.value = false;
-    // topClubs.clear();
-
-    trendingClubsPage = 1;
-    canLoadMoreTrendingClubs = true;
-    isLoadingTrendingClubs.value = false;
+    trendingClubDataWrapper = DataWrapper();
     trendingClubs.clear();
 
     segmentIndex.value = 0;
@@ -63,10 +53,8 @@ class ClubsController extends GetxController {
   }
 
   clearMembers() {
-    isLoadingMembers = false;
     members.value = [];
-    membersPage = 1;
-    canLoadMoreMembers = true;
+    membersDataWrapper = DataWrapper();
   }
 
   updateSlider(int index) {
@@ -159,17 +147,14 @@ class ClubsController extends GetxController {
   }
 
   getTrendingClubs() {
-    if (canLoadMoreTrendingClubs) {
+    if (trendingClubDataWrapper.haveMoreData.value) {
+      trendingClubDataWrapper.isLoading.value = true;
       ClubApi.getTrendingClubs(
-          page: trendingClubsPage,
+          page: trendingClubDataWrapper.page,
           resultCallback: (result, metadata) {
             trendingClubs.addAll(result);
             trendingClubs.unique((e) => e.id);
-            isLoadingTrendingClubs.value = false;
-
-            canLoadMoreTrendingClubs = result.length >= metadata.perPage;
-
-            trendingClubsPage += 1;
+            trendingClubDataWrapper.processCompletedWithData(metadata);
 
             update();
           });
@@ -192,25 +177,31 @@ class ClubsController extends GetxController {
     }
   }
 
+  getClubDetail(int clubId, Function(ClubModel) callback) {
+    ClubApi.getClubDetail(
+      clubId: clubId,
+      resultCallback: (result) {
+        callback(result);
+      },
+    );
+  }
+
   clubDeleted(ClubModel club) {
     clubs.removeWhere((element) => element.id == club.id);
     clubs.refresh();
   }
 
   getMembers({int? clubId}) {
-    if (canLoadMoreMembers) {
-      isLoadingMembers = true;
+    if (membersDataWrapper.haveMoreData.value) {
+      membersDataWrapper.isLoading.value = true;
       ClubApi.getClubMembers(
           clubId: clubId,
-          page: membersPage,
+          page: membersDataWrapper.page,
           resultCallback: (result, metadata) {
             members.addAll(result);
             members.unique((e) => e.id);
 
-            isLoadingMembers = false;
-
-            membersPage += 1;
-            canLoadMoreMembers = result.length >= metadata.perPage;
+            membersDataWrapper.processCompletedWithData(metadata);
 
             update();
           });

@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'package:foap/api_handler/api_wrapper.dart';
 
 class PaymentGatewayApi {

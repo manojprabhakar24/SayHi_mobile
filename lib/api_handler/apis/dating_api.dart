@@ -1,6 +1,5 @@
 import 'package:foap/api_handler/api_wrapper.dart';
 import 'package:foap/helper/imports/common_import.dart';
-import '../../screens/add_on/controller/dating/dating_controller.dart';
 import '../../screens/add_on/model/preference_model.dart';
 
 class DatingApi {

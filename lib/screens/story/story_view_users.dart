@@ -7,7 +7,7 @@ class StoryViewUsers extends StatelessWidget {
   final AppStoryController storyController = Get.find();
   final ScrollController scrollController = ScrollController();
 
-  StoryViewUsers({Key? key}) : super(key: key);
+  StoryViewUsers({super.key});
 
   @override
   Widget build(BuildContext context) {

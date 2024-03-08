@@ -12,10 +12,14 @@ int postTypeValueFrom(PostType postType) {
       return 4;
     case PostType.reshare:
       return 5;
+    case PostType.event:
+      return 6;
+    case PostType.fundRaising:
+      return 7;
   }
 }
 
-int postContentTypeValueFrom(PostContentType contentType) {
+int postContentTypeIdFrom(PostContentType contentType) {
   switch (contentType) {
     case PostContentType.text:
       return 1;
@@ -23,7 +27,63 @@ int postContentTypeValueFrom(PostContentType contentType) {
       return 2;
     case PostContentType.location:
       return 3;
+    case PostContentType.poll:
+      return 4;
+    case PostContentType.competitionAdded:
+      return 5;
+    case PostContentType.event:
+      return 6;
+    case PostContentType.fundRaising:
+      return 7;
+    case PostContentType.job:
+      return 8;
+    case PostContentType.competitionResultDeclared:
+      return 9;
+    case PostContentType.offer:
+      return 10;
+    case PostContentType.donation:
+      return 11;
+    case PostContentType.classified:
+      return 12;
+    case PostContentType.club:
+      return 13;
+    case PostContentType.openGroup:
+      return 14;
   }
+}
+
+PostContentType postContentTypeValueFrom(int contentType) {
+  switch (contentType) {
+    case 1:
+      return PostContentType.text;
+    case 2:
+      return PostContentType.media;
+    case 3:
+      return PostContentType.location;
+    case 4:
+      return PostContentType.poll;
+    case 5:
+      return PostContentType.competitionAdded;
+    case 6:
+      return PostContentType.event;
+    case 7:
+      return PostContentType.fundRaising;
+    case 8:
+      return PostContentType.job;
+    case 9:
+      return PostContentType.competitionResultDeclared;
+    case 10:
+      return PostContentType.offer;
+    case 11:
+      return PostContentType.donation;
+    case 12:
+      return PostContentType.classified;
+    case 13:
+      return PostContentType.club;
+    case 14:
+      return PostContentType.openGroup;
+  }
+  return PostContentType.text;
 }
 
 int mediaTypeIdFromMediaType(GalleryMediaType type) {

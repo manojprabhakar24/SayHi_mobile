@@ -8,6 +8,7 @@ import 'package:foap/model/shop_model/category.dart';
 import '../../model/shop_model/ad_model.dart';
 import '../../model/shop_model/advertisement.dart';
 import '../../model/shop_model/search_model.dart';
+import '../../screens/shop_feature/post_ad/product_created_success.dart';
 
 class ShopController extends GetxController {
   RxList<AdModel> ads = <AdModel>[].obs;
@@ -58,10 +59,13 @@ class ShopController extends GetxController {
   postAd({required AdModel ad}) {
     ShopApi.submitAdPost(
         ad: ad,
-        successCallback: () {
+        successCallback: (id) {
           refreshMyAds(() {});
 
-          Get.close(5);
+          Get.to(() => ProductCreatedSuccess(
+                productId: id,
+              ));
+          // Get.close(5);
         });
   }
 

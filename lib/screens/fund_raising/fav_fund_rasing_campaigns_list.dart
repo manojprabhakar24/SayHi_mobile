@@ -9,7 +9,7 @@ import 'fund_raising_campaign_detail.dart';
 class FavFundRaisingCampaignList extends StatelessWidget {
   final FundRaisingController _fundRaisingController = Get.find();
 
-  FavFundRaisingCampaignList({Key? key}) : super(key: key);
+  FavFundRaisingCampaignList({super.key});
   final RefreshController _refreshController =
       RefreshController(initialRefresh: false);
 

@@ -5,7 +5,7 @@ import 'package:foap/helper/string_extension.dart';
 class ChatHistoryTile extends StatelessWidget {
   final ChatRoomModel model;
 
-  const ChatHistoryTile({Key? key, required this.model}) : super(key: key);
+  const ChatHistoryTile({super.key, required this.model});
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +41,7 @@ class ChatHistoryTile extends StatelessWidget {
                         ).circular
                       : UserAvatarView(
                           size: 45,
-                          user: model.opponent.userDetail,
+                          user: model.opponent!.userDetail,
                           onTapHandler: () {},
                         ),
                   // AvatarView(size: 50, url: model.opponent.picture),
@@ -57,7 +57,7 @@ class ChatHistoryTile extends StatelessWidget {
                         BodyLargeText(
                           model.isGroupChat
                               ? model.name!
-                              : model.opponent.userDetail.userName,
+                              : model.opponent!.userDetail.userName,
                           maxLines: 1,
                           weight: TextWeight.bold,
                         ),
@@ -103,8 +103,8 @@ class ChatHistoryTile extends StatelessWidget {
                     ? Container()
                     : BodySmallText(
                         model.lastMessage!.messageTime,
-                        weight: TextWeight.regular,
-                        color: AppColorConstants.themeColor,
+                        weight: TextWeight.semiBold,
+                        // color: AppColorConstants.themeColor,
                       ),
               ],
             ),

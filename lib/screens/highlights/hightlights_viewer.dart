@@ -4,7 +4,7 @@ import 'package:foap/helper/imports/highlights_imports.dart';
 class HighlightViewer extends StatefulWidget {
   final HighlightsModel highlight;
 
-  const HighlightViewer({Key? key, required this.highlight}) : super(key: key);
+  const HighlightViewer({super.key, required this.highlight});
 
   @override
   State<HighlightViewer> createState() => _HighlightViewerState();
@@ -108,16 +108,32 @@ class _HighlightViewerState extends State<HighlightViewer> {
           ],
         ),
         // const Spacer(),
-        SizedBox(
-          height: 25,
-          width: 40,
-          child: ThemeIconWidget(
-            ThemeIcon.more,
-            color: Colors.white,
-            size: 20,
-          ).ripple(() {
-            openActionPopup();
-          }),
+        Row(
+          children: [
+            SizedBox(
+              height: 25,
+              width: 40,
+              child: ThemeIconWidget(
+                ThemeIcon.more,
+                color: Colors.white,
+                size: 20,
+              ).ripple(() {
+                openActionPopup();
+              }),
+            ),
+            const SizedBox(width: 10),
+            SizedBox(
+              height: 25,
+              width: 40,
+              child: ThemeIconWidget(
+                ThemeIcon.close,
+                color: Colors.white,
+                size: 20,
+              ).ripple(() {
+                Get.back();
+              }),
+            )
+          ],
         )
       ],
     );

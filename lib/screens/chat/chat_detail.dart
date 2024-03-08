@@ -12,11 +12,12 @@ import '../competitions/video_player_screen.dart';
 import '../post/single_post_detail.dart';
 import '../profile/other_user_profile.dart';
 import '../settings_menu/settings_controller.dart';
+import '../story/story_viewer.dart';
 
 class ChatDetail extends StatefulWidget {
   final ChatRoomModel chatRoom;
 
-  const ChatDetail({Key? key, required this.chatRoom}) : super(key: key);
+  const ChatDetail({super.key, required this.chatRoom});
 
   @override
   State<ChatDetail> createState() => _ChatDetailState();
@@ -24,7 +25,6 @@ class ChatDetail extends StatefulWidget {
 
 class _ChatDetailState extends State<ChatDetail> {
   final ChatDetailController _chatDetailController = Get.find();
-  final ScrollController _controller = ScrollController();
   final RefreshController _refreshController =
       RefreshController(initialRefresh: false);
   final SettingsController _settingsController = Get.find();
@@ -38,8 +38,6 @@ class _ChatDetailState extends State<ChatDetail> {
 
   loadChat() {
     _chatDetailController.loadChat(widget.chatRoom, () {});
-    // _chatDetailController.loadWallpaper(widget.chatRoom.id);
-    scrollToBottom();
   }
 
   refreshData() {
@@ -52,20 +50,6 @@ class _ChatDetailState extends State<ChatDetail> {
   void dispose() {
     super.dispose();
     _chatDetailController.clear();
-  }
-
-  scrollToBottom() {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      Timer(const Duration(milliseconds: 100), () {
-        if (_chatDetailController.messages.isNotEmpty) {
-          _controller.animateTo(
-            _controller.position.maxScrollExtent,
-            duration: const Duration(milliseconds: 250),
-            curve: Curves.fastOutSlowIn,
-          );
-        }
-      });
-    });
   }
 
   @override
@@ -213,7 +197,7 @@ class _ChatDetailState extends State<ChatDetail> {
                                           : _chatDetailController
                                               .chatRoom
                                               .value!
-                                              .opponent
+                                              .opponent!
                                               .userDetail
                                               .userName,
                                       weight: TextWeight.bold),
@@ -224,7 +208,7 @@ class _ChatDetailState extends State<ChatDetail> {
                                       ? _chatDetailController
                                                       .chatRoom
                                                       .value!
-                                                      .opponent
+                                                      .opponent!
                                                       .userDetail
                                                       .isShareOnlineStatus ==
                                                   true &&
@@ -236,7 +220,7 @@ class _ChatDetailState extends State<ChatDetail> {
                                               color: _chatDetailController
                                                           .chatRoom
                                                           .value!
-                                                          .opponent
+                                                          .opponent!
                                                           .userDetail
                                                           .isOnline ==
                                                       true
@@ -255,7 +239,7 @@ class _ChatDetailState extends State<ChatDetail> {
                                               _chatDetailController
                                                   .chatRoom
                                                   .value!
-                                                  .opponent
+                                                  .opponent!
                                                   .userDetail
                                                   .userName] ==
                                           true
@@ -265,7 +249,7 @@ class _ChatDetailState extends State<ChatDetail> {
                                       : _chatDetailController
                                                       .chatRoom
                                                       .value!
-                                                      .opponent
+                                                      .opponent!
                                                       .userDetail
                                                       .isShareOnlineStatus ==
                                                   true &&
@@ -275,7 +259,7 @@ class _ChatDetailState extends State<ChatDetail> {
                                               _chatDetailController
                                                           .chatRoom
                                                           .value!
-                                                          .opponent
+                                                          .opponent!
                                                           .userDetail
                                                           .isOnline ==
                                                       true
@@ -459,7 +443,7 @@ class _ChatDetailState extends State<ChatDetail> {
             : Container(),
         Container(
           color: AppColorConstants.backgroundColor.darken(0.02),
-          height: 70,
+          // height: 70,
           child: Column(
             children: [
               const SizedBox(
@@ -473,7 +457,7 @@ class _ChatDetailState extends State<ChatDetail> {
                       children: [
                         Expanded(
                           child: SizedBox(
-                            height: 40,
+                            // height: 40,
                             child: Obx(() => TextField(
                                   controller:
                                       _chatDetailController.messageTf.value,
@@ -482,7 +466,8 @@ class _ChatDetailState extends State<ChatDetail> {
                                       fontSize: FontSizes.h5,
                                       fontWeight: TextWeight.regular,
                                       color: AppColorConstants.mainTextColor),
-                                  maxLines: 50,
+                                  maxLines: 5,
+                                  minLines: 1,
                                   onChanged: (text) {
                                     _chatDetailController.messageChanges();
                                   },
@@ -522,8 +507,8 @@ class _ChatDetailState extends State<ChatDetail> {
                                   width: 30,
                                   color: AppColorConstants.themeColor,
                                   child: ThemeIconWidget(
-                                    ThemeIcon.plus,
-                                    color: AppColorConstants.iconColor,
+                                    ThemeIcon.plusSymbol,
+                                    color: Colors.white,
                                   ),
                                 ).circular.ripple(() {
                                   openMediaSharingOptionView();
@@ -575,7 +560,7 @@ class _ChatDetailState extends State<ChatDetail> {
                 ? Container()
                 : Container(
                     child: ListView.separated(
-                            controller: _controller,
+                            controller: _chatDetailController.controller,
                             padding: EdgeInsets.only(
                                 top: 10,
                                 bottom: 50,
@@ -780,6 +765,17 @@ class _ChatDetailState extends State<ChatDetail> {
                 postId: model.postContent.postId,
               ))!
           .then((value) => loadChat());
+    } else if (model.messageContentType == MessageContentType.story) {
+      Get.to(() => StoryViewer(
+            story: model.storyContent,
+            storyDeleted: () {},
+          ));
+    } else if (model.messageContentType == MessageContentType.reactedOnStory ||
+        model.messageContentType == MessageContentType.textReplyOnStory) {
+      Get.to(() => StoryViewer(
+            story: model.repliedOnStory,
+            storyDeleted: () {},
+          ));
     } else if (model.messageContentType == MessageContentType.contact) {
       openActionPopupForContact(model.mediaContent.contact!);
     } else if (model.messageContentType == MessageContentType.profile) {
@@ -866,7 +862,6 @@ class _ChatDetailState extends State<ChatDetail> {
         messageText: _chatDetailController.messageTf.value.text,
         mode: _chatDetailController.actionMode.value,
         room: _chatDetailController.chatRoom.value!);
-    scrollToBottom();
   }
 
   void replyMessageTapped(ChatMessageModel model) {

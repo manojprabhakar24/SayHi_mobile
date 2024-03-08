@@ -4,7 +4,6 @@ import 'chat_message_model.dart';
 
 class ChatRoomMember {
   int id;
-
   int roomId;
   int userId;
   int isAdmin;
@@ -45,12 +44,9 @@ class ChatRoomModel {
 
   int createdBy = 0;
   String? name;
-
-  // List<UserModel> users = [];
   ChatMessageModel? lastMessage;
   String? lastMessageId;
 
-  // bool isTyping = false;
   List<String> whoIsTyping = [];
   bool isOnline = false;
   int unreadMessages = 0;
@@ -72,7 +68,6 @@ class ChatRoomModel {
     required this.createdAt,
     this.updatedAt,
     required this.createdBy,
-    // required this.users,
     required this.isOnline,
     required this.isGroupChat,
     required this.type,
@@ -118,7 +113,6 @@ class ChatRoomModel {
           : ChatMessageModel.fromJson(jsonData['lastMessage']));
 
   Map<String, dynamic> toJson() {
-    // print(users.first.toJson());
     return {
       'id': id,
       'title': name,
@@ -137,13 +131,17 @@ class ChatRoomModel {
     };
   }
 
-  ChatRoomMember get opponent {
+  ChatRoomMember? get opponent {
     final UserProfileManager userProfileManager = Get.find();
 
-    return roomMembers
+    List<ChatRoomMember> matchedRoomMembers = roomMembers
         .where((element) =>
             element.userDetail.id != userProfileManager.user.value!.id)
-        .first;
+        .toList();
+    if (matchedRoomMembers.isNotEmpty) {
+      return matchedRoomMembers.first;
+    }
+    return null;
   }
 
   bool get amIGroupAdmin {

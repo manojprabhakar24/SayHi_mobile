@@ -28,6 +28,19 @@ class LiveStreamingApi {
     });
   }
 
+  static getLiveDetail(
+      {required String channelName,
+      required Function(LiveModel) resultCallback}) async {
+    var url = '${NetworkConstantsUtil.liveDetailByChannel}$channelName';
+
+    await ApiWrapper().getApi(url: url).then((result) {
+      if (result?.success == true) {
+        var live = result!.data['live_history'];
+        resultCallback(LiveModel.fromJson(live));
+      }
+    });
+  }
+
   static getCurrentLiveUsers(
       {required Function(List<UserModel>) resultCallback}) async {
     UserProfileManager userProfileManager = Get.find();
@@ -69,12 +82,11 @@ class LiveStreamingApi {
       required Function(List<LiveViewer>, APIMetaData) resultCallback}) async {
     var url = '${NetworkConstantsUtil.liveCallViewers}$liveId';
 
-    if(role != null){
+    if (role != null) {
       url = '$url&role=$role';
     }
-    if(isBanned != null){
+    if (isBanned != null) {
       url = '$url&is_ban=1';
-      
     }
     await ApiWrapper().getApi(url: url).then((result) {
       if (result?.success == true) {

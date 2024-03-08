@@ -4,6 +4,7 @@ import '../../api_handler/apis/post_api.dart';
 import '../../manager/db_manager_realm.dart';
 import '../../model/club_join_request.dart';
 import '../../model/club_model.dart';
+import '../../model/data_wrapper.dart';
 import '../../model/post_model.dart';
 import '../../model/post_search_query.dart';
 import '../../screens/dashboard/posts.dart';
@@ -19,23 +20,14 @@ class ClubDetailController extends GetxController {
 
   Rx<ClubModel?> club = Rx<ClubModel?>(null);
   PostSearchQuery postSearchQuery = PostSearchQuery();
-
-  int postsPage = 1;
-  bool canLoadMorePosts = true;
-  RxBool isLoading = false.obs;
-
-  int jonRequestsPage = 1;
-  bool canLoadMoreJoinRequests = true;
+  DataWrapper postDataWrapper = DataWrapper();
+  DataWrapper requestsDataWrapper = DataWrapper();
 
   clear() {
-    isLoading.value = false;
+    postDataWrapper = DataWrapper();
     posts.clear();
     joinRequests.clear();
-    postsPage = 1;
-    canLoadMorePosts = true;
-
-    jonRequestsPage = 1;
-    canLoadMoreJoinRequests = true;
+    requestsDataWrapper = DataWrapper();
   }
 
   setClub(ClubModel clubObj) {
@@ -45,61 +37,18 @@ class ClubDetailController extends GetxController {
     update();
   }
 
-  void getPosts({required int clubId, required VoidCallback callback}) async {
-    if (canLoadMorePosts == true) {
-      postSearchQuery.isRecent = 1;
-      postSearchQuery.clubId = clubId;
-      isLoading.value = true;
-
-      PostApi.getPosts(
-          userId: postSearchQuery.userId,
-          isPopular: postSearchQuery.isPopular,
-          isFollowing: postSearchQuery.isFollowing,
-          isSold: postSearchQuery.isSold,
-          isMine: postSearchQuery.isMine,
-          isRecent: postSearchQuery.isRecent,
-          title: postSearchQuery.title,
-          hashtag: postSearchQuery.hashTag,
-          clubId: postSearchQuery.clubId,
-          page: postsPage,
-          resultCallback: (result, metadata) {
-            posts.addAll(result);
-            posts.sort((a, b) => b.createDate!.compareTo(a.createDate!));
-            posts.unique((e) => e.id);
-
-            isLoading.value = false;
-
-            if (postsPage >= metadata.pageCount) {
-              canLoadMorePosts = false;
-            } else {
-              canLoadMorePosts = true;
-            }
-            postsPage += 1;
-
-            callback();
-          });
-    }
-  }
-
   getClubJoinRequests({required int clubId}) {
-    if (canLoadMoreJoinRequests == true) {
-      isLoading.value = true;
+    if (requestsDataWrapper.isLoading.value == true) {
+      requestsDataWrapper.isLoading.value = true;
 
       ClubApi.getClubJoinRequests(
           clubId: clubId,
-          page: jonRequestsPage,
+          page: requestsDataWrapper.page,
           resultCallback: (result, metadata) {
             joinRequests.addAll(result);
             joinRequests.unique((e) => e.id);
 
-            isLoading.value = false;
-
-            if (jonRequestsPage >= metadata.pageCount) {
-              canLoadMoreJoinRequests = false;
-            } else {
-              canLoadMoreJoinRequests = true;
-            }
-            jonRequestsPage += 1;
+            requestsDataWrapper.processCompletedWithData(metadata);
           });
     }
   }
@@ -138,6 +87,38 @@ class ClubDetailController extends GetxController {
     posts.removeWhere((element) => element.user.id == post.user.id);
 
     posts.refresh();
+  }
+
+  refreshPosts({required int clubId, required VoidCallback callback}) {
+    postDataWrapper = DataWrapper();
+    getPosts(clubId: clubId, callback: callback);
+  }
+
+  loadMorePosts({required int clubId, required VoidCallback callback}) {
+    if (postDataWrapper.haveMoreData.value == true) {
+      if (postDataWrapper.page == 1) {
+        postDataWrapper.isLoading.value = true;
+      }
+      getPosts(clubId: clubId, callback: callback);
+    } else {
+      callback();
+    }
+  }
+
+  void getPosts({required int clubId, required VoidCallback callback}) async {
+    PostApi.getPosts(
+        clubId: clubId,
+        page: postDataWrapper.page,
+        resultCallback: (result, metadata) {
+          posts.addAll(result);
+          posts.sort((a, b) => b.createDate!.compareTo(a.createDate!));
+          posts.unique((e) => e.id);
+
+          postDataWrapper.processCompletedWithData(metadata);
+
+          callback();
+          update();
+        });
   }
 
   joinClub() {

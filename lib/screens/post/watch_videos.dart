@@ -3,7 +3,7 @@ import 'package:foap/screens/reuseable_widgets/post_list.dart';
 import '../../helper/imports/common_import.dart';
 
 class WatchVideos extends StatefulWidget {
-  const WatchVideos({Key? key}) : super(key: key);
+  const WatchVideos({super.key});
 
   @override
   State<WatchVideos> createState() => _WatchVideosState();

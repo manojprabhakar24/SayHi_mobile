@@ -6,8 +6,7 @@ class SinglePostDetail extends StatefulWidget {
   final int? postId;
   final String? postUniqueId;
 
-  const SinglePostDetail({Key? key, this.postId, this.postUniqueId})
-      : super(key: key);
+  const SinglePostDetail({super.key, this.postId, this.postUniqueId});
 
   @override
   State<SinglePostDetail> createState() => _SinglePostDetailState();

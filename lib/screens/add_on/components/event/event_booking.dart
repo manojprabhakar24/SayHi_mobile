@@ -2,7 +2,6 @@ import 'package:foap/helper/imports/common_import.dart';
 import 'package:foap/helper/imports/event_imports.dart';
 import 'package:foap/screens/profile/other_user_profile.dart';
 
-
 class EventBookingCard extends StatelessWidget {
   final EventBookingModel bookingModel;
 
@@ -121,12 +120,12 @@ class EventBookingCard extends StatelessWidget {
                 const SizedBox(
                   height: 5,
                 ),
-                BodyLargeText(bookingModel.event.startAtDate,
+                BodySmallText(bookingModel.event.startAtDate,
                     weight: TextWeight.semiBold)
               ],
             ),
             const SizedBox(
-              width: 10,
+              width: 5,
             ),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -145,7 +144,7 @@ class EventBookingCard extends StatelessWidget {
                 const SizedBox(
                   height: 5,
                 ),
-                BodyLargeText(bookingModel.event.startAtTime,
+                BodySmallText(bookingModel.event.startAtTime,
                     weight: TextWeight.semiBold)
               ],
             ),
@@ -155,8 +154,8 @@ class EventBookingCard extends StatelessWidget {
               child: BodyMediumText(
                 bookingModel.ticketType.name,
               ).setPadding(
-                  left: DesignConstants.horizontalPadding,
-                  right: DesignConstants.horizontalPadding,
+                  left: DesignConstants.horizontalPadding / 2,
+                  right: DesignConstants.horizontalPadding / 2,
                   top: 8,
                   bottom: 8),
             ).round(10)

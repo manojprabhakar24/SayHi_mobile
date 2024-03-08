@@ -17,9 +17,9 @@ class ResharedPostCard extends StatelessWidget {
   final FlareControls flareControls = FlareControls();
 
   ResharedPostCard({
-    Key? key,
+    super.key,
     required this.model,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +29,7 @@ class ResharedPostCard extends StatelessWidget {
           post: model,
           isSponsored: false,
         ),
-        model.title.isNotEmpty
+        model.postTitle.isNotEmpty
             ? Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                 const SizedBox(height: 4),
                 RichTextPostTitle(model: model),

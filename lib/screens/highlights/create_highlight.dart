@@ -4,10 +4,8 @@ import 'package:foap/helper/imports/highlights_imports.dart';
 import 'package:image_picker/image_picker.dart';
 
 class CreateHighlight extends StatefulWidget {
-  final HighlightsController highlightsController;
 
-  const CreateHighlight({Key? key, required this.highlightsController})
-      : super(key: key);
+  const CreateHighlight({super.key});
 
   @override
   State<CreateHighlight> createState() => _CreateHighlightState();
@@ -15,11 +13,13 @@ class CreateHighlight extends StatefulWidget {
 
 class _CreateHighlightState extends State<CreateHighlight> {
   TextEditingController nameText = TextEditingController();
+  final HighlightsController highlightsController = Get.find();
+
   final picker = ImagePicker();
 
   @override
   void initState() {
-    widget.highlightsController.updateCoverImagePath();
+    highlightsController.updateCoverImagePath();
     super.initState();
   }
 
@@ -48,9 +48,8 @@ class _CreateHighlightState extends State<CreateHighlight> {
                       weight: TextWeight.medium,
                       color: AppColorConstants.themeColor)
                   .ripple(() {
-                // create highlights
                 if (nameText.text.isNotEmpty) {
-                  widget.highlightsController
+                  highlightsController
                       .createHighlights(name: nameText.text);
                 } else {
                   AppUtil.showToast(
@@ -75,7 +74,9 @@ class _CreateHighlightState extends State<CreateHighlight> {
             child: TextField(
               controller: nameText,
               textAlign: TextAlign.center,
-              style: TextStyle(fontSize: FontSizes.b3, color: AppColorConstants.mainTextColor),
+              style: TextStyle(
+                  fontSize: FontSizes.b3,
+                  color: AppColorConstants.mainTextColor),
               maxLines: 5,
               onChanged: (text) {},
               decoration: InputDecoration(
@@ -99,55 +100,50 @@ class _CreateHighlightState extends State<CreateHighlight> {
   addProfileView() {
     return SizedBox(
       height: 100,
-      child: Column(children: [
-        GetBuilder<HighlightsController>(
-                init: widget.highlightsController,
-                builder: (ctx) {
-                  return Container(
-                    child: CircleAvatar(
-                      radius: 32,
-                      backgroundColor: AppColorConstants.themeColor,
-                      child: widget.highlightsController.pickedImage != null
-                          ? Image.file(
-                              widget.highlightsController.pickedImage!,
+      child: Obx(() => Column(children: [
+            Container(
+              child: CircleAvatar(
+                radius: 32,
+                backgroundColor: AppColorConstants.themeColor,
+                child: highlightsController.pickedImage.value != null
+                    ? Image.file(
+                        highlightsController.pickedImage.value!,
+                        fit: BoxFit.cover,
+                        height: 64,
+                        width: 64,
+                      ).circular
+                    : highlightsController.model == null ||
+                            highlightsController.model?.picture == null
+                        ? CachedNetworkImage(
+                            imageUrl: highlightsController
+                                .selectedStoriesMedia.first.image!,
+                            fit: BoxFit.cover,
+                            height: 64,
+                            width: 64,
+                          ).circular
+                        : ClipRRect(
+                            borderRadius: BorderRadius.circular(32.0),
+                            child: CachedNetworkImage(
+                              imageUrl:
+                                  highlightsController.model!.picture!,
                               fit: BoxFit.cover,
-                              height: 64,
-                              width: 64,
-                            ).circular
-                          : widget.highlightsController.model == null ||
-                                  widget.highlightsController.model?.picture ==
-                                      null
-                              ? CachedNetworkImage(
-                                  imageUrl: widget.highlightsController
-                                      .selectedStoriesMedia.first.image!,
-                                  fit: BoxFit.cover,
-                                  height: 64,
-                                  width: 64,
-                                ).circular
-                              : ClipRRect(
-                                  borderRadius: BorderRadius.circular(32.0),
-                                  child: CachedNetworkImage(
-                                    imageUrl: widget
-                                        .highlightsController.model!.picture!,
-                                    fit: BoxFit.cover,
-                                    height: 64.0,
-                                    width: 64.0,
-                                    placeholder: (context, url) =>
-                                        AppUtil.addProgressIndicator(size: 100),
-                                    errorWidget: (context, url, error) => Icon(
-                                      Icons.error,
-                                      color: AppColorConstants.iconColor,
-                                    ),
-                                  )),
-                    ).p4,
-                  );
-                })
-            .borderWithRadius(
-                value: 2, radius: 40, color: AppColorConstants.themeColor)
-            .ripple(() {
-          openImagePickingPopup();
-        })
-      ]).p8,
+                              height: 64.0,
+                              width: 64.0,
+                              placeholder: (context, url) =>
+                                  AppUtil.addProgressIndicator(size: 100),
+                              errorWidget: (context, url, error) => Icon(
+                                Icons.error,
+                                color: AppColorConstants.iconColor,
+                              ),
+                            )),
+              ).p4,
+            )
+                .borderWithRadius(
+                    value: 2, radius: 40, color: AppColorConstants.themeColor)
+                .ripple(() {
+              openImagePickingPopup();
+            })
+          ]).p8),
     );
   }
 
@@ -173,7 +169,7 @@ class _CreateHighlightState extends State<CreateHighlight> {
                       final pickedFile =
                           await picker.pickImage(source: ImageSource.camera);
                       if (pickedFile != null) {
-                        widget.highlightsController
+                        highlightsController
                             .updateCoverImage(File(pickedFile.path));
                       } else {}
                     }),
@@ -189,7 +185,7 @@ class _CreateHighlightState extends State<CreateHighlight> {
                       final pickedFile =
                           await picker.pickImage(source: ImageSource.gallery);
                       if (pickedFile != null) {
-                        widget.highlightsController
+                        highlightsController
                             .updateCoverImage(File(pickedFile.path));
                       } else {}
                     }),

@@ -2,7 +2,7 @@ import 'package:foap/helper/imports/common_import.dart';
 import '../../../../controllers/post/promotion_controller.dart';
 
 class AudiencePreferenceScreen extends StatelessWidget {
-  AudiencePreferenceScreen({Key? key}) : super(key: key);
+  AudiencePreferenceScreen({super.key});
   final PromotionController _promotionController = Get.find();
 
   @override

@@ -19,6 +19,7 @@ class FundRaisingCampaign {
   CategoryModel? category;
 
   bool isFavourite;
+  bool isDonor;
   int totalDonors;
   List<UserModel> donors = [];
 
@@ -36,6 +37,7 @@ class FundRaisingCampaign {
     required this.createdBy,
     required this.createdFor,
     required this.isFavourite,
+    required this.isDonor,
     required this.totalDonors,
     required this.donors,
     required this.category,
@@ -71,6 +73,7 @@ class FundRaisingCampaign {
             ? null
             : CategoryModel.fromJson(json['categoryDetails']),
         isFavourite: json['is_favorite'] == 1,
+        isDonor: json['is_donor'] == 1,
         totalDonors: json['total_donors'] ?? 0,
         donors: json['donorsDetails'] is List
             ? (json['donorsDetails'] as List)
@@ -79,6 +82,10 @@ class FundRaisingCampaign {
             : []);
 
     return model;
+  }
+
+  bool get amIDonor {
+    return isDonor;
   }
 }
 
@@ -92,20 +99,20 @@ class FundRaisingCampaignSearchModel {
 }
 
 class FundraisingDonationRequest {
-  int? id;
+  int? campaignId;
   double? totalAmount;
   String? itemName;
 
   List<Payment> payments;
 
   FundraisingDonationRequest({
-    this.id,
+    this.campaignId,
     this.totalAmount,
     required this.payments,
   });
 
   Map<String, dynamic> toJson() => {
-        "id": id.toString(),
+        "id": campaignId.toString(),
         "payments": payments.map((e) => e.toJson()).toList(),
         "amount": totalAmount.toString(),
       };

@@ -11,7 +11,7 @@ class AboutCampaign extends StatelessWidget {
   final FundRaisingCampaign campaign;
   final FundRaisingController fundRaisingController = Get.find();
 
-  AboutCampaign({Key? key, required this.campaign}) : super(key: key);
+  AboutCampaign({super.key, required this.campaign});
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +37,6 @@ class AboutCampaign extends StatelessWidget {
                     },
                   ),
                 ),
-
                 if (mediaList().length > 1)
                   Positioned(
                       bottom: 10,
@@ -46,14 +45,14 @@ class AboutCampaign extends StatelessWidget {
                       child: Align(
                         alignment: Alignment.center,
                         child: Obx(
-                              () {
+                          () {
                             return DotsIndicator(
                               dotsCount: mediaList().length,
-                              position: fundRaisingController
-                                  .currentIndex.value,
+                              position:
+                                  fundRaisingController.currentIndex.value,
                               decorator: DotsDecorator(
-                                  activeColor: Theme.of(Get.context!)
-                                      .primaryColor),
+                                  activeColor:
+                                      Theme.of(Get.context!).primaryColor),
                             );
                           },
                         ),
@@ -223,17 +222,15 @@ class AboutCampaign extends StatelessWidget {
             AvatarView(
               url: campaign.createdBy!.coverImage,
               name: campaign.createdBy!.name,
-              size: 50,
+              size: 40,
             ),
-            const SizedBox(width: 10,),
+            const SizedBox(
+              width: 10,
+            ),
             Expanded(
-              child: Column(
-                children: [
-                  BodyLargeText(
-                    campaign.createdBy!.name!,
-                    weight: TextWeight.semiBold,
-                  ),
-                ],
+              child: BodyLargeText(
+                campaign.createdBy!.name!,
+                weight: TextWeight.semiBold,
               ),
             ),
             const Spacer()
@@ -260,17 +257,15 @@ class AboutCampaign extends StatelessWidget {
             AvatarView(
               url: campaign.createdFor!.picture,
               name: campaign.createdFor!.name,
-              size: 50,
+              size: 40,
             ),
-            const SizedBox(width: 10,),
+            const SizedBox(
+              width: 10,
+            ),
             Expanded(
-              child: Column(
-                children: [
-                  BodyLargeText(
-                    campaign.createdFor!.name!,
-                    weight: TextWeight.semiBold,
-                  ),
-                ],
+              child: BodyLargeText(
+                campaign.createdFor!.name!,
+                weight: TextWeight.semiBold,
               ),
             ),
             const Spacer()

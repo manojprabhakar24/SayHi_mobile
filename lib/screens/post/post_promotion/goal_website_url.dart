@@ -1,9 +1,9 @@
 import 'package:foap/helper/imports/common_import.dart';
-
 import '../../../controllers/post/promotion_controller.dart';
 
 class GoalWebsiteUrl extends StatelessWidget {
-  GoalWebsiteUrl({Key? key}) : super(key: key);
+  GoalWebsiteUrl({super.key});
+
   final PromotionController _promotionController = Get.find();
 
   @override

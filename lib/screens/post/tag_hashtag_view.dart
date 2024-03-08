@@ -5,8 +5,8 @@ import '../../helper/imports/common_import.dart';
 
 class TagHashtagView extends StatelessWidget {
   TagHashtagView({
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   final SmartTextFieldController _smartTextFieldController = Get.find();
 

@@ -28,16 +28,14 @@ import 'agora_call_controller.dart';
 class ChatDetailController extends GetxController {
   final AgoraCallController agoraCallController = Get.find();
   final UserProfileManager _userProfileManager = Get.find();
+  final ScrollController controller = ScrollController();
 
   Rx<TextEditingController> messageTf = TextEditingController().obs;
 
   bool expandActions = false;
 
-  // RxMap<String, dynamic> isOnlineMapping = <String, dynamic>{}.obs;
   RxMap<String, dynamic> isTypingMapping = <String, dynamic>{}.obs;
 
-  // RxBool isOnline = false.obs;
-  // RxBool isTyping = false.obs;
   RxString wallpaper = "assets/chatbg/chatbg3.jpg".obs;
 
   Rx<ChatMessageActionMode> actionMode = ChatMessageActionMode.none.obs;
@@ -72,7 +70,6 @@ class ChatDetailController extends GetxController {
     selectedMessages.clear();
     messages.clear();
     chatRoom.value = null;
-    // opponents.value = [];
     actionMode.value = ChatMessageActionMode.none;
     selectedMessage.value = null;
     typingStatusUpdatedAt = null;
@@ -152,7 +149,7 @@ class ChatDetailController extends GetxController {
 
     if (chatRoom.isGroupChat == false) {
       opponent.value =
-          await getOpponentUser(userId: chatRoom.opponent.userDetail.id);
+          await getOpponentUser(userId: chatRoom.opponent!.userDetail.id);
     }
 
     if (msgList.length == 20) {
@@ -166,7 +163,7 @@ class ChatDetailController extends GetxController {
         completion: completion,
       );
     }
-
+    scrollToBottom();
     update();
   }
 
@@ -355,7 +352,7 @@ class ChatDetailController extends GetxController {
     currentMessageModel.createdAt =
         (DateTime.now().millisecondsSinceEpoch / 1000).round();
 
-    addNewMessage(message: currentMessageModel, roomId: room.id);
+    addNewMessage(message: currentMessageModel, room: room);
     // save message to database
     getIt<RealmDBManager>().prepareSaveMessage(
         chatMessages: [currentMessageModel], alreadyWritingInDB: false);
@@ -433,7 +430,7 @@ class ChatDetailController extends GetxController {
       currentMessageModel.createdAt =
           (DateTime.now().millisecondsSinceEpoch / 1000).round();
 
-      addNewMessage(message: currentMessageModel, roomId: room.id);
+      addNewMessage(message: currentMessageModel, room: room);
       // save message to database
       getIt<RealmDBManager>().prepareSaveMessage(
           chatMessages: [currentMessageModel], alreadyWritingInDB: false);
@@ -501,7 +498,7 @@ class ChatDetailController extends GetxController {
     currentMessageModel.createdAt =
         (DateTime.now().millisecondsSinceEpoch / 1000).round();
 
-    addNewMessage(message: currentMessageModel, roomId: room.id);
+    addNewMessage(message: currentMessageModel, room: room);
     // save message to database
     getIt<RealmDBManager>().prepareSaveMessage(
         chatMessages: [currentMessageModel], alreadyWritingInDB: false);
@@ -566,7 +563,7 @@ class ChatDetailController extends GetxController {
     currentMessageModel.createdAt =
         (DateTime.now().millisecondsSinceEpoch / 1000).round();
 
-    addNewMessage(message: currentMessageModel, roomId: room.id);
+    addNewMessage(message: currentMessageModel, room: room);
     // save message to database
     getIt<RealmDBManager>().prepareSaveMessage(
         chatMessages: [currentMessageModel], alreadyWritingInDB: false);
@@ -639,7 +636,7 @@ class ChatDetailController extends GetxController {
     currentMessageModel.createdAt =
         (DateTime.now().millisecondsSinceEpoch / 1000).round();
 
-    addNewMessage(message: currentMessageModel, roomId: room.id);
+    addNewMessage(message: currentMessageModel, room: room);
     // save message to database
 
     getIt<RealmDBManager>().prepareSaveMessage(
@@ -735,7 +732,7 @@ class ChatDetailController extends GetxController {
     currentMessageModel.messageContent = json.encode(content).encrypted();
     currentMessageModel.repliedOnMessageContent = repliedOnMessage;
 
-    addNewMessage(message: currentMessageModel, roomId: room.id);
+    addNewMessage(message: currentMessageModel, room: room);
     getIt<RealmDBManager>().prepareSaveMessage(
         chatMessages: [currentMessageModel], alreadyWritingInDB: false);
 
@@ -825,7 +822,7 @@ class ChatDetailController extends GetxController {
     // currentMessageModel.media = media;
     currentMessageModel.repliedOnMessageContent = repliedOnMessage;
 
-    addNewMessage(message: currentMessageModel, roomId: room.id);
+    addNewMessage(message: currentMessageModel, room: room);
 
     getIt<RealmDBManager>().prepareSaveMessage(
         chatMessages: [currentMessageModel], alreadyWritingInDB: false);
@@ -918,7 +915,7 @@ class ChatDetailController extends GetxController {
     // currentMessageModel.media = media;
     currentMessageModel.repliedOnMessageContent = repliedOnMessage;
 
-    addNewMessage(message: currentMessageModel, roomId: room.id);
+    addNewMessage(message: currentMessageModel, room: room);
 
     getIt<RealmDBManager>().prepareSaveMessage(
         chatMessages: [currentMessageModel], alreadyWritingInDB: false);
@@ -1006,7 +1003,7 @@ class ChatDetailController extends GetxController {
     currentMessageModel.messageContent =
         json.encode(content).replaceAll('\\', '').encrypted();
 
-    addNewMessage(message: currentMessageModel, roomId: room.id);
+    addNewMessage(message: currentMessageModel, room: room);
 
     update();
 
@@ -1072,7 +1069,7 @@ class ChatDetailController extends GetxController {
     currentMessageModel.media = media;
     currentMessageModel.repliedOnMessageContent = repliedOnMessage;
 
-    addNewMessage(message: currentMessageModel, roomId: room.id);
+    addNewMessage(message: currentMessageModel, room: room);
     getIt<RealmDBManager>().prepareSaveMessage(
         chatMessages: [currentMessageModel], alreadyWritingInDB: false);
 
@@ -1130,7 +1127,7 @@ class ChatDetailController extends GetxController {
 
   Future<bool> sendStoryTextReplyMessage(
       {required String messageText,
-      required StoryMediaModel storyMedia,
+      required StoryModel story,
       required ChatRoomModel room}) async {
     bool status = true;
 
@@ -1147,7 +1144,7 @@ class ChatDetailController extends GetxController {
       'text': encryptedTextMessage,
     };
 
-    String repliedOnStory = jsonEncode(storyMedia.toJson()).encrypted();
+    String repliedOnStory = jsonEncode(story.toJson()).encrypted();
 
     if (encryptedTextMessage.removeAllWhitespace.trim().isNotEmpty) {
       String localMessageId = randomId();
@@ -1192,9 +1189,6 @@ class ChatDetailController extends GetxController {
       getIt<RealmDBManager>().prepareSaveMessage(
           chatMessages: [currentMessageModel], alreadyWritingInDB: false);
 
-      // setReplyMessage(message: null);
-      // messageTf.value.text = '';
-      // messageTf.refresh();
       update();
     }
 
@@ -1203,7 +1197,7 @@ class ChatDetailController extends GetxController {
 
   Future<bool> sendStoryReactionReplyMessage(
       {required String emoji,
-      required StoryMediaModel storyMedia,
+      required StoryModel story,
       required ChatRoomModel room}) async {
     bool status = true;
 
@@ -1213,7 +1207,9 @@ class ChatDetailController extends GetxController {
       'text': encryptedTextMessage,
     };
 
-    String reactedOnStory = jsonEncode(storyMedia.toJson()).encrypted();
+    String reactedOnStory = jsonEncode(story.toJson()).encrypted();
+
+    print('reactedOnStory ${story.toJson()}');
 
     if (encryptedTextMessage.removeAllWhitespace.trim().isNotEmpty) {
       String localMessageId = randomId();
@@ -1253,58 +1249,93 @@ class ChatDetailController extends GetxController {
       currentMessageModel.createdAt =
           (DateTime.now().millisecondsSinceEpoch / 1000).round();
 
-      // addNewMessage(message: currentMessageModel, roomId: room.id);
       // save message to database
       getIt<RealmDBManager>().prepareSaveMessage(
           chatMessages: [currentMessageModel], alreadyWritingInDB: false);
-
-      // setReplyMessage(message: null);
-      // messageTf.value.text = '';
-      // messageTf.refresh();
-      // update();
     }
 
     return status;
   }
 
+  Future<bool> sendStoryMessage(
+      {required StoryModel story, required ChatRoomModel room}) async {
+    bool status = true;
+    String localMessageId = randomId();
+
+    var content = {
+      'messageType': messageTypeId(MessageContentType.story),
+      'story': story.toJson(),
+    };
+
+    var message = {
+      'userId': _userProfileManager.user.value!.id,
+      'localMessageId': localMessageId,
+      'is_encrypted': AppConfigConstants.enableEncryption,
+      'messageType': messageTypeId(MessageContentType.story),
+      'message': json.encode(content).encrypted(),
+      'chat_version': AppConfigConstants.chatVersion,
+      'replied_on_message': null,
+      'room': room.id,
+      'created_by': _userProfileManager.user.value!.id,
+      'created_at': (DateTime.now().millisecondsSinceEpoch / 1000).round()
+    };
+
+    ChatMessageModel currentMessageModel = ChatMessageModel();
+    currentMessageModel.localMessageId = localMessageId;
+    currentMessageModel.sender = _userProfileManager.user.value!;
+    currentMessageModel.roomId = room.id;
+    currentMessageModel.isEncrypted = AppConfigConstants.enableEncryption;
+    currentMessageModel.chatVersion = AppConfigConstants.chatVersion;
+
+    currentMessageModel.userName = youString.tr;
+    currentMessageModel.senderId = _userProfileManager.user.value!.id;
+    currentMessageModel.messageType = messageTypeId(MessageContentType.story);
+    currentMessageModel.messageContent = json.encode(content).encrypted();
+
+    currentMessageModel.createdAt =
+        (DateTime.now().millisecondsSinceEpoch / 1000).round();
+
+    addNewMessage(message: currentMessageModel, room: room);
+    // save message to database
+    getIt<RealmDBManager>().prepareSaveMessage(
+        chatMessages: [currentMessageModel], alreadyWritingInDB: false);
+    // send message to socket server
+
+    status = getIt<SocketManager>().emit(SocketConstants.sendMessage, message);
+    update();
+    // });
+    setReplyMessage(message: null);
+    return status;
+  }
+
   addNewMessage(
-      {required ChatMessageModel message, required int roomId}) async {
-    if (roomId != message.roomId) {
+      {required ChatMessageModel message, required ChatRoomModel room}) async {
+    if (room.id != message.roomId) {
       return;
     }
-    // add date separator
-    if (messages.isNotEmpty) {
-      // String dateTimeStr = messages.last.date;
-      // if (dateTimeStr != message.date) {
-      //   ChatMessageModel separatorMessage = ChatMessageModel();
-      //   separatorMessage.createdAt = message.createdAt;
-      //   separatorMessage.isDateSeparator = true;
-      //   messages.add(separatorMessage);
-      // }
-    }
-
     messages.add(message);
 
     // prepare smart reply suggestion messages
-    if (message.messageContentType == MessageContentType.text &&
-        message.isDateSeparator == false &&
-        message.isMineMessage == false) {
-      smartReply.addMessageToConversationFromRemoteUser(
-          message.isEncrypted == 1
-              ? message.messageContent.decrypted()
-              : message.messageContent,
-          DateTime.now().millisecondsSinceEpoch,
-          message.senderId.toString());
-
-      // var result = await smartReply.suggestReplies([lastMsg]);
-      final response = await smartReply.suggestReplies();
-
-      smartReplySuggestions.value = List.from(response.suggestions);
-      update();
-    } else {
-      smartReplySuggestions.clear();
-      update();
-    }
+    // if (message.messageContentType == MessageContentType.text &&
+    //     message.isDateSeparator == false &&
+    //     message.isMineMessage == false) {
+    //   smartReply.addMessageToConversationFromRemoteUser(
+    //       message.isEncrypted == 1
+    //           ? message.messageContent.decrypted()
+    //           : message.messageContent,
+    //       DateTime.now().millisecondsSinceEpoch,
+    //       message.senderId.toString());
+    //
+    //   // var result = await smartReply.suggestReplies([lastMsg]);
+    //   final response = await smartReply.suggestReplies();
+    //
+    //   smartReplySuggestions.value = List.from(response.suggestions);
+    //   update();
+    // } else {
+    //   smartReplySuggestions.clear();
+    //   update();
+    // }
+    scrollToBottom();
   }
 
   Future<bool> forwardSelectedMessages({required ChatRoomModel room}) async {
@@ -1389,14 +1420,6 @@ class ChatDetailController extends GetxController {
           .toList()
           .contains(element.localMessageId)) {
         element.isDeleted = true;
-
-        // print('element.chatMessageUser ${element.chatMessageUser.length}');
-        // ChatMessageUser user = element.chatMessageUser
-        //     .where((element) =>
-        //         element.userId == _userProfileManager.user.value!.id)
-        //     .first;
-        // //TODO : check deleted message status
-        // user.status == 4;
       } else {}
       return element;
     }).toList();
@@ -1421,20 +1444,17 @@ class ChatDetailController extends GetxController {
 
 //*************** updates from socket *******************//
 
-  messagedDeleted(
-      {required int messageId, required int roomId, required userId}) async {
+  messagedDeleted({required int messageId, required int roomId}) async {
     // update message in local cache
     if (chatRoom.value?.id == roomId) {
       messages.value = messages.map((element) {
-        if (selectedMessages
-            .map((element) => element.localMessageId)
-            .toList()
-            .contains(element.localMessageId)) {
+        if (element.id == messageId) {
           element.isDeleted = true;
         } else {}
         return element;
       }).toList();
       messages.refresh();
+      update();
     }
 
     // delete media messages
@@ -1450,7 +1470,10 @@ class ChatDetailController extends GetxController {
 
   newMessageReceived(ChatMessageModel message) async {
     if (chatRoom.value?.id == message.roomId) {
-      addNewMessage(message: message, roomId: message.roomId);
+      if (messages.isNotEmpty) {
+        message.chatMessageUser = messages.first.chatMessageUser;
+      }
+      addNewMessage(message: message, room: chatRoom.value!);
 
       isTypingMapping[message.userName] = false;
       // isTyping.value = false;
@@ -1671,6 +1694,20 @@ class ChatDetailController extends GetxController {
       AppUtil.showToast(
           message: pleaseAllowAccessToMicrophoneForAudioCallString.tr,
           isSuccess: false);
+    });
+  }
+
+  scrollToBottom() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Timer(const Duration(milliseconds: 100), () {
+        if (messages.isNotEmpty) {
+          controller.animateTo(
+            controller.position.maxScrollExtent,
+            duration: const Duration(milliseconds: 250),
+            curve: Curves.fastOutSlowIn,
+          );
+        }
+      });
     });
   }
 }

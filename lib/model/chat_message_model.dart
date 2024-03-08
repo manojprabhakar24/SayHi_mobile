@@ -133,6 +133,17 @@ class ChatMessageModel {
     return ChatPost.fromJson(json.decode(messageContent.decrypted()));
   }
 
+  StoryModel get storyContent {
+    var jsonData = json.decode(messageContent.decrypted());
+    return StoryModel.fromJson(jsonData['story']);
+  }
+
+  StoryModel get repliedOnStory {
+    var jsonData = json.decode(repliedOnMessageDecrypt);
+    print('jsonData $jsonData');
+    return StoryModel.fromJson(jsonData);
+  }
+
   GiftContent get giftContent {
     return GiftContent.fromJson(json.decode(decrypt));
   }
@@ -148,6 +159,9 @@ class ChatMessageModel {
 
   ChatMessageUser get myUserDataInMessage {
     UserProfileManager userProfileManager = Get.find();
+    // print('chatMessageUser ${chatMessageUser.length} ');
+    // print('message $textMessage ');
+
     return chatMessageUser
         .where((element) => element.userId == userProfileManager.user.value!.id)
         .first;
@@ -471,9 +485,9 @@ class ChatMessageModel {
     return repliedOnMessageContent!.decrypted();
   }
 
-  StoryMediaModel get storyMedia {
-    return StoryMediaModel.fromJson(json.decode(repliedOnMessageDecrypt));
-  }
+
+
+
 }
 
 class ChatContentJson {

@@ -1,6 +1,4 @@
 import 'package:audio_video_progress_bar/audio_video_progress_bar.dart';
-import 'package:audio_waveforms/audio_waveforms.dart';
-import 'package:flutter_audio_waveforms/flutter_audio_waveforms.dart';
 import '../helper/imports/common_import.dart';
 import '../manager/player_manager.dart';
 
@@ -8,7 +6,7 @@ class AudioProgressBar extends StatelessWidget {
   final String id;
   final PlayerManager _playerManager = Get.find();
 
-  AudioProgressBar({Key? key, required this.id}) : super(key: key);
+  AudioProgressBar({super.key, required this.id});
 
   @override
   Widget build(BuildContext context) {

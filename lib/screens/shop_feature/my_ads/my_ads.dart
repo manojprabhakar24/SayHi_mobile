@@ -10,7 +10,7 @@ import '../post_ad/choose_category.dart';
 import '../post_ad/enter_ad_detail.dart';
 
 class MyAds extends StatefulWidget {
-  const MyAds({Key? key}) : super(key: key);
+  const MyAds({super.key});
 
   @override
   State<MyAds> createState() => _MyAdsState();

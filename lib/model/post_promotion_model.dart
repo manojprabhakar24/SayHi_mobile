@@ -33,7 +33,7 @@ class PostPromotionOrderRequest {
   GoalType? goalType;
 
   String? url;
-  double? urlText;
+  String? urlText;
   int isAutomaticAudience = 1;
   AudienceModel? audience;
   double dailyBudget = 200;

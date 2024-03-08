@@ -5,7 +5,7 @@ import '../../controllers/fund_raising/fund_raising_controller.dart';
 class DonorsList extends StatelessWidget {
   final FundRaisingController fundRaisingController = Get.find();
 
-  DonorsList({Key? key}) : super(key: key);
+  DonorsList({super.key});
 
   @override
   Widget build(BuildContext context) {

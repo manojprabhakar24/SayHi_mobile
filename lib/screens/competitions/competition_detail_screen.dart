@@ -9,10 +9,9 @@ class CompetitionDetailScreen extends StatefulWidget {
   final VoidCallback refreshPreviousScreen;
 
   const CompetitionDetailScreen(
-      {Key? key,
+      {super.key,
       required this.competitionId,
-      required this.refreshPreviousScreen})
-      : super(key: key);
+      required this.refreshPreviousScreen});
 
   @override
   CompetitionDetailState createState() => CompetitionDetailState();
@@ -224,7 +223,7 @@ class CompetitionDetailState extends State<CompetitionDetailScreen> {
         .where(
             (element) => element.user.id == _userProfileManager.user.value!.id)
         .toList();
-    if (model.isJoined == 1) {
+    if (model.isJoined) {
       title = loggedInUserPost.isNotEmpty
           ? viewSubmissionString.tr
           : model.competitionMediaType == 1
@@ -239,7 +238,7 @@ class CompetitionDetailState extends State<CompetitionDetailScreen> {
       bottom: 0,
       child: InkWell(
           onTap: () async {
-            if (model.isJoined == 1) {
+            if (model.isJoined) {
               //Already Joined Mission
               if (loggedInUserPost.isNotEmpty) {
                 //User have already published post for this competition

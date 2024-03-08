@@ -1,12 +1,20 @@
+import 'dart:ui';
+
 import 'package:foap/api_handler/apis/events_api.dart';
+import 'package:foap/helper/enum.dart';
 import 'package:foap/helper/list_extension.dart';
 import 'package:get/get.dart';
 import 'package:foap/helper/imports/event_imports.dart';
+
+import '../../../../api_handler/apis/post_api.dart';
+import '../../../../model/data_wrapper.dart';
+import '../../../../model/post_model.dart';
 
 class EventsController extends GetxController {
   RxList<EventModel> events = <EventModel>[].obs;
   RxList<EventCategoryModel> categories = <EventCategoryModel>[].obs;
   RxList<EventMemberModel> members = <EventMemberModel>[].obs;
+  RxList<PostModel> posts = <PostModel>[].obs;
 
   RxBool isLoadingCategories = false.obs;
 
@@ -25,12 +33,15 @@ class EventsController extends GetxController {
   int? _categoryId;
   int? _status;
   int? _isJoined;
+  DataWrapper postDataWrapper = DataWrapper();
 
   clear() {
     isLoadingEvents.value = false;
     events.value = [];
     eventsPage = 1;
     canLoadMoreEvents = true;
+    postDataWrapper = DataWrapper();
+    posts.clear();
   }
 
   clearMembers() {
@@ -62,25 +73,6 @@ class EventsController extends GetxController {
     getEvents();
   }
 
-  // selectedSegmentIndex(int index) {
-  //   if (isLoadingEvents.value == true) {
-  //     return;
-  //   }
-  //   update();
-  //
-  //   if (index == 0 && segmentIndex.value != index) {
-  //     clear();
-  //     getEvents();
-  //   } else if (index == 1 && segmentIndex.value != index) {
-  //     clear();
-  //     getEvents(isJoined: 1);
-  //   } else if (index == 2 && segmentIndex.value != index) {
-  //     clear();
-  //   }
-  //
-  //   segmentIndex.value = index;
-  // }
-
   getEvents() {
     if (canLoadMoreEvents) {
       isLoadingEvents.value = true;
@@ -93,7 +85,7 @@ class EventsController extends GetxController {
           resultCallback: (result, metadata) {
             events.addAll(result);
             isLoadingEvents.value = false;
-            events.unique((e)=> e.id);
+            events.unique((e) => e.id);
             canLoadMoreEvents = result.length >= metadata.perPage;
             eventsPage += 1;
 
@@ -111,7 +103,7 @@ class EventsController extends GetxController {
           resultCallback: (result) {
             members.addAll(result);
             isLoadingMembers = false;
-            members.unique((e)=> e.id);
+            members.unique((e) => e.id);
 
             membersPage += 1;
             // if (response.eventMembers.length == response.metaData?.perPage) {
@@ -158,4 +150,47 @@ class EventsController extends GetxController {
     events.refresh();
     EventApi.leaveEvent(eventId: event.id);
   }
+
+  refreshPosts({required VoidCallback callback}) {
+    postDataWrapper = DataWrapper();
+    getPosts(callback: callback);
+  }
+
+  loadMorePosts({required VoidCallback callback}) {
+    if (postDataWrapper.haveMoreData.value == true) {
+      if (postDataWrapper.page == 1) {
+        postDataWrapper.isLoading.value = true;
+      }
+      getPosts(callback: callback);
+    } else {
+      callback();
+    }
+  }
+
+  void getPosts({required VoidCallback callback}) async {
+    PostApi.getPosts(
+        postType: PostType.event,
+        page: postDataWrapper.page,
+        resultCallback: (result, metadata) {
+          posts.addAll(result);
+          posts.sort((a, b) => b.createDate!.compareTo(a.createDate!));
+          posts.unique((e) => e.id);
+
+          postDataWrapper.processCompletedWithData(metadata);
+
+          callback();
+          update();
+        });
+  }
+
+  removePostFromList(PostModel post) {
+    posts.removeWhere((element) => element.id == post.id);
+    posts.refresh();
+  }
+
+  removeUsersAllPostFromList(PostModel post) {
+    posts.removeWhere((element) => element.user.id == post.user.id);
+    posts.refresh();
+  }
+
 }

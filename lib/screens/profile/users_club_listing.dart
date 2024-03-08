@@ -5,7 +5,7 @@ import '../reuseable_widgets/club_listing.dart';
 class UsersClubs extends StatefulWidget {
   final UserModel user;
 
-  const UsersClubs({Key? key, required this.user}) : super(key: key);
+  const UsersClubs({super.key, required this.user});
 
   @override
   UsersClubsState createState() => UsersClubsState();

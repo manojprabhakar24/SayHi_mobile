@@ -11,7 +11,7 @@ import '../dashboard/posts.dart';
 class HashTagsList extends StatelessWidget {
   final MiscController _miscController = Get.find();
 
-  HashTagsList({Key? key}) : super(key: key);
+  HashTagsList({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -23,13 +23,13 @@ class HashTagsList extends StatelessWidget {
     scrollController.addListener(() {
       if (scrollController.position.maxScrollExtent ==
           scrollController.position.pixels) {
-        if (!_miscController.hashtagsIsLoading.value) {
+        if (!_miscController.hashtagDataWrapper.isLoading.value) {
           _miscController.loadHashTags();
         }
       }
     });
 
-    return Obx(() => _miscController.hashtagsIsLoading.value
+    return Obx(() => _miscController.hashtagDataWrapper.isLoading.value
         ? const ShimmerHashtag()
         : _miscController.hashTags.isNotEmpty
             ? ListView.builder(

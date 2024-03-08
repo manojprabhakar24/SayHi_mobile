@@ -11,7 +11,7 @@ class JobCard extends StatelessWidget {
     return Stack(
       children: [
         Container(
-          height: 120,
+          height: 130,
           color: AppColorConstants.cardColor,
           child: Row(
             children: [
@@ -29,11 +29,11 @@ class JobCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const SizedBox(
-                      height: 20,
+                      height: 10,
                     ),
                     BodyLargeText(
                       job.postedBy!.name!,
-                      weight: TextWeight.bold,
+                      weight: TextWeight.semiBold,
                     ),
                     const SizedBox(
                       height: 8,
@@ -43,9 +43,8 @@ class JobCard extends StatelessWidget {
                       weight: TextWeight.regular,
                     ),
                     const SizedBox(
-                      height: 10,
+                      height: 8,
                     ),
-
                     BodyMediumText(
                       '\$${job.minSalary} - \$${job.maxSalary}',
                       weight: TextWeight.bold,

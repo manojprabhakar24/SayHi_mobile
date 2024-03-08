@@ -4,7 +4,7 @@ import 'package:foap/helper/imports/reel_imports.dart';
 class Reels extends StatefulWidget {
   final bool needBackBtn;
 
-  const Reels({Key? key, required this.needBackBtn}) : super(key: key);
+  const Reels({super.key, required this.needBackBtn});
 
   @override
   State<Reels> createState() => _ReelsState();

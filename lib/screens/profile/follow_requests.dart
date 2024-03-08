@@ -2,10 +2,9 @@ import 'package:foap/helper/imports/common_import.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import '../../components/user_card.dart';
 import '../../controllers/notification/notifications_controller.dart';
-import 'other_user_profile.dart';
 
 class FollowRequestList extends StatefulWidget {
-  const FollowRequestList({Key? key}) : super(key: key);
+  const FollowRequestList({super.key});
 
   @override
   FollowRequestListState createState() => FollowRequestListState();

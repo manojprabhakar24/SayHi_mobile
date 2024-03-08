@@ -7,7 +7,7 @@ import '../../model/package_model.dart';
 import '../../util/constant_util.dart';
 
 class CoinPackagesWidget extends StatefulWidget {
-  const CoinPackagesWidget({Key? key}) : super(key: key);
+  const CoinPackagesWidget({super.key});
 
   @override
   State<CoinPackagesWidget> createState() => _CoinPackagesWidgetState();

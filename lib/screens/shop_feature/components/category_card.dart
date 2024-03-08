@@ -9,8 +9,7 @@ class CategoryCard extends StatelessWidget {
   ShopCategoryModel category;
   VoidCallback? callback;
 
-  CategoryCard({Key? key, required this.category, required this.callback})
-      : super(key: key);
+  CategoryCard({super.key, required this.category, required this.callback});
 
   @override
   Widget build(BuildContext context) {
@@ -48,8 +47,7 @@ class CategoryCardForPost extends StatelessWidget {
   final VoidCallback? callback;
 
   const CategoryCardForPost(
-      {Key? key, required this.category, required this.callback})
-      : super(key: key);
+      {super.key, required this.category, required this.callback});
 
   @override
   Widget build(BuildContext context) {

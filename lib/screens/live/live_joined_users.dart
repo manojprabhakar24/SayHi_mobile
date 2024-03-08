@@ -3,7 +3,7 @@ import 'package:foap/helper/imports/live_imports.dart';
 import '../../components/user_card.dart';
 
 class LiveJoinedUsers extends StatefulWidget {
-  const LiveJoinedUsers({Key? key}) : super(key: key);
+  const LiveJoinedUsers({super.key});
 
   @override
   State<LiveJoinedUsers> createState() => _LiveJoinedUsersState();
@@ -47,7 +47,7 @@ class _LiveJoinedUsersState extends State<LiveJoinedUsers> {
                             agoraLiveController.amIModeratorInLive) &&
                         viewer.user.id !=
                             agoraLiveController
-                                .live.value!.mainHostUserDetail.id) {
+                                .live.value!.mainHostUserDetail!.id) {
                       openActionSheetForUser(viewer);
                     }
                   });

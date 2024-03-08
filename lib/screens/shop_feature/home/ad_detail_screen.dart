@@ -9,7 +9,7 @@ import 'enlarge_imageview.dart';
 class AdDetailScreen extends StatefulWidget {
   final AdModel adModel;
 
-  const AdDetailScreen(this.adModel, {Key? key}) : super(key: key);
+  const AdDetailScreen(this.adModel, {super.key});
 
   @override
   AdDetailState createState() => AdDetailState();

@@ -15,35 +15,29 @@ import '../dashboard/posts.dart';
 import '../highlights/choose_stories.dart';
 import '../highlights/hightlights_viewer.dart';
 import '../settings_menu/settings_controller.dart';
-import 'follower_following_list.dart';
 
 class MyProfile extends StatefulWidget {
   final bool showBack;
 
-  const MyProfile({Key? key, required this.showBack}) : super(key: key);
+  const MyProfile({super.key, required this.showBack});
 
   @override
   MyProfileState createState() => MyProfileState();
 }
 
-class MyProfileState extends State<MyProfile>
-    with SingleTickerProviderStateMixin {
+class MyProfileState extends State<MyProfile> {
   final ProfileController _profileController = Get.find();
-  final HighlightsController _highlightsController = HighlightsController();
+  final HighlightsController _highlightsController = Get.find();
   final SettingsController _settingsController = Get.find();
   final UserProfileManager _userProfileManager = Get.find();
   final PostController _postController = Get.find();
 
   List<String> tabs = [postsString, reelsString, mentionsString];
 
-  TabController? controller;
-
   @override
   void initState() {
     super.initState();
 
-    controller = TabController(vsync: this, length: tabs.length)
-      ..addListener(() {});
     initialLoad();
   }
 
@@ -356,7 +350,7 @@ class MyProfileState extends State<MyProfile>
                     height: 10,
                   ),
                   BodyMediumText(
-                    '(${_userProfileManager.user.value!.totalMentions.formatNumber})',
+                    '(${_userProfileManager.user.value?.totalMentions.formatNumber})',
                     weight: TextWeight.bold,
                   ),
                 ],

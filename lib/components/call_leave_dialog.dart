@@ -8,10 +8,10 @@ class LeaveDialog extends StatefulWidget {
   final Function onYesAction;
 
   const LeaveDialog(
-      {Key? key, required this.title,
+      {super.key, required this.title,
         required this.yesText,
         required this.noText,
-        required this.onYesAction}) : super(key:key);
+        required this.onYesAction});
 
   @override
   State<LeaveDialog> createState() => _LeaveDialogState();

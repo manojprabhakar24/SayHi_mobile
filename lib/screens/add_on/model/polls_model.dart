@@ -1,4 +1,4 @@
-class PollsModel {
+class PollModel {
   int? id;
   String? title;
   int? totalVoteCount;
@@ -6,14 +6,14 @@ class PollsModel {
 
   List<SayHiPollOption>? pollOptions;
 
-  PollsModel(
+  PollModel(
       {this.id,
       this.title,
       this.totalVoteCount,
       this.isVote,
       this.pollOptions});
 
-  PollsModel.fromJson(Map<String, dynamic> json) {
+  PollModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     title = json['title'];
     totalVoteCount = json['total_vote_count'];

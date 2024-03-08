@@ -1,12 +1,10 @@
 import 'package:foap/helper/imports/common_import.dart';
 import 'package:foap/helper/imports/login_signup_imports.dart';
-import 'package:foap/screens/login_sign_up/set_user_name.dart';
 import 'package:lottie/lottie.dart';
-
 import '../../main.dart';
 
 class LoginScreen extends StatefulWidget {
-  const LoginScreen({Key? key}) : super(key: key);
+  const LoginScreen({super.key});
 
   @override
   LoginScreenState createState() => LoginScreenState();
@@ -115,7 +113,7 @@ class LoginScreenState extends State<LoginScreen> {
                     ),
                   ],
                 ).ripple(() {
-                  Get.to(() => const SetUserName());
+                  Get.to(() => const SignUpScreen());
                 }),
                 divider(height: 1).vp(40),
                 BodyMediumText(continueWithAccountsString),

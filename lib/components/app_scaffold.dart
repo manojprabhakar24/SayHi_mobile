@@ -12,7 +12,7 @@ class AppScaffold extends StatelessWidget {
   final bool? extendBodyBehindAppBar;
 
   const AppScaffold(
-      {Key? key,
+      {super.key,
       required this.body,
       this.backgroundColor,
       this.appBar,
@@ -20,8 +20,7 @@ class AppScaffold extends StatelessWidget {
       this.bottomNavigationBar,
       this.resizeToAvoidBottomInset,
       this.extendBodyBehindAppBar,
-      this.floatingActionButtonLocation})
-      : super(key: key);
+      this.floatingActionButtonLocation});
 
   @override
   Widget build(BuildContext context) {

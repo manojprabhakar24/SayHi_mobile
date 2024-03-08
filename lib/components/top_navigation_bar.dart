@@ -1,5 +1,4 @@
 import 'package:foap/helper/imports/common_import.dart';
-import 'package:foap/screens/add_on/ui/add_relationship/accept_reject_invitation.dart';
 
 Widget backNavigationBar({required String title}) {
   return Container(
@@ -79,76 +78,6 @@ Widget backNavigationBarWithTrailingWidget(
         right: DesignConstants.horizontalPadding,
         top: 40),
   );
-}
-
-Widget backNavigationBarWithIconBadge(
-    {required ThemeIcon icon,
-    required String title,
-    required int badgeCount,
-    required VoidCallback iconBtnClicked}) {
-  return Stack(
-    children: [
-      Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          ThemeIconWidget(
-            ThemeIcon.backArrow,
-            size: 18,
-            color: AppColorConstants.iconColor,
-          ).ripple(() {
-            Get.back();
-          }),
-          Expanded(
-              child: Align(
-            alignment: Alignment.centerRight,
-            child: ThemeIconWidget(
-              ThemeIcon.setting,
-              size: 25,
-              color: AppColorConstants.iconColor,
-            ).rP8.ripple(() {
-              iconBtnClicked();
-            }),
-          )),
-          Stack(children: [
-            ThemeIconWidget(
-              icon,
-              size: 30,
-              color: AppColorConstants.iconColor,
-            ).ripple(() {
-              Get.to(() => const AcceptRejectInvitation());
-            }),
-            if (badgeCount > 0)
-              Positioned.fill(
-                  child: Align(
-                      alignment: Alignment.topRight,
-                      child: Container(
-                        height: 18,
-                        width: 18,
-                        decoration: const BoxDecoration(
-                          color: Colors.redAccent,
-                          borderRadius: BorderRadius.all(Radius.circular(15)),
-                        ),
-                        child: Center(child: Text(badgeCount.toString())),
-                      )))
-          ]).ripple(() {
-            Get.to(() => const AcceptRejectInvitation());
-            //
-          }),
-        ],
-      ),
-      Positioned(
-        left: 0,
-        right: 0,
-        child: Center(
-          child: BodyLargeText(title.tr, weight: TextWeight.medium),
-        ),
-      ),
-    ],
-  ).setPadding(
-      left: DesignConstants.horizontalPadding,
-      right: DesignConstants.horizontalPadding,
-      top: 8,
-      bottom: 16);
 }
 
 Widget profileScreensNavigationBar(

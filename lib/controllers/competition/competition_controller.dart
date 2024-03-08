@@ -42,7 +42,7 @@ class CompetitionController extends GetxController {
           page: page,
           resultCallback: (result, metadata) {
             allCompetitions.addAll(result);
-            allCompetitions.unique((e)=> e.id);
+            allCompetitions.unique((e) => e.id);
 
             current.value =
                 allCompetitions.where((element) => element.isOngoing).toList();
@@ -98,7 +98,7 @@ class CompetitionController extends GetxController {
 
     if (coin >= competition.joiningFee) {
       CompetitionApi.joinCompetition(competition.id, resultCallback: () {
-        competition.isJoined = 1;
+        competition.isJoined = true;
         update();
         _userProfileManager.refreshProfile();
       });
@@ -131,14 +131,15 @@ class CompetitionController extends GetxController {
       Get.to(() => AddPostScreen(
             postType: PostType.competition,
             // mediaType: PostMediaType.photo,
-            competitionId: competition.id,
+            competition: competition,
+            postCompletionHandler: () {},
           ));
     } else {
       Get.to(() => AddPostScreen(
             postType: PostType.competition,
-
             // mediaType: PostMediaType.video,
-            competitionId: competition.id,
+            competition: competition,
+            postCompletionHandler: () {},
           ));
     }
   }

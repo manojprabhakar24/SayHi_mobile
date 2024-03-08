@@ -484,7 +484,7 @@ class StoriesShimmerWidget extends StatelessWidget {
 }
 
 class EventBookingShimmerWidget extends StatefulWidget {
-  const EventBookingShimmerWidget({Key? key}) : super(key: key);
+  const EventBookingShimmerWidget({super.key});
 
   @override
   State<EventBookingShimmerWidget> createState() =>
@@ -588,7 +588,7 @@ class _EventBookingShimmerWidgetState extends State<EventBookingShimmerWidget> {
 }
 
 class CardsStackShimmerWidget extends StatefulWidget {
-  const CardsStackShimmerWidget({Key? key}) : super(key: key);
+  const CardsStackShimmerWidget({super.key});
 
   @override
   State<CardsStackShimmerWidget> createState() =>

@@ -4,21 +4,17 @@ import 'package:foap/util/time_convertor.dart';
 class StoryModel {
   int id;
 
-  // int isReported;
   String name;
   String userName;
 
-  // String email;
   String? userImage;
   List<StoryMediaModel> media;
   bool isViewed = false;
 
   StoryModel({
     required this.id,
-    // required this.isReported,
     required this.name,
     required this.userName,
-    // required this.email,
     this.userImage,
     required this.media,
   });
@@ -26,10 +22,8 @@ class StoryModel {
   factory StoryModel.fromJson(dynamic json) {
     StoryModel model = StoryModel(
       id: json['id'],
-      // isReported: json['is_reported'],
       name: json['name'],
       userName: json['username'],
-      // email: json['email'],
       userImage: json['picture'],
       media: (json['userStory'] as List<dynamic>)
           .map((e) => StoryMediaModel.fromJson(e))
@@ -38,6 +32,14 @@ class StoryModel {
 
     return model;
   }
+
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "name": name,
+        "username": userName,
+        "picture": userImage,
+        "userStory": media.map((e) => e.toJson()).toList()
+      };
 }
 
 class StoryMediaModel {
@@ -105,6 +107,7 @@ class StoryMediaModel {
         "created_at": createdAtDate,
         "type": type,
         "totalView": totalView,
+        // "user": user!.toJson(),
       };
 
   isVideoPost() {

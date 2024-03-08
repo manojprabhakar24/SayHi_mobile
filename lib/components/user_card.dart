@@ -1,4 +1,5 @@
 import 'package:foap/helper/imports/common_import.dart';
+import 'package:foap/helper/imports/live_imports.dart';
 import 'package:foap/helper/number_extension.dart';
 import 'package:progress_state_button/iconed_button.dart';
 import 'package:progress_state_button/progress_button.dart';
@@ -17,11 +18,10 @@ class FollowUnfollowButton extends StatelessWidget {
   final VoidCallback? unFollowCallback;
 
   const FollowUnfollowButton(
-      {Key? key,
+      {super.key,
       required this.user,
       required this.followCallback,
-      required this.unFollowCallback})
-      : super(key: key);
+      required this.unFollowCallback});
 
   @override
   Widget build(BuildContext context) {
@@ -62,7 +62,7 @@ class FollowUnfollowButton extends StatelessWidget {
 class UserInfo extends StatelessWidget {
   final UserModel model;
 
-  const UserInfo({Key? key, required this.model}) : super(key: key);
+  const UserInfo({super.key, required this.model});
 
   @override
   Widget build(BuildContext context) {
@@ -117,7 +117,7 @@ class UserTile extends StatelessWidget {
   final VoidCallback? sendCallback;
 
   const UserTile({
-    Key? key,
+    super.key,
     required this.profile,
     this.followCallback,
     this.unFollowCallback,
@@ -126,7 +126,7 @@ class UserTile extends StatelessWidget {
     this.audioCallCallback,
     this.videoCallCallback,
     this.sendCallback,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -143,11 +143,11 @@ class UserTile extends StatelessWidget {
                 user: profile,
                 size: 30,
                 onTapHandler: () {
-                  Live live = Live(
-                      channelName: profile.liveCallDetail!.channelName,
-                      mainHostUserDetail: profile,
-                      token: profile.liveCallDetail!.token,
-                      id: profile.liveCallDetail!.id);
+                  LiveModel live = LiveModel();
+                  live.channelName = profile.liveCallDetail!.channelName;
+                  live.mainHostUserDetail = profile;
+                  live.token = profile.liveCallDetail!.token;
+                  live.id = profile.liveCallDetail!.id;
                   agoraLiveController.joinAsAudience(
                     live: live,
                   );
@@ -258,12 +258,12 @@ class UserCard extends StatelessWidget {
   final VoidCallback? viewCallback;
 
   const UserCard({
-    Key? key,
+    super.key,
     required this.profile,
     this.followCallback,
     this.unFollowCallback,
     this.viewCallback,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -318,11 +318,15 @@ class UserCard extends StatelessWidget {
         const SizedBox(
           height: 10,
         ),
-        FollowUnfollowButton(
-          user: profile,
-          followCallback: followCallback,
-          unFollowCallback: unFollowCallback,
-        ),
+        profile.isMe
+            ? const SizedBox(
+                height: 35,
+              )
+            : FollowUnfollowButton(
+                user: profile,
+                followCallback: followCallback,
+                unFollowCallback: unFollowCallback,
+              ),
       ],
     );
   }
@@ -334,11 +338,10 @@ class SelectableUserCard extends StatefulWidget {
   final VoidCallback? selectionHandler;
 
   const SelectableUserCard(
-      {Key? key,
+      {super.key,
       required this.model,
       required this.isSelected,
-      this.selectionHandler})
-      : super(key: key);
+      this.selectionHandler});
 
   @override
   SelectableUserCardState createState() => SelectableUserCardState();
@@ -405,8 +408,7 @@ class SelectableUserTile extends StatefulWidget {
   final VoidCallback? selectionHandler;
 
   const SelectableUserTile(
-      {Key? key, required this.model, this.isSelected, this.selectionHandler})
-      : super(key: key);
+      {super.key, required this.model, this.isSelected, this.selectionHandler});
 
   @override
   SelectableUserTileState createState() => SelectableUserTileState();
@@ -483,10 +485,10 @@ class InviteUserTile extends StatelessWidget {
   final VoidCallback? inviteCallback;
 
   const InviteUserTile({
-    Key? key,
+    super.key,
     required this.profile,
     this.inviteCallback,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -502,13 +504,11 @@ class InviteUserTile extends StatelessWidget {
                 user: profile,
                 size: 40,
                 onTapHandler: () {
-                  Live live = Live(
-                      channelName: profile.liveCallDetail!.channelName,
-                      // isHosting: false,
-                      mainHostUserDetail: profile,
-                      // battleUsers: [],
-                      token: profile.liveCallDetail!.token,
-                      id: profile.liveCallDetail!.id);
+                  LiveModel live = LiveModel();
+                  live.channelName = profile.liveCallDetail!.channelName;
+                  live.mainHostUserDetail = profile;
+                  live.token = profile.liveCallDetail!.token;
+                  live.id = profile.liveCallDetail!.id;
                   agoraLiveController.joinAsAudience(
                     live: live,
                   );
@@ -570,12 +570,12 @@ class RelationUserTile extends StatelessWidget {
   final VoidCallback? viewCallback;
 
   const RelationUserTile({
-    Key? key,
+    super.key,
     required this.profile,
     this.inviteCallback,
     this.unInviteCallback,
     this.viewCallback,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -652,11 +652,11 @@ class ClubMemberTile extends StatelessWidget {
   final VoidCallback? viewCallback;
 
   const ClubMemberTile({
-    Key? key,
+    super.key,
     required this.member,
     this.removeBtnCallback,
     this.viewCallback,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -672,13 +672,11 @@ class ClubMemberTile extends StatelessWidget {
               user: member.user!,
               size: 40,
               onTapHandler: () {
-                Live live = Live(
-                    channelName: member.user!.liveCallDetail!.channelName,
-                    // isHosting: false,
-                    mainHostUserDetail: member.user!,
-                    // battleUsers: [],
-                    token: member.user!.liveCallDetail!.token,
-                    id: member.user!.liveCallDetail!.id);
+                LiveModel live = LiveModel();
+                live.channelName = member.user!.liveCallDetail!.channelName;
+                live.mainHostUserDetail = member.user!;
+                live.token = member.user!.liveCallDetail!.token;
+                live.id = member.user!.liveCallDetail!.id;
                 agoraLiveController.joinAsAudience(
                   live: live,
                 );
@@ -750,12 +748,12 @@ class SendMessageUserTile extends StatelessWidget {
   final VoidCallback? sendCallback;
 
   const SendMessageUserTile({
-    Key? key,
+    super.key,
     required this.profile,
     required this.state,
     this.viewCallback,
     this.sendCallback,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -825,10 +823,10 @@ class BlockedUserTile extends StatelessWidget {
   final VoidCallback? unBlockCallback;
 
   const BlockedUserTile({
-    Key? key,
+    super.key,
     required this.profile,
     this.unBlockCallback,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -859,7 +857,7 @@ class BlockedUserTile extends StatelessWidget {
 class GifterUserTile extends StatelessWidget {
   final ReceivedGiftModel gift;
 
-  const GifterUserTile({Key? key, required this.gift}) : super(key: key);
+  const GifterUserTile({super.key, required this.gift});
 
   @override
   Widget build(BuildContext context) {
@@ -898,12 +896,12 @@ class ClubJoinRequestTile extends StatelessWidget {
   final VoidCallback viewCallback;
 
   const ClubJoinRequestTile({
-    Key? key,
+    super.key,
     required this.request,
     required this.viewCallback,
     required this.acceptBtnClicked,
     required this.declineBtnClicked,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -984,9 +982,9 @@ class StoryViewerTile extends StatelessWidget {
   final StoryViewerModel viewer;
 
   const StoryViewerTile({
-    Key? key,
+    super.key,
     required this.viewer,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -1012,11 +1010,11 @@ class FollowRequestSenderUserTile extends StatelessWidget {
   final VoidCallback declineCallback;
 
   const FollowRequestSenderUserTile({
-    Key? key,
+    super.key,
     required this.profile,
     required this.acceptCallback,
     required this.declineCallback,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -1104,9 +1102,9 @@ class LiveUserTile extends StatelessWidget {
   final LiveViewer viewer;
 
   const LiveUserTile({
-    Key? key,
+    super.key,
     required this.viewer,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

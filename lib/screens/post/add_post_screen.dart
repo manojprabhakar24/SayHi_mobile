@@ -3,7 +3,9 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:foap/components/smart_text_field.dart';
 import 'package:foap/helper/imports/common_import.dart';
+import 'package:foap/helper/imports/models.dart';
 import 'package:foap/helper/imports/setting_imports.dart';
+import 'package:foap/model/fund_raising_campaign.dart';
 import 'package:foap/screens/post/post_option_popup.dart';
 import 'package:photo_editor_sdk/photo_editor_sdk.dart';
 import 'package:video_editor_sdk/video_editor_sdk.dart';
@@ -12,7 +14,6 @@ import '../../components/place_picker/widgets/place_picker.dart';
 import '../../components/post_card/video_widget.dart';
 import '../../controllers/post/add_post_controller.dart';
 import '../../controllers/post/select_post_media_controller.dart';
-import '../../model/location.dart';
 import '../dashboard/dashboard_screen.dart';
 import 'tag_hashtag_view.dart';
 import 'tag_users_view.dart';
@@ -21,32 +22,38 @@ import 'audio_file_player.dart';
 
 class AddPostScreen extends StatefulWidget {
   final PostType postType;
+
   final List<Media>? items;
-  final int? competitionId;
-  final int? clubId;
+  final CompetitionModel? competition;
+  final ClubModel? club;
+  final EventModel? event;
+  final FundRaisingCampaign? fundRaisingCampaign;
+
   final bool? isReel;
   final int? audioId;
   final double? audioStartTime;
   final double? audioEndTime;
+  final VoidCallback postCompletionHandler;
 
   const AddPostScreen(
-      {Key? key,
+      {super.key,
       required this.postType,
+      required this.postCompletionHandler,
       this.items,
-      this.competitionId,
-      this.clubId,
+      this.competition,
+      this.club,
+      this.event,
+      this.fundRaisingCampaign,
       this.isReel,
       this.audioId,
       this.audioStartTime,
-      this.audioEndTime})
-      : super(key: key);
+      this.audioEndTime});
 
   @override
   AddPostState createState() => AddPostState();
 }
 
 class AddPostState extends State<AddPostScreen> {
-  TextEditingController descriptionText = TextEditingController();
   final SelectPostMediaController _selectPostMediaController =
       SelectPostMediaController();
   final SmartTextFieldController _smartTextFieldController = Get.find();
@@ -61,7 +68,6 @@ class AddPostState extends State<AddPostScreen> {
 
   @override
   void dispose() {
-    descriptionText.text = '';
     super.dispose();
   }
 
@@ -101,7 +107,7 @@ class AddPostState extends State<AddPostScreen> {
                           Container(
                                   color: AppColorConstants.themeColor,
                                   child: BodyLargeText(
-                                    widget.competitionId == null
+                                    widget.competition == null
                                         ? postString.tr
                                         : submitString.tr,
                                     weight: TextWeight.medium,
@@ -114,8 +120,9 @@ class AddPostState extends State<AddPostScreen> {
                                         _selectPostMediaController
                                             .selectedMediaList)
                                     .isNotEmpty ||
-                                descriptionText.text.isNotEmpty) {
-                              addPostController.uploadAllPostFiles(
+                                _smartTextFieldController
+                                    .textField.value.text.isNotEmpty) {
+                              addPostController.submitPost(
                                   allowComments:
                                       addPostController.enableComments.value,
                                   postType: widget.postType,
@@ -126,9 +133,15 @@ class AddPostState extends State<AddPostScreen> {
                                   items: widget.items ??
                                       _selectPostMediaController
                                           .selectedMediaList,
-                                  title: descriptionText.text,
-                                  competitionId: widget.competitionId,
-                                  clubId: widget.clubId);
+                                  title: _smartTextFieldController
+                                      .textField.value.text,
+                                  competitionId: widget.competition?.id,
+                                  clubId: widget.club?.id,
+                                  eventId: widget.event?.id,
+                                  fundRaisingCampaignId:
+                                      widget.fundRaisingCampaign?.id,
+                                  postCompletionHandler:
+                                      widget.postCompletionHandler);
                             }
                           }),
                         ],
@@ -136,6 +149,7 @@ class AddPostState extends State<AddPostScreen> {
                       const SizedBox(
                         height: 30,
                       ),
+                      postSourceWidget(),
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -162,10 +176,20 @@ class AddPostState extends State<AddPostScreen> {
                           Expanded(child: addDescriptionView()),
                         ],
                       ).hp(DesignConstants.horizontalPadding),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      divider(height: 0.5),
+                      if (widget.isReel != true)
+                        PostOptionsPopup(
+                          selectedMediaList: (medias) {
+                            _selectPostMediaController.mediaSelected(medias);
+                          },
+                          selectGif: (gifMedia) {
+                            _selectPostMediaController
+                                .mediaSelected([gifMedia]);
+                          },
+                          recordedAudio: (audioMedia) {
+                            _selectPostMediaController
+                                .mediaSelected([audioMedia]);
+                          },
+                        ).vP25,
                       SizedBox(
                         height: 50,
                         child: Row(
@@ -174,7 +198,7 @@ class AddPostState extends State<AddPostScreen> {
                             const SizedBox(
                               width: 15,
                             ),
-                            BodyLargeText(allowCommentsString),
+                            BodyMediumText(allowCommentsString),
                             const Spacer(),
                             Obx(() => ThemeIconWidget(
                                         addPostController.enableComments.value
@@ -191,21 +215,20 @@ class AddPostState extends State<AddPostScreen> {
                         height: 50,
                         child: Row(
                           children: [
-                             ThemeIconWidget(ThemeIcon.location),
+                            ThemeIconWidget(ThemeIcon.location),
                             const SizedBox(
                               width: 15,
                             ),
                             Obx(() =>
                                 addPostController.taggedLocation.value == null
-                                    ? BodyLargeText(addLocationString)
+                                    ? BodyMediumText(addLocationString)
                                     : BodyLargeText(addPostController
                                         .taggedLocation.value!.name)),
                             const Spacer(),
                             Obx(() => addPostController.taggedLocation.value ==
                                     null
-                                ?  ThemeIconWidget(ThemeIcon.nextArrow)
-                                :  ThemeIconWidget(ThemeIcon.close)
-                                    .ripple(() {
+                                ? ThemeIconWidget(ThemeIcon.nextArrow)
+                                : ThemeIconWidget(ThemeIcon.close).ripple(() {
                                     addPostController.setTaggedLocation(null);
                                   })),
                           ],
@@ -242,25 +265,70 @@ class AddPostState extends State<AddPostScreen> {
                       Obx(() => _smartTextFieldController.isEditing.value == 0
                           ? const Spacer()
                           : Container()),
-                      if (widget.isReel != true)
-                        PostOptionsPopup(
-                          selectedMediaList: (medias) {
-                            _selectPostMediaController.mediaSelected(medias);
-                          },
-                          selectGif: (gifMedia) {
-                            _selectPostMediaController
-                                .mediaSelected([gifMedia]);
-                          },
-                          recordedAudio: (audioMedia) {
-                            _selectPostMediaController
-                                .mediaSelected([audioMedia]);
-                          },
-                        )
                     ]),
               ],
             );
           }),
     );
+  }
+
+  Widget postSourceWidget() {
+    String image = '';
+    String name = '';
+    if (widget.club != null) {
+      image = widget.club!.image!;
+      name = widget.club!.name!;
+    } else if (widget.event != null) {
+      image = widget.event!.image;
+      name = widget.event!.name;
+    } else if (widget.fundRaisingCampaign != null) {
+      image = widget.fundRaisingCampaign!.coverImage;
+      name = widget.fundRaisingCampaign!.title;
+    }
+    if (image.isNotEmpty && name.isNotEmpty) {
+      return Container(
+        color: AppColorConstants.cardColor,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Container(
+                  height: 20,
+                  width: 5,
+                  color: AppColorConstants.themeColor,
+                ).round(10),
+                const SizedBox(
+                  width: 5,
+                ),
+                BodyLargeText(postingInString.tr),
+              ],
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            Row(
+              children: [
+                CachedNetworkImage(
+                  height: 40,
+                  width: 40,
+                  imageUrl: image,
+                  fit: BoxFit.cover,
+                ).round(10),
+                const SizedBox(
+                  width: 10,
+                ),
+                BodyLargeText(name),
+              ],
+            )
+          ],
+        ).p16,
+      ).round(15).setPadding(
+          left: DesignConstants.horizontalPadding,
+          right: DesignConstants.horizontalPadding,
+          bottom: DesignConstants.horizontalPadding);
+    }
+    return Container();
   }
 
   Widget media() {
@@ -291,7 +359,7 @@ class AddPostState extends State<AddPostScreen> {
                             Container(
                               color: Colors.black45,
                             ),
-                             Center(
+                            Center(
                               child: ThemeIconWidget(
                                 ThemeIcon.play,
                                 size: 50,
@@ -300,7 +368,7 @@ class AddPostState extends State<AddPostScreen> {
                             )
                           ],
                         )
-                      :  ThemeIconWidget(ThemeIcon.mic),
+                      : ThemeIconWidget(ThemeIcon.mic),
         ).round(10).rP8;
       } else {
         return Container();
@@ -312,16 +380,11 @@ class AddPostState extends State<AddPostScreen> {
     return SizedBox(
       height: 70,
       child: Obx(() {
-        descriptionText.value = TextEditingValue(
-            text: _smartTextFieldController.searchText.value,
-            selection: TextSelection.fromPosition(TextPosition(
-                offset: _smartTextFieldController.position.value)));
-
         return Container(
           color: AppColorConstants.cardColor,
           child: SmartTextField(
               maxLine: 5,
-              controller: descriptionText,
+              controller: _smartTextFieldController.textField.value,
               onTextChangeActionHandler: (text, offset) {
                 _smartTextFieldController.textChanged(text, offset);
               },
@@ -364,8 +427,7 @@ class AddedMediaList extends StatelessWidget {
   final SelectPostMediaController selectPostMediaController;
   final SettingsController settingController = Get.find();
 
-  AddedMediaList({Key? key, required this.selectPostMediaController})
-      : super(key: key);
+  AddedMediaList({super.key, required this.selectPostMediaController});
 
   @override
   Widget build(BuildContext context) {
@@ -386,7 +448,7 @@ class AddedMediaList extends StatelessWidget {
                     height: 40,
                     width: 40,
                     color: AppColorConstants.themeColor,
-                    child:  ThemeIconWidget(
+                    child: ThemeIconWidget(
                       ThemeIcon.close,
                       color: Colors.white,
                     )).circular.ripple(() {
@@ -409,11 +471,11 @@ class AddedMediaList extends StatelessWidget {
                                   fit: BoxFit.contain,
                                   width: double.infinity,
                                 ).ripple(() {
-                            if (settingController
-                                .setting.value!.canEditPhotoVideo) {
-                              openImageEditor(media);
-                            }
-                          })
+                                  if (settingController
+                                      .setting.value!.canEditPhotoVideo) {
+                                    openImageEditor(media);
+                                  }
+                                })
                               : media.mediaType == GalleryMediaType.gif
                                   ? CachedNetworkImage(
                                       fit: BoxFit.cover,
@@ -425,8 +487,8 @@ class AddedMediaList extends StatelessWidget {
                                           isLocalFile: true,
                                           play: true,
                                           onTapActionHandler: () {
-                                            if (settingController
-                                                .setting.value!.canEditPhotoVideo) {
+                                            if (settingController.setting.value!
+                                                .canEditPhotoVideo) {
                                               openVideoEditor(media);
                                             }
                                           },
@@ -515,7 +577,6 @@ class AddedMediaList extends StatelessWidget {
   openVideoEditor(Media media) async {
     // PESDK.unlockWithLicense("assets/pesdk_license");
 
-    print('openVideoEditor');
     final video = Video(media.file!.path);
     final result = await VESDK.openEditor(video);
 

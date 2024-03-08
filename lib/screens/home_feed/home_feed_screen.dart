@@ -1,22 +1,20 @@
 import 'package:foap/helper/imports/chat_imports.dart';
 import 'package:foap/helper/imports/common_import.dart';
 import 'package:foap/helper/imports/story_imports.dart';
+import 'package:foap/model/live_model.dart';
 import 'package:foap/screens/home_feed/story_uploader.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
-import 'package:flutter_polls/flutter_polls.dart';
 import '../../components/post_card/post_card.dart';
 import '../../controllers/post/add_post_controller.dart';
 import '../../controllers/live/agora_live_controller.dart';
 import '../../controllers/home/home_controller.dart';
-import '../../model/call_model.dart';
 import '../../model/post_model.dart';
-import '../add_on/model/polls_model.dart';
+import '../content_creator_view.dart';
 import '../dashboard/dashboard_screen.dart';
-import '../post/add_post_screen.dart';
 import '../settings_menu/settings_controller.dart';
 
 class HomeFeedScreen extends StatefulWidget {
-  const HomeFeedScreen({Key? key}) : super(key: key);
+  const HomeFeedScreen({super.key});
 
   @override
   HomeFeedState createState() => HomeFeedState();
@@ -33,7 +31,6 @@ class HomeFeedState extends State<HomeFeedScreen> {
   final _controller = ScrollController();
 
   String? selectedValue;
-  int pollFrequencyIndex = 10;
 
   @override
   void initState() {
@@ -72,7 +69,6 @@ class HomeFeedState extends State<HomeFeedScreen> {
 
   void loadData() {
     loadPosts();
-    _homeController.getPolls();
     if (_settingsController.setting.value!.enableStories) {
       _homeController.getStories();
     }
@@ -116,9 +112,11 @@ class HomeFeedState extends State<HomeFeedScreen> {
                     () => showGeneralDialog(
                         context: context,
                         pageBuilder: (context, animation, secondaryAnimation) =>
-                            const AddPostScreen(
-                              postType: PostType.basic,
-                            )),
+                            //  AddPostScreen(
+                            //   postType: PostType.basic,
+                            //   postCompletionHandler: () {},
+                            // )
+                            const ContentCreatorView()),
                   );
                 }),
                 const SizedBox(
@@ -230,7 +228,6 @@ class HomeFeedState extends State<HomeFeedScreen> {
   Widget storiesView() {
     return SizedBox(
       height: storyCircleSize + (storyCircleSize / 2),
-      // color: AppColorConstants.themeColor,
       child: GetBuilder<HomeController>(
           init: _homeController,
           builder: (ctx) {
@@ -249,18 +246,16 @@ class HomeFeedState extends State<HomeFeedScreen> {
                     ));
               },
               joinLiveUserCallback: (user) {
-                Live live = Live(
-                    channelName: user.liveCallDetail!.channelName,
-                    // isHosting: false,
-                    mainHostUserDetail: user,
-                    // battleUsers: [],
-                    token: user.liveCallDetail!.token,
-                    id: user.liveCallDetail!.id);
+                LiveModel live = LiveModel();
+                live.channelName = user.liveCallDetail!.channelName;
+                live.mainHostUserDetail = user;
+                live.token = user.liveCallDetail!.token;
+                live.id = user.liveCallDetail!.id;
                 _agoraLiveController.joinAsAudience(
                   live: live,
                 );
               },
-            ).hp(DesignConstants.horizontalPadding);
+            ).hp(DesignConstants.horizontalPadding / 2);
           }),
     );
   }
@@ -316,30 +311,6 @@ class HomeFeedState extends State<HomeFeedScreen> {
                       ).tP16
                     ],
                   ).vp(index > (offset - 1) ? 16 : 8);
-                } else if (index > 0 &&
-                    index % 8 == 0 &&
-                    _homeController.polls.length >= index / 8) {
-                  PollsModel poll = _homeController.polls[(index ~/ 8) - 1];
-                  {
-                    if (_settingsController.setting.value?.enablePolls ==
-                        true) {
-                      return Column(
-                        children: [
-                          divider(
-                            height: index > 1 ? 10 : 0,
-                          ).vp(index > 1 ? 16 : 8),
-                          pollWidget(poll),
-                          divider(
-                            height: index > 1 ? 10 : 0,
-                          ).vp(index > 1 ? 16 : 8)
-                        ],
-                      );
-                    } else {
-                      return divider(
-                        height: index > 1 ? 10 : 0,
-                      ).vp(index > 1 ? 16 : 8);
-                    }
-                  }
                 } else {
                   return divider(
                     height: index > 1 ? 10 : 0,
@@ -353,59 +324,5 @@ class HomeFeedState extends State<HomeFeedScreen> {
               onLoading: loadMore,
               enablePullDown: true);
     });
-  }
-
-  Widget pollWidget(PollsModel poll) {
-    return Container(
-      color: AppColorConstants.cardColor,
-      child: FlutterPolls(
-        pollId: poll.id.toString(),
-        hasVoted: poll.isVote! > 0,
-        userVotedOptionId: poll.isVote! > 0 ? poll.isVote.toString() : null,
-        onVoted: (PollOption pollOption, int newTotalVotes) async {
-          await Future.delayed(const Duration(seconds: 1));
-          _homeController.postPollAnswer(
-              poll.id!,
-              // _homeController.polls[pollIndex].id!,
-              int.parse(pollOption.id!));
-
-          /// If HTTP status is success, return true else false
-          return true;
-        },
-        pollEnded: false,
-        pollOptionsSplashColor: Colors.white,
-        votedProgressColor: Colors.grey.withOpacity(0.3),
-        votedBackgroundColor: Colors.grey.withOpacity(0.2),
-        votesTextStyle: TextStyle(
-            fontSize: FontSizes.b2, color: AppColorConstants.mainTextColor),
-        votedPercentageTextStyle: TextStyle(fontSize: FontSizes.b2).copyWith(
-          color: Colors.black,
-        ),
-        votedCheckmark: const Icon(
-          Icons.check_circle,
-          color: Colors.black,
-        ),
-        pollTitle: Align(
-          alignment: Alignment.centerLeft,
-          child: BodyLargeText(
-            poll.title ?? "",
-            weight: TextWeight.medium,
-          ),
-        ),
-        pollOptions: List<PollOption>.from(
-          (poll.pollOptions ?? []).map(
-            (option) {
-              var a = PollOption(
-                id: option.id.toString(),
-                title: BodyLargeText(option.title ?? '',
-                    weight: TextWeight.medium),
-                votes: option.totalOptionVoteCount ?? 0,
-              );
-              return a;
-            },
-          ),
-        ),
-      ).p16,
-    ).round(15).p16;
   }
 }

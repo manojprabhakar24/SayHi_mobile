@@ -16,14 +16,12 @@ import '../dashboard/posts.dart';
 import '../highlights/hightlights_viewer.dart';
 import '../live/gifts_list.dart';
 import '../settings_menu/settings_controller.dart';
-import 'follower_following_list.dart';
 
 class OtherUserProfile extends StatefulWidget {
   final int userId;
   final UserModel? user;
 
-  const OtherUserProfile({Key? key, required this.userId, this.user})
-      : super(key: key);
+  const OtherUserProfile({super.key, required this.userId, this.user});
 
   @override
   OtherUserProfileState createState() => OtherUserProfileState();
@@ -32,7 +30,7 @@ class OtherUserProfile extends StatefulWidget {
 class OtherUserProfileState extends State<OtherUserProfile>
     with SingleTickerProviderStateMixin {
   final ProfileController _profileController = Get.find();
-  final HighlightsController _highlightsController = HighlightsController();
+  final HighlightsController _highlightsController = Get.find();
   final SettingsController _settingsController = Get.find();
   final ChatDetailController _chatDetailController = Get.find();
   final PostController _postController = Get.find();
@@ -317,7 +315,6 @@ class OtherUserProfileState extends State<OtherUserProfile>
                       title: Center(child: BodyLargeText(reportString.tr)),
                       onTap: () async {
                         Get.back();
-
                         _profileController.reportUser();
                       }),
                   divider(),
@@ -325,7 +322,6 @@ class OtherUserProfileState extends State<OtherUserProfile>
                       title: Center(child: BodyLargeText(blockString.tr)),
                       onTap: () async {
                         Get.back();
-
                         _profileController.blockUser();
                       }),
                   divider(),

@@ -5,7 +5,7 @@ import '../../model/generic_item.dart';
 class CreateClub extends StatefulWidget {
   final ClubModel club;
 
-  const CreateClub({Key? key, required this.club}) : super(key: key);
+  const CreateClub({super.key, required this.club});
 
   @override
   CreateClubState createState() => CreateClubState();

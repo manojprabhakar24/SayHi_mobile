@@ -7,13 +7,13 @@ class LineDotsIndicator extends StatelessWidget {
   final double dotSize;
   final double spacing;
 
-  const LineDotsIndicator({Key? key,
+  const LineDotsIndicator({super.key,
     required this.itemCount,
     required this.currentIndex,
     this.color = Colors.grey,
     this.dotSize = 10.0,
     this.spacing = 12.0,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

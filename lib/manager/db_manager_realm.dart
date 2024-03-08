@@ -214,8 +214,6 @@ class RealmDBManager {
           cachedMessage.first,
         );
       }
-      print(
-          ' save in db chatMessage.repliedOnMessageContent ${chatMessage.repliedOnMessageContent}');
 
       realm.add(
         MessagesRealm(
@@ -224,7 +222,6 @@ class RealmDBManager {
           isEncrypted: chatMessage.isEncrypted,
           chatVersion: chatMessage.chatVersion,
           roomId: chatMessage.roomId,
-          // currentStatus: chatMessage.status,
           messageType: chatMessage.messageType,
           message: chatMessage.messageContent,
           repliedOnMessage: chatMessage.repliedOnMessageContent,
@@ -773,6 +770,8 @@ class RealmDBManager {
   }
 
   softDeleteMessages({required List<ChatMessageModel> messagesToDelete}) async {
+    print('messagedDeleted 4');
+
     realm.write(() {
       for (ChatMessageModel message in messagesToDelete) {
         var realmMessages = realm.query<MessagesRealm>(

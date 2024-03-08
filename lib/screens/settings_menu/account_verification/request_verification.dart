@@ -5,7 +5,7 @@ import 'package:image_picker/image_picker.dart';
 import '../../../controllers/misc/request_verification_controller.dart';
 
 class RequestVerification extends StatefulWidget {
-  const RequestVerification({Key? key}) : super(key: key);
+  const RequestVerification({super.key});
 
   @override
   State<RequestVerification> createState() => _RequestVerificationState();

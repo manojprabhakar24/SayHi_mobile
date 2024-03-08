@@ -70,6 +70,9 @@ class _VideoPostTileState extends State<VideoPostTile> {
 
   @override
   Widget build(BuildContext context) {
+    print('widget.media!.width ${widget.media!.width}');
+    print('widget.media!.height ${widget.media!.height}');
+
     return GestureDetector(
       onTap: () {
         if (isMute == true) {
@@ -79,70 +82,75 @@ class _VideoPostTileState extends State<VideoPostTile> {
         }
         widget.onTapActionHandler();
       },
-      child: Stack(
-        children: [
-          FutureBuilder(
-            future: initializeVideoPlayerFuture,
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.done) {
-                return SizedBox(
-                  height:
-                      widget.width / videoPlayerController!.value.aspectRatio,
-                  key: PageStorageKey(widget.url),
-                  child: Chewie(
+      child: SizedBox(
+        height: widget.media == null
+            ? null
+            : widget.width / (widget.media!.width / widget.media!.height),
+        child: Stack(
+          children: [
+            FutureBuilder(
+              future: initializeVideoPlayerFuture,
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.done) {
+                  return SizedBox(
+                    height:
+                        widget.width / videoPlayerController!.value.aspectRatio,
                     key: PageStorageKey(widget.url),
-                    controller: ChewieController(
-                      videoPlayerController: videoPlayerController!,
-                      aspectRatio: videoPlayerController!.value.aspectRatio,
-                      showControls: false,
-                      autoInitialize: true,
-                      looping: false,
-                      autoPlay: false,
-                      allowMuting: true,
-                      placeholder: widget.media != null
-                          ? CachedNetworkImage(
-                              imageUrl: widget.media!.thumbnail,
-                              fit: BoxFit.cover,
-                              width: Get.width,
-                              height: double.infinity,
-                            )
-                          : Container(),
-                      errorBuilder: (context, errorMessage) {
-                        return Center(
-                          child: Text(
-                            errorMessage,
-                            style: const TextStyle(color: Colors.white),
-                          ),
-                        );
-                      },
+                    child: Chewie(
+                      key: PageStorageKey(widget.url),
+                      controller: ChewieController(
+                        videoPlayerController: videoPlayerController!,
+                        aspectRatio: videoPlayerController!.value.aspectRatio,
+                        showControls: false,
+                        autoInitialize: true,
+                        looping: false,
+                        autoPlay: false,
+                        allowMuting: true,
+                        placeholder: widget.media != null
+                            ? CachedNetworkImage(
+                                imageUrl: widget.media!.thumbnail,
+                                fit: BoxFit.cover,
+                                width: Get.width,
+                                height: double.infinity,
+                              )
+                            : Container(),
+                        errorBuilder: (context, errorMessage) {
+                          return Center(
+                            child: Text(
+                              errorMessage,
+                              style: const TextStyle(color: Colors.white),
+                            ),
+                          );
+                        },
+                      ),
                     ),
+                  );
+                } else {
+                  return widget.media == null
+                      ? Container()
+                      : CachedNetworkImage(
+                          imageUrl: widget.media!.thumbnail,
+                          fit: BoxFit.cover,
+                          width: Get.width,
+                        );
+                }
+              },
+            ),
+            Positioned(
+                right: 10,
+                bottom: 10,
+                child: Container(
+                  height: 25,
+                  width: 25,
+                  color: Colors.black38,
+                  child: ThemeIconWidget(
+                    isMute ? ThemeIcon.micOff : ThemeIcon.mic,
+                    size: 15,
+                    color: Colors.white,
                   ),
-                );
-              } else {
-                return widget.media == null
-                    ? Container()
-                    : CachedNetworkImage(
-                        imageUrl: widget.media!.thumbnail,
-                        fit: BoxFit.cover,
-                        width: Get.width,
-                      );
-              }
-            },
-          ),
-          Positioned(
-              right: 10,
-              bottom: 10,
-              child: Container(
-                height: 25,
-                width: 25,
-                color: Colors.black38,
-                child: ThemeIconWidget(
-                  isMute ? ThemeIcon.micOff : ThemeIcon.mic,
-                  size: 15,
-                  color: Colors.white,
-                ),
-              ).circular),
-        ],
+                ).circular),
+          ],
+        ),
       ),
     );
   }

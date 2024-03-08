@@ -27,9 +27,10 @@ class ExploreEventsState extends State<ExploreEvents> {
 
   @override
   void dispose() {
-    _eventsController.clear();
-    _eventsController.clearMembers();
-
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _eventsController.clear();
+      _eventsController.clearMembers();
+    });
     super.dispose();
   }
 
@@ -104,7 +105,7 @@ class ExploreEventsState extends State<ExploreEvents> {
                                             height: 25,
                                           ),
                                           SizedBox(
-                                            height: 300,
+                                            height: 310,
                                             child: ListView.separated(
                                               padding: EdgeInsets.only(
                                                   left: DesignConstants
@@ -129,9 +130,6 @@ class ExploreEventsState extends State<ExploreEvents> {
                                                   joinBtnClicked: () {},
                                                   leaveBtnClicked: () {},
                                                   previewBtnClicked: () {
-                                                    Get.put(
-                                                        CheckoutController());
-
                                                     Get.to(() => EventDetail(
                                                         event: event,
                                                         needRefreshCallback:

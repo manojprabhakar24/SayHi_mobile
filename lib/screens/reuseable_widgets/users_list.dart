@@ -5,7 +5,7 @@ import '../../controllers/misc/users_controller.dart';
 class UsersList extends StatelessWidget {
   final UsersController _usersController = Get.find();
 
-  UsersList({Key? key}) : super(key: key);
+  UsersList({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +18,7 @@ class UsersList extends StatelessWidget {
       if (scrollController.position.maxScrollExtent ==
           scrollController.position.pixels) {
         if (!_usersController.accountsIsLoading.value) {
-          _usersController.loadUsers((){});
+          _usersController.loadUsers(() {});
         }
       }
     });

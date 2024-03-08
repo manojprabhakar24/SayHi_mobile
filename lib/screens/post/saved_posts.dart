@@ -3,7 +3,7 @@ import '../../helper/imports/common_import.dart';
 import 'package:foap/controllers/post/saved_post_controller.dart';
 
 class SavedPosts extends StatefulWidget {
-  const SavedPosts({Key? key}) : super(key: key);
+  const SavedPosts({super.key});
 
   @override
   State<SavedPosts> createState() => _SavedPostsState();

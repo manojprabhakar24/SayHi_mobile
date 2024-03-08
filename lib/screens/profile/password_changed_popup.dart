@@ -1,13 +1,13 @@
 import 'package:foap/helper/imports/common_import.dart';
 
+import '../login_sign_up/login_screen.dart';
 
 class PasswordChangedPopup extends StatelessWidget {
   final UserProfileManager _userProfileManager = Get.find();
 
   final VoidCallback dismissHandler;
 
-  PasswordChangedPopup({Key? key, required this.dismissHandler})
-      : super(key: key);
+  PasswordChangedPopup({super.key, required this.dismissHandler});
 
   @override
   Widget build(BuildContext context) {
@@ -26,12 +26,11 @@ class PasswordChangedPopup extends StatelessWidget {
             left: 0,
             right: 0,
             child: Container(
-              height: 360,
+              height: 400,
               color: AppColorConstants.backgroundColor,
               child: Column(
                 children: [
-                  Heading5Text('Password changed successfully!',
-                          weight: TextWeight.bold)
+                  Heading5Text(successString.tr, weight: TextWeight.bold)
                       .bp(20),
                   SizedBox(
                     height: 92,
@@ -51,14 +50,15 @@ class PasswordChangedPopup extends StatelessWidget {
                               AppColorConstants.disabledColor.withOpacity(0.1))
                       .vP25,
                   Heading5Text(
-                    'Your password has been changed successfully',
+                    passwordChangedString.tr,
                     textAlign: TextAlign.center,
                     color: AppColorConstants.backgroundColor,
                   ).ripple(() {}).bp(10),
                   AppThemeButton(
-                    text: 'Back to login',
+                    text: signInString.tr,
                     onPress: () {
-                      _userProfileManager.logout();
+                      // _userProfileManager.logout();
+                      Get.offAll(() => const LoginScreen());
                     },
                   ).hp(DesignConstants.horizontalPadding)
                 ],

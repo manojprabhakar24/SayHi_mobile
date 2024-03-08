@@ -13,7 +13,7 @@ class ClubListing extends StatelessWidget {
   final ClubsController _clubsController = Get.find();
   final ScrollController _controller = ScrollController();
 
-  ClubListing({Key? key}) : super(key: key);
+  ClubListing({super.key});
 
   @override
   Widget build(BuildContext context) {

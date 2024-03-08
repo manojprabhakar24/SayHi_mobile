@@ -8,12 +8,11 @@ class AvatarView extends StatelessWidget {
   final Color? borderColor;
 
   const AvatarView(
-      {Key? key,
+      {super.key,
       required this.url,
       this.size = 60,
       this.borderColor,
-      this.name})
-      : super(key: key);
+      this.name});
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +46,7 @@ class AvatarView extends StatelessWidget {
             ).round(size ?? 60)
           : Container(
               color: AppColorConstants.backgroundColor,
-              child: userNameInitialView(initials,size ?? 60),
+              child: userNameInitialView(initials, size ?? 60),
             ),
     ).borderWithRadius(
         value: 2,
@@ -65,14 +64,13 @@ class UserAvatarView extends StatelessWidget {
   final bool hideBorder;
 
   const UserAvatarView(
-      {Key? key,
+      {super.key,
       required this.user,
       this.size = 60,
       this.onTapHandler,
       this.hideLiveIndicator = false,
       this.hideOnlineIndicator = false,
-      this.hideBorder = false})
-      : super(key: key);
+      this.hideBorder = false});
 
   @override
   Widget build(BuildContext context) {
@@ -139,7 +137,7 @@ class UserAvatarView extends StatelessWidget {
             value: hideBorder ? 0 : 1,
             radius: size,
             color: AppColorConstants.themeColor)
-        : userNameInitialView(user.getInitials,size).borderWithRadius(
+        : userNameInitialView(user.getInitials, size).borderWithRadius(
             value: hideBorder ? 0 : 1,
             radius: size,
             color: AppColorConstants.themeColor);
@@ -156,11 +154,12 @@ class UserAvatarView extends StatelessWidget {
             left: 0,
             bottom: 0,
             child: Container(
-              height: 18,
+              height: 15,
               color: AppColorConstants.themeColor,
               child: Center(
-                child: BodyMediumText(
+                child: BodyExtraSmallText(
                   liveString.tr,
+                  color: Colors.white,
                 ),
               ),
             ).round(5))
@@ -174,10 +173,10 @@ class UserPlaneImageView extends StatelessWidget {
   final double? size;
 
   const UserPlaneImageView({
-    Key? key,
+    super.key,
     required this.user,
     this.size = 60,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -212,36 +211,35 @@ class UserPlaneImageView extends StatelessWidget {
                   size: size / 2,
                 )),
           ).round(20)
-        : userNameInitialView(user.getInitials,size).borderWithRadius(value: 1, radius: 20);
+        : userNameInitialView(user.getInitials, size)
+            .borderWithRadius(value: 1, radius: 20);
   }
-
-
 }
 
-Widget userNameInitialView(String initials, double size){
+Widget userNameInitialView(String initials, double size) {
   return SizedBox(
     height: double.infinity,
     width: double.infinity,
     child: Center(
       child: size < 40
           ? BodySmallText(
-        initials,
-        weight: TextWeight.medium,
-      )
+              initials,
+              weight: TextWeight.medium,
+            )
           : size < 60
-          ? BodyMediumText(
-        initials,
-        weight: TextWeight.medium,
-      )
-          : size < 80
-          ? BodyExtraLargeText(
-        initials,
-        weight: TextWeight.medium,
-      )
-          : Heading2Text(
-        initials,
-        weight: TextWeight.medium,
-      ),
+              ? BodyMediumText(
+                  initials,
+                  weight: TextWeight.medium,
+                )
+              : size < 80
+                  ? BodyExtraLargeText(
+                      initials,
+                      weight: TextWeight.medium,
+                    )
+                  : Heading2Text(
+                      initials,
+                      weight: TextWeight.medium,
+                    ),
     ),
   );
 }

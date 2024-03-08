@@ -21,13 +21,6 @@ class TextChatTile extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               linkPreview(messageString),
-              // LinkPreviewGenerator(
-              //   bodyMaxLines: 3,
-              //   link: messageString,
-              //   linkPreviewStyle: LinkPreviewStyle.large,
-              //   showGraphic: true,
-              //   errorBody: messageString,
-              // ),
               const SizedBox(
                 height: 10,
               ),

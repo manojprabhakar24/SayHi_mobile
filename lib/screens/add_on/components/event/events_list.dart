@@ -2,7 +2,6 @@ import 'package:foap/helper/extension.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import '../../../../util/app_config_constants.dart';
-import '../../controller/event/checkout_controller.dart';
 import '../../controller/event/event_controller.dart';
 import '../../model/event_model.dart';
 import '../../ui/event/event_detail.dart';
@@ -46,7 +45,6 @@ class EventsList extends StatelessWidget {
                       },
                       previewBtnClicked: () {},
                     ).ripple(() {
-                      Get.put(CheckoutController());
                       Get.to(() => EventDetail(
                             event: events[index],
                             needRefreshCallback: () {

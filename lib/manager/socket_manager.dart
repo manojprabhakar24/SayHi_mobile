@@ -83,8 +83,8 @@ class SocketManager {
 //Socket Global Listener Events
   dynamic socketGlobalListeners() {
     _socketInstance?.onAny((event, data) {
-      print('event $event');
-      print('data $data');
+      print('event = $event');
+      print('data = $data');
       // Handle the incoming event and data here
     });
     _socketInstance?.on(SocketConstants.eventConnect, onConnect);
@@ -241,14 +241,14 @@ class SocketManager {
   }
 
   void onDeleteMessage(dynamic response) {
+    print(response);
     int deleteScope = response['deleteScope'] as int;
     int roomId = response['room'] as int;
     int messageId = response['id'] as int;
-    int userId = response['user_id'] as int;
 
     if (deleteScope == 2) {
       _chatDetailController.messagedDeleted(
-          messageId: messageId, roomId: roomId, userId: userId);
+          messageId: messageId, roomId: roomId);
     }
   }
 
@@ -374,8 +374,6 @@ class SocketManager {
     chatMessage['created_at'] = response['created_at'];
 
     ChatMessageModel message = ChatMessageModel.fromJson(chatMessage);
-    // _chatController.newMessageReceived(message);
-    // _chatDetailController.newMessageReceived(message);
     getIt<RealmDBManager>().newMessageReceived(message);
   }
 
@@ -428,12 +426,12 @@ class SocketManager {
     host.userName = response['username'];
     host.picture = response['userImageUrl'];
 
-    Live live = Live(
-        channelName: response['channelName'],
-        mainHostUserDetail: host,
-        // battleUsers: [],
-        token: response['token'],
-        id: response['liveCallId']);
+    LiveModel live = LiveModel();
+    live.channelName = response['channelName'];
+    live.mainHostUserDetail = host;
+    // battleUsers: [],
+    live.token = response['token'];
+    live.id = response['liveCallId'];
     live.battleDetail =
         BattleDetail.fromJson(response['battleInfo']['battleDetail']);
     _agoraLiveController.invitedForLiveBattle(live);
@@ -472,7 +470,6 @@ class SocketManager {
         (response['battleInfo']['liveBattleHosts'] as List)
             .map((e) => LiveCallHostUser.fromJson(e))
             .toList();
-
 
     _agoraLiveController.liveCallHostsUpdated(
         liveId: liveId,

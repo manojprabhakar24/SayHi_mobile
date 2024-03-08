@@ -20,7 +20,7 @@ class MiscApi {
     });
   }
 
-  static getPolls({required Function(List<PollsModel>) resultCallback}) async {
+  static getPolls({required Function(List<PollModel>) resultCallback}) async {
     var url = NetworkConstantsUtil.getPolls;
 
     // Loader.show(status: loadingString.tr);
@@ -29,7 +29,7 @@ class MiscApi {
       if (result?.success == true) {
         var items = result!.data['poll']['items'];
         resultCallback(
-            List<PollsModel>.from(items.map((x) => PollsModel.fromJson(x))));
+            List<PollModel>.from(items.map((x) => PollModel.fromJson(x))));
       }
     });
   }
@@ -38,7 +38,7 @@ class MiscApi {
       {required int pollId,
       // required int pollQuestionId,
       required int questionOptionId,
-      required Function(List<PollsModel>) resultCallback}) async {
+      required Function(List<PollModel>) resultCallback}) async {
     var url = NetworkConstantsUtil.postPoll;
 
     await ApiWrapper().postApi(url: url, param: {
@@ -51,8 +51,8 @@ class MiscApi {
         var question = result['question'].first;
         question['pollQuestionOption'] = result['questionOption'];
 
-        resultCallback(List<PollsModel>.from(
-            [question].map((x) => PollsModel.fromJson(x))));
+        resultCallback(List<PollModel>.from(
+            [question].map((x) => PollModel.fromJson(x))));
       }
     });
   }
@@ -170,15 +170,16 @@ class MiscApi {
 
   static searchHashtag(
       {required String hashtag,
-      required int page,
-      required Function(List<Hashtag>) resultCallback}) async {
+        required int page,
+        required Function(List<Hashtag>, APIMetaData) resultCallback}) async {
     var url = '${NetworkConstantsUtil.searchHashtag}$hashtag&page=$page';
 
-    await ApiWrapper().getApi(url: url).then((result) {
+    ApiWrapper().getApi(url: url).then((result) {
       if (result?.success == true) {
         var items = result!.data['results']['items'];
         resultCallback(
-            List<Hashtag>.from(items.map((x) => Hashtag.fromJson(x))));
+            List<Hashtag>.from(items.map((x) => Hashtag.fromJson(x))),
+            APIMetaData.fromJson(result.data['results']['_meta']));
       }
     });
   }
@@ -200,8 +201,6 @@ class MiscApi {
       {required UploadMediaType type,
       required GalleryMediaType mediaType,
       required Function(String, String) resultCallback}) async {
-    Loader.show(status: loadingString.tr);
-
     await ApiWrapper()
         .uploadFile(
             url: NetworkConstantsUtil.uploadFileImage,
@@ -209,7 +208,6 @@ class MiscApi {
             mediaType: mediaType,
             type: type)
         .then((result) {
-      Loader.dismiss();
       if (result?.success == true) {
         var items = result!.data['files'] as List<dynamic>;
 

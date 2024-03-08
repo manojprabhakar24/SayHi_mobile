@@ -8,7 +8,7 @@ import 'audience_preference.dart';
 class CreateAudienceScreen extends StatelessWidget {
   final AudienceModel? audience;
 
-  CreateAudienceScreen({Key? key, this.audience}) : super(key: key);
+  CreateAudienceScreen({super.key, this.audience});
   final PromotionController _promotionController = Get.find();
 
   @override

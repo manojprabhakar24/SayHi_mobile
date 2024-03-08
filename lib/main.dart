@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'package:app_links/app_links.dart';
 import 'package:auto_orientation/auto_orientation.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/services.dart';
@@ -8,14 +7,15 @@ import 'package:foap/api_handler/apis/auth_api.dart';
 import 'package:foap/controllers/fund_raising/fund_raising_controller.dart';
 import 'package:foap/controllers/job/job_controller.dart';
 import 'package:foap/controllers/shop/shop_controller.dart';
+import 'package:foap/controllers/story/highlights_controller.dart';
 import 'package:foap/helper/device_info.dart';
 import 'package:foap/helper/imports/common_import.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:foap/screens/add_on/controller/dating/dating_controller.dart';
+import 'package:foap/screens/add_on/controller/event/checkout_controller.dart';
 import 'package:foap/screens/add_on/controller/event/event_controller.dart';
-import 'package:foap/screens/add_on/controller/relationship/relationship_controller.dart';
-import 'package:foap/screens/add_on/controller/relationship/relationship_search_controller.dart';
 import 'package:foap/controllers/live/live_users_controller.dart';
+import 'package:foap/screens/content_creator_view.dart';
 import 'package:foap/screens/login_sign_up/ask_to_follow.dart';
 import 'package:foap/screens/settings_menu/help_support_contorller.dart';
 import 'package:giphy_get/l10n.dart';
@@ -65,6 +65,7 @@ import 'manager/location_manager.dart';
 import 'manager/notification_manager.dart';
 import 'manager/player_manager.dart';
 import 'manager/socket_manager.dart';
+import 'firebase_options.dart';
 
 class MyHttpOverrides extends HttpOverrides {
   @override
@@ -84,7 +85,9 @@ Future<void> main() async {
   cameras = await availableCameras();
   HttpOverrides.global = MyHttpOverrides();
 
-  await Firebase.initializeApp();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
   DeviceInfoManager.collectDeviceInfo();
@@ -130,8 +133,6 @@ Future<void> main() async {
   Get.put(RequestVerificationController());
   Get.put(FAQController());
   Get.put(DatingController());
-  Get.put(RelationshipController());
-  Get.put(RelationshipSearchController());
   Get.put(LiveUserController());
   Get.put(PostGiftController());
   Get.put(HelpSupportController());
@@ -147,6 +148,9 @@ Future<void> main() async {
   Get.put(ShopController());
   Get.put(JobController());
   Get.put(SmartTextFieldController());
+  Get.put(CheckoutController());
+  Get.put(CameraControllerService());
+  Get.put(HighlightsController());
 
   setupServiceLocator();
 
@@ -181,7 +185,7 @@ Future<void> main() async {
 class SocialifiedApp extends StatefulWidget {
   final Widget startScreen;
 
-  const SocialifiedApp({Key? key, required this.startScreen}) : super(key: key);
+  const SocialifiedApp({super.key, required this.startScreen});
 
   @override
   State<SocialifiedApp> createState() => _SocialifiedAppState();
@@ -238,7 +242,9 @@ class _SocialifiedAppState extends State<SocialifiedApp> {
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   // If you're going to use other Firebase services in the background, such as Firestore,
   // make sure you call `initializeApp` before using other Firebase services.
-  await Firebase.initializeApp();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
 
   NotificationManager().parseNotificationMessage(message.data);
 }

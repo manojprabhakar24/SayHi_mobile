@@ -4,7 +4,7 @@ import 'package:foap/helper/imports/common_import.dart';
 class CallHistoryTile extends StatelessWidget {
   final CallHistoryModel model;
 
-  const CallHistoryTile({Key? key, required this.model}) : super(key: key);
+  const CallHistoryTile({super.key, required this.model});
 
   @override
   Widget build(BuildContext context) {

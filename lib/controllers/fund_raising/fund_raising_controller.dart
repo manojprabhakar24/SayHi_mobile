@@ -2,9 +2,12 @@ import 'package:foap/api_handler/apis/fund_raising_api.dart';
 import 'package:foap/helper/imports/common_import.dart';
 import 'package:foap/helper/imports/event_imports.dart';
 import 'package:foap/helper/list_extension.dart';
+import '../../api_handler/apis/post_api.dart';
 import '../../api_handler/apis/users_api.dart';
 import '../../model/comment_model.dart';
+import '../../model/data_wrapper.dart';
 import '../../model/fund_raising_campaign.dart';
+import '../../model/post_model.dart';
 
 class FundRaisingController extends GetxController {
   TextEditingController donationAmountTE = TextEditingController();
@@ -17,6 +20,8 @@ class FundRaisingController extends GetxController {
   RxList<FundRaisingCampaign> favCampaigns = <FundRaisingCampaign>[].obs;
   RxList<CommentModel> comments = <CommentModel>[].obs;
   RxList<UserModel> donors = <UserModel>[].obs;
+  RxList<PostModel> posts = <PostModel>[].obs;
+
   Rx<CommentModel?> replyingComment = Rx<CommentModel?>(null);
 
   FundRaisingCampaignSearchModel searchModel = FundRaisingCampaignSearchModel();
@@ -24,6 +29,8 @@ class FundRaisingController extends GetxController {
   RxBool isLoadingCategories = false.obs;
 
   Rx<FundRaisingCampaign?> currentCampaign = Rx<FundRaisingCampaign?>(null);
+
+  DataWrapper postDataWrapper = DataWrapper();
 
   int campaignPage = 1;
   bool canLoadMoreCampaigns = true;
@@ -67,6 +74,9 @@ class FundRaisingController extends GetxController {
     searchModel = FundRaisingCampaignSearchModel();
     donationAmount = 0.0;
     replyingComment.value = null;
+
+    postDataWrapper = DataWrapper();
+    posts.clear();
 
     clearComments();
     clearCampaigns();
@@ -121,6 +131,7 @@ class FundRaisingController extends GetxController {
     currentCampaign.value = campaign;
     getComments(() {});
     getCampaignDonors(() {});
+    refreshPosts(id: campaign.id, callback: () {});
   }
 
   setCategoryId(int? categoryId) {
@@ -371,7 +382,7 @@ class FundRaisingController extends GetxController {
     FundraisingDonationRequest donationOrder =
         FundraisingDonationRequest(payments: []);
 
-    donationOrder.id = currentCampaign.value!.id;
+    donationOrder.campaignId = currentCampaign.value!.id;
     donationOrder.totalAmount = donationAmount;
     donationOrder.itemName = currentCampaign.value!.title;
 
@@ -390,5 +401,48 @@ class FundRaisingController extends GetxController {
             checkoutController.orderFailed();
           }
         });
+  }
+
+  refreshPosts({ int? id, required VoidCallback callback}) {
+    postDataWrapper = DataWrapper();
+    getPosts(id: id, callback: callback);
+  }
+
+  loadMorePosts({ int? id, required VoidCallback callback}) {
+    if (postDataWrapper.haveMoreData.value == true) {
+      if (postDataWrapper.page == 1) {
+        postDataWrapper.isLoading.value = true;
+      }
+      getPosts(id: id, callback: callback);
+    } else {
+      callback();
+    }
+  }
+
+  void getPosts({ int? id, required VoidCallback callback}) async {
+    PostApi.getPosts(
+        postType: PostType.fundRaising,
+        fundRaisingCampaignId: id,
+        page: postDataWrapper.page,
+        resultCallback: (result, metadata) {
+          posts.addAll(result);
+          posts.sort((a, b) => b.createDate!.compareTo(a.createDate!));
+          posts.unique((e) => e.id);
+
+          postDataWrapper.processCompletedWithData(metadata);
+
+          callback();
+          update();
+        });
+  }
+
+  removePostFromList(PostModel post) {
+    posts.removeWhere((element) => element.id == post.id);
+    posts.refresh();
+  }
+
+  removeUsersAllPostFromList(PostModel post) {
+    posts.removeWhere((element) => element.user.id == post.user.id);
+    posts.refresh();
   }
 }

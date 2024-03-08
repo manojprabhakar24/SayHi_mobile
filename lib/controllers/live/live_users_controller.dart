@@ -2,6 +2,7 @@ import 'package:foap/api_handler/apis/live_streaming_api.dart';
 import 'package:foap/helper/imports/common_import.dart';
 import 'package:foap/helper/list_extension.dart';
 import 'package:foap/model/data_wrapper.dart';
+import 'package:foap/model/live_model.dart';
 
 class LiveUserController extends GetxController {
   RxList<UserLiveCallDetail> liveStreamUser = <UserLiveCallDetail>[].obs;
@@ -33,6 +34,16 @@ class LiveUserController extends GetxController {
           liveUserDataWrapper.processCompletedWithData(metadata);
 
           callback();
+        });
+  }
+
+  getLiveDetail(
+      {required String channelName,
+      required Function(LiveModel) resultCallback}) {
+    LiveStreamingApi.getLiveDetail(
+        channelName: channelName,
+        resultCallback: (result) {
+          resultCallback(result);
         });
   }
 }

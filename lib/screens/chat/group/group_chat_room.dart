@@ -5,8 +5,7 @@ import '../../../components/user_card.dart';
 class GroupChatRoomDetail extends StatefulWidget {
   final ChatRoomModel chatRoom;
 
-  const GroupChatRoomDetail({Key? key, required this.chatRoom})
-      : super(key: key);
+  const GroupChatRoomDetail({super.key, required this.chatRoom});
 
   @override
   State<GroupChatRoomDetail> createState() => _GroupChatRoomDetailState();
@@ -242,7 +241,7 @@ class _GroupChatRoomDetailState extends State<GroupChatRoomDetail> {
     return Column(
       children: [
         UserAvatarView(
-          user: widget.chatRoom.opponent.userDetail,
+          user: widget.chatRoom.opponent!.userDetail,
           size: 100,
           onTapHandler: () {
             //open live
@@ -251,7 +250,7 @@ class _GroupChatRoomDetailState extends State<GroupChatRoomDetail> {
         const SizedBox(
           height: 10,
         ),
-        Heading6Text(widget.chatRoom.opponent.userDetail.userName,
+        Heading6Text(widget.chatRoom.opponent!.userDetail.userName,
             weight: TextWeight.bold)
       ],
     );

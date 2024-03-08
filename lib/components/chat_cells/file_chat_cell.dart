@@ -7,7 +7,7 @@ import 'package:percent_indicator/circular_percent_indicator.dart';
 class FileChatTile extends StatefulWidget {
   final ChatMessageModel message;
 
-  const FileChatTile({Key? key, required this.message}) : super(key: key);
+  const FileChatTile({super.key, required this.message});
 
   @override
   State<FileChatTile> createState() => _FileChatTileState();

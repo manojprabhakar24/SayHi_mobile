@@ -5,16 +5,15 @@ import 'package:foap/helper/number_extension.dart';
 import 'package:foap/screens/home_feed/comments_screen.dart';
 import 'package:video_player/video_player.dart';
 import 'package:visibility_detector/visibility_detector.dart';
-
 import '../../../profile/other_user_profile.dart';
 
 class ReelVideoPlayer extends StatefulWidget {
   final PostModel reel;
 
   const ReelVideoPlayer({
-    Key? key,
+    super.key,
     required this.reel,
-  }) : super(key: key);
+  });
 
   @override
   State<ReelVideoPlayer> createState() => _ReelVideoPlayerState();
@@ -173,11 +172,11 @@ class _ReelVideoPlayerState extends State<ReelVideoPlayer> {
                 const SizedBox(
                   height: 10,
                 ),
-                if (widget.reel.title.isNotEmpty)
+                if (widget.reel.postTitle.isNotEmpty)
                   Column(
                     children: [
                       BodyLargeText(
-                        widget.reel.title,
+                        widget.reel.postTitle,
                         weight: TextWeight.medium,
                         color: Colors.white,
                       ),

@@ -11,15 +11,17 @@ import 'package:foap/screens/home_feed/story_uploader.dart';
 import 'package:foap/screens/jobs_listing/job_listing_dashboard.dart';
 import 'package:foap/screens/live/live_users_screen.dart';
 import 'package:foap/screens/near_by_offers/offers_dashboard.dart';
+import 'package:permission_handler/permission_handler.dart';
 import '../../controllers/home/home_controller.dart';
 import '../../controllers/job/job_controller.dart';
+import '../../helper/permission_utils.dart';
 import '../add_on/ui/podcast/podcast_dashboard.dart';
 import '../add_on/ui/reel/create_reel_video.dart';
 import '../chat/random_chat/choose_profile_category.dart';
 import '../club/explore_clubs.dart';
 import '../competitions/competitions_screen.dart';
+import '../content_creator_view.dart';
 import '../highlights/choose_stories.dart';
-import '../live/checking_feasibility.dart';
 import '../shop_feature/home/shop_dashboard.dart';
 import '../tvs/tv_dashboard.dart';
 
@@ -62,7 +64,7 @@ class QuickLink {
 class QuickLinkWidget extends StatefulWidget {
   final VoidCallback callback;
 
-  const QuickLinkWidget({Key? key, required this.callback}) : super(key: key);
+  const QuickLinkWidget({super.key, required this.callback});
 
   @override
   State<QuickLinkWidget> createState() => _QuickLinkWidgetState();
@@ -120,9 +122,19 @@ class _QuickLinkWidgetState extends State<QuickLinkWidget> {
                     Get.to(() => const ExploreClubs());
                   } else if (link.linkType == QuickLinkType.pages) {
                   } else if (link.linkType == QuickLinkType.goLive) {
-                    Get.to(() => CheckingLiveFeasibility(
-                          successCallbackHandler: () {},
-                        ));
+                    PermissionUtils.requestPermission(
+                        [Permission.camera, Permission.microphone],
+                        isOpenSettings: true, permissionGrant: () async {
+                      Get.to(() => const ContentCreatorView());
+                    }, permissionDenied: () {
+                      // AppUtil.showToast(
+                      //     message: pleaseAllowAccessToCameraForLiveString.tr,
+                      //     isSuccess: false);
+                    }, permissionNotAskAgain: () {
+                      // AppUtil.showToast(
+                      //     message: pleaseAllowAccessToCameraForLiveString.tr,
+                      //     isSuccess: false);
+                    });
                   } else if (link.linkType == QuickLinkType.story) {
                     openStoryUploader();
                     //Get.to(() => const ChooseMediaForStory());

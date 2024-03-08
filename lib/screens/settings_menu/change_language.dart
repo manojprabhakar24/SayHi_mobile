@@ -2,7 +2,7 @@ import 'package:foap/helper/imports/common_import.dart';
 import 'package:foap/screens/settings_menu/settings_controller.dart';
 
 class ChangeLanguage extends StatefulWidget {
-  const ChangeLanguage({Key? key}) : super(key: key);
+  const ChangeLanguage({super.key});
 
   @override
   State<ChangeLanguage> createState() => _ChangeLanguageState();

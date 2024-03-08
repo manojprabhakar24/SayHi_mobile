@@ -19,7 +19,7 @@ class PostList extends StatelessWidget {
 
   final PostSource postSource;
 
-  PostList({Key? key, required this.postSource}) : super(key: key);
+  PostList({super.key, required this.postSource});
 
   @override
   Widget build(BuildContext context) {

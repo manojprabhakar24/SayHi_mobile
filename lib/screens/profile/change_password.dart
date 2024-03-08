@@ -3,7 +3,7 @@ import '../../controllers/profile/profile_controller.dart';
 import '../../universal_components/rounded_input_field.dart';
 
 class ChangePassword extends StatefulWidget {
-  const ChangePassword({Key? key}) : super(key: key);
+  const ChangePassword({super.key});
 
   @override
   ChangePasswordState createState() => ChangePasswordState();

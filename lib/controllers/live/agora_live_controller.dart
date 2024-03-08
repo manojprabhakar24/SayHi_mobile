@@ -7,13 +7,11 @@ import 'package:foap/helper/imports/live_imports.dart';
 import 'package:foap/helper/list_extension.dart';
 import 'package:foap/helper/string_extension.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:wakelock_plus/wakelock_plus.dart';
 
 import '../../api_handler/apis/gift_api.dart';
 import '../../api_handler/apis/live_streaming_api.dart';
 import '../../helper/enum_linking.dart';
-import '../../helper/permission_utils.dart';
 import '../../manager/socket_manager.dart';
 import '../../model/call_model.dart';
 import '../../model/chat_message_model.dart';
@@ -42,7 +40,7 @@ class AgoraLiveController extends GetxController {
 
   RtcEngine? engine;
 
-  Rx<Live?> live = Rx<Live?>(null);
+  Rx<LiveModel?> live = Rx<LiveModel?>(null);
 
   // late int liveId;
   late String localLiveId;
@@ -57,8 +55,7 @@ class AgoraLiveController extends GetxController {
   RxInt totalViewers = 0.obs;
 
   // RxInt canLive = 0.obs;
-  Rx<LiveStreamingStatus> startLiveStreaming =
-      LiveStreamingStatus.preparing.obs;
+  Rx<LiveStreamingStatus> startLiveStreaming = LiveStreamingStatus.none.obs;
 
   String? errorMessage;
 
@@ -179,47 +176,31 @@ class AgoraLiveController extends GetxController {
 
   checkFeasibilityToLive(
       {required bool isOpenSettings,
-      required Live? battle,
+      required LiveModel? battle,
       required VoidCallback successCallbackHandler}) async {
     startLiveStreaming.value = LiveStreamingStatus.checking;
+    startLiveStreaming.refresh();
 
     AppUtil.checkInternet().then((value) {
       if (value) {
-        PermissionUtils.requestPermission(
-            [Permission.camera, Permission.microphone],
-            isOpenSettings: isOpenSettings, permissionGrant: () async {
-          Future.delayed(const Duration(seconds: 2), () {
-            startLiveStreaming.value = LiveStreamingStatus.preparing;
+        Future.delayed(const Duration(seconds: 2), () {
+          startLiveStreaming.value = LiveStreamingStatus.preparing;
 
-            errorMessage = null;
-            prepareLive(
-                battle: battle, successCallbackHandler: successCallbackHandler);
-          });
-        }, permissionDenied: () {
-          startLiveStreaming.value = LiveStreamingStatus.failed;
-
-          errorMessage = pleaseAllowAccessToCameraForLiveString.tr;
-        }, permissionNotAskAgain: () {
-          startLiveStreaming.value = LiveStreamingStatus.failed;
-          errorMessage = pleaseAllowAccessToCameraForLiveString.tr;
+          errorMessage = null;
+          prepareLive(
+              battle: battle, successCallbackHandler: successCallbackHandler);
         });
       } else {
         Future.delayed(const Duration(seconds: 2), () {
-          startLiveStreaming.value = value == true
-              ? LiveStreamingStatus.preparing
-              : LiveStreamingStatus.failed;
-
-          if (startLiveStreaming.value == LiveStreamingStatus.preparing) {
-            prepareLive(
-                battle: battle, successCallbackHandler: successCallbackHandler);
-          }
+          startLiveStreaming.value = LiveStreamingStatus.failed;
         });
       }
     });
   }
 
   prepareLive(
-      {required Live? battle, required VoidCallback successCallbackHandler}) {
+      {required LiveModel? battle,
+      required VoidCallback successCallbackHandler}) {
     if (battle != null) {
       // join a battle
       Future.delayed(const Duration(seconds: 3), () {
@@ -242,11 +223,11 @@ class AgoraLiveController extends GetxController {
     });
   }
 
-  Future<void> initializeLiveBattle(Live live) async {
+  Future<void> initializeLiveBattle(LiveModel live) async {
     _joinLive(live: live);
   }
 
-  joinAsAudience({required Live live}) async {
+  joinAsAudience({required LiveModel live}) async {
     this.live.value = live;
 
     getIt<SocketManager>().emit(SocketConstants.joinLive, {
@@ -254,11 +235,11 @@ class AgoraLiveController extends GetxController {
       'liveCallId': this.live.value!.id,
     });
 
-    // _joinLive(live: live);
-    // Get.to(() => const LiveBroadcastScreen());
+    _joinLive(live: live);
+    Get.to(() => const LiveBroadcastScreen());
   }
 
-  _joinLive({required Live live}) {
+  _joinLive({required LiveModel live}) {
     if (_settingsController.setting.value!.agoraApiKey!.isEmpty) {
       update();
       return;
@@ -303,10 +284,17 @@ class AgoraLiveController extends GetxController {
       liveStartTime = DateTime.now();
       channelName = live.channelName;
     });
+
+    LiveStreamingApi.getLiveDetail(
+        channelName: live.channelName,
+        resultCallback: (result) {
+          print('here is share link = ${result.shareLink}');
+          this.live.value!.shareLink = result.shareLink;
+        });
   }
 
   //Initialize Agora RTC Engine
-  Future<void> _initAgoraRtcEngine({required Live live}) async {
+  Future<void> _initAgoraRtcEngine({required LiveModel live}) async {
     engine = createAgoraRtcEngine();
 
     await engine?.initialize(RtcEngineContext(
@@ -389,7 +377,7 @@ class AgoraLiveController extends GetxController {
             }
           },
           onLocalVideoStateChanged: (VideoSourceType source,
-              LocalVideoStreamState state, LocalVideoStreamError error) {},
+              LocalVideoStreamState state, LocalVideoStreamReason reason) {},
           onCameraReady: () {},
           onVideoDeviceStateChanged: (String deviceId,
               MediaDeviceType deviceType, MediaDeviceStateType deviceState) {},
@@ -548,7 +536,7 @@ class AgoraLiveController extends GetxController {
 
       getIt<SocketManager>().emit(SocketConstants.sendGiftLiveCall, {
         'userId': host == null
-            ? live.value!.mainHostUserDetail.id
+            ? live.value!.mainHostUserDetail!.id
             : host.userDetail.id,
         'liveCallId': live.value!.id,
         'battleId': live.value!.battleDetail == null
@@ -702,7 +690,7 @@ class AgoraLiveController extends GetxController {
     }
   }
 
-  invitedForLiveBattle(Live live) {
+  invitedForLiveBattle(LiveModel live) {
     // const STATUS_LIVE_CALL_HOST_PENDING = 1;
     // const STATUS_LIVE_CALL_HOST_ACCEPTED = 2;
     // const STATUS_LIVE_CALL_HOST_REJECTED = 3;
@@ -729,7 +717,8 @@ class AgoraLiveController extends GetxController {
         }).then((value) {});
   }
 
-  acceptBattleInvite({required Live live, required BattleDetail battleDetail}) {
+  acceptBattleInvite(
+      {required LiveModel live, required BattleDetail battleDetail}) {
     battleDetail.battleStatus = BattleStatus.accepted;
 
     Timer(const Duration(seconds: 1), () {
@@ -737,7 +726,7 @@ class AgoraLiveController extends GetxController {
         engine?.setClientRole(role: ClientRoleType.clientRoleBroadcaster);
         this.live.value!.battleDetail = battleDetail;
         this.live.value!.battleDetail!.battleUsers.add(LiveCallHostUser(
-            userDetail: live.mainHostUserDetail,
+            userDetail: live.mainHostUserDetail!,
             // battleId: battleDetail.id,
             totalCoins: 0,
             totalGifts: 0,
@@ -756,7 +745,7 @@ class AgoraLiveController extends GetxController {
       } else {
         live.battleDetail = battleDetail;
         live.battleDetail!.battleUsers.add(LiveCallHostUser(
-            userDetail: live.mainHostUserDetail,
+            userDetail: live.mainHostUserDetail!,
             // battleId: battleDetail.id,
             totalCoins: 0,
             totalGifts: 0,
@@ -990,14 +979,12 @@ class AgoraLiveController extends GetxController {
       String agoraToken = data['token'];
       String channelName = data['channelName'];
 
-      Live live = Live(
-          channelName: channelName,
-          // isHosting: true,
-          mainHostUserDetail: _userProfileManager.user.value!,
-          // battleUsers: [],
-          token: agoraToken,
-          id: liveId);
+      LiveModel live = LiveModel();
 
+      live.channelName = channelName;
+      live.mainHostUserDetail = _userProfileManager.user.value!;
+      live.token = agoraToken;
+      live.id = liveId;
       _joinLive(live: live);
 
       update();

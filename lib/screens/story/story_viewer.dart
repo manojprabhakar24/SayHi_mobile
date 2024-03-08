@@ -3,6 +3,7 @@ import 'package:foap/helper/imports/story_imports.dart';
 import 'package:foap/screens/story/story_reaction_options.dart';
 import 'package:foap/screens/story/story_view_users.dart';
 import 'package:keyboard_attachable/keyboard_attachable.dart';
+import '../chat/select_users.dart';
 import '../profile/my_profile.dart';
 import '../profile/other_user_profile.dart';
 import '../settings_menu/settings_controller.dart';
@@ -11,8 +12,8 @@ class StoryViewer extends StatefulWidget {
   final StoryModel story;
   final VoidCallback storyDeleted;
 
-  const StoryViewer({Key? key, required this.story, required this.storyDeleted})
-      : super(key: key);
+  const StoryViewer(
+      {super.key, required this.story, required this.storyDeleted});
 
   @override
   State<StoryViewer> createState() => _StoryViewerState();
@@ -28,6 +29,7 @@ class _StoryViewerState extends State<StoryViewer> {
   @override
   void initState() {
     storyController.showHideEmoticons(false);
+    storyController.setCurrentStoryMedia(widget.story.media.first);
 
     super.initState();
   }
@@ -88,7 +90,8 @@ class _StoryViewerState extends State<StoryViewer> {
                       top: 0,
                       child: StoryReactionOptions(
                         reactionCallbackHandler: (emoji) {
-                          storyController.sendReactionMessage(emoji);
+                          storyController.sendReactionMessage(
+                              emoji, widget.story);
                         },
                       ))
                   : Container()),
@@ -118,6 +121,7 @@ class _StoryViewerState extends State<StoryViewer> {
                         maxLength: 80,
                         onChanged: (value) {
                           storyController.showHideEmoticons(value.isEmpty);
+                          storyController.replyTextChanged(value);
                         },
                         focusStatusChangeHandler: (status) {
                           storyController.showHideEmoticons(status);
@@ -133,9 +137,24 @@ class _StoryViewerState extends State<StoryViewer> {
                     const SizedBox(
                       width: 10,
                     ),
-                    BodyLargeText(sendString.tr).ripple(() {
-                      storyController.sendTextMessage(replyController.text);
-                    }),
+                    Obx(() => storyController.replyText.isNotEmpty
+                        ? BodyLargeText(sendString.tr).ripple(() {
+                            storyController.sendTextMessage(
+                                replyController.text, widget.story);
+                          })
+                        : ThemeIconWidget(ThemeIcon.share).ripple(() {
+                            controller.pause();
+
+                            showModalBottomSheet(
+                                backgroundColor: Colors.transparent,
+                                context: context,
+                                isScrollControlled: true,
+                                builder: (context) => FractionallySizedBox(
+                                    heightFactor: 0.5,
+                                    child: shareStory())).then((value) {
+                              controller.resume();
+                            });
+                          })),
                   ],
                 ).p16,
               ),
@@ -273,5 +292,24 @@ class _StoryViewerState extends State<StoryViewer> {
             });
           })
         : Container());
+  }
+
+  Widget shareStory() {
+    return Container(
+      color: AppColorConstants.cardColor,
+      child: Column(
+        children: [
+          BodyMediumText(
+            sendSeparatelyToFriends.tr,
+            weight: TextWeight.semiBold,
+          ),
+          Expanded(child: SelectFollowingUserForMessageSending(
+              // post: widget.model,
+              sendToUserCallback: (user) {
+            storyController.sendStoryAsMessage(user.id, widget.story);
+          })),
+        ],
+      ).p(DesignConstants.horizontalPadding),
+    ).topRounded(40);
   }
 }

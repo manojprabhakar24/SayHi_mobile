@@ -1,4 +1,3 @@
-export 'package:foap/screens/story/text_story.dart';
 export 'package:foap/screens/story/story_viewer.dart';
 export 'package:foap/screens/story/story_updates_bar.dart';
 

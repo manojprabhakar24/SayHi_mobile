@@ -10,7 +10,6 @@ import 'package:foap/screens/chat/media.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:video_compress_ds/video_compress_ds.dart';
 import 'package:flutter_video_info/flutter_video_info.dart';
-
 import '../../manager/db_manager_realm.dart';
 import '../../model/data_wrapper.dart';
 import '../home/home_controller.dart';
@@ -29,6 +28,7 @@ class AppStoryController extends GetxController {
   bool isLoading = false;
 
   RxBool showEmoticons = false.obs;
+  RxString replyText = ''.obs;
 
   clearStoryViewers() {
     storyViewers.clear();
@@ -37,6 +37,10 @@ class AppStoryController extends GetxController {
 
   showHideEmoticons(bool show) {
     showEmoticons.value = show;
+  }
+
+  replyTextChanged(String text) {
+    replyText.value = text;
   }
 
   mediaSelected(List<Media> media) {
@@ -177,30 +181,57 @@ class AppStoryController extends GetxController {
     // Get.offAll(() => const DashboardScreen());
   }
 
-  sendTextMessage(String message) {
+  sendTextMessage(String message, StoryModel story) {
     _chatDetailController.getChatRoomWithUser(
         userId: currentStoryMediaModel.value!.userId,
         callback: (room) {
           FocusScope.of(Get.context!).requestFocus(FocusNode());
           showHideEmoticons(false);
+          StoryModel storyToSend = StoryModel(
+              id: story.id,
+              name: story.name,
+              userName: story.userName,
+              userImage: story.userImage,
+              media: [currentStoryMediaModel.value!]);
 
           _chatDetailController.sendStoryTextReplyMessage(
-              messageText: message,
-              storyMedia: currentStoryMediaModel.value!,
-              room: room);
+              messageText: message, story: storyToSend, room: room);
         });
   }
 
-  sendReactionMessage(String emoji) {
+  sendReactionMessage(String emoji, StoryModel story) {
     _chatDetailController.getChatRoomWithUser(
         userId: currentStoryMediaModel.value!.userId,
         callback: (room) {
           FocusScope.of(Get.context!).requestFocus(FocusNode());
           showHideEmoticons(false);
+
+          StoryModel storyToSend = StoryModel(
+              id: story.id,
+              name: story.name,
+              userName: story.userName,
+              userImage: story.userImage,
+              media: [currentStoryMediaModel.value!]);
+
           _chatDetailController.sendStoryReactionReplyMessage(
-              emoji: emoji,
-              storyMedia: currentStoryMediaModel.value!,
-              room: room);
+              emoji: emoji, story: storyToSend, room: room);
+        });
+  }
+
+  sendStoryAsMessage(int userId, StoryModel story) {
+    _chatDetailController.getChatRoomWithUser(
+        userId: userId,
+        callback: (room) {
+          FocusScope.of(Get.context!).requestFocus(FocusNode());
+          showHideEmoticons(false);
+          StoryModel storyToSend = StoryModel(
+              id: story.id,
+              name: story.name,
+              userName: story.userName,
+              userImage: story.userImage,
+              media: [currentStoryMediaModel.value!]);
+          _chatDetailController.sendStoryMessage(
+              story: storyToSend, room: room);
         });
   }
 }
