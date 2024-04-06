@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:flutter/foundation.dart';
+import 'package:foap/api_handler/apis/misc_api.dart';
 import 'package:foap/api_handler/apis/post_api.dart';
 import 'package:foap/helper/file_extension.dart';
 import 'package:foap/helper/imports/common_import.dart';
@@ -168,7 +169,7 @@ class CommentsController extends GetxController {
                 .create();
         file.writeAsBytesSync(mainFileData);
 
-        await PostApi.uploadFile(file.path, mediaType: media.mediaType!,
+        await MiscApi.uploadFile(file.path,type: UploadMediaType.post,  mediaType: media.mediaType!,
             resultCallback: (fileName, filePath) async {
           uploadedImageData.add(fileName);
           uploadedImageData.add(filePath);

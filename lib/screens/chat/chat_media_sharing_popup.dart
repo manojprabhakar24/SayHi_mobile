@@ -23,7 +23,7 @@ class SharingMediaType {
 }
 
 class ChatMediaSharingOptionPopup extends StatefulWidget {
-  const ChatMediaSharingOptionPopup({Key? key}) : super(key: key);
+  const ChatMediaSharingOptionPopup({super.key});
 
   @override
   State<ChatMediaSharingOptionPopup> createState() =>

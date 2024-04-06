@@ -54,7 +54,6 @@ class UserNetworkController extends GetxController {
 
             page += 1;
             canLoadMore = result.length >= metadata.perPage;
-            print('update');
             update();
           });
     }

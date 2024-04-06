@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 import 'package:foap/helper/imports/common_import.dart';
 import 'package:foap/helper/imports/login_signup_imports.dart';
 import 'package:lottie/lottie.dart';
@@ -154,6 +155,45 @@ class SignUpScreenState extends State<SignUpScreen> {
             SizedBox(
               height: Get.height * 0.015,
             ),
+            RichText(
+              text: TextSpan(
+                children: <TextSpan>[
+                  TextSpan(
+                      text: signingInTermsString.tr,
+                      style: TextStyle(
+                          fontSize: FontSizes.b3,
+                          color: AppColorConstants.mainTextColor)),
+                  TextSpan(
+                      text: ' ${termsOfServiceString.tr}',
+                      recognizer: TapGestureRecognizer()
+                        ..onTap = () {
+                          loginController.launchUrlInBrowser(settingsController
+                              .setting.value!.termsOfServiceUrl!);
+                        },
+                      style: TextStyle(
+                          fontSize: FontSizes.b3,
+                          color: AppColorConstants.themeColor)),
+                  TextSpan(
+                      text: ' ${andString.tr}',
+                      style: TextStyle(
+                          fontSize: FontSizes.b3,
+                          color: AppColorConstants.mainTextColor)),
+                  TextSpan(
+                      text: ' ${privacyPolicyString.tr}',
+                      recognizer: TapGestureRecognizer()
+                        ..onTap = () {
+                          loginController.launchUrlInBrowser(settingsController
+                              .setting.value!.privacyPolicyUrl!);
+                        },
+                      style: TextStyle(
+                          fontSize: FontSizes.b3,
+                          color: AppColorConstants.themeColor)),
+                ],
+              ),
+            ),
+            SizedBox(
+              height: Get.height * 0.015,
+            ),
             addSignUpBtn(),
             SizedBox(
               height: Get.height * 0.02,
@@ -191,25 +231,11 @@ class SignUpScreenState extends State<SignUpScreen> {
     return AppThemeButton(
       onPress: () {
         FocusScope.of(context).requestFocus(FocusNode());
-        AppUtil.showTermsAndConditionConfirmationAlert(
-            title: confirmString,
-            subTitle:
-                '${signingInTermsString.tr} ${termsOfServiceString.tr} ${andString.tr} ${privacyPolicyString.tr}',
-            termsHandler: () {
-              loginController.launchUrlInBrowser(
-                  settingsController.setting.value!.termsOfServiceUrl!);
-            },
-            privacyPolicyHandler: () {
-              loginController.launchUrlInBrowser(
-                  settingsController.setting.value!.privacyPolicyUrl!);
-            },
-            okHandler: () {
-              loginController.register(
-                userName: userName.text,
-                email: email.text,
-                password: password.text,
-              );
-            });
+        loginController.register(
+          userName: userName.text,
+          email: email.text,
+          password: password.text,
+        );
       },
       text: signUpString.tr,
     );

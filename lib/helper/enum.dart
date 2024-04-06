@@ -76,7 +76,8 @@ enum UploadMediaType {
   club,
   verification,
   uploadResume,
-  event
+  event,
+  post
 }
 
 ///Media picker selection type

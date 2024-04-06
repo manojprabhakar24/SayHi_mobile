@@ -288,7 +288,6 @@ class AgoraLiveController extends GetxController {
     LiveStreamingApi.getLiveDetail(
         channelName: live.channelName,
         resultCallback: (result) {
-          print('here is share link = ${result.shareLink}');
           this.live.value!.shareLink = result.shareLink;
         });
   }
@@ -921,7 +920,6 @@ class AgoraLiveController extends GetxController {
       // remove me, i might be banned by host
       clear();
       Get.back();
-      print('close live, i might be banned by host');
     } else if (live.value?.id == liveId) {
       liveViewers.removeWhere((element) => element.user.id == userId);
       moderatorUsers.removeWhere((element) => element.user.id == userId);
@@ -1132,7 +1130,6 @@ class AgoraLiveController extends GetxController {
   }
 
   refreshBannedViewers() {
-    print('refreshBannedViewers');
     bannedUsers.clear();
     bannedUsersDataWrapper = DataWrapper();
     getBannedUser(() {});

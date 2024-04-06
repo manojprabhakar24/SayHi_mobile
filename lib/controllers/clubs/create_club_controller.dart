@@ -38,8 +38,8 @@ class CreateClubController extends GetxController {
         type: UploadMediaType.club, resultCallback: (filename, filepath) {
       ClubApi.createClub(
           categoryId: club.categoryId!,
-          isOnRequestType: privacyType.value == 3 ? 1 : 0,
-          privacyMode: privacyType.value == 2 ? 2 : 1,
+          isOnRequestType: club.privacyType == 3 ? 1 : 0,
+          privacyMode: club.privacyType == 2 ? 2 : 1,
           enableChatRoom: club.enableChat!,
           name: club.name!,
           image: filename,

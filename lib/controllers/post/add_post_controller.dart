@@ -6,6 +6,7 @@ import 'package:foap/helper/file_extension.dart';
 import 'package:foap/helper/imports/common_import.dart';
 import 'package:foap/helper/string_extension.dart';
 import 'package:video_compress_ds/video_compress_ds.dart';
+import '../../api_handler/apis/misc_api.dart';
 import '../../helper/enum_linking.dart';
 import '../../model/location.dart';
 import '../../screens/chat/media.dart';
@@ -164,14 +165,11 @@ class AddPostController extends GetxController {
 
       videoThumbnail.writeAsBytesSync(media.thumbnail!);
 
-      await PostApi.uploadFile(
-        videoThumbnail.path,
-        mediaType: media.mediaType!,
-        resultCallback: (fileName, filePath) async {
-          videoThumbnailPath = fileName;
-          await videoThumbnail.delete();
-        },
-      );
+      await MiscApi.uploadFile(videoThumbnail.path,type: UploadMediaType.post, mediaType: media.mediaType!,
+          resultCallback: (fileName, filePath) async {
+        videoThumbnailPath = fileName;
+        await videoThumbnail.delete();
+      });
 
       uploadMainFile(file, media, videoThumbnailPath, competitionId, completer);
     } else {
@@ -187,7 +185,7 @@ class AddPostController extends GetxController {
       int? competitionId, Completer completer) async {
     Map<String, String> gallery = {};
 
-    await PostApi.uploadFile(file.path, mediaType: media.mediaType!,
+    await MiscApi.uploadFile(file.path,type: UploadMediaType.post, mediaType: media.mediaType!,
         resultCallback: (fileName, filePath) async {
       String imagePath = fileName;
 

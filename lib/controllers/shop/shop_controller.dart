@@ -115,7 +115,6 @@ class ShopController extends GetxController {
           ads.unique((e) => e.id);
           adsDataWrapper.processCompletedWithData(metadata);
 
-          print('ads found = ${ads.length}');
           callback();
         });
   }

@@ -70,9 +70,6 @@ class _VideoPostTileState extends State<VideoPostTile> {
 
   @override
   Widget build(BuildContext context) {
-    print('widget.media!.width ${widget.media!.width}');
-    print('widget.media!.height ${widget.media!.height}');
-
     return GestureDetector(
       onTap: () {
         if (isMute == true) {

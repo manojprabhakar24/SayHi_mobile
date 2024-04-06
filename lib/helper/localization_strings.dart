@@ -264,6 +264,7 @@ String requestSentString = 'Request sent';
 String notAllowedMessageString = 'Such kind of messages are not allowed';
 
 String errorMessageString = 'There is some problem, Please try again later';
+String thisContentNotAllowedString = "Sorry, but the content you're attempting to upload is not permitted according to our policies.";
 
 String cameraString = 'Camera';
 String photoString = 'Photo';

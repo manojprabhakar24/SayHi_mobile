@@ -17,6 +17,7 @@ import 'package:foap/screens/add_on/controller/event/event_controller.dart';
 import 'package:foap/controllers/live/live_users_controller.dart';
 import 'package:foap/screens/content_creator_view.dart';
 import 'package:foap/screens/login_sign_up/ask_to_follow.dart';
+import 'package:foap/screens/popups/ask_location_permission.dart';
 import 'package:foap/screens/settings_menu/help_support_contorller.dart';
 import 'package:giphy_get/l10n.dart';
 import 'components/smart_text_field.dart';
@@ -79,6 +80,7 @@ class MyHttpOverrides extends HttpOverrides {
 late List<CameraDescription> cameras;
 bool isLaunchedFromCallNotification = false;
 bool isAnyPageInStack = false;
+bool isPermissionsAsked = false;
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -96,6 +98,8 @@ Future<void> main() async {
   if (token != null) {
     SharedPrefs().setVoipToken(token);
   }
+
+  isPermissionsAsked = await SharedPrefs().getTutorialSeen();
 
   DeepLinkManager.init();
   AutoOrientation.portraitAutoMode();
@@ -177,7 +181,8 @@ Future<void> main() async {
   } else {
     runApp(Phoenix(
         child: const SocialifiedApp(
-      startScreen: AskToFollow(),
+      startScreen:
+           AskToFollow(),
     )));
   }
 }

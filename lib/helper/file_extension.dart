@@ -3,10 +3,8 @@ import 'dart:typed_data';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:foap/helper/enum.dart';
 import 'package:foap/helper/imports/common_import.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:mime/mime.dart';
 import 'package:video_thumbnail/video_thumbnail.dart';
-
 import '../screens/chat/media.dart';
 import '../util/constant_util.dart';
 

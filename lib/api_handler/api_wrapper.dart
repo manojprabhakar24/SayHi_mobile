@@ -89,13 +89,12 @@ class ApiWrapper {
     String? authKey = await SharedPrefs().getAuthorizationKey();
     String urlString = '${NetworkConstantsUtil.baseUrl}$url';
 
-    print(urlString);
-    print(authKey);
-
     final connectivityResult = await (Connectivity().checkConnectivity());
 
-    if (connectivityResult != ConnectivityResult.none) {
+    print(authKey);
+    print(urlString);
 
+    if (connectivityResult != ConnectivityResult.none) {
       return http.get(Uri.parse(urlString), headers: {
         "Authorization": "Bearer ${authKey!}"
       }).then((http.Response response) async {
@@ -128,9 +127,6 @@ class ApiWrapper {
     if (connectivityResult == ConnectivityResult.none) {
       return null;
     }
-
-    print('urlString = $urlString');
-    print('param = $param');
 
     return http.post(Uri.parse(urlString), body: jsonEncode(param), headers: {
       "Authorization": "Bearer ${authKey!}",
@@ -183,6 +179,8 @@ class ApiWrapper {
       {required String url, required dynamic param}) async {
     // Loader.show(status: loadingString.tr);
 
+    print('${NetworkConstantsUtil.baseUrl}$url');
+    print(param);
     return http
         .post(Uri.parse('${NetworkConstantsUtil.baseUrl}$url'), body: param)
         .then((http.Response response) async {
@@ -220,10 +218,14 @@ class ApiWrapper {
       required GalleryMediaType mediaType,
       required String url}) async {
     Loader.show(status: loadingString.tr);
+    String? authKey = await SharedPrefs().getAuthorizationKey();
+
+    print('${NetworkConstantsUtil.baseUrl}$url');
+    print("Bearer ${authKey!}");
+    print(uploadMediaTypeId(type).toString());
 
     var request = http.MultipartRequest(
         'POST', Uri.parse('${NetworkConstantsUtil.baseUrl}$url'));
-    String? authKey = await SharedPrefs().getAuthorizationKey();
     request.headers.addAll({"Authorization": "Bearer ${authKey!}"});
     request.fields.addAll({'type': uploadMediaTypeId(type).toString()});
     if (mediaType == GalleryMediaType.video) {
@@ -239,37 +241,10 @@ class ApiWrapper {
     var responseData = await res.stream.toBytes();
     var responseString = String.fromCharCodes(responseData);
     dynamic data = _decoder.convert(responseString);
+    print('data $data');
     Loader.dismiss();
+
     return ApiResponse.fromJson(data);
   }
 
-  Future<ApiResponse?> uploadPostFile(
-      {required String file,
-      required GalleryMediaType mediaType,
-      required String url}) async {
-    Loader.show(status: loadingString.tr);
-
-    var request = http.MultipartRequest(
-        'POST', Uri.parse('${NetworkConstantsUtil.baseUrl}$url'));
-    String? authKey = await SharedPrefs().getAuthorizationKey();
-    request.headers.addAll({"Authorization": "Bearer ${authKey!}"});
-
-    if (mediaType == GalleryMediaType.video) {
-      request.files.add(await http.MultipartFile.fromPath('filenameFile', file,
-          contentType: MediaType('video', 'mp4')));
-    } else if (mediaType == GalleryMediaType.audio) {
-      request.files.add(await http.MultipartFile.fromPath('filenameFile', file,
-          contentType: MediaType('audio', 'mp3')));
-    } else {
-      request.files.add(await http.MultipartFile.fromPath('filenameFile', file,
-          contentType: MediaType('image', 'png')));
-    }
-
-    var res = await request.send();
-    var responseData = await res.stream.toBytes();
-    var responseString = String.fromCharCodes(responseData);
-    dynamic data = _decoder.convert(responseString);
-    Loader.dismiss();
-    return ApiResponse.fromJson(data);
-  }
 }

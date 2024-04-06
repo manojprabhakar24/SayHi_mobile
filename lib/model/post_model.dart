@@ -3,12 +3,9 @@ import 'package:foap/helper/imports/common_import.dart';
 import 'package:foap/helper/imports/models.dart';
 import 'package:foap/model/fund_raising_campaign.dart';
 import 'package:foap/model/offer_model.dart';
-import 'package:foap/model/post_gallery.dart';
 import 'package:foap/model/post_promotion_model.dart';
 import 'package:foap/model/shop_model/ad_model.dart';
-import 'package:foap/screens/add_on/model/reel_music_model.dart';
 import '../helper/enum_linking.dart';
-import 'club_model.dart';
 import 'job_model.dart';
 
 class PostModel {
@@ -107,9 +104,6 @@ class PostModel {
         model.product = AdModel.fromJson(json['contentReferenceDetail']);
       }
       if (model.contentType == PostContentType.club) {
-        print('vahjdbv ${json['contentReferenceDetail']}');
-        print('postid  ${model.id}');
-
         json['contentReferenceDetail']['createdByUser'] = json['user'];
         model.createdClub = ClubModel.fromJson(json['contentReferenceDetail']);
       }

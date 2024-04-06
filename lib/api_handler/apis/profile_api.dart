@@ -1,5 +1,4 @@
 import 'dart:typed_data';
-import 'package:foap/helper/imports/models.dart';
 import 'package:latlng/latlng.dart';
 import 'package:foap/api_handler/api_wrapper.dart';
 import '../../helper/imports/common_import.dart';

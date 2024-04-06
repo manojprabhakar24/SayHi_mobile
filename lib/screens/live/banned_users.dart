@@ -77,7 +77,6 @@ class _BannedUsersState extends State<BannedUsers> {
                             width: double.infinity,
                             child: BodyLargeText('Remove Ban'))
                         .ripple(() {
-                      print('Remove Ban');
                       unbanUser(user);
                     }),
                     Container(

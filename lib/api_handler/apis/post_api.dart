@@ -193,7 +193,6 @@ class PostApi {
     var url = '${NetworkConstantsUtil.mentionedPosts}$userId&page=$page';
 
     await ApiWrapper().getApi(url: url).then((response) {
-
       if (response?.data != null) {
         List<PostModel> posts = [];
         var items = response!.data['post']['items'];
@@ -406,23 +405,6 @@ class PostApi {
       "reference_id": postId.toString(),
       'type': '3'
     }).then((value) {});
-  }
-
-  static Future uploadFile(String filePath,
-      {required GalleryMediaType mediaType,
-      required Function(String, String) resultCallback}) async {
-
-    await ApiWrapper()
-        .uploadPostFile(
-      url: NetworkConstantsUtil.uploadPostImage,
-      file: filePath,
-      mediaType: mediaType,
-    )
-        .then((result) {
-      if (result?.success == true) {
-        resultCallback(result!.data['filename'], result.data['fileUrl']);
-      }
-    });
   }
 
   static postView(

@@ -51,8 +51,8 @@ class MiscApi {
         var question = result['question'].first;
         question['pollQuestionOption'] = result['questionOption'];
 
-        resultCallback(List<PollModel>.from(
-            [question].map((x) => PollModel.fromJson(x))));
+        resultCallback(
+            List<PollModel>.from([question].map((x) => PollModel.fromJson(x))));
       }
     });
   }
@@ -170,8 +170,8 @@ class MiscApi {
 
   static searchHashtag(
       {required String hashtag,
-        required int page,
-        required Function(List<Hashtag>, APIMetaData) resultCallback}) async {
+      required int page,
+      required Function(List<Hashtag>, APIMetaData) resultCallback}) async {
     var url = '${NetworkConstantsUtil.searchHashtag}$hashtag&page=$page';
 
     ApiWrapper().getApi(url: url).then((result) {
@@ -200,7 +200,8 @@ class MiscApi {
   static Future uploadFile(String filePath,
       {required UploadMediaType type,
       required GalleryMediaType mediaType,
-      required Function(String, String) resultCallback}) async {
+      required Function(String, String) resultCallback,
+      }) async {
     await ApiWrapper()
         .uploadFile(
             url: NetworkConstantsUtil.uploadFileImage,
@@ -211,7 +212,12 @@ class MiscApi {
       if (result?.success == true) {
         var items = result!.data['files'] as List<dynamic>;
 
-        resultCallback(items.first['file'], items.first['fileUrl']);
+        bool isProhabited = items.first['isProhabited'];
+        if (isProhabited == false) {
+          resultCallback(items.first['file'], items.first['fileUrl']);
+        } else {
+          AppUtil.showToast(message: thisContentNotAllowedString.tr, isSuccess: false);
+        }
       }
     });
   }

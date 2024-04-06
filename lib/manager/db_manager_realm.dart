@@ -544,7 +544,6 @@ class RealmDBManager {
     }
 
     dbMessages.sort((a, b) => a['created_at'].compareTo(b['created_at']));
-    print(dbMessages);
 
     messages = dbMessages.map((e) {
       ChatMessageModel message = ChatMessageModel.fromJson((e));
@@ -770,8 +769,6 @@ class RealmDBManager {
   }
 
   softDeleteMessages({required List<ChatMessageModel> messagesToDelete}) async {
-    print('messagedDeleted 4');
-
     realm.write(() {
       for (ChatMessageModel message in messagesToDelete) {
         var realmMessages = realm.query<MessagesRealm>(

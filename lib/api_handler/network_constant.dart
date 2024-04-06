@@ -107,7 +107,6 @@ class NetworkConstantsUtil {
   static String addPost = 'posts';
   static String editPost = 'posts/';
 
-  static String uploadPostImage = 'posts/upload-gallary';
   static String uploadFileImage = 'file-uploads/upload-file';
   static String addCompetitionPost = 'posts/competition-image';
   static String searchPost =

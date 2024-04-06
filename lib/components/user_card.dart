@@ -3,8 +3,6 @@ import 'package:foap/helper/imports/live_imports.dart';
 import 'package:foap/helper/number_extension.dart';
 import 'package:progress_state_button/iconed_button.dart';
 import 'package:progress_state_button/progress_button.dart';
-import '../controllers/live/agora_live_controller.dart';
-import '../model/call_model.dart';
 import '../model/club_join_request.dart';
 import '../model/club_member_model.dart';
 import '../model/gift_model.dart';

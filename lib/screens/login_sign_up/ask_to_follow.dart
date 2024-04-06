@@ -1,10 +1,12 @@
+import 'package:foap/main.dart';
+import 'package:foap/screens/popups/ask_location_permission.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../helper/imports/common_import.dart';
 import '../dashboard/loading.dart';
 
 class AskToFollow extends StatelessWidget {
-  const AskToFollow({Key? key}) : super(key: key);
+  const AskToFollow({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +43,11 @@ class AskToFollow extends StatelessWidget {
               }),
           const Spacer(),
           BodyLargeText(skipString.tr).ripple(() {
-            Get.offAll(() => const LoadingScreen());
+            if (isPermissionsAsked == false) {
+              Get.offAll(() => const AskLocationPermission());
+            } else {
+              Get.offAll(() => const LoadingScreen());
+            }
           }),
           const SizedBox(
             height: 40,

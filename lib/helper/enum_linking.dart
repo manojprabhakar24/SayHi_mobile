@@ -272,6 +272,8 @@ int uploadMediaTypeId(UploadMediaType type) {
       return 5;
     case UploadMediaType.club:
       return 5;
+    case UploadMediaType.post:
+      return 7;
     case UploadMediaType.verification:
       return 12;
     case UploadMediaType.event:

@@ -40,7 +40,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
 
   Future checkBiometric() async {
     if (_userProfileManager.isLogin == false) {
-      Future.delayed(const Duration(milliseconds: 500), () {
+      Future.delayed(const Duration(milliseconds: 100), () {
         openNextScreen();
       });
       return;

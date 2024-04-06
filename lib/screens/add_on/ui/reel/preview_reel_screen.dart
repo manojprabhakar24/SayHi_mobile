@@ -136,8 +136,6 @@ class _PreviewReelsState extends State<PreviewReelsScreen> {
     );
 
     final videoInfo = await FlutterVideoInfo().getVideoInfo(mediaInfo!.path!);
-    print(
-        'here is video size ${Size(videoInfo!.width!.toDouble(), videoInfo.height!.toDouble())}');
     Loader.dismiss();
     Media media = Media();
     media.id = randomId();

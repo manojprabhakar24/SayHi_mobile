@@ -1,7 +1,6 @@
 import 'package:foap/api_handler/apis/profile_api.dart';
 import 'package:foap/helper/imports/common_import.dart';
 import 'package:foap/model/verification_request_model.dart';
-
 import 'package:intl/intl.dart';
 import 'dart:io';
 import 'dart:async';

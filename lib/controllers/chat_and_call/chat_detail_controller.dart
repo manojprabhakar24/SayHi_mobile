@@ -274,11 +274,6 @@ class ChatDetailController extends GetxController {
     update();
   }
 
-// updateOnlineStatus() {
-//   isOnline.value = !isOnline.value;
-//   update();
-// }
-
   expandCollapseActions() {
     expandActions = !expandActions;
     update();
@@ -1209,8 +1204,6 @@ class ChatDetailController extends GetxController {
 
     String reactedOnStory = jsonEncode(story.toJson()).encrypted();
 
-    print('reactedOnStory ${story.toJson()}');
-
     if (encryptedTextMessage.removeAllWhitespace.trim().isNotEmpty) {
       String localMessageId = randomId();
       var message = {
@@ -1375,8 +1368,6 @@ class ChatDetailController extends GetxController {
             mediaType: media.mediaType!,
             type: UploadMediaType.chat, resultCallback: (filename, filepath) {
           String mainFileUploadedPath = filepath;
-
-          // await mainFile.delete();
 
           UploadedGalleryMedia uploadedGalleryMedia = UploadedGalleryMedia(
               mediaType: media.mediaType == GalleryMediaType.photo

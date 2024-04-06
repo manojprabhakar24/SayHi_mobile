@@ -137,7 +137,6 @@ class JobController extends GetxController {
         mediaType: GalleryMediaType.photo, type: UploadMediaType.uploadResume,
         resultCallback: (fileName, filePath) {
       uploadedResumeFileName = fileName;
-      // Loader.dismiss();
     });
     JobApi.applyJob(
         jobId: jobId,

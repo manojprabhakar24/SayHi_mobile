@@ -140,7 +140,6 @@ class ChatMessageModel {
 
   StoryModel get repliedOnStory {
     var jsonData = json.decode(repliedOnMessageDecrypt);
-    print('jsonData $jsonData');
     return StoryModel.fromJson(jsonData);
   }
 

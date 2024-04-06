@@ -6,8 +6,7 @@ import '../../controllers/chat_and_call/conatcts_controller.dart';
 class ContactList extends StatefulWidget {
   final Function(List<Contact>) selectedContactsHandler;
 
-  const ContactList({Key? key, required this.selectedContactsHandler})
-      : super(key: key);
+  const ContactList({super.key, required this.selectedContactsHandler});
 
   @override
   State<ContactList> createState() => _ContactListState();
@@ -18,7 +17,6 @@ class _ContactListState extends State<ContactList> {
 
   @override
   void initState() {
-    // TODO: implement initState
     contactsController.loadContacts();
     super.initState();
   }

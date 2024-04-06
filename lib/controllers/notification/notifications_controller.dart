@@ -91,18 +91,14 @@ class NotificationController extends GetxController {
   }
 
   acceptFollowRequest(int userId) {
-    print('followRequests ${followRequests.length}');
     followRequests.removeWhere((element) => element.sender.id == userId);
-    print('followRequests ${followRequests.length}');
     update();
 
     MiscApi.acceptFollowRequest(userId: userId);
   }
 
   delcineFollowRequest(int userId) {
-    print('followRequests ${followRequests.length}');
     followRequests.removeWhere((element) => element.sender.id == userId);
-    print('followRequests ${followRequests.length}');
 
     update();
     MiscApi.declineFollowRequest(userId: userId);

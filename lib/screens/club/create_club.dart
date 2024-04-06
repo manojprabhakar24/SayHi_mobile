@@ -96,12 +96,17 @@ class CreateClubState extends State<CreateClub> {
               child: Container(
                 color: AppColorConstants.cardColor,
                 child: AppThemeButton(
-                    text: widget.club.id == null
-                        ? nextString.tr
-                        : updateString.tr,
-                    onPress: () {
-                      nextBtnClicked();
-                    }).setPadding(left: DesignConstants.horizontalPadding, right: DesignConstants.horizontalPadding, bottom: 25, top: 25),
+                        text: widget.club.id == null
+                            ? nextString.tr
+                            : updateString.tr,
+                        onPress: () {
+                          nextBtnClicked();
+                        })
+                    .setPadding(
+                        left: DesignConstants.horizontalPadding,
+                        right: DesignConstants.horizontalPadding,
+                        bottom: 25,
+                        top: 25),
               ))
         ],
       ),
@@ -240,6 +245,7 @@ class CreateClubState extends State<CreateClub> {
 
     widget.club.name = nameText.text;
     widget.club.desc = descText.text;
+    widget.club.privacyType = _createClubController.privacyType.value;
 
     if (widget.club.id == null) {
       widget.club.enableChat = _createClubController.enableChat.value ? 1 : 0;

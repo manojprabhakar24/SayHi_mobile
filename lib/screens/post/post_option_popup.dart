@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'package:flutter/services.dart';
 import 'package:flutter_video_info/flutter_video_info.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:video_thumbnail/video_thumbnail.dart';

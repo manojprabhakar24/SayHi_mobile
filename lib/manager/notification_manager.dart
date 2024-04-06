@@ -291,7 +291,6 @@ class NotificationManager {
         // new competition added notification
       } else if (notificationType == 100) {
       } else if (notificationType == 101) {
-        print('hello live');
         int liveId = int.parse(data['liveCallId'] as String);
         String channelName = data['channelName'];
         String agoraToken = data['token'];
@@ -369,7 +368,6 @@ class NotificationManager {
         String channelName = data['channelName'];
         String agoraToken = data['token'];
         int userId = int.parse(data['userId'] as String);
-        print('hello live 1');
 
         UsersApi.getOtherUser(
             userId: userId,

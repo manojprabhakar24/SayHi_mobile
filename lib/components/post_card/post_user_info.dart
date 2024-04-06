@@ -40,7 +40,6 @@ class PostUserInfo extends StatelessWidget {
                   post.user.userName,
                   weight: TextWeight.medium,
                 ).ripple(() {
-                  print(post.user.role);
                   if (post.user.role != UserRole.admin) {
                     openProfile();
                   }
