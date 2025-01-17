@@ -17,13 +17,13 @@ class UsersList extends StatelessWidget {
     scrollController.addListener(() {
       if (scrollController.position.maxScrollExtent ==
           scrollController.position.pixels) {
-        if (!_usersController.accountsIsLoading.value) {
+        if (!_usersController.dataWrapper.isLoading.value) {
           _usersController.loadUsers(() {});
         }
       }
     });
 
-    return Obx(() => _usersController.accountsIsLoading.value
+    return Obx(() => _usersController.dataWrapper.isLoading.value
         ? const ShimmerUsers()
         : _usersController.searchedUsers.isNotEmpty
             ? GridView.builder(

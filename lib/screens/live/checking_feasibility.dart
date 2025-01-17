@@ -16,7 +16,8 @@ class CheckingLiveFeasibility extends StatefulWidget {
       _CheckingLiveFeasibilityState();
 }
 
-class _CheckingLiveFeasibilityState extends State<CheckingLiveFeasibility> {
+class _CheckingLiveFeasibilityState
+    extends State<CheckingLiveFeasibility> {
   final AgoraLiveController _agoraLiveController = Get.find();
 
   @override
@@ -65,11 +66,7 @@ class _CheckingLiveFeasibilityState extends State<CheckingLiveFeasibility> {
                           const CameraView(),
                           _agoraLiveController.startLiveStreaming.value ==
                                   LiveStreamingStatus.checking
-                              ? Container(
-                                  color: Colors.black45,
-                                  height: Get.height,
-                                  width: Get.width,
-                                )
+                              ? Container()
                               : Positioned(
                                   top: 20,
                                   left: DesignConstants.horizontalPadding,
@@ -78,11 +75,11 @@ class _CheckingLiveFeasibilityState extends State<CheckingLiveFeasibility> {
                                       Container(
                                         height: 40,
                                         width: 40,
-                                        color:
-                                            AppColorConstants.backgroundColor,
+                                        color: AppColorConstants
+                                            .backgroundColor,
                                         child: Center(
-                                          child:
-                                              ThemeIconWidget(ThemeIcon.close),
+                                          child: ThemeIconWidget(
+                                              ThemeIcon.close),
                                         ),
                                       ).circular.ripple(() {
                                         Get.back();
@@ -94,7 +91,8 @@ class _CheckingLiveFeasibilityState extends State<CheckingLiveFeasibility> {
                               left: 0,
                               right: 0,
                               child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.center,
                                 children: [
                                   Container(
                                     height: 70,
@@ -109,11 +107,12 @@ class _CheckingLiveFeasibilityState extends State<CheckingLiveFeasibility> {
                                       ),
                                     ),
                                   ).circular.ripple(() {
-                                    _agoraLiveController.checkFeasibilityToLive(
-                                        isOpenSettings: false,
-                                        battle: widget.battle,
-                                        successCallbackHandler:
-                                            widget.successCallbackHandler);
+                                    _agoraLiveController
+                                        .checkFeasibilityToLive(
+                                            isOpenSettings: false,
+                                            battle: widget.battle,
+                                            successCallbackHandler: widget
+                                                .successCallbackHandler);
                                   })
                                 ],
                               ))
@@ -151,11 +150,14 @@ class _CheckingLiveFeasibilityState extends State<CheckingLiveFeasibility> {
                                 onTap: () {},
                               ),
                             )
-                          : _agoraLiveController.startLiveStreaming.value ==
+                          : _agoraLiveController
+                                      .startLiveStreaming.value ==
                                   LiveStreamingStatus.failed
                               ? Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.center,
+                                  crossAxisAlignment:
+                                      CrossAxisAlignment.center,
                                   children: [
                                     Container(
                                       height: 200,
@@ -175,8 +177,8 @@ class _CheckingLiveFeasibilityState extends State<CheckingLiveFeasibility> {
                                       textAlign: TextAlign.center,
                                       style: TextStyle(
                                           fontSize: FontSizes.h4,
-                                          color:
-                                              AppColorConstants.mainTextColor,
+                                          color: AppColorConstants
+                                              .mainTextColor,
                                           fontWeight: TextWeight.regular),
                                     ),
                                     const SizedBox(
@@ -210,46 +212,51 @@ class _CheckingLiveFeasibilityState extends State<CheckingLiveFeasibility> {
                                 ).hp(DesignConstants.horizontalPadding)
                               : Row(
                                   mainAxisSize: MainAxisSize.min,
-                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.center,
                                   children: <Widget>[
-                                    const SizedBox(width: 20.0, height: 100.0),
+                                    const SizedBox(
+                                        width: 20.0, height: 100.0),
                                     Heading3Text(
                                       goingLiveString.tr,
                                     ),
-                                    const SizedBox(width: 20.0, height: 100.0),
+                                    const SizedBox(
+                                        width: 20.0, height: 100.0),
                                     DefaultTextStyle(
                                       style: TextStyle(
                                           fontSize: FontSizes.h3,
                                           fontWeight: TextWeight.semiBold,
-                                          color: AppColorConstants.themeColor),
+                                          color: AppColorConstants
+                                              .themeColor),
                                       child: AnimatedTextKit(
-                                        pause: const Duration(milliseconds: 10),
+                                        pause: const Duration(
+                                            milliseconds: 10),
                                         totalRepeatCount: 1,
                                         animatedTexts: [
                                           RotateAnimatedText('3',
-                                              duration:
-                                                  const Duration(seconds: 1),
+                                              duration: const Duration(
+                                                  seconds: 1),
                                               textStyle: TextStyle(
                                                   fontSize: FontSizes.h3,
                                                   fontWeight:
                                                       TextWeight.regular)),
                                           RotateAnimatedText('2',
-                                              duration:
-                                                  const Duration(seconds: 1),
+                                              duration: const Duration(
+                                                  seconds: 1),
                                               textStyle: TextStyle(
                                                   fontSize: FontSizes.h3,
                                                   fontWeight:
                                                       TextWeight.regular)),
                                           RotateAnimatedText('1',
-                                              duration:
-                                                  const Duration(seconds: 1),
+                                              duration: const Duration(
+                                                  seconds: 1),
                                               textStyle: TextStyle(
                                                   fontSize: FontSizes.h3,
                                                   fontWeight:
                                                       TextWeight.regular)),
                                           RotateAnimatedText(goString.tr,
-                                              duration:
-                                                  const Duration(seconds: 1),
+                                              duration: const Duration(
+                                                  seconds: 1),
                                               textStyle: TextStyle(
                                                   fontSize: FontSizes.h3,
                                                   fontWeight:

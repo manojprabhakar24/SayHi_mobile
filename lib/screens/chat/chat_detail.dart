@@ -775,6 +775,7 @@ class _ChatDetailState extends State<ChatDetail> {
       Get.to(() => StoryViewer(
             story: model.repliedOnStory,
             storyDeleted: () {},
+
           ));
     } else if (model.messageContentType == MessageContentType.contact) {
       openActionPopupForContact(model.mediaContent.contact!);

@@ -11,13 +11,14 @@ class NotificationController extends GetxController {
   List<NotificationModel> allNotification = [];
   RxList<FollowRequestModel> followRequests = <FollowRequestModel>[].obs;
 
-  RxList<NotificationType> selectedNotificationsTypes =
-      <NotificationType>[].obs;
+  RxList<SMNotificationType> selectedNotificationsTypes =
+      <SMNotificationType>[].obs;
 
   RxMap<String, List<NotificationModel>> groupedNotifications =
       <String, List<NotificationModel>>{}.obs;
 
   DataWrapper followRequestDataWrapper = DataWrapper();
+  RxInt unreadNotificationCount = 0.obs;
 
   clearFollowRequests() {
     followRequests.clear();
@@ -27,7 +28,8 @@ class NotificationController extends GetxController {
   filterNotifications() {
     if (selectedNotificationsTypes.isNotEmpty) {
       filteredNotifications = allNotification
-          .where((element) => selectedNotificationsTypes.contains(element.type))
+          .where((element) =>
+              selectedNotificationsTypes.contains(element.type))
           .toList();
     } else {
       filteredNotifications = allNotification;
@@ -57,7 +59,29 @@ class NotificationController extends GetxController {
     });
   }
 
-  selectNotificationType(NotificationType type) {
+  getNotificationInfo() {
+    MiscApi.getNotificationInfo(resultCallback: (result) {
+      unreadNotificationCount.value = result;
+    });
+  }
+
+  markNotificationAsRead(int id) {
+    MiscApi.markNotificationAsRead(
+        id: id,
+        resultCallback: () {
+          getNotificationInfo();
+
+          for (var element in allNotification) {
+            if (element.id == id) {
+              element.readStatus = true;
+            }
+          }
+
+          filterNotifications();
+        });
+  }
+
+  selectNotificationType(SMNotificationType type) {
     if (selectedNotificationsTypes.contains(type)) {
       selectedNotificationsTypes.remove(type);
     } else {
@@ -85,6 +109,7 @@ class NotificationController extends GetxController {
         resultCallback: (result, metadata) {
           followRequestDataWrapper.processCompletedWithData(metadata);
           followRequests.addAll(result);
+          followRequests.unique((e) => e.id);
           callback();
           update();
         });
@@ -94,7 +119,10 @@ class NotificationController extends GetxController {
     followRequests.removeWhere((element) => element.sender.id == userId);
     update();
 
-    MiscApi.acceptFollowRequest(userId: userId);
+    MiscApi.acceptFollowRequest(userId: userId, completionHandler: () {
+      UserProfileManager controller = Get.find();
+      controller.refreshProfile();
+    });
   }
 
   delcineFollowRequest(int userId) {

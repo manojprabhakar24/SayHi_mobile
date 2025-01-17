@@ -73,11 +73,12 @@ class UsersApi {
   static Future<void> followUnfollowUser({required bool isFollowing,
     required UserModel user}) async {
     var url = (isFollowing
-        ? user.isPrivate
+        ? user.isPrivateProfile
         ? NetworkConstantsUtil.followRequest
         : NetworkConstantsUtil.followUser
         : NetworkConstantsUtil.unfollowUser);
 
+    print('url ==== $url');
     await ApiWrapper().postApi(url: url, param: {
       "user_id": user.id.toString(),
     }).then((result) {

@@ -11,8 +11,8 @@ class CameraControllerService extends GetxController {
   late CameraController controller;
 
   Future<void> initializeCamera(CameraLensDirection lensDirection) async {
-    final camera =
-        cameras.firstWhere((camera) => camera.lensDirection == lensDirection);
+    final camera = cameras
+        .firstWhere((camera) => camera.lensDirection == lensDirection);
 
     controller = CameraController(camera, ResolutionPreset.max);
     await controller.initialize().then((_) {}).catchError((Object e) {
@@ -93,38 +93,40 @@ class _ContentCreatorViewState extends State<ContentCreatorView>
       body: SizedBox(
         height: Get.height,
         width: Get.width,
-        child: Stack(
+        child: Column(
           children: [
-            TabBarView(
-                physics: const NeverScrollableScrollPhysics(),
-                controller: tabController,
-                children: [
-                  AddPostScreen(
-                    postType: PostType.basic,
-                    postCompletionHandler: () {},
-                  ),
-                  if (_settingsController.setting.value!.enableReel)
-                    const CreateReelScreen(),
-                  // Container(),
-                  if (_settingsController.setting.value!.enableLive)
-                    CheckingLiveFeasibility(successCallbackHandler: () {})
-                ]),
+            Expanded(
+              child: TabBarView(
+                  physics: const NeverScrollableScrollPhysics(),
+                  controller: tabController,
+                  children: [
+                    AddPostScreen(
+                      postType: PostType.basic,
+                      postCompletionHandler: () {},
+                    ),
+                    if (_settingsController.setting.value!.enableReel)
+                      const CreateReelScreen(),
+                    // Container(),
+                    if (_settingsController.setting.value!.enableLive)
+                      CheckingLiveFeasibility(
+                          successCallbackHandler: () {})
+                  ]),
+            ),
             Obx(() => _agoraLiveController.startLiveStreaming.value !=
                     LiveStreamingStatus.none
                 ? Container()
-                : Positioned(
-                    left: 80,
-                    right: 80,
-                    bottom: 25,
-                    child: Container(
-                      color: AppColorConstants.themeColor.withOpacity(0.2),
-                      child: SMTabBar(
-                        tabs: tabs,
-                        canScroll: true,
-                        hideDivider: false,
-                        controller: tabController,
-                      ),
-                    ).round(50)))
+                : Container(
+                    color: AppColorConstants.themeColor.withOpacity(0.2),
+                    child: SMTabBar(
+                      tabs: tabs,
+                      canScroll: true,
+                      hideDivider: false,
+                      controller: tabController,
+                    ),
+                  ).round(50)),
+            const SizedBox(
+              height: 20,
+            ),
           ],
         ),
       ),

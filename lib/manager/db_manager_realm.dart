@@ -122,7 +122,7 @@ class RealmDBManager {
     // var realm = await Realm.open(configuration);
 
     final allRooms = realm.all<ChatRoomsRealm>();
-    realm.write(() async {
+    realm.write(()  {
       for (ChatRoomModel chatRoom in chatRooms) {
         if (allRooms.where((element) => element.id == chatRoom.id).isEmpty) {
           realm.add(ChatRoomsRealm(
@@ -285,7 +285,7 @@ class RealmDBManager {
     if (isInWriteBatch) {
       updateRoom(chatRoom, updateAt, lastMessage);
     } else {
-      realm.write(() async {
+      realm.write(()  {
         updateRoom(chatRoom, updateAt, lastMessage);
       });
     }
@@ -782,7 +782,7 @@ class RealmDBManager {
   }
 
   updateUnReadCount({required int roomId}) async {
-    realm.write(() async {
+    realm.write(()  {
       var dbRooms = realm.query<ChatRoomsRealm>('id = $roomId');
       if (dbRooms.isNotEmpty) {
         dbRooms.first.unreadMessagesCount =
@@ -798,7 +798,7 @@ class RealmDBManager {
   }
 
   clearUnReadCount({required int roomId}) async {
-    realm.write(() async {
+    realm.write(()  {
       var dbRooms = realm.query<ChatRoomsRealm>('id = $roomId');
       if (dbRooms.isNotEmpty) {
         dbRooms.first.unreadMessagesCount = 0;
@@ -807,7 +807,7 @@ class RealmDBManager {
   }
 
   clearAllUnreadCount() async {
-    realm.write(() async {
+    realm.write(()  {
       var rooms = realm.all<ChatRoomsRealm>();
       for (ChatRoomsRealm room in rooms) {
         room.unreadMessagesCount = 0;

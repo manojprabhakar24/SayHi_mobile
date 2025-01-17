@@ -12,7 +12,7 @@ import '../reuseable_widgets/post_list.dart';
 import '../reuseable_widgets/users_list.dart';
 
 class Explore extends StatefulWidget {
-  const Explore({Key? key}) : super(key: key);
+  const Explore({super.key});
 
   @override
   State<Explore> createState() => _ExploreState();

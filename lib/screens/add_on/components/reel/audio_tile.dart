@@ -1,7 +1,5 @@
 import 'package:foap/helper/imports/common_import.dart';
 import 'package:foap/helper/number_extension.dart';
-import 'package:lottie/lottie.dart';
-
 import '../../model/reel_music_model.dart';
 
 class AudioTile extends StatelessWidget {
@@ -76,9 +74,9 @@ class AudioTile extends StatelessWidget {
             useAudioBack();
           }),
           const Spacer(),
-          if (isPlaying)
-            Container(
-                child: Lottie.asset('assets/lottie/audio_playing.json').p4.rP8),
+          // if (isPlaying)
+          //   Container(
+          //       child: Lottie.asset('assets/lottie/audio_playing.json').p4.rP8),
           Container(
             child: ThemeIconWidget(
               isPlaying ? ThemeIcon.pause : ThemeIcon.play,

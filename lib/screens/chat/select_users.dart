@@ -1,3 +1,4 @@
+import 'package:foap/components/search_bar.dart';
 import 'package:foap/helper/imports/common_import.dart';
 import 'package:foap/screens/chat/random_chat/choose_profile_category.dart';
 import 'package:foap/helper/imports/chat_imports.dart';
@@ -11,8 +12,7 @@ import '../../model/call_model.dart';
 class SelectUserForChat extends StatefulWidget {
   final Function(UserModel) userSelected;
 
-  const SelectUserForChat({Key? key, required this.userSelected})
-      : super(key: key);
+  const SelectUserForChat({super.key, required this.userSelected});
 
   @override
   SelectUserForChatState createState() => SelectUserForChatState();
@@ -28,7 +28,7 @@ class SelectUserForChatState extends State<SelectUserForChat> {
     super.initState();
 
     _selectUserForChatController.clear();
-    _selectUserForChatController.getFollowingUsers();
+    _selectUserForChatController.loadUsers(() {});
   }
 
   @override
@@ -60,21 +60,23 @@ class SelectUserForChatState extends State<SelectUserForChat> {
                     scrollController.addListener(() {
                       if (scrollController.position.maxScrollExtent ==
                           scrollController.position.pixels) {
-                        if (!_selectUserForChatController.followingIsLoading) {
-                          _selectUserForChatController.getFollowingUsers();
+                        if (!_selectUserForChatController
+                            .dataWrapper.isLoading.value) {
+                          _selectUserForChatController.loadUsers(() {});
                         }
                       }
                     });
 
                     List<UserModel> usersList =
-                        _selectUserForChatController.following;
-                    return _selectUserForChatController.followingIsLoading
+                        _selectUserForChatController.searchedUsers;
+                    return _selectUserForChatController
+                            .dataWrapper.isLoading.value
                         ? const ShimmerUsers()
                             .hp(DesignConstants.horizontalPadding)
                         : usersList.isNotEmpty
                             ? ListView.separated(
-                                padding:
-                                    const EdgeInsets.only(top: 20, bottom: 50),
+                                padding: const EdgeInsets.only(
+                                    top: 20, bottom: 50),
                                 controller: scrollController,
                                 itemCount: usersList.length + 2,
                                 itemBuilder: (context, index) {
@@ -90,8 +92,9 @@ class SelectUserForChatState extends State<SelectUserForChat> {
                                                   child: ThemeIconWidget(
                                                     ThemeIcon.group,
                                                     size: 15,
-                                                    color: AppColorConstants
-                                                        .themeColor,
+                                                    color:
+                                                        AppColorConstants
+                                                            .themeColor,
                                                   ).p8)
                                               .circular,
                                           const SizedBox(
@@ -105,9 +108,10 @@ class SelectUserForChatState extends State<SelectUserForChat> {
                                       ),
                                     ).ripple(() {
                                       Get.back();
-                                      Get.to(
-                                          () => const SelectUserForGroupChat());
-                                    }).hp(DesignConstants.horizontalPadding);
+                                      Get.to(() =>
+                                          const SelectUserForGroupChat());
+                                    }).hp(
+                                        DesignConstants.horizontalPadding);
                                   } else if (index == 1) {
                                     return SizedBox(
                                       height: 30,
@@ -120,8 +124,9 @@ class SelectUserForChatState extends State<SelectUserForChat> {
                                                   child: ThemeIconWidget(
                                                     ThemeIcon.randomChat,
                                                     size: 15,
-                                                    color: AppColorConstants
-                                                        .themeColor,
+                                                    color:
+                                                        AppColorConstants
+                                                            .themeColor,
                                                   ).p8)
                                               .circular,
                                           const SizedBox(
@@ -134,34 +139,41 @@ class SelectUserForChatState extends State<SelectUserForChat> {
                                         ],
                                       ),
                                     ).ripple(() {
-                                      Get.to(() => const ChooseProfileCategory(
+                                      Get.to(() =>
+                                          const ChooseProfileCategory(
                                             isCalling: false,
                                           ));
-                                    }).hp(DesignConstants.horizontalPadding);
+                                    }).hp(
+                                        DesignConstants.horizontalPadding);
                                   } else {
                                     return UserTile(
                                       profile: usersList[index - 2],
                                       viewCallback: () {
-                                        Loader.show(status: loadingString.tr);
+                                        Loader.show(
+                                            status: loadingString.tr);
 
-                                        widget
-                                            .userSelected(usersList[index - 2]);
+                                        widget.userSelected(
+                                            usersList[index - 2]);
                                       },
                                       audioCallCallback: () {
                                         Get.back();
-                                        initiateAudioCall(usersList[index - 2]);
+                                        initiateAudioCall(
+                                            usersList[index - 2]);
                                       },
                                       chatCallback: () {
-                                        Loader.show(status: loadingString.tr);
+                                        Loader.show(
+                                            status: loadingString.tr);
 
-                                        widget
-                                            .userSelected(usersList[index - 2]);
+                                        widget.userSelected(
+                                            usersList[index - 2]);
                                       },
                                       videoCallCallback: () {
                                         Get.back();
-                                        initiateVideoCall(usersList[index - 2]);
+                                        initiateVideoCall(
+                                            usersList[index - 2]);
                                       },
-                                    ).hp(DesignConstants.horizontalPadding);
+                                    ).hp(
+                                        DesignConstants.horizontalPadding);
                                   }
                                 },
                                 separatorBuilder: (context, index) {
@@ -240,10 +252,9 @@ class SelectFollowingUserForMessageSending extends StatefulWidget {
   final Function(UserModel) sendToUserCallback;
 
   const SelectFollowingUserForMessageSending({
-    Key? key,
+    super.key,
     required this.sendToUserCallback,
-    // this.post,
-  }) : super(key: key);
+  });
 
   @override
   SelectFollowingUserForMessageSendingState createState() =>
@@ -258,7 +269,7 @@ class SelectFollowingUserForMessageSendingState
   @override
   void initState() {
     super.initState();
-    selectUserForChatController.getFollowingUsers();
+    selectUserForChatController.loadUsers(() {});
   }
 
   @override
@@ -279,52 +290,72 @@ class SelectFollowingUserForMessageSendingState
             scrollController.addListener(() {
               if (scrollController.position.maxScrollExtent ==
                   scrollController.position.pixels) {
-                if (!selectUserForChatController.followingIsLoading) {
-                  selectUserForChatController.getFollowingUsers();
+                if (!selectUserForChatController
+                    .dataWrapper.isLoading.value) {
+                  selectUserForChatController.loadUsers(() {});
                 }
               }
             });
 
-            List<UserModel> usersList = selectUserForChatController.following;
-            return selectUserForChatController.followingIsLoading
-                ? const ShimmerUsers()
-                : usersList.isNotEmpty
-                    ? ListView.separated(
-                        padding: const EdgeInsets.only(top: 20, bottom: 50),
-                        controller: scrollController,
-                        itemCount: usersList.length,
-                        itemBuilder: (context, index) {
-                          UserModel user = usersList[index];
-                          return SendMessageUserTile(
-                            state: selectUserForChatController
-                                    .completedActionUsers
-                                    .contains(user)
-                                ? ButtonState.success
-                                : selectUserForChatController.failedActionUsers
-                                        .contains(user)
-                                    ? ButtonState.fail
-                                    : selectUserForChatController
-                                            .processingActionUsers
-                                            .contains(user)
-                                        ? ButtonState.loading
-                                        : ButtonState.idle,
-                            profile: usersList[index],
-                            sendCallback: () {
-                              Get.back();
-                              widget.sendToUserCallback(usersList[index]);
-                            },
-                          );
-                        },
-                        separatorBuilder: (context, index) {
-                          return const SizedBox(
-                            height: 20,
-                          );
-                        },
-                      )
-                    : emptyUser(
-                        title: noUserFoundString.tr,
-                        subTitle: followFriendsToSendPostString.tr,
-                      );
+            List<UserModel> usersList =
+                selectUserForChatController.searchedUsers;
+            return Column(
+              children: [
+                const SizedBox(height: 15,),
+                SFSearchBar(
+                  onSearchCompleted: (value) {},
+                  onSearchChanged: (value) {
+                    selectUserForChatController.searchTextChanged(value);
+                  },
+                  hintText: searchUsersString.tr,
+                ),
+                Expanded(
+                  child: selectUserForChatController
+                          .dataWrapper.isLoading.value
+                      ? const ShimmerUsers()
+                      : usersList.isNotEmpty
+                          ? ListView.separated(
+                              padding: const EdgeInsets.only(
+                                  top: 20, bottom: 50),
+                              controller: scrollController,
+                              itemCount: usersList.length,
+                              itemBuilder: (context, index) {
+                                UserModel user = usersList[index];
+                                return SendMessageUserTile(
+                                  state: selectUserForChatController
+                                          .completedActionUsers
+                                          .contains(user)
+                                      ? ButtonState.success
+                                      : selectUserForChatController
+                                              .failedActionUsers
+                                              .contains(user)
+                                          ? ButtonState.fail
+                                          : selectUserForChatController
+                                                  .processingActionUsers
+                                                  .contains(user)
+                                              ? ButtonState.loading
+                                              : ButtonState.idle,
+                                  profile: usersList[index],
+                                  sendCallback: () {
+                                    Get.back();
+                                    widget.sendToUserCallback(
+                                        usersList[index]);
+                                  },
+                                );
+                              },
+                              separatorBuilder: (context, index) {
+                                return const SizedBox(
+                                  height: 20,
+                                );
+                              },
+                            )
+                          : emptyUser(
+                              title: noUserFoundString.tr,
+                              subTitle: followFriendsToSendPostString.tr,
+                            ),
+                ),
+              ],
+            );
           }),
     );
   }

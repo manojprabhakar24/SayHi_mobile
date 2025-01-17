@@ -60,9 +60,10 @@ class SettingsController extends GetxController {
 
   loadSettings() async {
     bool isDarkTheme = await SharedPrefs().isDarkMode();
-    bioMetricAuthStatus.value = await SharedPrefs().getBioMetricAuthStatus();
+    bioMetricAuthStatus.value =
+        await SharedPrefs().getBioMetricAuthStatus();
     shareLocation.value = _userProfileManager.user.value!.latitude != null;
-    isPrivateAccount.value = _userProfileManager.user.value!.isPrivate;
+    isPrivateAccount.value = _userProfileManager.user.value!.isPrivateProfile;
     isShareOnlineStatus.value =
         _userProfileManager.user.value!.isShareOnlineStatus;
     setDarkMode(isDarkTheme);
@@ -95,7 +96,8 @@ class SettingsController extends GetxController {
     await MiscApi.getSettings(resultCallback: (result) async {
       setting.value = result;
 
-      if (setting.value?.latestVersion! != AppConfigConstants.currentVersion) {
+      if (setting.value?.latestVersion! !=
+          AppConfigConstants.currentVersion) {
         forceUpdate.value = true;
         forceUpdate.value = false;
       }
@@ -150,7 +152,8 @@ class SettingsController extends GetxController {
   deleteAccount() {
     AuthApi.deleteAccount(successCallback: () {
       _userProfileManager.logout();
-      AppUtil.showToast(message: accountIsDeletedString.tr, isSuccess: true);
+      AppUtil.showToast(
+          message: accountIsDeletedString.tr, isSuccess: true);
     });
   }
 

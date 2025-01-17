@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:foap/api_handler/apis/misc_api.dart';
@@ -16,6 +17,7 @@ import 'package:giphy_get/giphy_get.dart';
 class CommentsController extends GetxController {
   final UserProfileManager _userProfileManager = Get.find();
   final SettingsController _settingsController = Get.find();
+  final ScrollController controller = ScrollController();
 
   RxList<CommentModel> comments = <CommentModel>[].obs;
 
@@ -49,6 +51,7 @@ class CommentsController extends GetxController {
 
             update();
             callback();
+            scrollToBottom();
           });
     } else {
       callback();
@@ -99,6 +102,8 @@ class CommentsController extends GetxController {
 
           replyingComment.value = null;
           update();
+          commentPosted();
+          scrollToBottom();
         });
   }
 
@@ -152,33 +157,29 @@ class CommentsController extends GetxController {
               type, _userProfileManager.user.value!,
               filePath: uploadedImageData.last, id: id));
           update();
+          commentPosted();
+          scrollToBottom();
         });
   }
 
   Future<List<String>> uploadMedia(Media media) async {
     List<String> uploadedImageData = [];
 
-    await AppUtil.checkInternet().then((value) async {
-      if (value) {
-        final tempDir = await getTemporaryDirectory();
-        Uint8List mainFileData = await media.file!.compress();
+    final tempDir = await getTemporaryDirectory();
+    Uint8List mainFileData = await media.file!.compress();
 
-        //media
-        File file =
-            await File('${tempDir.path}/${media.id!.replaceAll('/', '')}.png')
-                .create();
-        file.writeAsBytesSync(mainFileData);
+    //media
+    File file =
+    await File('${tempDir.path}/${media.id!.replaceAll('/', '')}.png')
+        .create();
+    file.writeAsBytesSync(mainFileData);
 
-        await MiscApi.uploadFile(file.path,type: UploadMediaType.post,  mediaType: media.mediaType!,
-            resultCallback: (fileName, filePath) async {
+    await MiscApi.uploadFile(file.path,type: UploadMediaType.post,  mediaType: media.mediaType!,
+        resultCallback: (fileName, filePath) async {
           uploadedImageData.add(fileName);
           uploadedImageData.add(filePath);
           await file.delete();
         });
-      } else {
-        AppUtil.showToast(message: noInternetString.tr, isSuccess: false);
-      }
-    });
     return uploadedImageData;
   }
 
@@ -220,4 +221,19 @@ class CommentsController extends GetxController {
       handler();
     }
   }
+
+  scrollToBottom(){
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Timer(const Duration(milliseconds: 100), () {
+        if (comments.isNotEmpty) {
+          controller.animateTo(
+            controller.position.maxScrollExtent,
+            duration: const Duration(milliseconds: 150),
+            curve: Curves.fastOutSlowIn,
+          );
+        }
+      });
+    });
+  }
+
 }

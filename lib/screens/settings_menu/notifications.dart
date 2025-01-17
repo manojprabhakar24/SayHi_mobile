@@ -16,8 +16,7 @@ class NotificationsScreen extends StatefulWidget {
 }
 
 class _NotificationsScreenState extends State<NotificationsScreen> {
-  final NotificationController _notificationController =
-      NotificationController();
+  final NotificationController _notificationController = Get.find();
   final ProfileController _profileController = Get.find();
 
   @override
@@ -90,14 +89,12 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                     return _notificationController
                             .groupedNotifications.keys.isNotEmpty
                         ? ListView.separated(
-                            padding: EdgeInsets.only(
-                                top: 20,
-                                left: DesignConstants.horizontalPadding,
-                                right: DesignConstants.horizontalPadding,
-                                bottom: 50),
+                            padding:
+                                const EdgeInsets.only(top: 20, bottom: 50),
                             itemCount: _notificationController
                                 .groupedNotifications.keys.length,
-                            itemBuilder: (BuildContext context, int index) {
+                            itemBuilder:
+                                (BuildContext context, int index) {
                               String key = _notificationController
                                   .groupedNotifications.keys
                                   .toList()[index];
@@ -107,12 +104,13 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                                       [];
 
                               return Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
+                                crossAxisAlignment:
+                                    CrossAxisAlignment.start,
                                 children: [
                                   Heading5Text(
                                     key,
                                     weight: TextWeight.bold,
-                                  ),
+                                  ).hp(DesignConstants.horizontalPadding),
                                   const SizedBox(
                                     height: 15,
                                   ),
@@ -120,7 +118,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                                       in notifications)
                                     Column(
                                       children: [
-                                        NotificationTileType4(
+                                        NotificationTile(
                                           notification: notification,
                                           followBackUserHandler: () {
                                             _profileController.followUser(
@@ -129,11 +127,10 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                                                 .getNotifications();
                                           },
                                         ).ripple(() {
-                                          handleNotificationTap(notification);
+                                          handleNotificationTap(
+                                              notification);
                                         }),
-                                        const SizedBox(
-                                          height: 10,
-                                        )
+                                        divider(height: 0.5)
                                       ],
                                     ),
                                 ],
@@ -141,7 +138,9 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                             },
                             separatorBuilder:
                                 (BuildContext context, int index) {
-                              return divider(height: 0.2).vP8;
+                              return const SizedBox(
+                                height: 20,
+                              );
                             })
                         : emptyData(
                             title: noNotificationFoundString,
@@ -179,13 +178,13 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                       ),
                       ThemeIconWidget(_notificationController
                               .selectedNotificationsTypes
-                              .contains(NotificationType.comment)
+                              .contains(SMNotificationType.comment)
                           ? ThemeIcon.checkMarkWithCircle
                           : ThemeIcon.circleOutline)
                     ],
                   )).ripple(() {
                 _notificationController
-                    .selectNotificationType(NotificationType.comment);
+                    .selectNotificationType(SMNotificationType.comment);
               }),
               const SizedBox(
                 height: 20,
@@ -199,13 +198,13 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                       ),
                       ThemeIconWidget(_notificationController
                               .selectedNotificationsTypes
-                              .contains(NotificationType.like)
+                              .contains(SMNotificationType.like)
                           ? ThemeIcon.checkMarkWithCircle
                           : ThemeIcon.circleOutline)
                     ],
                   )).ripple(() {
                 _notificationController
-                    .selectNotificationType(NotificationType.like);
+                    .selectNotificationType(SMNotificationType.like);
               }),
               const SizedBox(
                 height: 20,
@@ -219,13 +218,13 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                       ),
                       ThemeIconWidget(_notificationController
                               .selectedNotificationsTypes
-                              .contains(NotificationType.follow)
+                              .contains(SMNotificationType.follow)
                           ? ThemeIcon.checkMarkWithCircle
                           : ThemeIcon.circleOutline)
                     ],
                   )).ripple(() {
                 _notificationController
-                    .selectNotificationType(NotificationType.follow);
+                    .selectNotificationType(SMNotificationType.follow);
               }),
               const SizedBox(
                 height: 20,
@@ -239,13 +238,13 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                       ),
                       ThemeIconWidget(_notificationController
                               .selectedNotificationsTypes
-                              .contains(NotificationType.gift)
+                              .contains(SMNotificationType.gift)
                           ? ThemeIcon.checkMarkWithCircle
                           : ThemeIcon.circleOutline)
                     ],
                   )).ripple(() {
                 _notificationController
-                    .selectNotificationType(NotificationType.gift);
+                    .selectNotificationType(SMNotificationType.gift);
               }),
               const SizedBox(
                 height: 20,
@@ -259,13 +258,13 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                       ),
                       ThemeIconWidget(_notificationController
                               .selectedNotificationsTypes
-                              .contains(NotificationType.clubInvitation)
+                              .contains(SMNotificationType.clubInvitation)
                           ? ThemeIcon.checkMarkWithCircle
                           : ThemeIcon.circleOutline)
                     ],
                   )).ripple(() {
-                _notificationController
-                    .selectNotificationType(NotificationType.clubInvitation);
+                _notificationController.selectNotificationType(
+                    SMNotificationType.clubInvitation);
               }),
               const SizedBox(
                 height: 20,
@@ -279,13 +278,14 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                       ),
                       ThemeIconWidget(_notificationController
                               .selectedNotificationsTypes
-                              .contains(NotificationType.competitionAdded)
+                              .contains(
+                                  SMNotificationType.competitionAdded)
                           ? ThemeIcon.checkMarkWithCircle
                           : ThemeIcon.circleOutline)
                     ],
                   )).ripple(() {
-                _notificationController
-                    .selectNotificationType(NotificationType.competitionAdded);
+                _notificationController.selectNotificationType(
+                    SMNotificationType.competitionAdded);
               }),
               const SizedBox(
                 height: 20,
@@ -304,31 +304,24 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
   }
 
   handleNotificationTap(NotificationModel notification) {
-    if (notification.type == NotificationType.follow) {
+    _notificationController.markNotificationAsRead(notification.id);
+    if (notification.type == SMNotificationType.follow) {
       int userId = notification.actionBy!.id;
       Get.to(() => OtherUserProfile(userId: userId));
-    } else if (notification.type == NotificationType.comment) {
+    } else if (notification.type == SMNotificationType.comment) {
       int postId = notification.post!.id;
-      // Get.to(() => CommentsScreen(
-      //       postId: postId,
-      //       isPopup: false,
-      //       handler: () {},
-      //       commentPostedCallback: () {},
-      //     ));
       Get.to(() => SinglePostDetail(postId: postId));
-    } else if (notification.type == NotificationType.like) {
+    } else if (notification.type == SMNotificationType.like) {
       Get.to(() => SinglePostDetail(postId: notification.post!.id));
-    } else if (notification.type == NotificationType.competitionAdded) {
+    } else if (notification.type == SMNotificationType.collaborate) {
+      Get.to(() =>
+          SinglePostDetail(postId: notification.collaboration!.refId));
+    } else if (notification.type == SMNotificationType.competitionAdded) {
       int competitionId = notification.competition!.id;
       Get.to(() => CompetitionDetailScreen(
             competitionId: competitionId,
             refreshPreviousScreen: () {},
           ));
     }
-    // else if (notification.type == 7) {
-    //   Get.to(() => SinglePostDetail(
-    //         postId: notification.post!.id,
-    //       ));
-    // }
   }
 }

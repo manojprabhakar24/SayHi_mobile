@@ -8,7 +8,7 @@ import 'dart:async';
 import 'package:foap/model/story_model.dart';
 import 'package:foap/screens/chat/media.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:video_compress_ds/video_compress_ds.dart';
+import 'package:video_compress/video_compress.dart';
 import 'package:flutter_video_info/flutter_video_info.dart';
 import '../../manager/db_manager_realm.dart';
 import '../../model/data_wrapper.dart';
@@ -25,7 +25,6 @@ class AppStoryController extends GetxController {
   RxInt numberOfItems = 0.obs;
 
   Rx<StoryMediaModel?> currentStoryMediaModel = Rx<StoryMediaModel?>(null);
-  bool isLoading = false;
 
   RxBool showEmoticons = false.obs;
   RxString replyText = ''.obs;
@@ -58,11 +57,19 @@ class AppStoryController extends GetxController {
   }
 
   setCurrentStoryMedia(StoryMediaModel storyMedia) {
+    print('1');
     UserProfileManager userProfileManager = Get.find();
+    print('2');
 
     clearStoryViewers();
+    print('3');
+
     currentStoryMediaModel.value = storyMedia;
+    print('4');
+
     getIt<RealmDBManager>().storyViewed(storyMedia);
+    print('5');
+
     if (storyMedia.userId == userProfileManager.user.value!.id) {
       loadStoryViewer();
     } else {

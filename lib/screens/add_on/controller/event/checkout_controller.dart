@@ -12,8 +12,6 @@ import 'package:flutter_stripe/flutter_stripe.dart' as stripe;
 import 'package:razorpay_flutter/razorpay_flutter.dart';
 import 'package:foap/helper/imports/event_imports.dart';
 
-enum ProcessingPaymentStatus { inProcess, completed, failed }
-
 class CheckoutController extends GetxController {
   final UserProfileManager _userProfileManager = Get.find();
 

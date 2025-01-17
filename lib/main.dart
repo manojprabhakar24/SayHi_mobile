@@ -1,9 +1,11 @@
 import 'dart:io';
-import 'package:auto_orientation/auto_orientation.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:foap/api_handler/apis/auth_api.dart';
+
+// import 'package:foap/components/auto_orientation/auto_orientation.dart';
 import 'package:foap/controllers/fund_raising/fund_raising_controller.dart';
 import 'package:foap/controllers/job/job_controller.dart';
 import 'package:foap/controllers/shop/shop_controller.dart';
@@ -21,6 +23,7 @@ import 'package:foap/screens/popups/ask_location_permission.dart';
 import 'package:foap/screens/settings_menu/help_support_contorller.dart';
 import 'package:giphy_get/l10n.dart';
 import 'components/smart_text_field.dart';
+import 'controllers/notification/notifications_controller.dart';
 import 'controllers/post/post_gift_controller.dart';
 import 'controllers/clubs/clubs_controller.dart';
 import 'controllers/coupons/near_by_offers.dart';
@@ -50,7 +53,9 @@ import 'controllers/home/home_controller.dart';
 import 'controllers/live/live_history_controller.dart';
 import 'controllers/post/promotion_controller.dart';
 import 'controllers/post/saved_post_controller.dart';
+import 'controllers/profile/other_user_profile_controller.dart';
 import 'controllers/story/story_controller.dart';
+import 'controllers/subscription/subscription_controller.dart';
 import 'controllers/tv/live_tv_streaming_controller.dart';
 import 'controllers/auth/login_controller.dart';
 import 'controllers/misc/map_screen_controller.dart';
@@ -88,9 +93,11 @@ Future<void> main() async {
   HttpOverrides.global = MyHttpOverrides();
 
   await Firebase.initializeApp(
+    name: AppConfigConstants.appName,
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+  FirebaseMessaging.onBackgroundMessage(
+      _firebaseMessagingBackgroundHandler);
 
   DeviceInfoManager.collectDeviceInfo();
 
@@ -102,12 +109,9 @@ Future<void> main() async {
   isPermissionsAsked = await SharedPrefs().getTutorialSeen();
 
   DeepLinkManager.init();
-  AutoOrientation.portraitAutoMode();
 
   isDarkMode = await SharedPrefs().isDarkMode();
   Get.changeThemeMode(isDarkMode ? ThemeMode.dark : ThemeMode.light);
-  // Get.changeThemeMode(ThemeMode.dark);
-
   Get.put(PlayerManager());
   Get.put(UsersController());
   Get.put(EventsController());
@@ -128,6 +132,7 @@ Future<void> main() async {
   Get.put(AddPostController());
   Get.put(ChatDetailController());
   Get.put(ProfileController());
+  Get.put(OtherUserProfileController());
   Get.put(ChatHistoryController());
   Get.put(ChatRoomDetailController());
   Get.put(TvStreamingController());
@@ -155,6 +160,8 @@ Future<void> main() async {
   Get.put(CheckoutController());
   Get.put(CameraControllerService());
   Get.put(HighlightsController());
+  Get.put(NotificationController());
+  Get.put(UserSubscriptionController());
 
   setupServiceLocator();
 
@@ -164,10 +171,12 @@ Future<void> main() async {
   final SettingsController settingsController = Get.find();
   await settingsController.getSettings();
 
-  NotificationManager().initialize();
+  final NotificationController notificationController = Get.find();
+  notificationController.getNotificationInfo();
 
   await getIt<RealmDBManager>().openDatabase();
 
+  NotificationManager().initialize();
   if (userProfileManager.isLogin == true) {
     AuthApi.updateFcmToken();
   }
@@ -181,8 +190,7 @@ Future<void> main() async {
   } else {
     runApp(Phoenix(
         child: const SocialifiedApp(
-      startScreen:
-           AskToFollow(),
+      startScreen: AskToFollow(),
     )));
   }
 }
@@ -214,6 +222,7 @@ class _SocialifiedAppState extends State<SocialifiedApp> {
               if (snapshot.hasData) {
                 return GetMaterialApp(
                   translations: Languages(),
+                  builder: EasyLoading.init(),
                   locale: snapshot.data!,
                   fallbackLocale: const Locale('en', 'US'),
                   debugShowCheckedModeBanner: false,
@@ -244,12 +253,13 @@ class _SocialifiedAppState extends State<SocialifiedApp> {
 }
 
 @pragma('vm:entry-point')
-Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+Future<void> _firebaseMessagingBackgroundHandler(
+    RemoteMessage message) async {
   // If you're going to use other Firebase services in the background, such as Firestore,
   // make sure you call `initializeApp` before using other Firebase services.
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
-  NotificationManager().parseNotificationMessage(message.data);
+  NotificationManager().parseForegroundNotificationMessage(message.data);
 }

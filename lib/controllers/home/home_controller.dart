@@ -3,6 +3,7 @@ import 'package:foap/api_handler/apis/live_streaming_api.dart';
 import 'package:foap/api_handler/apis/post_api.dart';
 import 'package:foap/api_handler/apis/story_api.dart';
 import 'package:foap/helper/imports/common_import.dart';
+import 'package:foap/model/data_wrapper.dart';
 import '../../api_handler/apis/misc_api.dart';
 import '../../manager/db_manager_realm.dart';
 import '../../model/gift_model.dart';
@@ -14,8 +15,6 @@ import 'dart:async';
 import 'package:foap/model/story_model.dart';
 import 'package:foap/model/post_gallery.dart';
 import 'package:foap/model/post_search_query.dart';
-import 'package:foap/screens/dashboard/posts.dart';
-import 'package:foap/screens/profile/other_user_profile.dart';
 import 'package:foap/screens/home_feed/quick_links.dart';
 import 'package:foap/helper/list_extension.dart';
 
@@ -41,10 +40,9 @@ class HomeController extends GetxController {
   RxBool isRefreshingStories = false.obs;
 
   RxInt categoryIndex = 0.obs;
+  RxInt selectedSegment = 0.obs;
 
-  int _postsCurrentPage = 1;
-  bool _canLoadMorePosts = true;
-
+  DataWrapper postsDataWrapper = DataWrapper();
   RxBool openQuickLinks = false.obs;
 
   RxList<QuickLink> quickLinks = <QuickLink>[].obs;
@@ -55,8 +53,7 @@ class HomeController extends GetxController {
   }
 
   clearPosts() {
-    _postsCurrentPage = 1;
-    _canLoadMorePosts = true;
+    postsDataWrapper = DataWrapper();
     sponsoredPosts.clear();
     posts.clear();
   }
@@ -71,6 +68,19 @@ class HomeController extends GetxController {
       })).then((value) {
         closeQuickLinks();
       });
+    }
+  }
+
+  selectSegment(int index) {
+    if (selectedSegment.value != index) {
+      selectedSegment.value = index;
+      if (index == 0) {
+        postSearchQuery.isFollowing = 0;
+      } else {
+        postSearchQuery.isFollowing = 1;
+      }
+      clearPosts();
+      getPosts(callback: () {});
     }
   }
 
@@ -101,13 +111,6 @@ class HomeController extends GetxController {
           subHeading: liveUsersString.tr,
           linkType: QuickLinkType.liveUsers));
     }
-    // if (_settingsController.setting.value!.enableLive) {
-    //   quickLinks.add(QuickLink(
-    //       icon: 'assets/explore/live.png',
-    //       heading: goLiveString.tr,
-    //       subHeading: goLiveString.tr,
-    //       linkType: QuickLinkType.goLive));
-    // }
     if (_settingsController.setting.value!.enableCompetitions) {
       quickLinks.add(QuickLink(
           icon: 'assets/explore/competition.png',
@@ -233,38 +236,30 @@ class HomeController extends GetxController {
         });
   }
 
-  void getPosts({required VoidCallback callback}) async {
-    if (_canLoadMorePosts == true) {
-      postSearchQuery.isRecent = 1;
+  setSourceFilter(int isFollowing) {
+    postSearchQuery.isFollowing = isFollowing;
+  }
 
-      if (_postsCurrentPage == 1) {
+  void getPosts({required VoidCallback callback}) async {
+    if (postsDataWrapper.haveMoreData.value == true) {
+      postSearchQuery.isRecent = 1;
+      postSearchQuery.isMine = 1;
+
+      if (postsDataWrapper.page == 1) {
         isRefreshingPosts.value = true;
       }
 
       PostApi.getPosts(
-          userId: postSearchQuery.userId,
-          isPopular: postSearchQuery.isPopular,
           isFollowing: postSearchQuery.isFollowing,
-          isSold: postSearchQuery.isSold,
-          isMine: postSearchQuery.isMine,
           isRecent: postSearchQuery.isRecent,
-          title: postSearchQuery.title,
-          hashtag: postSearchQuery.hashTag,
-          clubId: postSearchQuery.clubId,
-          page: _postsCurrentPage,
+          page: postsDataWrapper.page,
           resultCallback: (result, metadata) {
             posts.addAll(result);
             posts.sort((a, b) => b.createDate!.compareTo(a.createDate!));
             posts.unique((e) => e.id);
 
             isRefreshingPosts.value = false;
-
-            if (_postsCurrentPage >= metadata.pageCount) {
-              _canLoadMorePosts = false;
-            } else {
-              _canLoadMorePosts = true;
-            }
-            _postsCurrentPage += 1;
+            postsDataWrapper.processCompletedWithData(metadata);
 
             callback();
             update();
@@ -275,7 +270,8 @@ class HomeController extends GetxController {
   }
 
   postEdited(PostModel post) {
-    int oldPostIndex = posts.indexWhere((element) => element.id == post.id);
+    int oldPostIndex =
+        posts.indexWhere((element) => element.id == post.id);
     posts.removeAt(oldPostIndex);
     posts.insert(oldPostIndex, post);
     posts.refresh();
@@ -325,61 +321,14 @@ class HomeController extends GetxController {
         });
   }
 
-  // void likeUnlikePost(PostModel post, BuildContext context) {
-  //   post.isLike = !post.isLike;
-  //   post.totalLike = post.isLike ? (post.totalLike) + 1 : (post.totalLike) - 1;
-  //   AppUtil.checkInternet().then((value) async {
-  //     if (value) {
-  //       ApiController()
-  //           .likeUnlike(post.isLike, post.id)
-  //           .then((response) async {});
-  //     } else {
-  //       AppUtil.showToast(
-  //
-  //           message: noInternet,
-  //           isSuccess: true);
-  //     }
-  //   });
-  //
-  //   posts.refresh();
-  //   update();
-  // }
-
-  postTextTapHandler({required PostModel post, required String text}) {
-    if (text.startsWith('#')) {
-      Get.to(() => Posts(
-                hashTag: text.replaceAll('#', ''),
-                title: text,
-              ))!
-          .then((value) {
-        getPosts(callback: () {});
-        getStories();
-      });
-    } else {
-      String userTag = text.replaceAll('@', '');
-      if (post.mentionedUsers
-          .where((element) => element.userName == userTag)
-          .isNotEmpty) {
-        int mentionedUserId = post.mentionedUsers
-            .where((element) => element.userName == userTag)
-            .first
-            .id;
-        Get.to(() => OtherUserProfile(userId: mentionedUserId))!.then((value) {
-          getPosts(callback: () {});
-          getStories();
-        });
-      }
-    }
-  }
-
-// stories
-
+  // stories
   void getStories() async {
     isRefreshingStories.value = true;
     update();
 
     var responses = await Future.wait([
       getCurrentActiveStories(),
+      getLiveUsers(),
       getFollowersStories(),
     ]).whenComplete(() {});
     stories.clear();
@@ -388,17 +337,42 @@ class HomeController extends GetxController {
         id: 1,
         name: '',
         userName: _userProfileManager.user.value!.userName,
-        // email: '',
         userImage: _userProfileManager.user.value!.picture,
         media: responses[0] as List<StoryMediaModel>);
 
+    List<StoryModel> liveUserStories =
+        (responses[1] as List<UserModel>).map((e) {
+      StoryModel story = StoryModel(
+          id: 1,
+          name: '',
+          userName: _userProfileManager.user.value!.userName,
+          userImage: _userProfileManager.user.value!.picture,
+          media: responses[0] as List<StoryMediaModel>);
+      story.isLive = true;
+      story.user = e;
+      return story;
+    }).toList();
+
     if ((responses[0] as List<StoryMediaModel>).isNotEmpty) {
       stories.add(story);
-      stories.addAll(responses[1] as List<StoryModel>);
+      stories.addAll(liveUserStories);
+      stories.addAll(responses[2] as List<StoryModel>);
     } else {
-      stories.addAll(responses[1] as List<StoryModel>);
+      stories.addAll(liveUserStories);
+      stories.addAll(responses[2] as List<StoryModel>);
     }
-    stories.unique((e) => e.id);
+    // Remove duplicates, keeping the version where isLive = true
+    stories.value = stories
+        .fold<Map<int, StoryModel>>({}, (map, item) {
+          // If the user id is not in the map or if the current item has isLive = true,
+          // replace the entry in the map for that user id
+          if (!map.containsKey(item.id) || item.isLive == true) {
+            map[item.id] = item;
+          }
+          return map;
+        })
+        .values
+        .toList();
     isRefreshingStories.value = false;
     update();
   }
@@ -422,8 +396,8 @@ class HomeController extends GetxController {
     await StoryApi.getStories(resultCallback: (result) {
       for (var story in result) {
         var allMedias = story.media;
-        var notViewedStoryMedias = allMedias
-            .where((element) => viewedStoryIds.contains(element.id) == false);
+        var notViewedStoryMedias = allMedias.where(
+            (element) => viewedStoryIds.contains(element.id) == false);
 
         if (notViewedStoryMedias.isEmpty) {
           story.isViewed = true;
@@ -460,7 +434,8 @@ class HomeController extends GetxController {
         receiverId: receiverId,
         resultCallback: () {
           // refresh profile to get updated wallet info
-          AppUtil.showToast(message: giftSentString.tr, isSuccess: true);
+          AppUtil.showToast(
+              message: giftSentSuccessfullyString.tr, isSuccess: true);
           _userProfileManager.refreshProfile();
         });
   }

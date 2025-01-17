@@ -31,7 +31,8 @@ class _ModeratorUsersState extends State<ModeratorUsers> {
             user: user,
             size: 25,
           ).ripple(() {
-            _profileController.getOtherUserDetail(userId: user.id);
+            _profileController.getOtherUserDetail(
+                userId: user.id, completionBlock: (user) {});
             showModalBottomSheet<void>(
                 backgroundColor: Colors.transparent,
                 context: context,

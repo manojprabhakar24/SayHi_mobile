@@ -12,14 +12,14 @@ class FollowRequestList extends StatefulWidget {
 
 class FollowRequestListState extends State<FollowRequestList> {
   final NotificationController _notificationController =
-      NotificationController();
+      Get.find();
   final RefreshController _refreshController =
       RefreshController(initialRefresh: false);
 
   @override
   void initState() {
     super.initState();
-    _notificationController.refreshFollowRequests(() {});
+    _notificationController.getFollowRequests(() {});
   }
 
   @override

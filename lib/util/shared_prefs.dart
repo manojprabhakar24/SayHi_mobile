@@ -2,6 +2,8 @@ import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:foap/helper/imports/common_import.dart';
 
+import '../model/account.dart';
+
 class SharedPrefs {
   Future<Locale> getLocale() async {
     String selectedLanguage = await SharedPrefs().getLanguage();
@@ -28,11 +30,6 @@ class SharedPrefs {
   setDarkMode(bool value) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setBool('darkMode', value);
-  }
-
-  void setUserLoggedIn(bool loggedIn) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setBool('isLoggedIn', loggedIn);
   }
 
   void setBioMetricAuthStatus(bool status) async {
@@ -62,6 +59,7 @@ class SharedPrefs {
   }
 
   void setFCMToken(String token) async {
+    print('setFCMToken $token');
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setString('FCMToken', token);
   }
@@ -81,7 +79,8 @@ class SharedPrefs {
     return prefs.get('VOIPToken') as String?;
   }
 
-  void setWallpaper({required int roomId, required String wallpaper}) async {
+  void setWallpaper(
+      {required int roomId, required String wallpaper}) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setString(roomId.toString(), wallpaper);
   }
@@ -104,15 +103,7 @@ class SharedPrefs {
 
   void clearPreferences() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    setUserLoggedIn(false);
     prefs.remove('authKey');
-
-    //
-    // prefs.clear();
-    //
-    // if (fcmToken != null) {
-    //   setFCMToken(fcmToken);
-    // }
   }
 
   void setLanguage(String lang) async {
@@ -168,7 +159,8 @@ class SharedPrefs {
     return prefs.get('${forAppleId}_name') as String?;
   }
 
-  void setApiResponse({required String url, required String response}) async {
+  void setApiResponse(
+      {required String url, required String response}) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setString(url, response);
   }
@@ -176,5 +168,60 @@ class SharedPrefs {
   Future<String?> getCachedApiResponse({required String url}) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     return prefs.get(url) as String?;
+  }
+
+  // manage accounts
+
+  Future<void> saveAccount(SayHiAppAccount account) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    List<String> accounts = prefs.getStringList('accounts') ?? [];
+
+    // Check if account already exists and update if found
+    int index = accounts.indexWhere((acc) =>
+        SayHiAppAccount.fromMap(jsonDecode(acc)).userId == account.userId);
+    if (index != -1) {
+      accounts[index] = jsonEncode(account.toMap());
+    } else {
+      accounts.add(jsonEncode(account.toMap()));
+    }
+
+    await prefs.setStringList('accounts', accounts);
+  }
+
+  Future<List<SayHiAppAccount>> getAccounts() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    List<String> accounts = prefs.getStringList('accounts') ?? [];
+
+    return accounts
+        .map((acc) => SayHiAppAccount.fromMap(jsonDecode(acc)))
+        .toList();
+  }
+
+  Future<SayHiAppAccount?> getAccount(String id) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    List<String> accounts = prefs.getStringList('accounts') ?? [];
+
+    List<SayHiAppAccount> accountObjs = accounts
+        .map((acc) => SayHiAppAccount.fromMap(jsonDecode(acc)))
+        .toList();
+    if (accountObjs.where((e) => e.userId == id).isNotEmpty) {
+      return accountObjs.where((e) => e.userId == id).first;
+    } else {
+      return null;
+    }
+  }
+
+  Future<SayHiAppAccount?> getCurrentAccount(String id) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    List<String> accounts = prefs.getStringList('accounts') ?? [];
+
+    List<SayHiAppAccount> accountObjs = accounts
+        .map((acc) => SayHiAppAccount.fromMap(jsonDecode(acc)))
+        .toList();
+    if (accountObjs.where((e) => e.userId == id).isNotEmpty) {
+      return accountObjs.where((e) => e.userId == id).first;
+    } else {
+      return null;
+    }
   }
 }

@@ -1,10 +1,11 @@
-import 'package:connectivity/connectivity.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:foap/helper/imports/common_import.dart';
 import '../components/timer_view.dart';
 
 class AppUtil {
   static showToast({required String message, required bool isSuccess}) {
-    Get.snackbar(isSuccess == true ? successString.tr : errorString.tr, message,
+    Get.snackbar(
+        isSuccess == true ? successString.tr : errorString.tr, message,
         snackPosition: SnackPosition.BOTTOM,
         colorText: Colors.white,
         backgroundColor: isSuccess == true
@@ -31,21 +32,10 @@ class AppUtil {
     ));
   }
 
-  Future<bool> check() async {
-    var connectivityResult = await (Connectivity().checkConnectivity());
-    if (connectivityResult == ConnectivityResult.mobile) {
-      return true;
-    } else if (connectivityResult == ConnectivityResult.wifi) {
-      return true;
-    }
-    return false;
-  }
 
   static Future<bool> checkInternet() async {
     var connectivityResult = await (Connectivity().checkConnectivity());
-    if (connectivityResult == ConnectivityResult.mobile) {
-      return true;
-    } else if (connectivityResult == ConnectivityResult.wifi) {
+    if (!connectivityResult.contains(ConnectivityResult.none)) {
       return true;
     }
     return false;
@@ -59,59 +49,62 @@ class AppUtil {
     showModalBottomSheet(
       backgroundColor: Colors.transparent,
       context: Get.context!,
-      builder: (context) => Container(
-        height: 220,
-        width: Get.width,
-        color: AppColorConstants.backgroundColor,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Heading3Text(
-              title,
-              color: AppColorConstants.themeColor,
-              weight: TextWeight.bold,
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            BodyLargeText(
-              subTitle,
-              weight: TextWeight.regular,
-            ),
-            const SizedBox(
-              height: 20,
-            ),
-            Column(
-              children: [
-                Wrap(
-                  spacing: 20,
-                  children: [
-                    BodyLargeText(
-                      okString,
-                      color: Colors.white,
-                    )
-                        .makeChip(backGroundColor: AppColorConstants.themeColor)
-                        .ripple(() {
-                      Get.back(closeOverlays: true);
-                      okHandler();
-                    }),
-                    BodyLargeText(
-                      cancelString,
-                      color: Colors.white,
-                    )
-                        .makeChip(backGroundColor: AppColorConstants.red)
-                        .ripple(() {
-                      cancelHandler();
-                      Get.back(closeOverlays: true);
-                    }),
-                  ],
-                ),
-              ],
-            )
-          ],
-        ).hp(DesignConstants.horizontalPadding),
-      ).topRounded(20),
+      builder: (context) => IntrinsicHeight(
+        child: Container(
+          width: Get.width,
+          color: AppColorConstants.backgroundColor,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Heading4Text(
+                title,
+                color: AppColorConstants.themeColor,
+                weight: TextWeight.bold,
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              BodyLargeText(
+                subTitle,
+                weight: TextWeight.regular,
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              Column(
+                children: [
+                  Wrap(
+                    spacing: 20,
+                    children: [
+                      BodyLargeText(
+                        okString,
+                        color: Colors.white,
+                      )
+                          .makeChip(
+                              backGroundColor:
+                                  AppColorConstants.themeColor)
+                          .ripple(() {
+                        Get.back(closeOverlays: true);
+                        okHandler();
+                      }),
+                      BodyLargeText(
+                        cancelString,
+                        color: Colors.white,
+                      )
+                          .makeChip(backGroundColor: AppColorConstants.red)
+                          .ripple(() {
+                        cancelHandler();
+                        Get.back(closeOverlays: true);
+                      }),
+                    ],
+                  ),
+                ],
+              )
+            ],
+          ).p(DesignConstants.horizontalPadding),
+        ).topRounded(20),
+      ),
     );
   }
 
@@ -174,7 +167,8 @@ class AppUtil {
                       color: AppColorConstants.themeColor,
                     )
                         .makeChip(
-                            backGroundColor: AppColorConstants.mainTextColor)
+                            backGroundColor:
+                                AppColorConstants.mainTextColor)
                         .ripple(() {
                       Get.back(closeOverlays: true);
                       okHandler();
@@ -260,7 +254,8 @@ class AppUtil {
                       color: AppColorConstants.subHeadingTextColor,
                     )
                         .makeChip(
-                            backGroundColor: AppColorConstants.mainTextColor)
+                            backGroundColor:
+                                AppColorConstants.mainTextColor)
                         .ripple(() {
                       Get.back(closeOverlays: true);
                       okHandler();
@@ -294,50 +289,51 @@ class AppUtil {
         return Dialog(
           backgroundColor: Colors.transparent,
           elevation: 0,
-          child: Container(
-            height: 200,
-            width: Get.width,
-            color: AppColorConstants.backgroundColor,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Heading3Text(
-                  title,
-                  color: AppColorConstants.themeColor,
-                  weight: TextWeight.bold,
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                BodyLargeText(
-                  subTitle,
-                ),
-                const SizedBox(
-                  height: 25,
-                ),
-                Column(
-                  children: [
-                    Row(
-                      children: [
-                        const Spacer(),
-                        SizedBox(
-                          width: 100,
-                          height: 30,
-                          child: AppThemeBorderButton(
-                              text: okString.tr,
-                              onPress: () {
-                                Get.back(closeOverlays: true);
-                                okHandler();
-                              }),
-                        ),
-                      ],
-                    ),
-                  ],
-                )
-              ],
-            ).p16,
-          ).round(20),
+          child: IntrinsicHeight(
+            child: Container(
+              width: Get.width,
+              color: AppColorConstants.backgroundColor,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Heading3Text(
+                    title,
+                    color: AppColorConstants.themeColor,
+                    weight: TextWeight.bold,
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  BodyLargeText(
+                    subTitle,
+                  ),
+                  const SizedBox(
+                    height: 25,
+                  ),
+                  Column(
+                    children: [
+                      Row(
+                        children: [
+                          const Spacer(),
+                          SizedBox(
+                            width: 100,
+                            height: 30,
+                            child: AppThemeBorderButton(
+                                text: okString.tr,
+                                onPress: () {
+                                  Get.back(closeOverlays: true);
+                                  okHandler();
+                                }),
+                          ),
+                        ],
+                      ),
+                    ],
+                  )
+                ],
+              ).p16,
+            ).round(20),
+          ),
         );
       },
     );

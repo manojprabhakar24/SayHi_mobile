@@ -8,7 +8,8 @@ import 'package:foap/api_handler/apis/users_api.dart';
 import 'package:foap/helper/imports/common_import.dart';
 import 'package:foap/helper/imports/chat_imports.dart';
 import 'package:foap/helper/string_extension.dart';
-import 'package:google_mlkit_smart_reply/google_mlkit_smart_reply.dart';
+
+// import 'package:google_mlkit_smart_reply/google_mlkit_smart_reply.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:profanity_filter/profanity_filter.dart';
 import '../../components/notification_banner.dart';
@@ -51,7 +52,8 @@ class ChatDetailController extends GetxController {
   DateTime? typingStatusUpdatedAt;
 
   RxSet<String> whoIsTyping = RxSet<String>();
-  final smartReply = SmartReply();
+
+  // final smartReply = SmartReply();
 
   int chatHistoryPage = 1;
   bool canLoadMoreMessages = true;
@@ -110,7 +112,8 @@ class ChatDetailController extends GetxController {
       chatRoom.refresh();
 
       // update room in local storage
-      await getIt<RealmDBManager>().startUpdateRoom(chatRoom.value!, false);
+      await getIt<RealmDBManager>()
+          .startUpdateRoom(chatRoom.value!, false);
       callback();
     });
   }
@@ -147,10 +150,13 @@ class ChatDetailController extends GetxController {
             roomId: chatRoom.id, limit: 20, offset: messages.length);
     messages.insertAll(0, msgList);
 
-    if (chatRoom.isGroupChat == false) {
-      opponent.value =
-          await getOpponentUser(userId: chatRoom.opponent!.userDetail.id);
+    if (chatRoom.isGroupChat == false && chatRoom.opponent != null && chatRoom.opponent!.userDetail != null) {
+      opponent.value = await getOpponentUser(userId: chatRoom.opponent!.userDetail.id);
+    } else {
+      // Handle the case where opponent or userDetail is null
+      print('Opponent or userDetail is null');
     }
+
 
     if (msgList.length == 20) {
       completion();
@@ -195,7 +201,8 @@ class ChatDetailController extends GetxController {
   }
 
   getRoomDetail(int roomId, Function(ChatRoomModel) callback) async {
-    ChatRoomModel? chatRoom = await getIt<RealmDBManager>().getRoomById(roomId);
+    ChatRoomModel? chatRoom =
+        await getIt<RealmDBManager>().getRoomById(roomId);
 
     if (chatRoom == null) {
       await ChatApi.getChatRoomDetail(roomId, resultCallback: (result) {
@@ -213,7 +220,8 @@ class ChatDetailController extends GetxController {
   createChatRoom(int userId, Function(int) callback) {
     ChatApi.createChatRoom(userId, resultCallback: (roomId) {
       getIt<SocketManager>().emit(SocketConstants.addUserInChatRoom, {
-        'userId': '${_userProfileManager.user.value!.id},$userId'.toString(),
+        'userId':
+            '${_userProfileManager.user.value!.id},$userId'.toString(),
         'room': roomId
       });
 
@@ -228,8 +236,8 @@ class ChatDetailController extends GetxController {
   starMessage(ChatMessageModel message) {
     message.isStar = 1;
     selectedMessages.refresh();
-    getIt<RealmDBManager>()
-        .starUnStarMessage(localMessageId: message.localMessageId, isStar: 1);
+    getIt<RealmDBManager>().starUnStarMessage(
+        localMessageId: message.localMessageId, isStar: 1);
 
     update();
   }
@@ -237,8 +245,8 @@ class ChatDetailController extends GetxController {
   unStarMessage(ChatMessageModel message) {
     message.isStar = 0;
     selectedMessages.refresh();
-    getIt<RealmDBManager>()
-        .starUnStarMessage(localMessageId: message.localMessageId, isStar: 0);
+    getIt<RealmDBManager>().starUnStarMessage(
+        localMessageId: message.localMessageId, isStar: 0);
 
     update();
   }
@@ -340,7 +348,8 @@ class ChatDetailController extends GetxController {
     // currentMessageModel.messageTime = justNow;
     currentMessageModel.userName = youString.tr;
     currentMessageModel.senderId = _userProfileManager.user.value!.id;
-    currentMessageModel.messageType = messageTypeId(MessageContentType.post);
+    currentMessageModel.messageType =
+        messageTypeId(MessageContentType.post);
     // currentMessageModel.messageContent = json.encode(content).replaceAll('\\', '');
     currentMessageModel.messageContent = json.encode(content).encrypted();
 
@@ -353,7 +362,8 @@ class ChatDetailController extends GetxController {
         chatMessages: [currentMessageModel], alreadyWritingInDB: false);
     // send message to socket server
 
-    status = getIt<SocketManager>().emit(SocketConstants.sendMessage, message);
+    status =
+        getIt<SocketManager>().emit(SocketConstants.sendMessage, message);
     update();
     // });
     setReplyMessage(message: null);
@@ -369,7 +379,8 @@ class ChatDetailController extends GetxController {
     final filter = ProfanityFilter();
     bool hasProfanity = filter.hasProfanity(messageText);
     if (hasProfanity) {
-      AppUtil.showToast(message: notAllowedMessageString.tr, isSuccess: true);
+      AppUtil.showToast(
+          message: notAllowedMessageString.tr, isSuccess: true);
       return false;
     }
 
@@ -397,15 +408,17 @@ class ChatDetailController extends GetxController {
         'chat_version': AppConfigConstants.chatVersion,
         'room': room.id,
         'created_by': _userProfileManager.user.value!.id,
-        'created_at': (DateTime.now().millisecondsSinceEpoch / 1000).round()
+        'created_at':
+            (DateTime.now().millisecondsSinceEpoch / 1000).round()
       };
 
       //save message to socket server
-      status =
-          getIt<SocketManager>().emit(SocketConstants.sendMessage, message);
+      status = getIt<SocketManager>()
+          .emit(SocketConstants.sendMessage, message);
 
       ChatMessageModel currentMessageModel = ChatMessageModel();
-      currentMessageModel.isEncrypted = AppConfigConstants.enableEncryption;
+      currentMessageModel.isEncrypted =
+          AppConfigConstants.enableEncryption;
       currentMessageModel.chatVersion = AppConfigConstants.chatVersion;
 
       currentMessageModel.localMessageId = localMessageId;
@@ -419,7 +432,8 @@ class ChatDetailController extends GetxController {
           mode == ChatMessageActionMode.reply
               ? MessageContentType.reply
               : MessageContentType.text);
-      currentMessageModel.messageContent = json.encode(content).encrypted();
+      currentMessageModel.messageContent =
+          json.encode(content).encrypted();
       currentMessageModel.repliedOnMessageContent = repliedOnMessage;
 
       currentMessageModel.createdAt =
@@ -471,7 +485,8 @@ class ChatDetailController extends GetxController {
     };
 
     //save message to socket server
-    status = getIt<SocketManager>().emit(SocketConstants.sendMessage, message);
+    status =
+        getIt<SocketManager>().emit(SocketConstants.sendMessage, message);
 
     ChatMessageModel currentMessageModel = ChatMessageModel();
     currentMessageModel.isEncrypted = AppConfigConstants.enableEncryption;
@@ -518,8 +533,9 @@ class ChatDetailController extends GetxController {
       'userId': user.id,
       'userPicture': user.picture,
       'userName': user.userName,
-      'location':
-          user.city != null ? '${user.city ?? ''}, ${user.country ?? ''}' : '',
+      'location': user.city != null
+          ? '${user.city ?? ''}, ${user.country ?? ''}'
+          : '',
     };
 
     var message = {
@@ -564,7 +580,8 @@ class ChatDetailController extends GetxController {
         chatMessages: [currentMessageModel], alreadyWritingInDB: false);
     // send message to socket server
 
-    status = getIt<SocketManager>().emit(SocketConstants.sendMessage, message);
+    status =
+        getIt<SocketManager>().emit(SocketConstants.sendMessage, message);
     setReplyMessage(message: null);
 
     update();
@@ -609,7 +626,8 @@ class ChatDetailController extends GetxController {
     };
 
     //save message to socket server
-    status = getIt<SocketManager>().emit(SocketConstants.sendMessage, message);
+    status =
+        getIt<SocketManager>().emit(SocketConstants.sendMessage, message);
 
     ChatMessageModel currentMessageModel = ChatMessageModel();
     currentMessageModel.isEncrypted = AppConfigConstants.enableEncryption;
@@ -662,7 +680,8 @@ class ChatDetailController extends GetxController {
     currentMessageModel.roomId = room.id;
     currentMessageModel.userName = youString.tr;
     currentMessageModel.senderId = _userProfileManager.user.value!.id;
-    currentMessageModel.messageType = messageTypeId(MessageContentType.forward);
+    currentMessageModel.messageType =
+        messageTypeId(MessageContentType.forward);
     currentMessageModel.messageContent =
         json.encode(originalContent).encrypted();
     currentMessageModel.createdAt =
@@ -680,7 +699,8 @@ class ChatDetailController extends GetxController {
       'created_at': currentMessageModel.createdAt,
     };
 
-    status = getIt<SocketManager>().emit(SocketConstants.sendMessage, message);
+    status =
+        getIt<SocketManager>().emit(SocketConstants.sendMessage, message);
 
     getIt<RealmDBManager>().prepareSaveMessage(
         chatMessages: [currentMessageModel], alreadyWritingInDB: false);
@@ -750,9 +770,10 @@ class ChatDetailController extends GetxController {
             'localMessageId': localMessageId,
             'is_encrypted': AppConfigConstants.enableEncryption,
             'chat_version': AppConfigConstants.chatVersion,
-            'messageType': messageTypeId(mode == ChatMessageActionMode.reply
-                ? MessageContentType.reply
-                : MessageContentType.photo),
+            'messageType': messageTypeId(
+                mode == ChatMessageActionMode.reply
+                    ? MessageContentType.reply
+                    : MessageContentType.photo),
             'message': json.encode(content).encrypted(),
             'replied_on_message': repliedOnMessage,
             'room': room.id,
@@ -761,15 +782,17 @@ class ChatDetailController extends GetxController {
           };
 
           // send message to socket
-          status =
-              getIt<SocketManager>().emit(SocketConstants.sendMessage, message);
+          status = getIt<SocketManager>()
+              .emit(SocketConstants.sendMessage, message);
 
           // update in cache message
 
-          currentMessageModel.messageContent = json.encode(content).encrypted();
+          currentMessageModel.messageContent =
+              json.encode(content).encrypted();
           // update message in local database
           getIt<RealmDBManager>().updateMessageContent(
-              localMessageId: currentMessageModel.localMessageId.toString(),
+              localMessageId:
+                  currentMessageModel.localMessageId.toString(),
               content: json.encode(content).encrypted());
         });
 
@@ -843,9 +866,10 @@ class ChatDetailController extends GetxController {
             'localMessageId': localMessageId,
             'is_encrypted': AppConfigConstants.enableEncryption,
             'chat_version': AppConfigConstants.chatVersion,
-            'messageType': messageTypeId(mode == ChatMessageActionMode.reply
-                ? MessageContentType.reply
-                : MessageContentType.video),
+            'messageType': messageTypeId(
+                mode == ChatMessageActionMode.reply
+                    ? MessageContentType.reply
+                    : MessageContentType.video),
             'message': json.encode(content).encrypted(),
             'room': room.id,
             'created_by': _userProfileManager.user.value!.id,
@@ -853,17 +877,19 @@ class ChatDetailController extends GetxController {
           };
 
           // send message to socket
-          status =
-              getIt<SocketManager>().emit(SocketConstants.sendMessage, message);
+          status = getIt<SocketManager>()
+              .emit(SocketConstants.sendMessage, message);
 
           // update in cache message
-          currentMessageModel.messageContent = json.encode(content).encrypted();
+          currentMessageModel.messageContent =
+              json.encode(content).encrypted();
 
           update();
 
           // update message in local database
           getIt<RealmDBManager>().updateMessageContent(
-              localMessageId: currentMessageModel.localMessageId.toString(),
+              localMessageId:
+                  currentMessageModel.localMessageId.toString(),
               content: json.encode(content).encrypted());
         });
 
@@ -933,9 +959,10 @@ class ChatDetailController extends GetxController {
             'localMessageId': localMessageId,
             'is_encrypted': AppConfigConstants.enableEncryption,
             'chat_version': AppConfigConstants.chatVersion,
-            'messageType': messageTypeId(mode == ChatMessageActionMode.reply
-                ? MessageContentType.reply
-                : MessageContentType.audio),
+            'messageType': messageTypeId(
+                mode == ChatMessageActionMode.reply
+                    ? MessageContentType.reply
+                    : MessageContentType.audio),
             'message': json.encode(content).encrypted(),
             'room': room.id,
             'created_by': _userProfileManager.user.value!.id,
@@ -944,16 +971,18 @@ class ChatDetailController extends GetxController {
           };
 
           // send message to socket
-          status =
-              getIt<SocketManager>().emit(SocketConstants.sendMessage, message);
+          status = getIt<SocketManager>()
+              .emit(SocketConstants.sendMessage, message);
 
           // update in cache message
 
-          currentMessageModel.messageContent = json.encode(content).encrypted();
+          currentMessageModel.messageContent =
+              json.encode(content).encrypted();
 
           // update message in local database
           getIt<RealmDBManager>().updateMessageContent(
-              localMessageId: currentMessageModel.localMessageId.toString(),
+              localMessageId:
+                  currentMessageModel.localMessageId.toString(),
               content: json.encode(content).encrypted());
         });
 
@@ -1017,7 +1046,8 @@ class ChatDetailController extends GetxController {
       'created_at': currentMessageModel.createdAt,
     };
 
-    status = getIt<SocketManager>().emit(SocketConstants.sendMessage, message);
+    status =
+        getIt<SocketManager>().emit(SocketConstants.sendMessage, message);
 
     // save message to database
 
@@ -1094,9 +1124,10 @@ class ChatDetailController extends GetxController {
             'localMessageId': localMessageId,
             'is_encrypted': AppConfigConstants.enableEncryption,
             'chat_version': AppConfigConstants.chatVersion,
-            'messageType': messageTypeId(mode == ChatMessageActionMode.reply
-                ? MessageContentType.reply
-                : MessageContentType.file),
+            'messageType': messageTypeId(
+                mode == ChatMessageActionMode.reply
+                    ? MessageContentType.reply
+                    : MessageContentType.file),
             'message': json.encode(content).encrypted(),
             'replied_on_message': repliedOnMessage,
             'room': room.id,
@@ -1105,15 +1136,17 @@ class ChatDetailController extends GetxController {
           };
 
           // send message to socket
-          status =
-              getIt<SocketManager>().emit(SocketConstants.sendMessage, message);
+          status = getIt<SocketManager>()
+              .emit(SocketConstants.sendMessage, message);
 
           // update in cache message
 
-          currentMessageModel.messageContent = json.encode(content).encrypted();
+          currentMessageModel.messageContent =
+              json.encode(content).encrypted();
           // update message in local database
           getIt<RealmDBManager>().updateMessageContent(
-              localMessageId: currentMessageModel.localMessageId.toString(),
+              localMessageId:
+                  currentMessageModel.localMessageId.toString(),
               content: json.encode(content).encrypted());
         });
     setReplyMessage(message: null);
@@ -1129,7 +1162,8 @@ class ChatDetailController extends GetxController {
     final filter = ProfanityFilter();
     bool hasProfanity = filter.hasProfanity(messageText);
     if (hasProfanity) {
-      AppUtil.showToast(message: notAllowedMessageString.tr, isSuccess: true);
+      AppUtil.showToast(
+          message: notAllowedMessageString.tr, isSuccess: true);
       return false;
     }
 
@@ -1153,15 +1187,17 @@ class ChatDetailController extends GetxController {
         'chat_version': AppConfigConstants.chatVersion,
         'room': room.id,
         'created_by': _userProfileManager.user.value!.id,
-        'created_at': (DateTime.now().millisecondsSinceEpoch / 1000).round()
+        'created_at':
+            (DateTime.now().millisecondsSinceEpoch / 1000).round()
       };
 
       //save message to socket server
-      status =
-          getIt<SocketManager>().emit(SocketConstants.sendMessage, message);
+      status = getIt<SocketManager>()
+          .emit(SocketConstants.sendMessage, message);
 
       ChatMessageModel currentMessageModel = ChatMessageModel();
-      currentMessageModel.isEncrypted = AppConfigConstants.enableEncryption;
+      currentMessageModel.isEncrypted =
+          AppConfigConstants.enableEncryption;
       currentMessageModel.chatVersion = AppConfigConstants.chatVersion;
 
       currentMessageModel.localMessageId = localMessageId;
@@ -1173,7 +1209,8 @@ class ChatDetailController extends GetxController {
       currentMessageModel.senderId = _userProfileManager.user.value!.id;
       currentMessageModel.messageType =
           messageTypeId(MessageContentType.textReplyOnStory);
-      currentMessageModel.messageContent = json.encode(content).encrypted();
+      currentMessageModel.messageContent =
+          json.encode(content).encrypted();
       currentMessageModel.repliedOnMessageContent = repliedOnStory;
 
       currentMessageModel.createdAt =
@@ -1216,15 +1253,17 @@ class ChatDetailController extends GetxController {
         'chat_version': AppConfigConstants.chatVersion,
         'room': room.id,
         'created_by': _userProfileManager.user.value!.id,
-        'created_at': (DateTime.now().millisecondsSinceEpoch / 1000).round()
+        'created_at':
+            (DateTime.now().millisecondsSinceEpoch / 1000).round()
       };
 
       //save message to socket server
-      status =
-          getIt<SocketManager>().emit(SocketConstants.sendMessage, message);
+      status = getIt<SocketManager>()
+          .emit(SocketConstants.sendMessage, message);
 
       ChatMessageModel currentMessageModel = ChatMessageModel();
-      currentMessageModel.isEncrypted = AppConfigConstants.enableEncryption;
+      currentMessageModel.isEncrypted =
+          AppConfigConstants.enableEncryption;
       currentMessageModel.chatVersion = AppConfigConstants.chatVersion;
 
       currentMessageModel.localMessageId = localMessageId;
@@ -1236,7 +1275,8 @@ class ChatDetailController extends GetxController {
       currentMessageModel.senderId = _userProfileManager.user.value!.id;
       currentMessageModel.messageType =
           messageTypeId(MessageContentType.reactedOnStory);
-      currentMessageModel.messageContent = json.encode(content).encrypted();
+      currentMessageModel.messageContent =
+          json.encode(content).encrypted();
       currentMessageModel.repliedOnMessageContent = reactedOnStory;
 
       currentMessageModel.createdAt =
@@ -1282,7 +1322,8 @@ class ChatDetailController extends GetxController {
 
     currentMessageModel.userName = youString.tr;
     currentMessageModel.senderId = _userProfileManager.user.value!.id;
-    currentMessageModel.messageType = messageTypeId(MessageContentType.story);
+    currentMessageModel.messageType =
+        messageTypeId(MessageContentType.story);
     currentMessageModel.messageContent = json.encode(content).encrypted();
 
     currentMessageModel.createdAt =
@@ -1294,7 +1335,8 @@ class ChatDetailController extends GetxController {
         chatMessages: [currentMessageModel], alreadyWritingInDB: false);
     // send message to socket server
 
-    status = getIt<SocketManager>().emit(SocketConstants.sendMessage, message);
+    status =
+        getIt<SocketManager>().emit(SocketConstants.sendMessage, message);
     update();
     // });
     setReplyMessage(message: null);
@@ -1302,7 +1344,8 @@ class ChatDetailController extends GetxController {
   }
 
   addNewMessage(
-      {required ChatMessageModel message, required ChatRoomModel room}) async {
+      {required ChatMessageModel message,
+      required ChatRoomModel room}) async {
     if (room.id != message.roomId) {
       return;
     }
@@ -1331,7 +1374,8 @@ class ChatDetailController extends GetxController {
     scrollToBottom();
   }
 
-  Future<bool> forwardSelectedMessages({required ChatRoomModel room}) async {
+  Future<bool> forwardSelectedMessages(
+      {required ChatRoomModel room}) async {
     bool status = true;
     for (ChatMessageModel msg in selectedMessages) {
       await forwardMessage(msg: msg, room: room).then((value) {
@@ -1349,37 +1393,34 @@ class ChatDetailController extends GetxController {
       required Function(UploadedGalleryMedia) callback}) async {
     Map<String, String> gallery = {};
 
-    await AppUtil.checkInternet().then((value) async {
-      if (value) {
-        // File mainFile;
-        String? videoThumbnailPath;
-        // String messageMediaDirectoryPath =
-        //     await messageMediaDirectory(messageId);
+    // File mainFile;
+    String? videoThumbnailPath;
 
-        if (media.mediaType == GalleryMediaType.video) {
-          await MiscApi.uploadFile(thumbnailFile!.path,
-              mediaType: GalleryMediaType.photo,
-              type: UploadMediaType.chat, resultCallback: (filename, filepath) {
+    if (media.mediaType == GalleryMediaType.video) {
+      await MiscApi.uploadFile(thumbnailFile!.path,
+          mediaType: GalleryMediaType.photo,
+          type: UploadMediaType.chat,
+          resultCallback: (filename, filepath) {
             videoThumbnailPath = filepath;
           });
-        }
+    }
 
-        await MiscApi.uploadFile(mainFile.path,
-            mediaType: media.mediaType!,
-            type: UploadMediaType.chat, resultCallback: (filename, filepath) {
+    await MiscApi.uploadFile(mainFile.path,
+        mediaType: media.mediaType!, type: UploadMediaType.chat,
+        resultCallback: (filename, filepath) {
           String mainFileUploadedPath = filepath;
 
           UploadedGalleryMedia uploadedGalleryMedia = UploadedGalleryMedia(
               mediaType: media.mediaType == GalleryMediaType.photo
                   ? 1
                   : media.mediaType == GalleryMediaType.video
-                      ? 2
-                      : 3,
+                  ? 2
+                  : 3,
               thumbnail: media.mediaType == GalleryMediaType.photo
                   ? mainFileUploadedPath
                   : media.mediaType == GalleryMediaType.video
-                      ? videoThumbnailPath!
-                      : null,
+                  ? videoThumbnailPath!
+                  : null,
               video: media.mediaType == GalleryMediaType.video
                   ? mainFileUploadedPath
                   : null,
@@ -1389,10 +1430,6 @@ class ChatDetailController extends GetxController {
               file: mainFileUploadedPath);
           callback(uploadedGalleryMedia);
         });
-      } else {
-        AppUtil.showToast(message: noInternetString.tr, isSuccess: false);
-      }
-    });
     return gallery;
   }
 
@@ -1456,7 +1493,8 @@ class ChatDetailController extends GetxController {
     getIt<FileManager>().multipleDeleteMessageMedia(messagesList);
 
     // delete message in local database
-    getIt<RealmDBManager>().softDeleteMessages(messagesToDelete: messagesList);
+    getIt<RealmDBManager>()
+        .softDeleteMessages(messagesToDelete: messagesList);
   }
 
   newMessageReceived(ChatMessageModel message) async {
@@ -1494,7 +1532,9 @@ class ChatDetailController extends GetxController {
         .setMessageId(localMessageId: localMessageId, id: messageId);
     // add chat message user to message for first time, as here we received the message id
     addUsersToMessage(
-        roomId: roomId, messageId: messageId, localMessageId: localMessageId);
+        roomId: roomId,
+        messageId: messageId,
+        localMessageId: localMessageId);
   }
 
   Future addUsersToMessage(
@@ -1516,8 +1556,8 @@ class ChatDetailController extends GetxController {
 
       if (chatRoom.value?.id == roomId) {
         var message = messages
-            .where(
-                (e) => e.localMessageId == localMessageId || e.id == messageId)
+            .where((e) =>
+                e.localMessageId == localMessageId || e.id == messageId)
             .first;
         message.chatMessageUser = chatMessageUsers;
         message.id = messageId;
@@ -1530,7 +1570,8 @@ class ChatDetailController extends GetxController {
     } else {
       // get room detail for users in room, this case is to handle when first message is send room and users dont know about who are in the group
 
-      await ChatApi.getChatRoomDetail(roomId, resultCallback: (room) async {
+      await ChatApi.getChatRoomDetail(roomId,
+          resultCallback: (room) async {
         chatRoom.value = room;
         chatRoom.refresh();
 
@@ -1565,11 +1606,16 @@ class ChatDetailController extends GetxController {
     }
 
     await getIt<RealmDBManager>().updateMessageStatus(
-        roomId: roomId, messageId: messageId, status: status, userId: userId);
+        roomId: roomId,
+        messageId: messageId,
+        status: status,
+        userId: userId);
   }
 
   userTypingStatusChanged(
-      {required String userName, required int roomId, required bool status}) {
+      {required String userName,
+      required int roomId,
+      required bool status}) {
     if (chatRoom.value?.id != roomId) {
       return;
     }
@@ -1586,7 +1632,8 @@ class ChatDetailController extends GetxController {
     if (status == true) {
       Timer(const Duration(seconds: 5), () {
         if (typingStatusUpdatedAt != null) {
-          if (DateTime.now().difference(typingStatusUpdatedAt!).inSeconds > 4) {
+          if (DateTime.now().difference(typingStatusUpdatedAt!).inSeconds >
+              4) {
             isTypingMapping[userName] = false;
             isTypingMapping.refresh();
             whoIsTyping.remove(userName);
@@ -1605,10 +1652,12 @@ class ChatDetailController extends GetxController {
     // }
   }
 
-  userAvailabilityStatusChange({required int userId, required bool isOnline}) {
+  userAvailabilityStatusChange(
+      {required int userId, required bool isOnline}) {
     if (chatRoom.value != null) {
       if (chatRoom.value?.isGroupChat == false) {
-        chatRoom.value!.roomMembers = chatRoom.value!.roomMembers.map((member) {
+        chatRoom.value!.roomMembers =
+            chatRoom.value!.roomMembers.map((member) {
           if (member.userDetail.id == userId) {
             member.userDetail.isOnline = isOnline;
           }

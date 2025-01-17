@@ -10,17 +10,8 @@ GetIt getIt = GetIt.instance;
 
 Future<void> setupServiceLocator() async {
   getIt.registerLazySingleton<RealmDBManager>(() => RealmDBManager());
-  // getIt.registerLazySingleton<MediaManager>(() => MediaManager());
   getIt.registerLazySingleton<FileManager>(() => FileManager());
   getIt.registerLazySingleton<VoipController>(() => VoipController());
-  // getIt.registerLazySingleton<GalleryLoader>(() => GalleryLoader());
-  // getIt.registerLazySingleton<NotificationManager>(() => NotificationManager());
-  getIt.registerLazySingleton<LocationManager>(() => LocationManager());
-
+  getIt.registerLazySingleton<SocketManager>(() => SocketManager());
 }
 
-Future<void> setupSocketServiceLocator1() async {
-  if (!getIt.isRegistered<SocketManager>()) {
-    getIt.registerLazySingleton<SocketManager>(() => SocketManager());
-  }
-}

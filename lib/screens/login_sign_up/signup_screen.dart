@@ -1,7 +1,6 @@
 import 'package:flutter/gestures.dart';
 import 'package:foap/helper/imports/common_import.dart';
 import 'package:foap/helper/imports/login_signup_imports.dart';
-import 'package:lottie/lottie.dart';
 import '../../controllers/profile/profile_controller.dart';
 import '../settings_menu/settings_controller.dart';
 
@@ -56,13 +55,7 @@ class SignUpScreenState extends State<SignUpScreen> {
                     Heading3Text(createAnAccountString.tr,
                             weight: TextWeight.bold)
                         .rp(100),
-                    Positioned(
-                        right: 0,
-                        top: 0,
-                        bottom: 0,
-                        child: Lottie.asset(
-                          'assets/lottie/syahi.json',
-                        ))
+
                   ],
                 )),
             SizedBox(

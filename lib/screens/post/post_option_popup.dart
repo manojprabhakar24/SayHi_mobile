@@ -37,7 +37,7 @@ class PostOptionsPopup extends StatelessWidget {
       options.add(videoButton());
     }
 
-    options.add(drawButton());
+    // options.add(drawButton());
     options.add(audioButton());
     options.add(gifButton());
 
@@ -100,17 +100,17 @@ class PostOptionsPopup extends StatelessWidget {
     );
   }
 
-  Widget drawButton() {
-    return ModalComponents(
-      check: true,
-      icon: ThemeIcon.drawing,
-      name: drawingString.tr,
-      imageUrl: 'assets/images/dashboard/draw_icon.svg',
-      onPress: () {
-        openDrawingBoard();
-      },
-    );
-  }
+  // Widget drawButton() {
+  //   return ModalComponents(
+  //     check: true,
+  //     icon: ThemeIcon.drawing,
+  //     name: drawingString.tr,
+  //     imageUrl: 'assets/images/dashboard/draw_icon.svg',
+  //     onPress: () {
+  //       openDrawingBoard();
+  //     },
+  //   );
+  // }
 
   Widget audioButton() {
     return ModalComponents(

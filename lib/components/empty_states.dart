@@ -1,15 +1,13 @@
 import 'package:foap/helper/imports/common_import.dart';
-import 'package:lottie/lottie.dart';
 
 Widget noUserFound(BuildContext context) {
   return Column(
     mainAxisAlignment: MainAxisAlignment.center,
     crossAxisAlignment: CrossAxisAlignment.center,
     children: [
-      Lottie.asset(
-        'assets/lottie/no_record.json',
-        height: 200,
-        // width: 200,
+      ThemeIconWidget(
+        ThemeIcon.emptyCheckbox,
+        size: 200,
       ),
       const SizedBox(
         height: 20,
@@ -22,17 +20,16 @@ Widget noUserFound(BuildContext context) {
   );
 }
 
-Widget emptyPost(
-    {required String title,
-    required String subTitle,
-    }) {
+Widget emptyPost({
+  required String title,
+  required String subTitle,
+}) {
   return Column(
     mainAxisAlignment: MainAxisAlignment.center,
     children: [
-      Lottie.asset(
-        'assets/lottie/no_record.json',
-        height: 200,
-        // width: 200,
+      ThemeIconWidget(
+        ThemeIcon.emptyCheckbox,
+        size: 200,
       ),
       const SizedBox(
         height: 20,
@@ -51,17 +48,16 @@ Widget emptyPost(
   );
 }
 
-Widget emptyUser(
-    {required String title,
-    required String subTitle,
-    }) {
+Widget emptyUser({
+  required String title,
+  required String subTitle,
+}) {
   return Column(
     mainAxisAlignment: MainAxisAlignment.center,
     children: [
-      Lottie.asset(
-        'assets/lottie/no_record.json',
-        height: 150,
-        // width: 200,
+      ThemeIconWidget(
+        ThemeIcon.noData,
+        size: 200,
       ),
       const SizedBox(
         height: 20,
@@ -81,10 +77,9 @@ Widget emptyData({required String title, required String subTitle}) {
   return Column(
     mainAxisAlignment: MainAxisAlignment.center,
     children: [
-      Lottie.asset(
-        'assets/lottie/no_record.json',
-        height: 200,
-        // width: 200,
+      ThemeIconWidget(
+        ThemeIcon.emptyCheckbox,
+        size: 200,
       ),
       const SizedBox(
         height: 20,

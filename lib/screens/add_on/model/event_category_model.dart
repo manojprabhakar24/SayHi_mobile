@@ -5,13 +5,11 @@ class EventCategoryModel extends CategoryModel {
   List<EventModel> events = [];
 
   EventCategoryModel({
-    required String name,
-    required int id,
-    required String coverImage,
+    required super.name,
+    required super.id,
+    required super.coverImage,
     required this.events,
-
-    // required this.subCategories,
-  }) : super(name: name, id: id, coverImage: coverImage);
+  });
 
   factory EventCategoryModel.fromJson(Map<String, dynamic> json) {
     EventCategoryModel category = EventCategoryModel(

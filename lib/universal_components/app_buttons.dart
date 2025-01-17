@@ -8,8 +8,8 @@ import 'package:get/get.dart';
 
 class AppThemeBackButton extends StatelessWidget {
   const AppThemeBackButton({
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -18,6 +18,24 @@ class AppThemeBackButton extends StatelessWidget {
       width: 40,
       color: AppColorConstants.cardColor,
       child: ThemeIconWidget(ThemeIcon.backArrow).lP8,
+    ).round(10).shadowWithBorder(borderWidth: 0).ripple(() {
+      Get.back();
+    });
+  }
+}
+
+class AppThemeCloseButton extends StatelessWidget {
+  const AppThemeCloseButton({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 40,
+      width: 40,
+      color: AppColorConstants.cardColor,
+      child: ThemeIconWidget(ThemeIcon.close),
     ).round(10).shadowWithBorder(borderWidth: 0).ripple(() {
       Get.back();
     });
@@ -61,16 +79,12 @@ class AppThemeButton extends StatelessWidget {
             child: BodyMediumText(
               text!,
               color: Colors.white,
-              // style: TextStyle(
-              //     fontSize: FontSizes.b3,
-              //     fontWeight: TextWeight.medium,
-              //     color: Colors.white),
-            ).hP8,
+            ).hP16,
           ),
           trailing != null ? trailing!.hP4 : Container()
         ],
       ),
-    ).round(cornerRadius ?? 100).ripple(() {
+    ).round(cornerRadius ?? 15).ripple(() {
       onPress!();
     });
   }
@@ -117,7 +131,7 @@ class AppThemeBorderButton extends StatelessWidget {
     )
         .borderWithRadius(
             value: 1,
-            radius: 100,
+            radius: 15,
             color: borderColor ?? AppColorConstants.dividerColor)
         .ripple(onPress!);
   }

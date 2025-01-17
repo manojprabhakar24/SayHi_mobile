@@ -1,5 +1,7 @@
+import 'package:foap/api_handler/apis/gift_api.dart';
 import 'package:foap/components/post_card_controller.dart';
 import 'package:foap/helper/imports/common_import.dart';
+import 'package:foap/model/gift_model.dart';
 import 'package:foap/model/post_model.dart';
 import 'package:foap/model/post_search_query.dart';
 import '../../../../api_handler/apis/post_api.dart';
@@ -84,7 +86,8 @@ class ReelsController extends GetxController {
             publicReels.addAll(result);
             publicReels.unique((e) => e.id);
 
-            publicReels.sort((a, b) => b.createDate!.compareTo(a.createDate!));
+            publicReels
+                .sort((a, b) => b.createDate!.compareTo(a.createDate!));
 
             isLoadingReels = false;
             if (reelsCurrentPage == 1 && publicReels.isNotEmpty) {
@@ -158,6 +161,10 @@ class ReelsController extends GetxController {
     AppUtil.showToast(message: deletedString.tr, isSuccess: true);
   }
 
+  reportPost({required PostModel post, required VoidCallback callback}) {
+    PostApi.reportPost(postId: post.id, resultCallback: callback);
+  }
+
   void blockUser({required int userId, required VoidCallback callback}) {
     final PostCardController postCardController = Get.find();
     postCardController.blockUser(userId: userId, callback: () {});
@@ -170,5 +177,20 @@ class ReelsController extends GetxController {
   sharePost({required PostModel post}) {
     final PostCardController postCardController = Get.find();
     postCardController.sharePost(post: post);
+  }
+
+  sendPostGift(GiftModel gift, int receiverId, int? postId) {
+    GiftApi.sendStickerGift(
+        gift: gift,
+        liveId: null,
+        postId: postId,
+        receiverId: receiverId,
+        resultCallback: () {
+          UserProfileManager userProfileManager = Get.find();
+          AppUtil.showToast(
+              message: giftSentSuccessfullyString.tr, isSuccess: true);
+          // refresh profile to get updated wallet info
+          userProfileManager.refreshProfile();
+        });
   }
 }

@@ -2,7 +2,7 @@ import 'package:foap/helper/imports/common_import.dart';
 import 'package:foap/helper/imports/login_signup_imports.dart';
 
 class ForgotPasswordScreen extends StatefulWidget {
-  const ForgotPasswordScreen({Key? key}) : super(key: key);
+  const ForgotPasswordScreen({super.key});
 
   @override
   ForgotPasswordState createState() => ForgotPasswordState();

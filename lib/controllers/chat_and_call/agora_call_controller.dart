@@ -75,7 +75,7 @@ class AgoraCallController extends GetxController {
   }) async {
     // logFile.writeAsStringSync('initializeCalling \n', mode: FileMode.append);
 
-    if (_settingsController.setting.value!.agoraApiKey!.isEmpty) {
+    if ((_settingsController.setting.value!.agoraApiKey ?? '').isEmpty) {
       // logFile.writeAsStringSync('initializeCalling agora key empty\n', mode: FileMode.append);
       update();
       return;

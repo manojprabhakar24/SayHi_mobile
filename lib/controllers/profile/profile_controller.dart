@@ -30,7 +30,14 @@ class ProfileController extends GetxController {
   final PostController postController = Get.find<PostController>();
   final UserProfileManager _userProfileManager = Get.find();
 
+  // RxList<UserModel> linkedAccounts = <UserModel>[].obs;
+
   DataWrapper transactionsDataWrapper = DataWrapper();
+  DataWrapper postDataWrapper = DataWrapper();
+  DataWrapper reelsDataWrapper = DataWrapper();
+  DataWrapper mentionedPostDataWrapper = DataWrapper();
+  DataWrapper collaborationsDataWrapper = DataWrapper();
+
   Rx<UserModel?> user = Rx<UserModel?>(null);
 
   int totalPages = 100;
@@ -43,44 +50,27 @@ class ProfileController extends GetxController {
 
   RxBool noDataFound = false.obs;
 
-  bool isLoadingPosts = false;
-  int postsCurrentPage = 1;
-  bool canLoadMorePosts = true;
-
-  bool isLoadingReels = false;
-  int reelsCurrentPage = 1;
-  bool canLoadMoreReels = true;
-
   RxList<PostModel> posts = <PostModel>[].obs;
   RxList<PostModel> mentions = <PostModel>[].obs;
   RxList<PostModel> reels = <PostModel>[].obs;
-
-  int mentionsPostPage = 1;
-  bool canLoadMoreMentionsPosts = true;
-  bool mentionsPostsIsLoading = false;
+  RxList<PostModel> collaborations = <PostModel>[].obs;
 
   Rx<GiftModel?> sendingGift = Rx<GiftModel?>(null);
 
   clear() {
     selectedSegment.value = 0;
 
-    isLoadingPosts = false;
-    postsCurrentPage = 1;
-    canLoadMorePosts = true;
-
-    isLoadingReels = false;
-    reelsCurrentPage = 1;
-    canLoadMoreReels = true;
-
-    mentionsPostPage = 1;
-    canLoadMoreMentionsPosts = true;
-    mentionsPostsIsLoading = false;
+    postDataWrapper = DataWrapper();
+    reelsDataWrapper = DataWrapper();
+    mentionedPostDataWrapper = DataWrapper();
+    collaborationsDataWrapper = DataWrapper();
 
     totalPages = 100;
 
     posts.clear();
     mentions.clear();
     reels.clear();
+    collaborations.clear();
   }
 
   getMyProfile() async {
@@ -105,9 +95,11 @@ class ProfileController extends GetxController {
     required String city,
   }) {
     if (FormValidator().isTextEmpty(country)) {
-      AppUtil.showToast(message: pleaseEnterCountryString.tr, isSuccess: false);
+      AppUtil.showToast(
+          message: pleaseEnterCountryString.tr, isSuccess: false);
     } else if (FormValidator().isTextEmpty(city)) {
-      AppUtil.showToast(message: pleaseEnterCityString.tr, isSuccess: false);
+      AppUtil.showToast(
+          message: pleaseEnterCityString.tr, isSuccess: false);
     } else {
       Loader.show(status: loadingString.tr);
 
@@ -136,9 +128,11 @@ class ProfileController extends GetxController {
     required String confirmPassword,
   }) {
     if (FormValidator().isTextEmpty(oldPassword)) {
-      AppUtil.showToast(message: enterOldPasswordString.tr, isSuccess: false);
+      AppUtil.showToast(
+          message: enterOldPasswordString.tr, isSuccess: false);
     } else if (FormValidator().isTextEmpty(newPassword)) {
-      AppUtil.showToast(message: enterNewPasswordString.tr, isSuccess: false);
+      AppUtil.showToast(
+          message: enterNewPasswordString.tr, isSuccess: false);
     } else if (FormValidator().isTextEmpty(confirmPassword)) {
       AppUtil.showToast(
           message: enterConfirmPasswordString.tr, isSuccess: false);
@@ -185,7 +179,8 @@ class ProfileController extends GetxController {
     required String phoneNumber,
   }) {
     if (FormValidator().isTextEmpty(phoneNumber)) {
-      AppUtil.showToast(message: enterPhoneNumberString.tr, isSuccess: false);
+      AppUtil.showToast(
+          message: enterPhoneNumberString.tr, isSuccess: false);
     } else {
       Loader.show(status: loadingString.tr);
 
@@ -213,28 +208,24 @@ class ProfileController extends GetxController {
       AppUtil.showToast(
           message: pleaseEnterValidUserNameString.tr, isSuccess: false);
     } else {
-      AppUtil.checkInternet().then((value) {
-        if (value) {
-          Loader.show(status: loadingString.tr);
-          ProfileApi.updateUserName(
-              userName: userName,
-              resultCallback: () {
-                Loader.dismiss();
-                AppUtil.showToast(
-                    message: userNameIsUpdatedString.tr, isSuccess: true);
-                getMyProfile();
-                if (isSigningUp == true) {
-                  Get.to(() => const SetProfileCategoryType(
-                        isFromSignup: true,
-                      ));
-                } else {
-                  Future.delayed(const Duration(milliseconds: 1200), () {
-                    Get.back();
-                  });
-                }
+      Loader.show(status: loadingString.tr);
+      ProfileApi.updateUserName(
+          userName: userName,
+          resultCallback: () {
+            Loader.dismiss();
+            AppUtil.showToast(
+                message: userNameIsUpdatedString.tr, isSuccess: true);
+            getMyProfile();
+            if (isSigningUp == true) {
+              Get.to(() => const SetProfileCategoryType(
+                    isFromSignup: true,
+                  ));
+            } else {
+              Future.delayed(const Duration(milliseconds: 1200), () {
+                Get.back();
               });
-        }
-      });
+            }
+          });
     }
   }
 
@@ -252,14 +243,8 @@ class ProfileController extends GetxController {
               message: categoryTypeUpdatedString.tr, isSuccess: true);
           getMyProfile();
           if (isSigningUp == true) {
-            // if (isLoginFirstTime) {
-            //   Get.to(() => SetLocation(isSettingProfile: isSigningUp))!
-            //       .then((value) {});
-            // } else {
-            isLoginFirstTime = false;
             getIt<LocationManager>().postLocation();
             Get.offAll(() => const DashboardScreen());
-            // }
           } else {
             Future.delayed(const Duration(milliseconds: 1200), () {
               Get.back();
@@ -303,23 +288,30 @@ class ProfileController extends GetxController {
         resultCallback: () {
           _userProfileManager.refreshProfile();
           Loader.dismiss();
-          AppUtil.showToast(message: profileUpdatedString.tr, isSuccess: true);
+          AppUtil.showToast(
+              message: profileUpdatedString.tr, isSuccess: true);
         });
   }
 
   //////////////********** other user profile **************/////////////////
 
-  void getOtherUserDetail({required int userId}) {
+  void getOtherUserDetail(
+      {required int userId,
+      required Function(UserModel) completionBlock}) {
     UsersApi.getOtherUser(
         userId: userId,
         resultCallback: (result) {
           user.value = result;
+          print(
+              'check demo profile privacy ${user.value!.isPrivateProfile}');
+          completionBlock(result);
+
           update();
         });
   }
 
   void followUnFollowUser({required UserModel user}) {
-    if (user.isPrivate &&
+    if (user.isPrivateProfile &&
         user.followingStatus == FollowingStatus.notFollowing) {
       this.user.value!.followingStatus = FollowingStatus.requested;
     } else if (user.followingStatus == FollowingStatus.notFollowing) {
@@ -328,15 +320,17 @@ class ProfileController extends GetxController {
       this.user.value!.followingStatus = FollowingStatus.notFollowing;
     }
 
+    this.user.refresh();
     update();
 
     UsersApi.followUnfollowUser(
-            isFollowing:
-                this.user.value!.followingStatus == FollowingStatus.notFollowing
-                    ? false
-                    : true,
+            isFollowing: this.user.value!.followingStatus ==
+                    FollowingStatus.notFollowing
+                ? false
+                : true,
             user: user)
         .then((value) {
+      this.user.refresh();
       update();
     });
   }
@@ -376,14 +370,6 @@ class ProfileController extends GetxController {
     }
   }
 
-  // void getWithdrawHistory(VoidCallback callback) {
-  //   WalletApi.getWithdrawHistory(resultCallback: (result) {
-  //     transactions.value = result;
-  //     callback();
-  //     update();
-  //   });
-  // }
-
   void getTransactionHistory(VoidCallback callback) {
     WalletApi.getTransactionHistory(
         page: transactionsDataWrapper.page,
@@ -399,8 +385,9 @@ class ProfileController extends GetxController {
   }
 
   followUser(UserModel user) {
-    user.followingStatus =
-        user.isPrivate ? FollowingStatus.requested : FollowingStatus.following;
+    user.followingStatus = user.isPrivateProfile
+        ? FollowingStatus.requested
+        : FollowingStatus.following;
     update();
     UsersApi.followUnfollowUser(isFollowing: true, user: user)
         .then((value) {
@@ -419,77 +406,103 @@ class ProfileController extends GetxController {
   }
 
   //******************** Posts ****************//
+  removePostFromList(PostModel post) {
+    posts.removeWhere((element) => element.id == post.id);
+    mentions.removeWhere((element) => element.id == post.id);
+    reels.removeWhere((element) => element.id == post.id);
+    collaborations.removeWhere((element) => element.id == post.id);
+
+    posts.refresh();
+    mentions.refresh();
+    reels.refresh();
+    collaborations.refresh();
+  }
+
+  removeUsersAllPostFromList(PostModel post) {
+    posts.removeWhere((element) => element.user.id == post.user.id);
+    mentions.removeWhere((element) => element.user.id == post.user.id);
+    reels.removeWhere((element) => element.user.id == post.user.id);
+    collaborations
+        .removeWhere((element) => element.user.id == post.user.id);
+
+    posts.refresh();
+    mentions.refresh();
+    reels.refresh();
+    collaborations.refresh();
+  }
+
+  void getPosts(
+      {required int userId, required VoidCallback callback}) async {
+    if (postDataWrapper.haveMoreData.value == true &&
+        totalPages > postDataWrapper.page) {
+      if (postDataWrapper.page == 1) {
+        postDataWrapper.isLoading.value = true;
+      }
+
+      PostApi.getPosts(
+          userId: userId,
+          page: postDataWrapper.page,
+          resultCallback: (result, metadata) {
+            posts.addAll(result);
+            posts.unique((e) => e.id);
+            postDataWrapper.processCompletedWithData(metadata);
+
+            callback();
+            update();
+          });
+    } else {
+      callback();
+    }
+  }
 
   void getReels(int userId) async {
-    if (canLoadMoreReels == true) {
-      isLoadingReels = true;
+    if (reelsDataWrapper.haveMoreData.value == true) {
+      reelsDataWrapper.isLoading.value = true;
       PostApi.getPosts(
           userId: userId,
           postType: PostType.reel,
-          page: reelsCurrentPage,
+          page: reelsDataWrapper.page,
           resultCallback: (result, metadata) {
-            posts.addAll(result);
-            posts.sort((a, b) => b.createDate!.compareTo(a.createDate!));
-            posts.unique((e) => e.id);
-
-            isLoadingReels = false;
-
-            if (postsCurrentPage >= metadata.pageCount) {
-              canLoadMoreReels = false;
-            } else {
-              canLoadMoreReels = true;
-            }
-            reelsCurrentPage += 1;
-            // totalPages = metadata.pageCount;
-
+            reels.addAll(result);
+            reels.unique((e) => e.id);
+            reelsDataWrapper.processCompletedWithData(metadata);
             update();
           });
     }
   }
 
   void getMentionPosts(int userId) {
-    if (canLoadMoreMentionsPosts && totalPages > mentionsPostPage) {
-      mentionsPostsIsLoading = true;
+    if (mentionedPostDataWrapper.haveMoreData.value) {
+      mentionedPostDataWrapper.isLoading.value = true;
 
       PostApi.getMentionedPosts(
           userId: userId,
-          resultCallback: (result, metaData) {
-            mentionsPostsIsLoading = false;
-
+          page: mentionedPostDataWrapper.page,
+          resultCallback: (result, metadata) {
             mentions.addAll(result.reversed.toList());
             mentions.unique((e) => e.id);
-
-            mentionsPostPage += 1;
-            if (result.length == metaData.perPage) {
-              canLoadMoreMentionsPosts = true;
-              totalPages = metaData.pageCount;
-            } else {
-              canLoadMoreMentionsPosts = false;
-            }
+            mentionedPostDataWrapper.processCompletedWithData(metadata);
             update();
           });
     }
   }
 
-  sendGift(GiftModel gift) {
-    if (_userProfileManager.user.value!.coins > gift.coins) {
-      sendingGift.value = gift;
-      GiftApi.sendStickerGift(
-          gift: gift,
-          liveId: null,
-          postId: null,
-          receiverId: user.value!.id,
-          resultCallback: () {
-            Timer(const Duration(seconds: 1), () {
-              sendingGift.value = null;
-            });
+  void getCollaborationsPosts() {
+    if (collaborationsDataWrapper.haveMoreData.value) {
+      collaborationsDataWrapper.isLoading.value = true;
 
-            // refresh profile to get updated wallet info
-            AppUtil.showToast(message: giftSentString.tr, isSuccess: true);
-            _userProfileManager.refreshProfile();
+      PostApi.getPosts(
+          isCollaboration: 1,
+          page: collaborationsDataWrapper.page,
+          resultCallback: (result, metadata) {
+            collaborations.addAll(result.reversed.toList());
+            collaborations.unique((e) => e.id);
+            collaborationsDataWrapper.processCompletedWithData(metadata);
+            update();
           });
-    } else {}
+    }
   }
+
 
   otherUserProfileView(
       {required int refId, required UserViewSourceType viewSource}) {

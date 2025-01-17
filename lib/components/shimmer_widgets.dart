@@ -259,14 +259,10 @@ class PostCardShimmer extends StatelessWidget {
       const SizedBox(
         height: 10,
       ),
-      SizedBox(
+      const SizedBox(
         height: 280,
         width: double.infinity,
-        child: Image.asset(
-          'assets/tutorial1.jpg',
-          fit: BoxFit.cover,
-        ).addShimmer(),
-      ).round(20),
+      ).round(20).addShimmer(),
       Row(mainAxisAlignment: MainAxisAlignment.start, children: [
         Row(crossAxisAlignment: CrossAxisAlignment.center, children: [
           ThemeIconWidget(

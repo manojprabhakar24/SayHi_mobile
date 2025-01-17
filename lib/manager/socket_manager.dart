@@ -46,7 +46,7 @@ class SocketManager {
 
   StreamSubscription<FGBGType>? subscription;
 
-  disconnect() {
+  logout() {
     _socketInstance?.disconnect();
     _socketInstance = null;
   }

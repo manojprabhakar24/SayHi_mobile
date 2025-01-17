@@ -43,7 +43,7 @@ class StoryViewHistoryRealm extends _StoryViewHistoryRealm
 
   static SchemaObject _initSchema() {
     RealmObjectBase.registerFactory(StoryViewHistoryRealm._);
-    return const SchemaObject(ObjectType.realmObject, StoryViewHistoryRealm,
+    return  SchemaObject(ObjectType.realmObject, StoryViewHistoryRealm,
         'StoryViewHistoryRealm', [
       SchemaProperty('storyId', RealmPropertyType.int, optional: true),
       SchemaProperty('time', RealmPropertyType.int, optional: true),
@@ -186,7 +186,7 @@ class ChatRoomsRealm extends _ChatRoomsRealm
 
   static SchemaObject _initSchema() {
     RealmObjectBase.registerFactory(ChatRoomsRealm._);
-    return const SchemaObject(
+    return  SchemaObject(
         ObjectType.realmObject, ChatRoomsRealm, 'ChatRoomsRealm', [
       SchemaProperty('id', RealmPropertyType.int, optional: true),
       SchemaProperty('title', RealmPropertyType.string, optional: true),
@@ -376,7 +376,7 @@ class MessagesRealm extends _MessagesRealm
 
   static SchemaObject _initSchema() {
     RealmObjectBase.registerFactory(MessagesRealm._);
-    return const SchemaObject(
+    return  SchemaObject(
         ObjectType.realmObject, MessagesRealm, 'MessagesRealm', [
       SchemaProperty('localMessageId', RealmPropertyType.string,
           optional: true),
@@ -462,7 +462,7 @@ class ChatRoomMembersRealm extends _ChatRoomMembersRealm
 
   static SchemaObject _initSchema() {
     RealmObjectBase.registerFactory(ChatRoomMembersRealm._);
-    return const SchemaObject(
+    return  SchemaObject(
         ObjectType.realmObject, ChatRoomMembersRealm, 'ChatRoomMembersRealm', [
       SchemaProperty('id', RealmPropertyType.int, optional: true),
       SchemaProperty('roomId', RealmPropertyType.int, optional: true),
@@ -528,7 +528,7 @@ class UsersCacheRealm extends _UsersCacheRealm
 
   static SchemaObject _initSchema() {
     RealmObjectBase.registerFactory(UsersCacheRealm._);
-    return const SchemaObject(
+    return  SchemaObject(
         ObjectType.realmObject, UsersCacheRealm, 'UsersCacheRealm', [
       SchemaProperty('id', RealmPropertyType.int, optional: true),
       SchemaProperty('username', RealmPropertyType.string, optional: true),
@@ -585,7 +585,7 @@ class ChatMessageUserRealm extends _ChatMessageUserRealm
 
   static SchemaObject _initSchema() {
     RealmObjectBase.registerFactory(ChatMessageUserRealm._);
-    return const SchemaObject(
+    return  SchemaObject(
         ObjectType.realmObject, ChatMessageUserRealm, 'ChatMessageUserRealm', [
       SchemaProperty('chatMessageId', RealmPropertyType.int, optional: true),
       SchemaProperty('userId', RealmPropertyType.int, optional: true),

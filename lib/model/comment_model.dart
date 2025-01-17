@@ -15,7 +15,8 @@ class CommentModel {
   String? userPicture;
   String commentTime = '';
   UserModel? user;
-  CommentType type = CommentType.text; // text=1, image=2, video = 3, gif =4
+  CommentType type =
+      CommentType.text; // text=1, image=2, video = 3, gif =4
   String filePath = '';
   int level = 1;
   bool isFavourite = false;
@@ -24,6 +25,8 @@ class CommentModel {
   int pendingReplies = 0;
 
   int totalReplies = 0;
+  bool isPinned = false;
+  int? pinId;
 
   CommentModel();
 
@@ -62,8 +65,12 @@ class CommentModel {
     model.filePath = json['filenameUrl'] ?? '';
 
     DateTime createDate =
-        DateTime.fromMillisecondsSinceEpoch(json['created_at'] * 1000).toUtc();
+        DateTime.fromMillisecondsSinceEpoch(json['created_at'] * 1000)
+            .toUtc();
     model.commentTime = createDate.getTimeAgo;
+    model.isPinned = json['isPin'] != null;
+    model.pinId = json['isPin'] == null ? null : json['isPin']['id'];
+
     return model;
   }
 

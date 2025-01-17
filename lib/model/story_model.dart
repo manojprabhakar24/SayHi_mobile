@@ -10,6 +10,8 @@ class StoryModel {
   String? userImage;
   List<StoryMediaModel> media;
   bool isViewed = false;
+  bool isLive = false;
+  UserModel? user;
 
   StoryModel({
     required this.id,
@@ -17,6 +19,7 @@ class StoryModel {
     required this.userName,
     this.userImage,
     required this.media,
+    this.user
   });
 
   factory StoryModel.fromJson(dynamic json) {

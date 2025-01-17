@@ -6,6 +6,7 @@ import 'package:foap/helper/imports/event_imports.dart';
 import 'package:map_launcher/map_launcher.dart';
 import 'package:foap/helper/imports/common_import.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:share_plus/share_plus.dart';
 import '../../../post/add_post_screen.dart';
 
 class EventDetail extends StatefulWidget {
@@ -23,7 +24,8 @@ class EventDetail extends StatefulWidget {
 }
 
 class EventDetailState extends State<EventDetail> {
-  final EventDetailController _eventDetailController = EventDetailController();
+  final EventDetailController _eventDetailController =
+      EventDetailController();
   final UserProfileManager _userProfileManager = Get.find();
   final RefreshController _refreshController =
       RefreshController(initialRefresh: false);
@@ -86,9 +88,38 @@ class EventDetailState extends State<EventDetail> {
                 weight: TextWeight.semiBold,
               ),
               const SizedBox(
-                height: 20,
+                height: 10,
               ),
               attendingUsersList(),
+              const SizedBox(
+                height: 10,
+              ),
+              if (widget.event.shareLink != null)
+                IntrinsicHeight(
+                  child: IntrinsicWidth(
+                    child: Container(
+                      color: AppColorConstants.themeColor,
+                      child: Row(
+                        children: [
+                          ThemeIconWidget(
+                            ThemeIcon.share,
+                            color: Colors.white,
+                            size: 15,
+                          ),
+                          const SizedBox(
+                            width: 10,
+                          ),
+                          BodySmallText(
+                            shareEventString.tr,
+                            color: Colors.white,
+                          )
+                        ],
+                      ).p8,
+                    ).circular,
+                  ),
+                ).ripple(() {
+                  Share.share(widget.event.shareLink!);
+                }),
               divider().vp(20),
               eventInfo(),
               divider().vp(20),
@@ -112,8 +143,10 @@ class EventDetailState extends State<EventDetail> {
               ? Container()
               : _eventDetailController.event.value?.isCompleted == true
                   ? eventClosedWidget()
-                  : _eventDetailController.event.value?.ticketsAdded == true
-                      ? _eventDetailController.event.value?.isSoldOut == true
+                  : _eventDetailController.event.value?.ticketsAdded ==
+                          true
+                      ? _eventDetailController.event.value?.isSoldOut ==
+                              true
                           ? soldOutWidget()
                           : buyTicketWidget()
                       : ticketNotAddedWidget())
@@ -169,7 +202,8 @@ class EventDetailState extends State<EventDetail> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  BodyLargeText(locationString.tr, weight: TextWeight.medium),
+                  BodyLargeText(locationString.tr,
+                      weight: TextWeight.medium),
                   const SizedBox(
                     height: 5,
                   ),
@@ -253,12 +287,14 @@ class EventDetailState extends State<EventDetail> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Obx(() {
-          return _eventDetailController.event.value?.organizers.isNotEmpty ==
+          return _eventDetailController
+                      .event.value?.organizers.isNotEmpty ==
                   true
               ? Column(
                   children: [
-                    for (EventOrganizer sponsor
-                        in _eventDetailController.event.value?.organizers ?? [])
+                    for (EventOrganizer sponsor in _eventDetailController
+                            .event.value?.organizers ??
+                        [])
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
@@ -293,7 +329,8 @@ class EventDetailState extends State<EventDetail> {
         const SizedBox(
           height: 10,
         ),
-        BodyLargeText(widget.event.description, weight: TextWeight.regular),
+        BodyLargeText(widget.event.description,
+            weight: TextWeight.regular),
         const SizedBox(
           height: 40,
         ),
@@ -383,33 +420,9 @@ class EventDetailState extends State<EventDetail> {
   }
 
   Widget attendingUsersList() {
-    return Row(
-      children: [
-        // SizedBox(
-        //   height: 20,
-        //   width: min(widget.event.gallery.length, 5) * 17,
-        //   child: ListView.builder(
-        //     scrollDirection: Axis.horizontal,
-        //     itemBuilder: (ctx, index) {
-        //       return Align(
-        //         widthFactor: 0.6,
-        //         child: CachedNetworkImage(
-        //           imageUrl: widget.event.gallery[index],
-        //           width: 20,
-        //           height: 20,
-        //           fit: BoxFit.cover,
-        //         ).borderWithRadius( value: 1, radius: 10),
-        //       );
-        //     },
-        //     itemCount: min(widget.event.gallery.length, 5),
-        //   ),
-        // ),
-        BodySmallText(
-            '${widget.event.totalMembers} ${goingString.tr.toLowerCase()}',
-            weight: TextWeight.regular),
-        const Spacer()
-      ],
-    );
+    return BodyLargeText(
+        '${widget.event.totalMembers} ${goingString.tr.toLowerCase()}',
+        weight: TextWeight.regular);
   }
 
   Widget ticketNotAddedWidget() {
@@ -507,7 +520,8 @@ class EventDetailState extends State<EventDetail> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Heading6Text(eventGalleryString.tr, weight: TextWeight.medium),
+                Heading6Text(eventGalleryString.tr,
+                    weight: TextWeight.medium),
                 BodyLargeText(
                   seeAllString.tr,
                   color: AppColorConstants.themeColor,
@@ -614,15 +628,17 @@ class EventDetailState extends State<EventDetail> {
                   Duration.zero,
                   () => showGeneralDialog(
                       context: context,
-                      pageBuilder: (context, animation, secondaryAnimation) =>
-                          AddPostScreen(
-                            postType: PostType.event,
-                            event: widget.event,
-                            postCompletionHandler: () {
-                              _eventDetailController.refreshPosts(
-                                  id: widget.event.id, callback: () {});
-                            },
-                          )),
+                      pageBuilder:
+                          (context, animation, secondaryAnimation) =>
+                              AddPostScreen(
+                                postType: PostType.event,
+                                event: widget.event,
+                                postCompletionHandler: () {
+                                  _eventDetailController.refreshPosts(
+                                      id: widget.event.id,
+                                      callback: () {});
+                                },
+                              )),
                 );
               }),
           ],

@@ -2,6 +2,7 @@ import 'package:foap/helper/date_extension.dart';
 import 'package:foap/helper/imports/common_import.dart';
 import 'package:foap/model/post_model.dart';
 import 'club_model.dart';
+import 'collaboration_model.dart';
 import 'competition_model.dart';
 
 class NotificationModel {
@@ -15,8 +16,10 @@ class NotificationModel {
   ClubModel? club;
   CompetitionModel? competition;
   PostModel? post;
-  NotificationType type;
+  SMNotificationType type;
   String notificationDate = earlierString.tr;
+  bool readStatus;
+  CollaborationModel? collaboration;
 
   NotificationModel(
       {required this.id,
@@ -24,18 +27,21 @@ class NotificationModel {
       required this.message,
       required this.date,
       required this.type,
+      this.readStatus = false,
       this.actionBy,
       this.competition,
       this.post,
-      this.club});
+      this.club,
+      this.collaboration});
 
   factory NotificationModel.fromJson(Map<String, dynamic> json) =>
       NotificationModel(
         id: json["id"],
         title: json["title"],
         message: json["message"],
-        date: DateTime.fromMillisecondsSinceEpoch(json['created_at'] * 1000)
-            .toUtc(),
+        date:
+            DateTime.fromMillisecondsSinceEpoch(json['created_at'] * 1000)
+                .toUtc(),
         type: getType(json["type"]),
         actionBy: json["createdByUser"] == null
             ? null
@@ -48,44 +54,53 @@ class NotificationModel {
                 ? null
                 : PostModel.fromJson(json["refrenceDetails"])
             : null,
-        // club: json["type"] == 11 ? ClubModel.fromJson(json["reference"]) : null,
+        collaboration: json["type"] == 40
+            ? CollaborationModel.fromJson(json["refrenceDetails"])
+            : null,
+        readStatus: json["read_status"] == 1,
       );
 
   String get notificationTime {
     return date.getTimeAgo;
   }
 
-  static NotificationType getType(int type) {
+  static SMNotificationType getType(int type) {
     if (type == 1) {
-      return NotificationType.follow;
+      return SMNotificationType.follow;
     }
     if (type == 2) {
-      return NotificationType.comment;
+      return SMNotificationType.comment;
     }
     if (type == 3) {
-      return NotificationType.like;
+      return SMNotificationType.like;
     }
     if (type == 4) {
-      return NotificationType.competitionAdded;
+      return SMNotificationType.competitionAdded;
     }
     if (type == 6) {
-      return NotificationType.supportRequest;
+      return SMNotificationType.supportRequest;
     }
     if (type == 8) {
-      return NotificationType.gift;
+      return SMNotificationType.gift;
     }
     if (type == 9) {
-      return NotificationType.verification;
+      return SMNotificationType.verification;
     }
     if (type == 11) {
-      return NotificationType.clubInvitation;
+      return SMNotificationType.clubInvitation;
     }
     if (type == 13) {
-      return NotificationType.relationInvite;
+      return SMNotificationType.relationInvite;
     }
     if (type == 15) {
-      return NotificationType.followRequest;
+      return SMNotificationType.followRequest;
     }
-    return NotificationType.none;
+    if (type == 33) {
+      return SMNotificationType.subscribed;
+    }
+    if (type == 40) {
+      return SMNotificationType.collaborate;
+    }
+    return SMNotificationType.none;
   }
 }

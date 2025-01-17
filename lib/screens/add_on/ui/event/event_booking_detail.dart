@@ -3,7 +3,6 @@ import 'package:foap/components/static_map_widget.dart';
 import 'package:foap/helper/imports/event_imports.dart';
 import 'package:foap/helper/number_extension.dart';
 import 'package:foap/screens/profile/other_user_profile.dart';
-import 'package:lottie/lottie.dart';
 import 'package:map_launcher/map_launcher.dart';
 import 'package:foap/helper/imports/common_import.dart';
 
@@ -695,7 +694,7 @@ class EventBookingDetailState extends State<EventBookingDetail> {
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Lottie.asset('assets/lottie/loading.json'),
+          // Lottie.asset('assets/lottie/loading.json'),
           const SizedBox(
             height: 40,
           ),
@@ -725,7 +724,7 @@ class EventBookingDetailState extends State<EventBookingDetail> {
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Lottie.asset('assets/lottie/error.json'),
+          // Lottie.asset('assets/lottie/error.json'),
           const SizedBox(
             height: 40,
           ),
@@ -766,7 +765,7 @@ class EventBookingDetailState extends State<EventBookingDetail> {
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Lottie.asset('assets/lottie/success.json'),
+          // Lottie.asset('assets/lottie/success.json'),
           const SizedBox(
             height: 40,
           ),
@@ -799,7 +798,7 @@ class EventBookingDetailState extends State<EventBookingDetail> {
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Lottie.asset('assets/lottie/success.json'),
+          // Lottie.asset('assets/lottie/success.json'),
           const SizedBox(
             height: 40,
           ),

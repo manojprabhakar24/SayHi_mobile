@@ -4,14 +4,15 @@ import GoogleMobileAds
 import PushKit
 import flutter_callkit_incoming
 import GoogleMaps
+import Firebase
 
-@UIApplicationMain
+@main
 @objc class AppDelegate: FlutterAppDelegate,PKPushRegistryDelegate {
     override func application(
         _ application: UIApplication,
         didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
     ) -> Bool {
-        GMSServices.provideAPIKey("AIzaSyA4vcqErGvq5NRbvhvq8JKSp0VFpNBBPjE")
+        GMSServices.provideAPIKey("your_google_map_id")
 
         GADMobileAds.sharedInstance().start(completionHandler: nil)
         GeneratedPluginRegistrant.register(with: self)
@@ -40,7 +41,18 @@ import GoogleMaps
 //           FlutterDownloaderPlugin.register(with: registry.registrar(forPlugin: "FlutterDownloaderPlugin")!)
 //        }
 //    }
-    
+
+    override func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
+                super.application(application, didReceiveRemoteNotification: userInfo, fetchCompletionHandler: completionHandler)
+                  let firebaseAuth = Auth.auth()
+                    Messaging.messaging().appDidReceiveMessage(userInfo)
+                    print(userInfo)
+                  if (firebaseAuth.canHandleNotification(userInfo)){
+                      completionHandler(.noData)
+                      return
+                  }
+              }
+
     // Handle updated push credentials
     func pushRegistry(_ registry: PKPushRegistry, didUpdate credentials: PKPushCredentials, for type: PKPushType) {
         print(credentials.token)

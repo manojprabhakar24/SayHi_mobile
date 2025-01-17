@@ -4,7 +4,6 @@ import 'package:foap/helper/imports/common_import.dart';
 import 'package:foap/model/post_promotion_model.dart';
 import 'package:foap/screens/settings_menu/settings_controller.dart';
 import 'package:foap/helper/imports/event_imports.dart';
-import 'package:lottie/lottie.dart';
 
 class Checkout extends StatefulWidget {
   final String itemName;
@@ -333,7 +332,7 @@ class _CheckoutState extends State<Checkout> {
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Lottie.asset('assets/lottie/loading.json'),
+          // Lottie.asset('assets/lottie/loading.json'),
           const SizedBox(
             height: 40,
           ),
@@ -363,7 +362,7 @@ class _CheckoutState extends State<Checkout> {
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Lottie.asset('assets/lottie/success.json'),
+          // Lottie.asset('assets/lottie/success.json'),
           const SizedBox(
             height: 40,
           ),
@@ -408,7 +407,7 @@ class _CheckoutState extends State<Checkout> {
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Lottie.asset('assets/lottie/error.json'),
+          // Lottie.asset('assets/lottie/error.json'),
           const SizedBox(
             height: 40,
           ),

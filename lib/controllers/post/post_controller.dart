@@ -9,7 +9,6 @@ class PostController extends GetxController {
   RxList<PostModel> posts = <PostModel>[].obs;
   RxList<PostModel> videos = <PostModel>[].obs;
 
-  RxList<PostModel> mentions = <PostModel>[].obs;
   RxList<UserModel> likedByUsers = <UserModel>[].obs;
 
   Rx<PostInsight?> insight = Rx<PostInsight?>(null);
@@ -17,11 +16,9 @@ class PostController extends GetxController {
   int totalPages = 100;
 
   DataWrapper postDataWrapper = DataWrapper();
-  DataWrapper mentionsDataWrapper = DataWrapper();
   DataWrapper videosDataWrapper = DataWrapper();
 
   PostSearchQuery? postSearchQuery;
-  MentionedPostSearchQuery? mentionedPostSearchQuery;
 
   DataWrapper postLikedByDataWrapper = DataWrapper();
 
@@ -32,14 +29,8 @@ class PostController extends GetxController {
     posts.value = [];
 
     clearVideos();
-    clearMentions();
     clearPostLikedByUsers();
     update();
-  }
-
-  clearMentions() {
-    mentions.value = [];
-    mentionsDataWrapper = DataWrapper();
   }
 
   clearVideos() {
@@ -53,7 +44,6 @@ class PostController extends GetxController {
   }
 
   addPosts(List<PostModel> postsList, int? startPage, int? totalPages) {
-    mentionsDataWrapper.page = startPage ?? 1;
     postDataWrapper.page = startPage ?? 1;
     this.totalPages = totalPages ?? 100;
 
@@ -72,25 +62,17 @@ class PostController extends GetxController {
     getPosts(callback);
   }
 
-  setMentionedPostSearchQuery(MentionedPostSearchQuery query) {
-    mentionedPostSearchQuery = query;
-    getMyMentions();
-  }
 
   removePostFromList(PostModel post) {
     posts.removeWhere((element) => element.id == post.id);
-    mentions.removeWhere((element) => element.id == post.id);
 
     posts.refresh();
-    mentions.refresh();
   }
 
   removeUsersAllPostFromList(PostModel post) {
     posts.removeWhere((element) => element.user.id == post.user.id);
-    mentions.removeWhere((element) => element.user.id == post.user.id);
 
     posts.refresh();
-    mentions.refresh();
   }
 
   void getPosts(VoidCallback callback) async {
@@ -153,20 +135,6 @@ class PostController extends GetxController {
           });
     } else {
       callback();
-    }
-  }
-
-  void getMyMentions() {
-    if (mentionsDataWrapper.haveMoreData.value) {
-      PostApi.getMentionedPosts(
-          page: mentionsDataWrapper.page,
-          userId: mentionedPostSearchQuery!.userId,
-          resultCallback: (result, metadata) {
-            mentions.addAll(result);
-            mentions.unique((e) => e.id);
-            mentionsDataWrapper.processCompletedWithData(metadata);
-            update();
-          });
     }
   }
 

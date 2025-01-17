@@ -1,6 +1,8 @@
 import 'package:foap/helper/date_extension.dart';
+import 'package:foap/helper/enum_linking.dart';
 import 'package:foap/helper/imports/common_import.dart';
 import 'package:foap/model/setting_model.dart';
+import 'package:foap/model/subscription_plan_model.dart';
 import 'chat_room_model.dart';
 
 class UserModel {
@@ -77,9 +79,12 @@ class UserModel {
   List<UserSetting>? userSetting;
 
   GenderType? genderType;
-  bool isPrivate = false;
+  bool isPrivateProfile = false;
   bool isShareOnlineStatus = false;
   List<FeatureModel> features = [];
+  bool isEligibleForSubscription = false;
+  List<SubscriptionPlan> subscriptionPlans = [];
+  SubscribedStatus subscribedStatus = SubscribedStatus.notSubscribed;
 
   UserModel();
 
@@ -91,7 +96,6 @@ class UserModel {
     model.userName = json['username'] == null
         ? ''
         : json['username'].toString().toLowerCase();
-    // model.category = json['category'] ?? 'Other';
 
     model.email = json['email'];
     model.picture = json['picture'] ?? json['campaginImage'];
@@ -131,7 +135,7 @@ class UserModel {
 
     model.isReported = json['is_reported'] == 1;
     model.isOnline = json['is_chat_user_online'] == 1;
-    model.isPrivate = json['profile_visibility'] == 2;
+    model.isPrivateProfile = json['profile_visibility'] == 2;
     model.isShareOnlineStatus = json['is_show_online_chat_status'] == 1;
 
     model.chatLastTimeOnline = json['chat_last_time_online'];
@@ -190,6 +194,15 @@ class UserModel {
         : (json["featureList"] as List)
             .map((e) => FeatureModel.fromJson(e))
             .toList();
+
+    model.subscriptionPlans = json['subscriptionPlanUser'] != null
+        ? List<SubscriptionPlan>.from(json['subscriptionPlanUser']
+            .map((x) => SubscriptionPlan.fromJson(x)))
+        : [];
+
+    model.isEligibleForSubscription = json["isSubscriptionAllowed"] == 1;
+    model.subscribedStatus =
+        subscribedStatusType(json["subscribedStatus"] ?? 0);
     return model;
   }
 
@@ -259,7 +272,8 @@ class UserModel {
     }
 
     DateTime dateTime =
-        DateTime.fromMillisecondsSinceEpoch(chatLastTimeOnline! * 1000).toUtc();
+        DateTime.fromMillisecondsSinceEpoch(chatLastTimeOnline! * 1000)
+            .toUtc();
     // return '${lastSeenString.tr} ${timeago.format(dateTime)}';
     return '${lastSeenString.tr} ${dateTime.getTimeAgo}';
   }
@@ -293,12 +307,17 @@ class UserModel {
   bool get canViewRelations {
     if (relationsRevealSetting == RelationsRevealSetting.none) {
       return false;
-    } else if (relationsRevealSetting == RelationsRevealSetting.followers &&
+    } else if (relationsRevealSetting ==
+            RelationsRevealSetting.followers &&
         followingStatus == FollowingStatus.following) {
       return true;
     } else {
       return true;
     }
+  }
+
+  bool get isVIPUser {
+    return subscriptionPlans.isNotEmpty;
   }
 }
 
@@ -409,7 +428,8 @@ class LanguageModel {
     required this.name,
   });
 
-  factory LanguageModel.fromJson(Map<String, dynamic> json) => LanguageModel(
+  factory LanguageModel.fromJson(Map<String, dynamic> json) =>
+      LanguageModel(
         id: json["id"] ?? json["language_id"],
         name: json["name"],
       );

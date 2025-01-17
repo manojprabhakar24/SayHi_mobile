@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'dart:typed_data';
-import 'package:connectivity/connectivity.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
@@ -33,6 +33,7 @@ class ApiResponse {
         Get.offAll(() => const LoginScreen());
       }
     }
+
     if (model.success != true &&
         model.data != null &&
         model.message?.isEmpty == true) {
@@ -62,13 +63,14 @@ class ApiWrapper {
 
     final connectivityResult = await (Connectivity().checkConnectivity());
 
-    if (connectivityResult != ConnectivityResult.none) {
+    if (!connectivityResult.contains(ConnectivityResult.none)) {
       return http
           .get(Uri.parse(urlString))
           .then((http.Response response) async {
         dynamic data = _decoder.convert(response.body);
         Loader.dismiss();
-        SharedPrefs().setApiResponse(url: urlString, response: response.body);
+        SharedPrefs()
+            .setApiResponse(url: urlString, response: response.body);
 
         return ApiResponse.fromJson(data);
       });
@@ -94,14 +96,14 @@ class ApiWrapper {
     print(authKey);
     print(urlString);
 
-    if (connectivityResult != ConnectivityResult.none) {
+    if (!connectivityResult.contains(ConnectivityResult.none)) {
       return http.get(Uri.parse(urlString), headers: {
         "Authorization": "Bearer ${authKey!}"
       }).then((http.Response response) async {
-        // print(response.body);
         dynamic data = _decoder.convert(response.body);
         Loader.dismiss();
-        SharedPrefs().setApiResponse(url: urlString, response: response.body);
+        SharedPrefs()
+            .setApiResponse(url: urlString, response: response.body);
 
         return ApiResponse.fromJson(data);
       });
@@ -124,16 +126,21 @@ class ApiWrapper {
 
     String urlString = '${NetworkConstantsUtil.baseUrl}$url';
     final connectivityResult = await (Connectivity().checkConnectivity());
-    if (connectivityResult == ConnectivityResult.none) {
+    if (connectivityResult.contains(ConnectivityResult.none)) {
       return null;
     }
+    print('authKey $authKey');
+    print('urlString $urlString');
+    print('param $param');
 
-    return http.post(Uri.parse(urlString), body: jsonEncode(param), headers: {
-      "Authorization": "Bearer ${authKey!}",
-      'Content-Type': 'application/json'
-    }).then((http.Response response) async {
+    return http.post(Uri.parse(urlString),
+        body: jsonEncode(param),
+        headers: {
+          "Authorization": "Bearer ${authKey!}",
+          'Content-Type': 'application/json'
+        }).then((http.Response response) async {
       dynamic data = _decoder.convert(response.body);
-
+      print(data);
       return ApiResponse.fromJson(data);
     });
   }
@@ -161,16 +168,14 @@ class ApiWrapper {
     String? authKey = await SharedPrefs().getAuthorizationKey();
     Loader.show(status: loadingString.tr);
 
-    // print('${NetworkConstantsUtil.baseUrl}$url');
+    print('${NetworkConstantsUtil.baseUrl}$url');
     return http.delete(Uri.parse('${NetworkConstantsUtil.baseUrl}$url'),
         headers: {
           "Authorization": "Bearer $authKey",
           'Content-Type': 'application/json'
         }).then((http.Response response) async {
       dynamic data = _decoder.convert(response.body);
-      // print(data);
       Loader.dismiss();
-
       return ApiResponse.fromJson(data);
     });
   }
@@ -179,12 +184,15 @@ class ApiWrapper {
       {required String url, required dynamic param}) async {
     // Loader.show(status: loadingString.tr);
 
-    print('${NetworkConstantsUtil.baseUrl}$url');
-    print(param);
+    print('urlString ${'${NetworkConstantsUtil.baseUrl}$url'}');
+    print('param $param');
+
     return http
-        .post(Uri.parse('${NetworkConstantsUtil.baseUrl}$url'), body: param)
+        .post(Uri.parse('${NetworkConstantsUtil.baseUrl}$url'),
+            body: param)
         .then((http.Response response) async {
       dynamic data = _decoder.convert(response.body);
+      print(data);
       return ApiResponse.fromJson(data);
     });
   }
@@ -193,12 +201,14 @@ class ApiWrapper {
       {required String url, required Uint8List imageFileData}) async {
     Loader.show(status: loadingString.tr);
 
+    print('url ${'${NetworkConstantsUtil.baseUrl}$url'}');
     String? authKey = await SharedPrefs().getAuthorizationKey();
     var postUri = Uri.parse('${NetworkConstantsUtil.baseUrl}$url');
     var request = http.MultipartRequest("POST", postUri);
     request.headers.addAll({"Authorization": "Bearer ${authKey!}"});
 
-    request.files.add(http.MultipartFile.fromBytes('imageFile', imageFileData,
+    request.files.add(http.MultipartFile.fromBytes(
+        'imageFile', imageFileData,
         filename: '${DateTime.now().toIso8601String()}.jpg',
         contentType: MediaType('image', 'jpg')));
 
@@ -208,6 +218,7 @@ class ApiWrapper {
 
       dynamic data = _decoder.convert(respStr);
 
+      print('data = $data');
       return ApiResponse.fromJson(data);
     });
   }
@@ -229,13 +240,16 @@ class ApiWrapper {
     request.headers.addAll({"Authorization": "Bearer ${authKey!}"});
     request.fields.addAll({'type': uploadMediaTypeId(type).toString()});
     if (mediaType == GalleryMediaType.video) {
-      request.files.add(await http.MultipartFile.fromPath('mediaFile', file,
+      request.files.add(await http.MultipartFile.fromPath(
+          'mediaFile', file,
           contentType: MediaType('video', 'mp4')));
     } else if (mediaType == GalleryMediaType.audio) {
-      request.files.add(await http.MultipartFile.fromPath('mediaFile', file,
+      request.files.add(await http.MultipartFile.fromPath(
+          'mediaFile', file,
           contentType: MediaType('audio', 'mp3')));
     } else {
-      request.files.add(await http.MultipartFile.fromPath('mediaFile', file));
+      request.files
+          .add(await http.MultipartFile.fromPath('mediaFile', file));
     }
     var res = await request.send();
     var responseData = await res.stream.toBytes();
@@ -246,5 +260,4 @@ class ApiWrapper {
 
     return ApiResponse.fromJson(data);
   }
-
 }

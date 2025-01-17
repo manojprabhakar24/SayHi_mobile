@@ -3,7 +3,7 @@ import 'package:flutter_video_info/flutter_video_info.dart';
 import 'package:foap/screens/chat/media.dart';
 import 'package:foap/screens/post/add_post_screen.dart';
 import 'package:foap/util/constant_util.dart';
-import 'package:video_compress_ds/video_compress_ds.dart';
+import 'package:video_compress/video_compress.dart';
 import 'package:video_player/video_player.dart';
 import 'package:video_thumbnail/video_thumbnail.dart';
 import 'dart:io';

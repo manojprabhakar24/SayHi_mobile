@@ -6,6 +6,8 @@
 	<string>787780064793-nqjbtv3f2no80jm578dmnaefgtf0cnbp.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
 	<string>com.googleusercontent.apps.787780064793-nqjbtv3f2no80jm578dmnaefgtf0cnbp</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>787780064793-u5uv6equan95fncr65s83afff07l5rbe.apps.googleusercontent.com</string>
 	<key>API_KEY</key>
 	<string>AIzaSyCsekV6f6sI0jV-oW1SPS_dfj9bbsxJ5bg</string>
 	<key>GCM_SENDER_ID</key>
@@ -17,7 +19,7 @@
 	<key>PROJECT_ID</key>
 	<string>sayhi-7baeb</string>
 	<key>STORAGE_BUCKET</key>
-	<string>sayhi-7baeb.appspot.com</string>
+	<string>sayhi-7baeb.firebasestorage.app</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>

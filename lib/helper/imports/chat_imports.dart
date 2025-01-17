@@ -64,6 +64,5 @@ export 'package:foap/model/chat_room_model.dart';
 export 'package:foap/model/chat_message_model.dart';
 export 'package:foap/components/chat_history_tile.dart';
 
-export 'package:foap/manager/db_manager.dart';
 export 'package:foap/manager/file_manager.dart';
 export 'package:foap/manager/service_locator.dart';

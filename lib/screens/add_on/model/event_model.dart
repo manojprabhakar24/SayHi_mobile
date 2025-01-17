@@ -36,35 +36,37 @@ class EventModel {
   List<EventTicketType> ticketType;
   bool isCompleted;
 
-  EventModel({
-    required this.id,
-    required this.name,
-    required this.categoryId,
-    required this.image,
-    required this.startDate,
-    required this.endDate,
-    required this.placeName,
-    required this.completeAddress,
-    required this.latitude,
-    required this.longitude,
-    required this.disclaimer,
-    required this.description,
-    required this.createdAt,
-    required this.status,
-    required this.createdBy,
-    required this.updatedAt,
-    required this.updatedBy,
-    required this.gallery,
-    required this.isFree,
-    required this.isJoined,
-    required this.totalMembers,
-    required this.isFavourite,
-    required this.ticketType,
-    required this.organizers,
-    required this.eventCurrentStatus,
-    required this.isTicketBooked,
-    required this.isCompleted,
-  });
+  String? shareLink;
+
+  EventModel(
+      {required this.id,
+      required this.name,
+      required this.categoryId,
+      required this.image,
+      required this.startDate,
+      required this.endDate,
+      required this.placeName,
+      required this.completeAddress,
+      required this.latitude,
+      required this.longitude,
+      required this.disclaimer,
+      required this.description,
+      required this.createdAt,
+      required this.status,
+      required this.createdBy,
+      required this.updatedAt,
+      required this.updatedBy,
+      required this.gallery,
+      required this.isFree,
+      required this.isJoined,
+      required this.totalMembers,
+      required this.isFavourite,
+      required this.ticketType,
+      required this.organizers,
+      required this.eventCurrentStatus,
+      required this.isTicketBooked,
+      required this.isCompleted,
+      this.shareLink});
 
   factory EventModel.fromJson(Map<String, dynamic> json) => EventModel(
         id: json["id"],
@@ -83,8 +85,8 @@ class EventModel {
         eventCurrentStatus: json["eventCurrentStatus"],
         isFree: json["is_paid"] == 0,
         isTicketBooked: json["is_ticket_booked"] == 1,
-        isCompleted:
-            json["eventCurrentStatus"] == 3 || json["eventCurrentStatus"] == 4,
+        isCompleted: json["eventCurrentStatus"] == 3 ||
+            json["eventCurrentStatus"] == 4,
         createdAt: json["created_at"],
         createdBy: json["created_by"],
         updatedAt: json["updated_at"],
@@ -106,6 +108,7 @@ class EventModel {
         isFavourite: json["isFavourite"] == 1,
         totalMembers: json["totalMembers"] ?? 0,
         isJoined: json["isJoined"] == 1,
+        shareLink: json["share_link"],
       );
 
   EventStatus get statusType {
@@ -124,14 +127,16 @@ class EventModel {
 
   bool get ticketsAdded {
     List<EventTicketType> ticketTypes = ticketType
-        .where((element) => element.availableTicket > 0 && element.status == 10)
+        .where((element) =>
+            element.availableTicket > 0 && element.status == 10)
         .toList();
     return ticketTypes.isNotEmpty;
   }
 
   bool get isSoldOut {
-    List<EventTicketType> ticketTypes =
-        ticketType.where((element) => element.availableTicket > 0).toList();
+    List<EventTicketType> ticketTypes = ticketType
+        .where((element) => element.availableTicket > 0)
+        .toList();
     return ticketTypes.isEmpty;
   }
 
@@ -234,7 +239,8 @@ class EventOrganizer {
     required this.image,
   });
 
-  factory EventOrganizer.fromJson(Map<String, dynamic> json) => EventOrganizer(
+  factory EventOrganizer.fromJson(Map<String, dynamic> json) =>
+      EventOrganizer(
         id: json["id"],
         name: json["name"],
         image: json["campaginImage"],
@@ -266,7 +272,8 @@ class EventCoupon {
         title: json["title"],
         subTitle: json["subtitle"],
         code: json["code"],
-        minimumOrderPrice: double.parse(json["minimum_order_price"].toString()),
+        minimumOrderPrice:
+            double.parse(json["minimum_order_price"].toString()),
         image: json["imageUrl"],
         discount: double.parse(json["coupon_value"].toString()),
       );

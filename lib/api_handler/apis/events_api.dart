@@ -52,6 +52,7 @@ class EventApi {
       required Function(EventModel) resultCallback}) async {
     var url = NetworkConstantsUtil.eventDetails;
     url = url.replaceAll('{{id}}', eventId.toString());
+    // url = url.replaceAll('{{id}}', '0500978f50ac4f32d883968e9c7fdaf6');
 
     await ApiWrapper().getApi(url: url).then((result) {
       if (result?.success == true) {

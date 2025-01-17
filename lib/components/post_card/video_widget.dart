@@ -80,9 +80,9 @@ class _VideoPostTileState extends State<VideoPostTile> {
         widget.onTapActionHandler();
       },
       child: SizedBox(
-        height: widget.media == null
-            ? null
-            : widget.width / (widget.media!.width / widget.media!.height),
+        // height: widget.media == null
+        //     ? null
+        //     : widget.width / (widget.media!.width / widget.media!.height),
         child: Stack(
           children: [
             FutureBuilder(

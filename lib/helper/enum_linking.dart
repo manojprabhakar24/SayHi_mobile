@@ -122,6 +122,7 @@ int userViewSourceTypeToId(UserViewSourceType source) {
 }
 
 PaymentType paymentTypeFromId(int id) {
+  print('paymentTypeFromId $id');
   switch (id) {
     case 1:
       return PaymentType.package;
@@ -134,7 +135,7 @@ PaymentType paymentTypeFromId(int id) {
     case 5:
       return PaymentType.liveTvSubscribe;
     case 6:
-      return PaymentType.gift;
+      return PaymentType.giftSent;
     case 7:
       return PaymentType.redeemCoin;
     case 8:
@@ -153,11 +154,14 @@ PaymentType paymentTypeFromId(int id) {
       return PaymentType.featureAd;
     case 17:
       return PaymentType.bannerAd;
+    case 20:
+      return PaymentType.subscription;
   }
   return PaymentType.package;
 }
 
 String paymentTypeStringFromId(PaymentType type) {
+  print('paymentTypeStringFromId $type');
   switch (type) {
     case PaymentType.package:
       return boughtCoinsString.tr;
@@ -169,7 +173,9 @@ String paymentTypeStringFromId(PaymentType type) {
       return withdrawalRefundString.tr;
     case PaymentType.liveTvSubscribe:
       return subscribedTvString.tr;
-    case PaymentType.gift:
+    case PaymentType.giftSent:
+      return giftSentString.tr;
+    case PaymentType.giftReceived:
       return giftsReceivedString.tr;
     case PaymentType.redeemCoin:
       return redeemString.tr;
@@ -189,6 +195,8 @@ String paymentTypeStringFromId(PaymentType type) {
       return promotedAdString.tr;
     case PaymentType.bannerAd:
       return promotedAdString.tr;
+    case PaymentType.subscription:
+      return subscriptionString.tr;
   }
 }
 
@@ -211,10 +219,18 @@ PaymentMode paymentModeFromId(int id) {
 }
 
 TransactionType transactionTypeFromId(int id) {
+  print('transactionTypeFromId: $id');
   if (id == 1) {
     return TransactionType.credit;
   }
   return TransactionType.debit;
+}
+
+TransactionMedium transactionMediumTypeFromId(int id) {
+  if (id == 1) {
+    return TransactionMedium.money;
+  }
+  return TransactionMedium.coin;
 }
 
 int messageTypeId(MessageContentType type) {
@@ -291,5 +307,70 @@ int liveViewerRole(LiveUserRole role) {
       return 3;
     case LiveUserRole.host:
       return 1;
+  }
+}
+
+SMSGateway smsGatewayType(int id) {
+  switch (id) {
+    case 1:
+      return SMSGateway.twilio;
+    case 2:
+      return SMSGateway.sms91;
+    case 3:
+      return SMSGateway.firebase;
+    default:
+      return SMSGateway.twilio;
+  }
+}
+
+SubscribedStatus subscribedStatusType(int id) {
+  switch (id) {
+    case 0:
+      return SubscribedStatus.notSubscribed;
+    case 1:
+      return SubscribedStatus.subscribed;
+    case 2:
+      return SubscribedStatus.expired;
+    default:
+      return SubscribedStatus.notSubscribed;
+  }
+}
+
+int pinContentTypeId(PinContentType type) {
+  switch (type) {
+    case PinContentType.post:
+      return 1;
+    default:
+      return 2;
+  }
+}
+
+CollaborationStatusType collaborationStatusType(int id) {
+  switch (id) {
+    case 0:
+      return CollaborationStatusType.deleted;
+    case 1:
+      return CollaborationStatusType.pending;
+    case 2:
+      return CollaborationStatusType.rejected;
+    case 4:
+      return CollaborationStatusType.cancelled;
+    default:
+      return CollaborationStatusType.accepted;
+  }
+}
+
+int collaborationStatusTypeId(CollaborationStatusType type) {
+  switch (type) {
+    case CollaborationStatusType.deleted:
+      return 0;
+    case CollaborationStatusType.pending:
+      return 1;
+    case CollaborationStatusType.rejected:
+      return 2;
+    case CollaborationStatusType.cancelled:
+      return 4;
+    default:
+      return 3;
   }
 }

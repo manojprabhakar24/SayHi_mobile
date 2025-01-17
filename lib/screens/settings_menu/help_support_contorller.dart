@@ -7,12 +7,10 @@ class HelpSupportController extends GetxController {
   RxList<SupportRequest> list = <SupportRequest>[].obs;
 
   void getSupportRequests() {
-    AppUtil.checkInternet().then((value) {
-      MiscApi.getSupportMessages(resultCallback: (result, metadata) {
-        list.clear();
-        list.addAll(result);
-        list.unique((e) => e.id);
-      });
+    MiscApi.getSupportMessages(resultCallback: (result, metadata) {
+      list.clear();
+      list.addAll(result);
+      list.unique((e) => e.id);
     });
   }
 

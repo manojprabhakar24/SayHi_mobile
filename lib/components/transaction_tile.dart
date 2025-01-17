@@ -32,7 +32,7 @@ class TransactionTile extends StatelessWidget {
                     paymentTypeStringFromId(model.paymentType),
                     color: AppColorConstants.themeColor,
                   ),
-                  const SizedBox(height: 5),
+                  // const SizedBox(height: 5),
                   BodySmallText(
                     model.createDate,
                   )
@@ -42,23 +42,34 @@ class TransactionTile extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
-                  BodyLargeText('\$${model.amount}',
-                          weight: TextWeight.bold,
-                          color: model.transactionType == TransactionType.credit
-                              ? AppColorConstants.red
-                              : AppColorConstants.green)
-                      .bP4,
-                  BodyMediumText(
-                    model.status == 1
-                        ? pendingString.tr
-                        : model.status == 2
-                            ? rejectedString.tr
-                            : completedString.tr,
-                    weight: TextWeight.medium,
-                    color: model.status == 1
-                        ? AppColorConstants.themeColor
-                        : AppColorConstants.red,
-                  ),
+                  if (model.transactionMedium == TransactionMedium.money)
+                    BodyLargeText(
+                        '${model.transactionType == TransactionType.credit ? '+' : '-'} \$${model.amount}',
+                        weight: TextWeight.bold,
+                        color:
+                            model.transactionType == TransactionType.credit
+                                ? AppColorConstants.green
+                                : AppColorConstants.red),
+                  if (model.transactionMedium == TransactionMedium.coin)
+                    BodyLargeText(
+                        '${model.transactionType == TransactionType.credit ? '+' : '-'} ${model.coins} ${coinsString.tr}',
+                        weight: TextWeight.bold,
+                        color:
+                            model.transactionType == TransactionType.credit
+                                ? AppColorConstants.green
+                                : AppColorConstants.red),
+                  if (model.transactionMedium == TransactionMedium.money)
+                    BodyMediumText(
+                      model.status == 1
+                          ? pendingString.tr
+                          : model.status == 2
+                              ? rejectedString.tr
+                              : completedString.tr,
+                      weight: TextWeight.medium,
+                      color: model.status == 1
+                          ? AppColorConstants.themeColor
+                          : AppColorConstants.red,
+                    ),
                 ],
               )
             ])),

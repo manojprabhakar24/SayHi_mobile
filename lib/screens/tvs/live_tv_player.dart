@@ -1,4 +1,3 @@
-import 'package:auto_orientation/auto_orientation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:foap/helper/imports/common_import.dart';
@@ -7,6 +6,7 @@ import 'package:foap/model/live_tv_model.dart';
 import '../../components/live_tv_player.dart';
 import '../../model/chat_message_model.dart';
 import 'package:foap/helper/imports/tv_imports.dart';
+// import 'package:foap/components/auto_orientation/auto_orientation.dart';
 
 class LiveTvPlayer extends StatefulWidget {
   final TvModel tvModel;
@@ -32,18 +32,18 @@ class _LiveTvPlayerState extends State<LiveTvPlayer> {
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       // Add Your Code here.
-      if (MediaQuery.of(context).orientation == Orientation.portrait) {
-        AutoOrientation.portraitAutoMode();
-      } else {
-        AutoOrientation.landscapeAutoMode();
-      }
+      // if (MediaQuery.of(context).orientation == Orientation.portrait) {
+      //   AutoOrientation.portraitAutoMode();
+      // } else {
+      //   AutoOrientation.landscapeAutoMode();
+      // }
       _liveTvStreamingController.setCurrentViewingTv(widget.tvModel);
     });
   }
 
   @override
   void dispose() {
-    AutoOrientation.portraitAutoMode();
+    // AutoOrientation.portraitAutoMode();
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
     ]);
@@ -53,11 +53,11 @@ class _LiveTvPlayerState extends State<LiveTvPlayer> {
   @override
   Widget build(BuildContext context) {
     return OrientationBuilder(builder: (context, orientation) {
-      if (orientation == Orientation.portrait) {
-        AutoOrientation.portraitAutoMode();
-      } else {
-        AutoOrientation.landscapeAutoMode();
-      }
+      // if (orientation == Orientation.portrait) {
+      //   AutoOrientation.portraitAutoMode();
+      // } else {
+      //   AutoOrientation.landscapeAutoMode();
+      // }
       return KeyboardVisibilityBuilder(builder: (context, isKeyboardVisible) {
         return AppScaffold(
           backgroundColor: AppColorConstants.backgroundColor,

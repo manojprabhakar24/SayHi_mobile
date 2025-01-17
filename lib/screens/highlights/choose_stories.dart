@@ -55,14 +55,17 @@ class _ChooseStoryForHighlightsState extends State<ChooseStoryForHighlights> {
               //   height: 25,
               // ),
               const Spacer(),
-              ThemeIconWidget(
+              Obx(() =>
+              _highlightsController.selectedStoriesMedia.isNotEmpty
+                  ? ThemeIconWidget(
                 ThemeIcon.nextArrow,
                 color: AppColorConstants.themeColor,
                 size: 27,
               ).ripple(() {
                 // create highlights
                 Get.to(() => const CreateHighlight());
-              }),
+              })
+                  : Container()),
             ],
           ).hp(20),
           const SizedBox(height: 20),
@@ -71,22 +74,22 @@ class _ChooseStoryForHighlightsState extends State<ChooseStoryForHighlights> {
               return _highlightsController.isLoading.value
                   ? const StoriesShimmerWidget()
                   : _highlightsController.stories.isNotEmpty
-                      ? GridView.builder(
-                          padding: EdgeInsets.zero,
-                          gridDelegate:
-                              SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisSpacing: 5,
-                                  mainAxisSpacing: 5,
-                                  childAspectRatio: 0.6,
-                                  crossAxisCount: _numberOfColumns),
-                          itemCount: _highlightsController.stories.length,
-                          itemBuilder: (context, index) {
-                            return _buildItem(index);
-                          }).hp(DesignConstants.horizontalPadding)
-                      : emptyData(
-                          title: noStoryFoundString.tr,
-                          subTitle: postSomeStoriesString.tr,
-                        );
+                  ? GridView.builder(
+                  padding: EdgeInsets.zero,
+                  gridDelegate:
+                  SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisSpacing: 5,
+                      mainAxisSpacing: 5,
+                      childAspectRatio: 0.6,
+                      crossAxisCount: _numberOfColumns),
+                  itemCount: _highlightsController.stories.length,
+                  itemBuilder: (context, index) {
+                    return _buildItem(index);
+                  }).hp(DesignConstants.horizontalPadding)
+                  : emptyData(
+                title: noStoryFoundString.tr,
+                subTitle: postSomeStoriesString.tr,
+              );
             }).hP4,
           )
         ],
@@ -120,25 +123,26 @@ class _ChooseStoryForHighlightsState extends State<ChooseStoryForHighlights> {
     });
   }
 
-  _buildItem(int index) => GestureDetector(
-      onTap: () {
-        _selectItem(index);
-      },
-      child: Stack(
-        children: [
-          SizedBox(
-            height: double.infinity,
-            width: double.infinity,
-            child: Stack(
-              children: [
-                CachedNetworkImage(
-                  imageUrl: _highlightsController.stories[index].image!,
-                  fit: BoxFit.cover,
-                  height: double.infinity,
-                  width: double.infinity,
-                ).round(5),
-                _highlightsController.stories[index].isVideoPost() == true
-                    ? Positioned(
+  _buildItem(int index) =>
+      GestureDetector(
+          onTap: () {
+            _selectItem(index);
+          },
+          child: Stack(
+            children: [
+              SizedBox(
+                height: double.infinity,
+                width: double.infinity,
+                child: Stack(
+                  children: [
+                    CachedNetworkImage(
+                      imageUrl: _highlightsController.stories[index].image!,
+                      fit: BoxFit.cover,
+                      height: double.infinity,
+                      width: double.infinity,
+                    ).round(5),
+                    _highlightsController.stories[index].isVideoPost() == true
+                        ? Positioned(
                         top: 0,
                         right: 0,
                         left: 0,
@@ -148,21 +152,22 @@ class _ChooseStoryForHighlightsState extends State<ChooseStoryForHighlights> {
                           size: 80,
                           color: Colors.white,
                         ))
-                    : Container()
-              ],
-            ),
-          ),
-          _isSelected(_highlightsController.stories[index].id)
-              ? Positioned(
+                        : Container()
+                  ],
+                ),
+              ),
+              _isSelected(_highlightsController.stories[index].id)
+                  ? Positioned(
                   top: 5,
                   right: 5,
                   child: Container(
                     height: 20,
                     width: 20,
                     color: AppColorConstants.themeColor,
-                    child: ThemeIconWidget(ThemeIcon.checkMark),
+                    child: ThemeIconWidget(
+                        ThemeIcon.checkMark, color: Colors.white, size: 15, ),
                   ).circular)
-              : Container()
-        ],
-      ));
+                  : Container()
+            ],
+          ));
 }

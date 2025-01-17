@@ -1,5 +1,5 @@
 import '../../controllers/chat_and_call/chat_detail_controller.dart';
-import '../../controllers/profile/profile_controller.dart';
+import '../../controllers/profile/other_user_profile_controller.dart';
 import '../../helper/imports/common_import.dart';
 import '../chat/chat_detail.dart';
 import '../profile/user_profile_stat.dart';
@@ -7,11 +7,11 @@ import '../settings_menu/settings_controller.dart';
 import 'gifts_list.dart';
 
 class ModeratorDetail extends StatelessWidget {
-  final ProfileController _profileController = Get.find();
+  final OtherUserProfileController _profileController = Get.find();
   final SettingsController _settingsController = Get.find();
   final ChatDetailController _chatDetailController = Get.find();
 
-  ModeratorDetail({Key? key}) : super(key: key);
+  ModeratorDetail({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +37,7 @@ class ModeratorDetail extends StatelessWidget {
   }
 
   Widget addProfileView() {
-    return GetBuilder<ProfileController>(
+    return GetBuilder<OtherUserProfileController>(
         init: _profileController,
         builder: (ctx) {
           return _profileController.user.value != null

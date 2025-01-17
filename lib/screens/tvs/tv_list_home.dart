@@ -1,4 +1,4 @@
-import 'package:carousel_slider/carousel_slider.dart';
+import 'package:carousel_slider/carousel_slider.dart' ;
 import 'package:foap/helper/imports/common_import.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import '../../controllers/misc/rating_controller.dart';
@@ -16,7 +16,7 @@ class TvListHome extends StatefulWidget {
 
 class _TvListHomeState extends State<TvListHome> {
   final TvStreamingController _tvStreamingController = Get.find();
-  final CarouselController _controller = CarouselController();
+  final CarouselSliderController _controller = CarouselSliderController();
   int _current = 0;
   final RefreshController _refreshController =
       RefreshController(initialRefresh: false);
@@ -95,7 +95,7 @@ class _TvListHomeState extends State<TvListHome> {
             bannerClickAction(_tvStreamingController.banners.first);
           })
         : Stack(children: [
-            CarouselSlider(
+      CarouselSlider(
               items: [
                 for (TVBannersModel banner in _tvStreamingController.banners)
                   CachedNetworkImage(

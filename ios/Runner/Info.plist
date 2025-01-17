@@ -7,7 +7,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
-	<string>SayHi Social</string>
+	<string>Your app name</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -15,11 +15,11 @@
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
-	<string>SayHi Social</string>
+	<string>Your app name</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>7.6</string>
+	<string>7.6.2</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleURLTypes</key>
@@ -37,7 +37,7 @@
 			<string>Editor</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>fb518019800216421</string>
+				<string>fbyour_facebook_app_id</string>
 			</array>
 		</dict>
 		<dict>
@@ -45,7 +45,7 @@
 			<string>Editor</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>fwdtechnology.co</string>
+				<string>your_domain_name</string>
 			</array>
 		</dict>
 	</array>
@@ -54,9 +54,9 @@
 	<key>FDAllFilesDownloadedMessage</key>
 	<string>All files have been downloaded</string>
 	<key>FacebookAppID</key>
-	<string>518019800216421</string>
+	<string>your_facebook_app_id</string>
 	<key>FacebookClientToken</key>
-	<string>3c9b3df9138f5999d7acc01bd9983af3</string>
+	<string>your_facebook_app_token</string>
 	<key>FirebaseAppDelegateProxyEnabled</key>
 	<false/>
 	<key>FirebaseMessagingAutoInitEnabled</key>
@@ -99,23 +99,23 @@
 	<key>NSAppleMusicUsageDescription</key>
 	<string>Need access</string>
 	<key>NSCameraUsageDescription</key>
-	<string>SayHi Social wants to access camera to capture images for sharing in chat and timeline</string>
+	<string>This app wants to access camera to capture images for sharing in chat and timeline</string>
 	<key>NSContactsUsageDescription</key>
-	<string>SayHi Social wants to access contact for sharing in chat</string>
+	<string>This app wants to access contact for sharing in chat</string>
 	<key>NSFaceIDUsageDescription</key>
-	<string>SayHi Social wants to access biometric authentication for login</string>
+	<string>This app wants to access biometric authentication for login</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<string>SayHi Social wants to access Location to capture images for sharing in chat</string>
+	<string>This app wants to access Location to capture images for sharing in chat</string>
 	<key>NSLocationAlwaysUsageDescription</key>
-	<string>SayHi Social wants to access Location to capture images for sharing in chat</string>
+	<string>This app wants to access Location to capture images for sharing in chat</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>SayHi Social wants to access Location to capture images for sharing in chat</string>
+	<string>This app wants to access Location to capture images for sharing in chat</string>
 	<key>NSMicrophoneUsageDescription</key>
-	<string>SayHi Social wants to access Mic to record audio for sharing in chat and timeline</string>
+	<string>This app wants to access Mic to record audio for sharing in chat and timeline</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
-	<string>SayHi Social wants to access gallery to share images in chat and timeline</string>
+	<string>This app wants to access gallery to share images in chat and timeline</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>SayHi Social wants to access gallery to share images in chat and timeline</string>
+	<string>This app wants to access gallery to share images in chat and timeline</string>
 	<key>SKAdNetworkItems</key>
 	<array>
 		<dict>
@@ -296,7 +296,7 @@
 	<false/>
 	<key>com.apple.developer.associated-domains</key>
 	<array>
-		<string>applinks:fwdtechnology.co</string>
+		<string>applinks:your_domain_name</string>
 	</array>
 </dict>
 </plist>

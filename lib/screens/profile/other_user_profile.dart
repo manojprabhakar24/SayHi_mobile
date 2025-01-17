@@ -1,18 +1,16 @@
-import 'package:foap/controllers/post/post_controller.dart';
+import 'package:foap/controllers/subscription/subscription_controller.dart';
 import 'package:foap/helper/imports/common_import.dart';
-import 'package:foap/helper/number_extension.dart';
+import 'package:foap/screens/profile/sliver_app_bar.dart';
 import 'package:foap/screens/profile/user_profile_stat.dart';
-import 'package:foap/screens/profile/users_club_listing.dart';
 import '../../components/highlights_bar.dart';
+import '../../components/post_card/post_card.dart';
+import '../../components/sm_tab_bar.dart';
 import '../../controllers/chat_and_call/chat_detail_controller.dart';
+import '../../controllers/profile/other_user_profile_controller.dart';
 import '../../controllers/story/highlights_controller.dart';
 import '../../controllers/profile/profile_controller.dart';
-import '../../model/post_search_query.dart';
-import '../add_on/controller/reel/reels_controller.dart';
-import '../add_on/ui/reel/reels.dart';
+import '../../model/post_model.dart';
 import '../chat/chat_detail.dart';
-import '../dashboard/mentions.dart';
-import '../dashboard/posts.dart';
 import '../highlights/hightlights_viewer.dart';
 import '../live/gifts_list.dart';
 import '../settings_menu/settings_controller.dart';
@@ -29,11 +27,11 @@ class OtherUserProfile extends StatefulWidget {
 
 class OtherUserProfileState extends State<OtherUserProfile>
     with SingleTickerProviderStateMixin {
-  final ProfileController _profileController = Get.find();
+  final OtherUserProfileController _profileController = Get.find();
   final HighlightsController _highlightsController = Get.find();
   final SettingsController _settingsController = Get.find();
   final ChatDetailController _chatDetailController = Get.find();
-  final PostController _postController = Get.find();
+  final UserSubscriptionController _subscriptionController = Get.find();
 
   List<String> tabs = [postsString, reelsString, mentionsString];
 
@@ -49,10 +47,11 @@ class OtherUserProfileState extends State<OtherUserProfile>
 
   initialLoad() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (widget.user != null) {
-        _profileController.setUser(widget.user!);
-      }
+      // if (widget.user != null) {
+      //   _profileController.setUser(widget.user!);
+      // }
       _profileController.clear();
+
       loadData();
     });
   }
@@ -66,49 +65,159 @@ class OtherUserProfileState extends State<OtherUserProfile>
   @override
   void dispose() {
     _profileController.clear();
-    _postController.clear();
     super.dispose();
   }
 
   loadData() {
-    _profileController.getOtherUserDetail(userId: widget.userId);
-    _profileController.getMentionPosts(widget.userId);
-
-    PostSearchQuery query = PostSearchQuery();
-    query.userId = widget.userId;
-    _postController.setPostSearchQuery(query: query, callback: () {});
-    _profileController.getReels(widget.userId);
-    _highlightsController.getHighlights(userId: widget.userId);
+    _profileController.getOtherUserDetail(
+        userId: widget.userId,
+        completionBlock: (user) {
+          if (user.isPrivateProfile == false ||
+              user.followingStatus == FollowingStatus.following) {
+            _profileController.getMentionPosts(widget.userId);
+            _profileController.getReels(widget.userId);
+            _profileController.getPosts(
+                userId: widget.userId, callback: () {});
+            _highlightsController.getHighlights(userId: widget.userId);
+          }
+        });
   }
 
   @override
   Widget build(BuildContext context) {
     return Obx(() => AppScaffold(
           backgroundColor: AppColorConstants.backgroundColor,
-          body: Stack(
+          body: Column(
             children: [
-              SingleChildScrollView(
-                child: Column(children: [
-                  if (_settingsController.appearanceChanged!.value) Container(),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  addProfileView().bP16,
-                  addHighlightsView().bP16,
-                  contentWidget(),
-                  const SizedBox(
-                    height: 20,
-                  )
-                ]),
-              ),
-              Positioned(top: 0, left: 0, right: 0, child: appBar())
+              appBar(),
+              if (_profileController.user.value != null)
+                _profileController.user.value!.isPrivateProfile &&
+                        _profileController.user.value!.followingStatus ==
+                            FollowingStatus.notFollowing
+                    ? Column(
+                        children: [header(), body()],
+                      )
+                    : Expanded(
+                        child: DefaultTabController(
+                          length: tabs.length,
+                          child: NestedScrollView(
+                            headerSliverBuilder: (BuildContext context,
+                                bool innerBoxIsScrolled) {
+                              return <Widget>[
+                                SliverAppBar(
+                                  backgroundColor:
+                                      AppColorConstants.backgroundColor,
+                                  pinned: false,
+                                  automaticallyImplyLeading: false,
+                                  expandedHeight: headerHeight(),
+                                  toolbarHeight: 0,
+                                  flexibleSpace: FlexibleSpaceBar(
+                                    background: header(),
+                                  ),
+                                ),
+                                if (_profileController.user.value!
+                                            .isPrivateProfile ==
+                                        false ||
+                                    _profileController
+                                            .user.value!.followingStatus ==
+                                        FollowingStatus.following)
+                                  SliverPersistentHeader(
+                                    delegate: SliverAppBarDelegate(
+                                        SizedBox(
+                                            height: 50,
+                                            child: SMTabBar(
+                                                tabs: tabs,
+                                                canScroll: false))),
+                                    pinned: true,
+                                    // floating: true,
+                                  )
+                              ];
+                            },
+                            body: body(),
+                          ),
+                        ),
+                      ),
             ],
           ),
         ));
   }
 
+  double headerHeight() {
+    double categoryPortionHt =
+        _profileController.user.value!.profileCategoryTypeId != 0 ? 20 : 0;
+    double cityNamePortionHt =
+        _profileController.user.value?.country != null ? 20 : 0;
+
+    return (_profileController.user.value!.isPrivateProfile &&
+                _profileController.user.value!.followingStatus !=
+                    FollowingStatus.following
+            ? 370
+            : _highlightsController.highlights.isNotEmpty
+                ? 415.0
+                : 390) +
+        categoryPortionHt +
+        cityNamePortionHt;
+  }
+
+  Widget header() {
+    return SizedBox(
+      height: headerHeight(),
+      child: Column(
+        children: [
+          addProfileView().bP16,
+          if (_profileController.user.value!.isPrivateProfile == false ||
+              _profileController.user.value!.followingStatus ==
+                  FollowingStatus.following)
+            addHighlightsView().bP16,
+        ],
+      ),
+    );
+  }
+
+  Widget body() {
+    return Column(
+      children: [
+        if (_settingsController.appearanceChanged!.value) Container(),
+        _profileController.user.value!.isPrivateProfile
+            ? Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  ThemeIconWidget(
+                    ThemeIcon.lock,
+                    size: 100,
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  Heading6Text(accountIsPrivateString.tr,
+                      weight: TextWeight.medium),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  BodyLargeText(
+                    followAccountToViewPostsString.tr,
+                  ),
+                ],
+              )
+            : Flexible(
+                // Use Flexible to ensure proper layout
+                child: TabBarView(
+                  children: [
+                    postsView(),
+                    reelsView(),
+                    mentionedView(),
+                  ],
+                ),
+              ),
+      ],
+    );
+  }
+
   Widget addProfileView() {
-    return GetBuilder<ProfileController>(
+    return GetBuilder<OtherUserProfileController>(
         init: _profileController,
         builder: (ctx) {
           return _profileController.user.value != null
@@ -117,18 +226,17 @@ class OtherUserProfileState extends State<OtherUserProfile>
                     Stack(
                       children: [coverImage(), imageAndNameView()],
                     ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    UserProfileStatistics(
-                      user: _profileController.user.value!,
-                    ).hp(DesignConstants.horizontalPadding),
-                    const SizedBox(
-                      height: 40,
-                    ),
-                    divider(height: 1),
-                    actionButtonsView().hp(DesignConstants.horizontalPadding),
-                    divider(height: 1),
+                    Column(
+                      children: [
+                        UserProfileStatistics(
+                          user: _profileController.user.value!,
+                        ),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        actionButtonsView(),
+                      ],
+                    ).hp(DesignConstants.horizontalPadding)
                   ],
                 )
               : Container();
@@ -139,7 +247,7 @@ class OtherUserProfileState extends State<OtherUserProfile>
     return Positioned(
       left: 0,
       right: 0,
-      top: 100,
+      top: 40,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
@@ -148,7 +256,7 @@ class OtherUserProfileState extends State<OtherUserProfile>
             children: [
               UserAvatarView(
                   user: _profileController.user.value!,
-                  size: 85,
+                  size: 75,
                   onTapHandler: () {
                     //open live
                   }),
@@ -158,15 +266,17 @@ class OtherUserProfileState extends State<OtherUserProfile>
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Heading6Text(_profileController.user.value!.userName,
+                  BodyLargeText(_profileController.user.value!.userName,
                       weight: TextWeight.medium),
                   if (_profileController.user.value!.isVerified)
                     verifiedUserTag()
                 ],
               ).bP4,
-              if (_profileController.user.value!.profileCategoryTypeId != 0)
-                BodyLargeText(
-                        _profileController.user.value!.profileCategoryTypeName,
+              if (_profileController.user.value!.profileCategoryTypeId !=
+                  0)
+                BodyMediumText(
+                        _profileController
+                            .user.value!.profileCategoryTypeName,
                         weight: TextWeight.regular)
                     .bP4,
               if (_profileController.user.value?.country != null)
@@ -188,23 +298,25 @@ class OtherUserProfileState extends State<OtherUserProfile>
                 fit: BoxFit.cover,
                 imageUrl: _profileController.user.value!.coverImage!)
             .bottomRounded(20)
-        : SizedBox(
+        : Container(
             width: Get.width,
-            height: 250,
-            // color: AppColorConstants.themeColor.withOpacity(0.2),
+            height: 200,
           );
   }
 
   Widget actionButtonsView() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceAround,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        SizedBox(
-          height: 40,
-          child: Center(
-            child: BodyMediumText(
-              _profileController.user.value!.followingStatus ==
+    return Align(
+      alignment: Alignment.centerLeft,
+      child: Wrap(
+        runAlignment: WrapAlignment.start,
+        alignment: WrapAlignment.center,
+        runSpacing: 5,
+        spacing: 5,
+        children: [
+          IntrinsicWidth(
+            child: AppThemeButton(
+              height: 40,
+              text: _profileController.user.value!.followingStatus ==
                       FollowingStatus.following
                   ? unFollowString.tr
                   : _profileController.user.value!.followingStatus ==
@@ -213,62 +325,70 @@ class OtherUserProfileState extends State<OtherUserProfile>
                       : _profileController.user.value!.isFollower
                           ? followBackString.tr
                           : followString.tr,
-              color: _profileController.user.value!.followingStatus ==
-                      FollowingStatus.following
-                  ? AppColorConstants.themeColor
-                  : AppColorConstants.mainTextColor,
-              weight: _profileController.user.value!.followingStatus ==
-                      FollowingStatus.following
-                  ? TextWeight.bold
-                  : TextWeight.medium,
+              onPress: () {
+                _profileController.followUnFollowUser(
+                    user: _profileController.user.value!);
+              },
+              backgroundColor:
+                  _profileController.user.value!.followingStatus ==
+                          FollowingStatus.following
+                      ? AppColorConstants.themeColor
+                      : AppColorConstants.mainTextColor,
             ),
           ),
-        ).ripple(() {
-          _profileController.followUnFollowUser(
-              user: _profileController.user.value!);
-        }),
-        Container(
-          height: 40,
-          width: 1,
-          color: AppColorConstants.dividerColor,
-        ),
-        if (_settingsController.setting.value!.enableChat)
-          SizedBox(
-            height: 40,
-            child: Center(child: BodyMediumText(chatString.tr)),
-          ).ripple(() {
-            Loader.show(status: loadingString.tr);
-            _chatDetailController.getChatRoomWithUser(
-                userId: _profileController.user.value!.id,
-                callback: (room) {
-                  Loader.dismiss();
-                  Get.to(() => ChatDetail(
-                        chatRoom: room,
-                      ));
-                });
-          }),
-        Container(
-          height: 40,
-          width: 1,
-          color: AppColorConstants.dividerColor,
-        ),
-        if (_settingsController.setting.value!.enableGift)
-          SizedBox(
-            height: 40,
-            child: Center(child: BodyMediumText(sendGiftString.tr)),
-          ).ripple(() {
-            showModalBottomSheet<void>(
-                context: context,
-                builder: (BuildContext context) {
-                  return FractionallySizedBox(
-                      heightFactor: 0.8,
-                      child: GiftsPageView(giftSelectedCompletion: (gift) {
-                        Get.back();
-                        _profileController.sendGift(gift);
-                      }));
-                });
-          }),
-      ],
+          if (_profileController.user.value!.isVIPUser)
+            IntrinsicWidth(
+              child: AppThemeButton(
+                height: 40,
+                text: _profileController.user.value!.subscribedStatus ==
+                        SubscribedStatus.subscribed
+                    ? subscribedString.tr
+                    : '${subscribeString.tr} (${_profileController.user.value!.subscriptionPlans.first.value!})',
+                onPress: () {
+                  subscribeUser();
+                },
+              ),
+            ),
+          if (_settingsController.setting.value!.enableChat)
+            IntrinsicWidth(
+              child: AppThemeButton(
+                height: 40,
+                text: chatString.tr,
+                onPress: () {
+                  Loader.show(status: loadingString.tr);
+                  _chatDetailController.getChatRoomWithUser(
+                      userId: _profileController.user.value!.id,
+                      callback: (room) {
+                        Loader.dismiss();
+                        Get.to(() => ChatDetail(
+                              chatRoom: room,
+                            ));
+                      });
+                },
+              ),
+            ),
+          if (_settingsController.setting.value!.enableGift)
+            IntrinsicWidth(
+              child: AppThemeButton(
+                height: 40,
+                text: sendGiftString.tr,
+                onPress: () {
+                  showModalBottomSheet<void>(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return FractionallySizedBox(
+                            heightFactor: 0.8,
+                            child: GiftsPageView(
+                                giftSelectedCompletion: (gift) {
+                              Get.back();
+                              _profileController.sendGift(gift);
+                            }));
+                      });
+                },
+              ),
+            ),
+        ],
+      ),
     );
   }
 
@@ -346,7 +466,8 @@ class OtherUserProfileState extends State<OtherUserProfile>
                   : HighlightsBar(
                       highlights: _highlightsController.highlights,
                       viewHighlightCallback: (highlight) {
-                        Get.to(() => HighlightViewer(highlight: highlight))!
+                        Get.to(() =>
+                                HighlightViewer(highlight: highlight))!
                             .then((value) {
                           loadData();
                         });
@@ -355,157 +476,155 @@ class OtherUserProfileState extends State<OtherUserProfile>
         });
   }
 
-  Widget contentWidget() {
-    return _profileController.user.value == null
-        ? Container()
-        : Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Container(
-                    width: (Get.width -
-                            (2 * DesignConstants.horizontalPadding) -
-                            5) /
-                        2,
-                    height: 50,
-                    color: AppColorConstants.cardColor,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        BodyLargeText(
-                          postsString,
-                          weight: TextWeight.semiBold,
-                        ),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        BodyMediumText(
-                          '(${_profileController.user.value!.totalPost.formatNumber})',
-                          weight: TextWeight.bold,
-                        ),
-                      ],
-                    ),
-                  ).round(10).ripple(() {
-                    if (_profileController.user.value!.totalPost > 0) {
-                      Get.to(() => Posts(
-                            userId: _profileController.user.value!.id,
-                            title: _profileController.user.value!.userName,
-                          ));
-                    }
-                  }),
-                  const SizedBox(
-                    width: 5,
-                  ),
-                  Container(
-                    width: (Get.width -
-                            (2 * DesignConstants.horizontalPadding) -
-                            5) /
-                        2,
-                    height: 50,
-                    color: AppColorConstants.cardColor,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        BodyLargeText(
-                          reelsString,
-                          weight: TextWeight.semiBold,
-                        ),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        BodyMediumText(
-                          '(${_profileController.user.value!.totalReels.formatNumber})',
-                          weight: TextWeight.bold,
-                        ),
-                      ],
-                    ),
-                  ).round(10).ripple(() {
-                    if (_profileController.user.value!.totalReels > 0) {
-                      ReelsController reelsController = Get.find();
+  postsView() {
+    ScrollController scrollController = ScrollController();
+    scrollController.addListener(() {
+      if (scrollController.position.maxScrollExtent ==
+          scrollController.position.pixels) {
+        _profileController.getPosts(
+            userId: widget.userId, callback: () {});
+      }
+    });
 
-                      PostSearchQuery query = PostSearchQuery();
-                      query.userId = _profileController.user.value!.id;
-                      reelsController.setReelsSearchQuery(query);
-                      Get.to(() => const Reels(
-                            needBackBtn: true,
-                          ));
-                    }
-                  }),
-                ],
-              ),
-              const SizedBox(
-                height: 5,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Container(
-                    width: (Get.width -
-                            (2 * DesignConstants.horizontalPadding) -
-                            5) /
-                        2,
-                    height: 50,
-                    color: AppColorConstants.cardColor,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        BodyLargeText(
-                          mentionsString,
-                          weight: TextWeight.semiBold,
-                        ),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        BodyMediumText(
-                          '(${_profileController.user.value!.totalMentions.formatNumber})',
-                          weight: TextWeight.bold,
-                        ),
-                      ],
-                    ),
-                  ).round(10).ripple(() {
-                    if (_profileController.user.value!.totalMentions > 0) {
-                      Get.to(() =>
-                          Mentions(userId: _profileController.user.value!.id));
-                    }
-                  }),
-                  const SizedBox(
-                    width: 5,
-                  ),
-                  Container(
-                    width: (Get.width -
-                            (2 * DesignConstants.horizontalPadding) -
-                            5) /
-                        2,
-                    height: 50,
-                    color: AppColorConstants.cardColor,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        BodyLargeText(
-                          clubsString,
-                          weight: TextWeight.semiBold,
-                        ),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        BodyMediumText(
-                          '(${_profileController.user.value!.totalClubs.formatNumber})',
-                          weight: TextWeight.bold,
-                        ),
-                      ],
-                    ),
-                  ).round(10).ripple(() {
-                    if (_profileController.user.value!.totalClubs > 0) {
-                      Get.to(() => UsersClubs(
-                            user: _profileController.user.value!,
-                          ));
-                    }
-                  }),
-                ],
-              ),
-            ],
-          ).hp(DesignConstants.horizontalPadding);
+    return GetBuilder<OtherUserProfileController>(
+        init: _profileController,
+        builder: (ctx) {
+          List<PostModel> posts = _profileController.posts;
+
+          return _profileController.postDataWrapper.isLoading.value
+              ? const HomeScreenShimmer()
+              : posts.isEmpty
+                  ? Center(child: BodyLargeText(noDataString.tr))
+                  : ListView.separated(
+                      physics: const NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      padding: const EdgeInsets.only(top: 10, bottom: 50),
+                      itemCount: posts.length,
+                      itemBuilder: (context, index) {
+                        PostModel model = posts[index];
+                        return PostCard(
+                            model: model,
+                            removePostHandler: () {
+                              _profileController.removePostFromList(model);
+                            },
+                            blockUserHandler: () {
+                              _profileController
+                                  .removeUsersAllPostFromList(model);
+                            });
+                      },
+                      separatorBuilder: (ctx, index) {
+                        return const SizedBox(
+                          height: 15,
+                        );
+                      },
+                    );
+        });
+  }
+
+  reelsView() {
+    ScrollController scrollController = ScrollController();
+    scrollController.addListener(() {
+      if (scrollController.position.maxScrollExtent ==
+          scrollController.position.pixels) {
+        _profileController.getReels(widget.userId);
+      }
+    });
+
+    return GetBuilder<OtherUserProfileController>(
+        init: _profileController,
+        builder: (ctx) {
+          List<PostModel> posts = _profileController.reels;
+
+          return _profileController.reelsDataWrapper.isLoading.value
+              ? const HomeScreenShimmer()
+              : posts.isEmpty
+                  ? Center(child: BodyLargeText(noDataString.tr))
+                  : ListView.separated(
+                      physics: const NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      padding: const EdgeInsets.only(top: 10, bottom: 50),
+                      itemCount: posts.length,
+                      itemBuilder: (context, index) {
+                        PostModel model = posts[index];
+                        return PostCard(
+                            model: model,
+                            removePostHandler: () {
+                              _profileController.removePostFromList(model);
+                            },
+                            blockUserHandler: () {
+                              _profileController
+                                  .removeUsersAllPostFromList(model);
+                            });
+                      },
+                      separatorBuilder: (ctx, index) {
+                        return const SizedBox(
+                          height: 15,
+                        );
+                      },
+                    );
+        });
+  }
+
+  mentionedView() {
+    ScrollController scrollController = ScrollController();
+    scrollController.addListener(() {
+      if (scrollController.position.maxScrollExtent ==
+          scrollController.position.pixels) {
+        _profileController.getMentionPosts(widget.userId);
+      }
+    });
+
+    return GetBuilder<OtherUserProfileController>(
+        init: _profileController,
+        builder: (ctx) {
+          List<PostModel> posts = _profileController.mentions;
+
+          return _profileController
+                  .mentionedPostDataWrapper.isLoading.value
+              ? const HomeScreenShimmer()
+              : posts.isEmpty
+                  ? Center(child: BodyLargeText(noDataString.tr))
+                  : ListView.separated(
+                      physics: const NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      padding: const EdgeInsets.only(top: 10, bottom: 50),
+                      itemCount: posts.length,
+                      itemBuilder: (context, index) {
+                        PostModel model = posts[index];
+                        return PostCard(
+                            model: model,
+                            removePostHandler: () {
+                              _profileController.removePostFromList(model);
+                            },
+                            blockUserHandler: () {
+                              _profileController
+                                  .removeUsersAllPostFromList(model);
+                            });
+                      },
+                      separatorBuilder: (ctx, index) {
+                        return const SizedBox(
+                          height: 15,
+                        );
+                      },
+                    );
+        });
+  }
+
+  subscribeUser() {
+    AppUtil.showNewConfirmationAlert(
+        title:
+            '${subscribeString.tr} ${_profileController.user.value!.userName}',
+        subTitle:
+            '${areYouSureToSubscribeString.tr} ${_profileController.user.value!.userName}',
+        okHandler: () {
+          _subscriptionController.subscribeUser(
+              userPlanId: _profileController
+                  .user.value!.subscriptionPlans.first.id,
+              succesCalback: () {
+                _profileController.getOtherUserDetail(
+                    userId: widget.userId, completionBlock: (user) {});
+              });
+        },
+        cancelHandler: () {});
   }
 }

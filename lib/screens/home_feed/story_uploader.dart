@@ -1,6 +1,6 @@
 import 'package:foap/helper/file_extension.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:vs_story_designer/vs_story_designer.dart';
+import '../../components/vs_story_designer/vs_story_designer.dart';
 import '../../controllers/story/story_controller.dart';
 import '../../helper/imports/common_import.dart';
 import '../chat/media.dart';
@@ -35,7 +35,7 @@ void openStoryUploader() {
                   Get.back();
                   // selectPhoto(source: ImageSource.gallery);
                   Get.to(() => VSStoryDesigner(
-                    giphyKey: settingsController.setting.value!.giphyApiKey!,
+                    giphyKey: settingsController.setting.value!.giphyApiKey,
 
                     /// (String), //disabled feature for now
                     onDone: (String uri) async {

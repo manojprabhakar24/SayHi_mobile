@@ -66,8 +66,8 @@ class _LiveBroadcastScreenState extends State<LiveBroadcastScreen>
       vsync: this,
     );
 
-    _leftContainerAnimation =
-        Tween<double>(begin: -Get.width / 2, end: 0).animate(CurvedAnimation(
+    _leftContainerAnimation = Tween<double>(begin: -Get.width / 2, end: 0)
+        .animate(CurvedAnimation(
       parent: _controller,
       curve: const Interval(0, 0.5),
     ));
@@ -125,8 +125,8 @@ class _LiveBroadcastScreenState extends State<LiveBroadcastScreen>
                 right: 0,
                 child: Column(
                   children: [
-                    Obx(() => _agoraLiveController
-                                    .live.value?.battleDetail?.battleStatus ==
+                    Obx(() => _agoraLiveController.live.value?.battleDetail
+                                    ?.battleStatus ==
                                 BattleStatus.completed &&
                             _agoraLiveController.liveEnd.value == false
                         ? battleResultView()
@@ -211,8 +211,8 @@ class _LiveBroadcastScreenState extends State<LiveBroadcastScreen>
                     _agoraLiveController
                             .live.value?.battleDetail?.battleStatus ==
                         BattleStatus.accepted ||
-                    (_agoraLiveController
-                                    .live.value?.battleDetail?.battleUsers ??
+                    (_agoraLiveController.live.value?.battleDetail
+                                    ?.battleUsers ??
                                 [])
                             .isNotEmpty &&
                         _agoraLiveController
@@ -234,14 +234,18 @@ class _LiveBroadcastScreenState extends State<LiveBroadcastScreen>
                   );
           },
         ),
-        Obx(() => _agoraLiveController.liveEnd.value ? Container() : topBar()),
+        Obx(() =>
+            _agoraLiveController.liveEnd.value ? Container() : topBar()),
         // _agoraLiveController.live.value!.amIMainHostInLive
         //     ? _actionWidgetForHostUser()
         //     : Container(),
         _agoraLiveController.askLiveEndConformation.value == true ||
                 _agoraLiveController.askBattleEndConformation.value == true
             ? Positioned(
-                left: 0, right: 0, bottom: 0, child: askLiveEndConfirmation())
+                left: 0,
+                right: 0,
+                bottom: 0,
+                child: askLiveEndConfirmation())
             : Container()
       ],
     );
@@ -304,8 +308,8 @@ class _LiveBroadcastScreenState extends State<LiveBroadcastScreen>
                           color: Colors.white,
                         ),
                         Obx(() => BodySmallText(
-                            _agoraLiveController
-                                .live.value!.battleDetail!.mainHost.totalCoins
+                            _agoraLiveController.live.value!.battleDetail!
+                                .mainHost.totalCoins
                                 .toString(),
                             color: Colors.white))
                       ],
@@ -364,15 +368,15 @@ class _LiveBroadcastScreenState extends State<LiveBroadcastScreen>
                               width: Get.width / 2,
                               height: double.infinity,
                               child: Transform.translate(
-                                  offset:
-                                      Offset(_leftContainerAnimation.value, 0),
+                                  offset: Offset(
+                                      _leftContainerAnimation.value, 0),
                                   child: mainHostView())),
                           SizedBox(
                               width: Get.width / 2,
                               height: double.infinity,
                               child: Transform.translate(
-                                  offset:
-                                      Offset(_rightContainerAnimation.value, 0),
+                                  offset: Offset(
+                                      _rightContainerAnimation.value, 0),
                                   child: battleOpponentView()))
                         ],
                       );
@@ -429,8 +433,8 @@ class _LiveBroadcastScreenState extends State<LiveBroadcastScreen>
                                   child: Row(
                                     children: [
                                       UserAvatarView(
-                                        user: _agoraLiveController
-                                            .live.value!.mainHostUserDetail!,
+                                        user: _agoraLiveController.live
+                                            .value!.mainHostUserDetail!,
                                         size: 28,
                                       ),
                                       const SizedBox(
@@ -438,8 +442,11 @@ class _LiveBroadcastScreenState extends State<LiveBroadcastScreen>
                                       ),
                                       Expanded(
                                         child: BodySmallText(
-                                          _agoraLiveController.live.value!
-                                              .mainHostUserDetail!.userName,
+                                          _agoraLiveController
+                                              .live
+                                              .value!
+                                              .mainHostUserDetail!
+                                              .userName,
                                           maxLines: 1,
                                         ),
                                       )
@@ -553,7 +560,8 @@ class _LiveBroadcastScreenState extends State<LiveBroadcastScreen>
               Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  _agoraLiveController.live.value!.battleDetail!.resultType ==
+                  _agoraLiveController
+                              .live.value!.battleDetail!.resultType ==
                           LiveBattleResultType.winner
                       ? winnerDetail()
                       : drawViewDetail(),
@@ -564,8 +572,8 @@ class _LiveBroadcastScreenState extends State<LiveBroadcastScreen>
                     Expanded(
                         child: GiftSenders(
                       liveId: _agoraLiveController.live.value!.id,
-                      battleId:
-                          _agoraLiveController.live.value!.battleDetail?.id,
+                      battleId: _agoraLiveController
+                          .live.value!.battleDetail?.id,
                     ))
                 ],
               ).p16,
@@ -656,8 +664,8 @@ class _LiveBroadcastScreenState extends State<LiveBroadcastScreen>
           children: [
             SizedBox(
                 width: Get.width * 0.3,
-                child: hostDetail(
-                    _agoraLiveController.live.value!.battleDetail!.mainHost)),
+                child: hostDetail(_agoraLiveController
+                    .live.value!.battleDetail!.mainHost)),
             Container(
               height: 40,
               width: 40,
@@ -883,7 +891,8 @@ class _LiveBroadcastScreenState extends State<LiveBroadcastScreen>
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Heading4Text('${_agoraLiveController.giftsReceived.length}',
+                    Heading4Text(
+                            '${_agoraLiveController.giftsReceived.length}',
                             weight: TextWeight.medium)
                         .bP8,
                     BodySmallText(
@@ -901,7 +910,8 @@ class _LiveBroadcastScreenState extends State<LiveBroadcastScreen>
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Heading4Text(
-                            _agoraLiveController.totalCoinsEarned.toString(),
+                            _agoraLiveController.totalCoinsEarned
+                                .toString(),
                             weight: TextWeight.medium)
                         .bP8,
                     BodySmallText(
@@ -964,7 +974,8 @@ class _LiveBroadcastScreenState extends State<LiveBroadcastScreen>
                   ],
                 )
               : SizedBox(
-                  height: (Get.height * 0.4) - 70, child: MessagesInLive()),
+                  height: (Get.height * 0.4) - 70,
+                  child: MessagesInLive()),
           messageComposerView()
         ],
       ),
@@ -1005,7 +1016,8 @@ class _LiveBroadcastScreenState extends State<LiveBroadcastScreen>
                               border: InputBorder.none,
                               contentPadding: const EdgeInsets.only(
                                   left: 10, right: 10, top: 5),
-                              labelStyle: TextStyle(fontSize: FontSizes.b2),
+                              labelStyle:
+                                  TextStyle(fontSize: FontSizes.b2),
                               hintStyle: TextStyle(fontSize: FontSizes.b2),
                               hintText: messageString.tr),
                         ),
@@ -1015,8 +1027,10 @@ class _LiveBroadcastScreenState extends State<LiveBroadcastScreen>
               const SizedBox(
                 width: 5,
               ),
-              Obx(() => _agoraLiveController.messageTextFocus.value == false &&
-                      _agoraLiveController.live.value?.amIHostInLive == true
+              Obx(() => _agoraLiveController.messageTextFocus.value ==
+                          false &&
+                      _agoraLiveController.live.value?.amIHostInLive ==
+                          true
                   ? Row(
                       children: [
                         Container(
@@ -1062,39 +1076,41 @@ class _LiveBroadcastScreenState extends State<LiveBroadcastScreen>
                         const SizedBox(
                           width: 10,
                         ),
-                        Obx(() =>
-                            _agoraLiveController.live.value?.canInvite == true
-                                ? Row(
-                                    children: [
-                                      Container(
-                                        color: AppColorConstants.themeColor,
-                                        child: ThemeIconWidget(
-                                          ThemeIcon.invite,
-                                          size: 20,
-                                          color: Colors.white,
-                                        ).p8,
-                                      ).circular.ripple(() {
-                                        createBattle();
-                                      }),
-                                      const SizedBox(
-                                        width: 10,
-                                      ),
-                                    ],
-                                  )
-                                : Container()),
+                        Obx(() => _agoraLiveController
+                                    .live.value?.canInvite ==
+                                true
+                            ? Row(
+                                children: [
+                                  Container(
+                                    color: AppColorConstants.themeColor,
+                                    child: ThemeIconWidget(
+                                      ThemeIcon.invite,
+                                      size: 20,
+                                      color: Colors.white,
+                                    ).p8,
+                                  ).circular.ripple(() {
+                                    createBattle();
+                                  }),
+                                  const SizedBox(
+                                    width: 10,
+                                  ),
+                                ],
+                              )
+                            : Container()),
                       ],
                     )
                   : Container()),
-              Container(
-                color: AppColorConstants.themeColor,
-                child: ThemeIconWidget(
-                  ThemeIcon.send,
-                  size: 20,
-                  color: Colors.white,
-                ).p8,
-              ).circular.ripple(() {
-                sendMessage();
-              }),
+              if (_agoraLiveController.messageTextFocus.value == true)
+                Container(
+                  color: AppColorConstants.themeColor,
+                  child: ThemeIconWidget(
+                    ThemeIcon.send,
+                    size: 20,
+                    color: Colors.white,
+                  ).p8,
+                ).circular.ripple(() {
+                  sendMessage();
+                }),
               if (_agoraLiveController.live.value?.amIHostInLive == false)
                 const SizedBox(
                   width: 10,
@@ -1118,8 +1134,8 @@ class _LiveBroadcastScreenState extends State<LiveBroadcastScreen>
                       builder: (BuildContext context) {
                         return FractionallySizedBox(
                             heightFactor: 0.8,
-                            child:
-                                GiftsPageView(giftSelectedCompletion: (gift) {
+                            child: GiftsPageView(
+                                giftSelectedCompletion: (gift) {
                               Get.back();
                               sendGift(gift);
                             }));
@@ -1166,7 +1182,8 @@ class _LiveBroadcastScreenState extends State<LiveBroadcastScreen>
                   ).lp(10).ripple(() {
                     _profileController.getOtherUserDetail(
                         userId: _agoraLiveController
-                            .live.value!.mainHostUserDetail!.id);
+                            .live.value!.mainHostUserDetail!.id,
+                        completionBlock: (user) {});
                     showModalBottomSheet<void>(
                         backgroundColor: Colors.transparent,
                         context: context,
@@ -1190,7 +1207,8 @@ class _LiveBroadcastScreenState extends State<LiveBroadcastScreen>
                     ThemeIcon.share,
                     size: 25,
                   ).ripple(() {
-                    Share.share(_agoraLiveController.live.value!.shareLink);
+                    Share.share(
+                        _agoraLiveController.live.value!.shareLink);
                   }),
                   const SizedBox(
                     width: 10,
@@ -1259,7 +1277,8 @@ class _LiveBroadcastScreenState extends State<LiveBroadcastScreen>
                     if (_agoraLiveController.live.value!.battleStatus ==
                         BattleStatus.started) {
                       _agoraLiveController.askConfirmationForEndBattle();
-                    } else if (_agoraLiveController.live.value!.amIHostInLive) {
+                    } else if (_agoraLiveController
+                        .live.value!.amIHostInLive) {
                       _agoraLiveController.askConfirmationForEndCall();
                     } else {
                       _agoraLiveController.onCallEnd(isHost: false);
@@ -1277,26 +1296,22 @@ class _LiveBroadcastScreenState extends State<LiveBroadcastScreen>
 
   // Generate local preview
   Widget _renderLocalPreview() {
-    return GetBuilder<AgoraLiveController>(
-        init: _agoraLiveController,
-        builder: (ctx) {
-          return _agoraLiveController.mutedVideo.value
-              ? Container(
-                  color: AppColorConstants.red,
-                  child: Center(
-                      child: Heading6Text(
-                    videoPausedString.tr,
-                    color: AppColorConstants.subHeadingTextColor,
-                  )))
-              : _agoraLiveController.engine != null
-                  ? AgoraVideoView(
-                      controller: VideoViewController(
-                        rtcEngine: _agoraLiveController.engine!,
-                        canvas: const VideoCanvas(uid: 0),
-                      ),
-                    )
-                  : Container();
-        });
+    return Obx(() => _agoraLiveController.mutedVideo.value
+        ? Container(
+            color: AppColorConstants.red,
+            child: Center(
+                child: Heading6Text(
+              videoPausedString.tr,
+              color: AppColorConstants.subHeadingTextColor,
+            )))
+        : _agoraLiveController.engine != null
+            ? AgoraVideoView(
+                controller: VideoViewController(
+                  rtcEngine: _agoraLiveController.engine!,
+                  canvas: const VideoCanvas(uid: 0),
+                ),
+              )
+            : Container());
   }
 
   // Generate remote preview
@@ -1309,11 +1324,6 @@ class _LiveBroadcastScreenState extends State<LiveBroadcastScreen>
                   false
               ? Container(
                   color: AppColorConstants.backgroundColor,
-                  // child: Center(
-                  //     child: Heading6Text(
-                  //   reConnectingString.tr,
-                  //   // color: AppColorConstants.grayscale900,
-                  // ))
                 )
               : _agoraLiveController.videoPausedUsers
                           .contains(host.userDetail.id) ==
@@ -1434,7 +1444,8 @@ class _LiveBroadcastScreenState extends State<LiveBroadcastScreen>
     ).round(10);
   }
 
-  Widget selectHostForGift(Function(LiveCallHostUser) userSelectedCallback) {
+  Widget selectHostForGift(
+      Function(LiveCallHostUser) userSelectedCallback) {
     return Container(
       color: AppColorConstants.cardColor,
       child: Column(
@@ -1477,8 +1488,8 @@ class _LiveBroadcastScreenState extends State<LiveBroadcastScreen>
                         width: 100,
                         text: sendString,
                         onPress: () {
-                          userSelectedCallback(_agoraLiveController
-                              .live.value!.battleDetail!.battleUsers.first);
+                          userSelectedCallback(_agoraLiveController.live
+                              .value!.battleDetail!.battleUsers.first);
                         })
                   ],
                 ),
@@ -1491,8 +1502,8 @@ class _LiveBroadcastScreenState extends State<LiveBroadcastScreen>
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     UserAvatarView(
-                        user: _agoraLiveController.live.value!.battleDetail!
-                            .battleUsers.last.userDetail,
+                        user: _agoraLiveController.live.value!
+                            .battleDetail!.battleUsers.last.userDetail,
                         size: 80,
                         hideLiveIndicator: true,
                         hideOnlineIndicator: true),
@@ -1500,8 +1511,8 @@ class _LiveBroadcastScreenState extends State<LiveBroadcastScreen>
                       height: 10,
                     ),
                     Heading5Text(
-                      _agoraLiveController.live.value!.battleDetail!.battleUsers
-                          .last.userDetail.userName,
+                      _agoraLiveController.live.value!.battleDetail!
+                          .battleUsers.last.userDetail.userName,
                       weight: TextWeight.bold,
                     ),
                     const SizedBox(
@@ -1572,14 +1583,15 @@ class _LiveBroadcastScreenState extends State<LiveBroadcastScreen>
                             ),
                           ).round(10).ripple(() {
                             Navigator.of(context).pop();
-                            Future.delayed(const Duration(milliseconds: 200),
-                                () {
-                              inviteOpponent(
-                                  _agoraLiveController.battleTimeArray[index]);
+                            Future.delayed(
+                                const Duration(milliseconds: 200), () {
+                              inviteOpponent(_agoraLiveController
+                                  .battleTimeArray[index]);
                             });
                           });
                         },
-                        itemCount: _agoraLiveController.battleTimeArray.length),
+                        itemCount:
+                            _agoraLiveController.battleTimeArray.length),
                   ),
                 ],
               ),

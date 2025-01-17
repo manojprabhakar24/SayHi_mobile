@@ -4,29 +4,32 @@ Widget backNavigationBar({required String title}) {
   return Container(
     height: 100,
     color: AppColorConstants.cardColor,
-    child: Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      crossAxisAlignment: CrossAxisAlignment.center,
+    child: Stack(
+      alignment: Alignment.center,
       children: [
-        SizedBox(
-          height: 40,
-          width: 40,
-          child: Center(
-            child: Icon(
-              Icons.arrow_back_ios,
-              size: 20,
-              color: AppColorConstants.iconColor,
-            ),
-          ),
-        ).ripple(() {
-          Get.back();
-        }),
-        Expanded(
-            child: BodyLargeText(title.tr,
-                maxLines: 1, weight: TextWeight.medium)),
-        const SizedBox(
-          width: 40,
-        )
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            SizedBox(
+              height: 40,
+              width: 40,
+              child: Center(
+                child: Icon(
+                  Icons.arrow_back_ios,
+                  size: 20,
+                  color: AppColorConstants.iconColor,
+                ),
+              ),
+            ).ripple(() {
+              Get.back();
+            }),
+            const SizedBox(
+              width: 40,
+            )
+          ],
+        ),
+        BodyLargeText(title.tr, maxLines: 1, weight: TextWeight.medium)
       ],
     ).setPadding(
         left: DesignConstants.horizontalPadding,
@@ -146,8 +149,8 @@ Widget titleNavigationBarWithIcon(
 
 Widget titleNavigationBarWithWidget(
     {required String title,
-      required Widget widget,
-      required VoidCallback completion}) {
+    required Widget widget,
+    required VoidCallback completion}) {
   return Row(
     mainAxisAlignment: MainAxisAlignment.spaceBetween,
     children: [

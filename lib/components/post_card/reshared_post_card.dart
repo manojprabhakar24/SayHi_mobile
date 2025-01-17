@@ -1,4 +1,3 @@
-import 'package:flare_flutter/flare_controls.dart';
 import 'package:foap/components/post_card/post_text_widget.dart';
 import 'package:foap/components/post_card/post_user_info.dart';
 import 'package:foap/helper/imports/post_imports.dart';
@@ -14,7 +13,6 @@ class ResharedPostCard extends StatelessWidget {
   final ChatDetailController chatDetailController = Get.find();
   final SelectUserForChatController selectUserForChatController =
       SelectUserForChatController();
-  final FlareControls flareControls = FlareControls();
 
   ResharedPostCard({
     super.key,
@@ -24,17 +22,23 @@ class ResharedPostCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+      child:
+          Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         PostUserInfo(
           post: model,
           isSponsored: false,
+          removePostHandler: () {},
+          blockUserHandler: () {},
+          isResharedPost: true,
         ),
         model.postTitle.isNotEmpty
-            ? Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                const SizedBox(height: 4),
-                RichTextPostTitle(model: model),
-                const SizedBox(height: 10),
-              ])
+            ? Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                    const SizedBox(height: 4),
+                    RichTextPostTitle(model: model),
+                    const SizedBox(height: 10),
+                  ])
             : const SizedBox(),
         const SizedBox(
           height: 10,
@@ -42,7 +46,7 @@ class ResharedPostCard extends StatelessWidget {
         if (model.gallery.isNotEmpty)
           PostMediaTile(
             model: model,
-            isSharedPostMedia: true,
+            isResharedPost: true,
           ),
       ]).p(DesignConstants.horizontalPadding),
     ).borderWithRadius(value: 1, radius: 10).ripple(() {

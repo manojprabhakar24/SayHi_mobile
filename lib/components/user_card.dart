@@ -1,6 +1,8 @@
+import 'package:foap/controllers/misc/users_controller.dart';
 import 'package:foap/helper/imports/common_import.dart';
 import 'package:foap/helper/imports/live_imports.dart';
 import 'package:foap/helper/number_extension.dart';
+import 'package:foap/model/collaboration_model.dart';
 import 'package:progress_state_button/iconed_button.dart';
 import 'package:progress_state_button/progress_button.dart';
 import '../model/club_join_request.dart';
@@ -10,22 +12,84 @@ import '../model/story_model.dart';
 import '../screens/profile/other_user_profile.dart';
 import '../screens/settings_menu/settings_controller.dart';
 
+class UserFollowUnfollowBtnController extends GetxController {
+  Rx<UserModel?> user = Rx<UserModel?>(null);
+  UsersController userController = Get.find();
+
+  setUser(UserModel user) {
+    this.user.value = user;
+  }
+
+  followUser() {
+    userController.followUser(user.value!);
+    user.refresh();
+  }
+
+  unFollowUser() {
+    userController.unFollowUser(user.value!);
+    user.refresh();
+  }
+}
+
+class UserFollowUnfollowButton extends StatelessWidget {
+  final UserFollowUnfollowBtnController controller;
+
+  final bool? isSmallSized;
+
+  const UserFollowUnfollowButton(
+      {super.key, required this.controller, this.isSmallSized});
+
+  @override
+  Widget build(BuildContext context) {
+    return Obx(() => SizedBox(
+          height: isSmallSized == true ? 25 : 35,
+          width: isSmallSized == true ? 100 : 120,
+          child: controller.user.value!.followingStatus ==
+                  FollowingStatus.notFollowing
+              ? AppThemeBorderButton(
+                  text: controller.user.value!.isFollower == true
+                      ? followBackString.tr
+                      : followString.tr,
+                  backgroundColor: AppColorConstants.backgroundColor,
+                  onPress: () {
+                    controller.followUser();
+                  })
+              : controller.user.value!.followingStatus ==
+                      FollowingStatus.requested
+                  ? AppThemeBorderButton(
+                      text: requestedString.tr,
+                      backgroundColor:
+                          AppColorConstants.themeColor.withOpacity(0.2),
+                      onPress: () {
+                        controller.unFollowUser();
+                      })
+                  : AppThemeButton(
+                      text: unFollowString.tr,
+                      onPress: () {
+                        controller.unFollowUser();
+                      }),
+        ));
+  }
+}
+
 class FollowUnfollowButton extends StatelessWidget {
   final UserModel user;
   final VoidCallback? followCallback;
   final VoidCallback? unFollowCallback;
+  final bool? isSmallSized;
 
   const FollowUnfollowButton(
       {super.key,
       required this.user,
       required this.followCallback,
+      this.isSmallSized,
       required this.unFollowCallback});
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 35,
-      width: 120,
+      height: isSmallSized == true ? 25 : 35,
+      width: isSmallSized == true ? 80 : 120,
       child: user.followingStatus == FollowingStatus.notFollowing
           ? AppThemeBorderButton(
               text: user.isFollower == true
@@ -229,7 +293,8 @@ class UserTile extends StatelessWidget {
                   icon: const Icon(Icons.send, color: Colors.white),
                   color: Colors.deepPurple.shade500),
               ButtonState.loading: IconedButton(
-                  text: loadingString.tr, color: Colors.deepPurple.shade700),
+                  text: loadingString.tr,
+                  color: Colors.deepPurple.shade700),
               ButtonState.fail: IconedButton(
                   text: failedString.tr,
                   icon: const Icon(Icons.cancel, color: Colors.white),
@@ -406,7 +471,10 @@ class SelectableUserTile extends StatefulWidget {
   final VoidCallback? selectionHandler;
 
   const SelectableUserTile(
-      {super.key, required this.model, this.isSelected, this.selectionHandler});
+      {super.key,
+      required this.model,
+      this.isSelected,
+      this.selectionHandler});
 
   @override
   SelectableUserTileState createState() => SelectableUserTileState();
@@ -671,7 +739,8 @@ class ClubMemberTile extends StatelessWidget {
               size: 40,
               onTapHandler: () {
                 LiveModel live = LiveModel();
-                live.channelName = member.user!.liveCallDetail!.channelName;
+                live.channelName =
+                    member.user!.liveCallDetail!.channelName;
                 live.mainHostUserDetail = member.user!;
                 live.token = member.user!.liveCallDetail!.token;
                 live.id = member.user!.liveCallDetail!.id;
@@ -791,19 +860,22 @@ class SendMessageUserTile extends StatelessWidget {
                               color: AppColorConstants.iconColor,
                               size: 15,
                             ),
-                            color: AppColorConstants.themeColor.lighten(0.1)),
+                            color:
+                                AppColorConstants.themeColor.lighten(0.1)),
                         ButtonState.loading: IconedButton(
                             text: loadingString.tr,
                             color: AppColorConstants.iconColor),
                         ButtonState.fail: IconedButton(
                             text: failedString.tr,
                             icon: Icon(Icons.cancel,
-                                color: AppColorConstants.iconColor, size: 15),
+                                color: AppColorConstants.iconColor,
+                                size: 15),
                             color: AppColorConstants.red),
                         ButtonState.success: IconedButton(
                             text: sentString.tr,
                             icon: Icon(Icons.check_circle,
-                                color: AppColorConstants.iconColor, size: 15),
+                                color: AppColorConstants.iconColor,
+                                size: 15),
                             color: AppColorConstants.themeColor.darken())
                       },
                       onPressed: sendCallback,
@@ -1153,6 +1225,93 @@ class LiveUserTile extends StatelessWidget {
             : viewer.role == LiveUserRole.moderator
                 ? moderatorString.tr
                 : '')
+      ],
+    );
+  }
+}
+
+class CollaboratorTile extends StatelessWidget {
+  final CollaborationModel collaborator;
+
+  final VoidCallback removeCallback;
+  final VoidCallback? viewCallback;
+
+  const CollaboratorTile({
+    super.key,
+    required this.collaborator,
+    required this.removeCallback,
+    this.viewCallback,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Expanded(
+          child: Row(
+            children: [
+              UserAvatarView(
+                user: collaborator.user!,
+                size: 30,
+              ),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        BodyLargeText(
+                          collaborator.user!.userName,
+                          maxLines: 1,
+                        ),
+                        if (collaborator.user!.isVerified)
+                          verifiedUserTag(),
+                        if (collaborator.status ==
+                            CollaborationStatusType.pending)
+                          BodyLargeText(
+                            '(${pendingString.tr})',
+                            color: Colors.orange,
+                          ),
+                        if (collaborator.status ==
+                            CollaborationStatusType.rejected)
+                          BodyLargeText('(${rejectedString.tr})',
+                              color: AppColorConstants.red),
+                        if (collaborator.status ==
+                            CollaborationStatusType.cancelled)
+                          BodyLargeText('(${cancelledString.tr})',
+                              color: AppColorConstants.red),
+                      ],
+                    ).bP4,
+                    collaborator.user!.country != null
+                        ? BodyMediumText(
+                            '${collaborator.user!.city!}, ${collaborator.user!.country!}',
+                          )
+                        : Container()
+                  ],
+                ).hP8,
+              ),
+              // const Spacer(),
+            ],
+          ).ripple(() {
+            if (viewCallback == null) {
+              Get.to(() => OtherUserProfile(
+                    userId: collaborator.user!.id,
+                    user: collaborator.user!,
+                  ));
+            } else {
+              viewCallback!();
+            }
+          }),
+        ),
+        if (collaborator.status == CollaborationStatusType.pending ||
+            collaborator.status == CollaborationStatusType.accepted)
+          AppThemeButton(
+              backgroundColor: AppColorConstants.red,
+              text: removeString.tr,
+              onPress: () {
+                removeCallback();
+              })
       ],
     );
   }

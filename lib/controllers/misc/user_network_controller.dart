@@ -61,7 +61,7 @@ class UserNetworkController extends GetxController {
 
   followUser(UserModel user) {
     user.followingStatus =
-        user.isPrivate ? FollowingStatus.requested : FollowingStatus.following;
+        user.isPrivateProfile ? FollowingStatus.requested : FollowingStatus.following;
     if (following.where((e) => e.id == user.id).isNotEmpty) {
       following[following.indexWhere((element) => element.id == user.id)] =
           user;

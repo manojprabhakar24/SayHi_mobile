@@ -1,3 +1,4 @@
+import 'package:foap/helper/enum_linking.dart';
 import 'package:foap/helper/imports/common_import.dart';
 
 class FeatureModel {
@@ -74,6 +75,8 @@ class SettingModel {
   String? iosAppLink;
   String? androidAppLink;
 
+  SMSGateway smsGateway;
+
   SettingModel(
       {required this.email,
       required this.phone,
@@ -103,7 +106,6 @@ class SettingModel {
       required this.termsOfServiceUrl,
       required this.giphyApiKey,
       required this.agoraApiKey,
-// required this.googleMapApiKey,
       required this.interstitialAdUnitIdForAndroid,
       required this.interstitialAdUnitIdForiOS,
       required this.rewardInterstitlAdUnitIdForAndroid,
@@ -128,7 +130,8 @@ class SettingModel {
       required this.textColorForDarkTheme,
       required this.features,
       this.iosAppLink,
-      this.androidAppLink});
+      this.androidAppLink,
+      required this.smsGateway});
 
   factory SettingModel.fromJson(Map<String, dynamic> json) => SettingModel(
       email: json["email"],
@@ -171,7 +174,8 @@ class SettingModel {
       bannerAdUnitIdForiOS: json["banner_ad_unit_id_for_IOS"],
       fbInterstitialAdUnitIdForAndroid:
           json["fb_interstitial_ad_unit_id_for_android"],
-      fbInterstitialAdUnitIdForiOS: json["fb_interstitial_ad_unit_id_for_IOS"],
+      fbInterstitialAdUnitIdForiOS:
+          json["fb_interstitial_ad_unit_id_for_IOS"],
       fbRewardInterstitialAdUnitIdForAndroid:
           json["fb_reward_interstitial_ad_unit_id_for_android"],
       fbRewardInterstitialAdUnitIdForiOS:
@@ -180,53 +184,15 @@ class SettingModel {
       serviceFee: json["serviceFee"] ?? 5,
       stripePublishableKey: json["stripe_publishable_key"],
       razorpayKey: json["razorpay_api_key"],
-      // enableChat: json["is_chat"] == 1,
-      // enableAudioCalling: json["is_audio_calling"] == 1,
-      // enableAudioSharingInChat: json["is_audio_share"] == 1,
-      // enableClubs: json["is_clubs"] == 1,
-      // enableClubSharingInChat: json["is_club_share"] == 1,
-      // enableCompetitions: json["is_competitions"] == 1,
-      // enableDarkLightModeSwitch: json["is_light_mode_switching"] == 1,
-      // enableDrawingSharingInChat: json["is_drawing_share"] == 1,
-      // enableEvents: json["is_events"] == 1,
-      // enableStrangerChat: json["is_staranger_chat"] == 1,
-      // enableFileSharingInChat: json["is_files_share"] == 1,
-      // enableForwardingInChat: json["is_forward"] == 1,
-      // enableGifSharingInChat: json["is_gift_share"] == 1,
-      // enableImagePost: json["is_photo_post"] == 1,
-      // enableVideoPost: json["is_video_post"] == 1,
-      // enableLive: json["is_live"] == 1,
-      // enableLocationSharingInChat: json["is_location_sharing"] == 1,
-      // enablePhotoSharingInChat: json["is_photo_share"] == 1,
-      // enableContactSharingInChat: json["is_contact_sharing"] == 1,
-      // enablePodcasts: json["is_podcasts"] == 1,
-      // enableProfileSharingInChat: json["is_user_profile_share"] == 1,
-      // enableProfileVerification: json["is_profile_verification"] == 1,
-      // enableReplyInChat: json["is_reply"] == 1,
-      // enableStarMessage: json["is_star_message"] == 1,
-      // enableStories: json["is_stories"] == 1,
-      // enableHighlights: json["is_story_highlights"] == 1,
-      // enableVideoCalling: json["is_video_calling"] == 1,
-      // enableVideoSharingInChat: json["is_video_share"] == 1,
-      // enableWatchTv: json["is_watch_tv"] == 1,
-      // enableReel: json["is_reel"] == 1,
-      // enableGift: json["is_gift_sending"] == 1,
-      // enablePolls: json["is_polls"] == 1,
-      // enableDating: json["is_dating"] == 1,
-      // enableChatGPT: json["is_chat_gpt"] == 1,
-      // enableFundRaising: json["is_fund_raising"] == 1,
-      // enableOffers: json["is_offer"] == 1,
-      // enableJobs: json["is_job"] == 1,
-      // enableLiveUserListing: json["is_live_user"] == 1,
-      // enableShop: json["is_shop"] == 1,
-      // enablePostPhotoVideoEdit: json["is_photo_video_edit"] == 1,
       themeColor: json["theme_color"] ?? '4169e1',
-      bgColorForLightTheme: json["theme_light_background_color"] ?? 'FFFFFF',
+      bgColorForLightTheme:
+          json["theme_light_background_color"] ?? 'FFFFFF',
       bgColorForDarkTheme: json["theme_dark_background_color"] ?? '000000',
       textColorForLightTheme: json["theme_light_text_color"] ?? '000000',
       textColorForDarkTheme: json["theme_dark_text_color"] ?? 'FFFFFF',
       font: json["theme_font"],
       chatGPTKey: json["chat_gpt_key"],
+      smsGateway: smsGatewayType(json["sms_gateway"]),
       imglyApiKey: json["imgly_key"],
       iosAppLink: json["iosAppLink"] ?? 'ios app link',
       androidAppLink: json["androidAppLink"] ?? 'android app ink',
@@ -241,8 +207,9 @@ class SettingModel {
       return false;
     }
 
-    List<FeatureModel> matchedFeatures =
-        features.where((element) => element.featureKey == featureName).toList();
+    List<FeatureModel> matchedFeatures = features
+        .where((element) => element.featureKey == featureName)
+        .toList();
 
     if (matchedFeatures.isEmpty) {
       return false;
@@ -338,15 +305,18 @@ class SettingModel {
   }
 
   bool get enableAudioCalling {
-    return getFeatureAvailabilityStatus('enable_audio_calling') && agoraApiKey!.isNotEmpty;
+    return getFeatureAvailabilityStatus('enable_audio_calling') &&
+        (agoraApiKey ?? '').isNotEmpty;
   }
 
   bool get enableVideoCalling {
-    return getFeatureAvailabilityStatus('enable_video_calling') && agoraApiKey!.isNotEmpty;
+    return getFeatureAvailabilityStatus('enable_video_calling') &&
+        (agoraApiKey ?? '').isNotEmpty;
   }
 
   bool get enableLive {
-    return getFeatureAvailabilityStatus('enable_live') && agoraApiKey!.isNotEmpty;
+    return getFeatureAvailabilityStatus('enable_live') &&
+        (agoraApiKey ?? '').isNotEmpty;
   }
 
   bool get enableClubs {
@@ -370,7 +340,8 @@ class SettingModel {
   }
 
   bool get enableDarkLightModeSwitch {
-    return getFeatureAvailabilityStatus('enable_dark_light_mode_switching');
+    return getFeatureAvailabilityStatus(
+        'enable_dark_light_mode_switching');
   }
 
   bool get enableWatchTv {

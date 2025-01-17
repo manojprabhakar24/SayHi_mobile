@@ -1,4 +1,4 @@
-import 'package:auto_orientation/auto_orientation.dart';
+// import 'package:foap/components/auto_orientation/auto_orientation.dart';
 import 'package:flutter/services.dart';
 import 'package:foap/helper/imports/common_import.dart';
 import 'package:foap/helper/imports/tv_imports.dart';
@@ -29,14 +29,14 @@ class _TVChannelDetailState extends State<TVChannelDetail> {
         DeviceOrientation.landscapeLeft
       ]);
 
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        // Add Your Code here.
-        if (MediaQuery.of(context).orientation == Orientation.portrait) {
-          AutoOrientation.portraitAutoMode();
-        } else {
-          AutoOrientation.landscapeAutoMode();
-        }
-      });
+      // WidgetsBinding.instance.addPostFrameCallback((_) {
+      //   // Add Your Code here.
+      //   if (MediaQuery.of(context).orientation == Orientation.portrait) {
+      //     AutoOrientation.portraitAutoMode();
+      //   } else {
+      //     AutoOrientation.landscapeAutoMode();
+      //   }
+      // });
     }
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -49,11 +49,11 @@ class _TVChannelDetailState extends State<TVChannelDetail> {
   @override
   Widget build(BuildContext context) {
     return OrientationBuilder(builder: (context, orientation) {
-      if (orientation == Orientation.portrait) {
-        AutoOrientation.portraitAutoMode();
-      } else {
-        AutoOrientation.landscapeAutoMode();
-      }
+      // if (orientation == Orientation.portrait) {
+      //   AutoOrientation.portraitAutoMode();
+      // } else {
+      //   AutoOrientation.landscapeAutoMode();
+      // }
       return AppScaffold(
           backgroundColor: AppColorConstants.backgroundColor,
           body: Column(

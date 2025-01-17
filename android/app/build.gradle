@@ -22,18 +22,20 @@ if (flutterVersionName == null) {
 }
 
 apply plugin: 'com.android.application'
-apply plugin: 'com.google.gms.google-services'
 apply plugin: 'kotlin-android'
+apply plugin: 'com.google.devtools.ksp'
+apply plugin: 'com.google.gms.google-services'
 apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
-apply plugin: 'com.google.firebase.crashlytics'
+//apply plugin: 'com.google.firebase.crashlytics'
 apply plugin: 'ly.img.android.sdk'
 
 android {
-    compileSdkVersion 34
+    namespace "com.example.foap"
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
+        coreLibraryDesugaringEnabled true
     }
 
     kotlinOptions {
@@ -44,20 +46,17 @@ android {
         main.java.srcDirs += 'src/main/kotlin'
     }
 
-    aaptOptions {
-        noCompress "tflite"
-    }
-
     defaultConfig {
         applicationId "com.jasspj.sayhi"
         minSdkVersion 24
         targetSdkVersion 34
+        compileSdk 34
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
         ndk { abiFilters 'x86', 'x86_64', 'armeabi', 'armeabi-v7a', 'mips', 'mips64', 'arm64-v8a' }
 
         android {
-            ndkVersion "25.1.8937393"
+            ndkVersion "26.1.10909125"
         }
     }
     signingConfigs {
@@ -91,6 +90,10 @@ android {
             }
         }
     }
+    androidResources {
+        noCompress 'tflite'
+    }
+
 }
 
 flutter {
@@ -98,13 +101,14 @@ flutter {
 }
 
 dependencies {
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.7.20"
-    implementation 'com.google.firebase:firebase-messaging:23.1.2'
-    implementation 'androidx.annotation:annotation:1.6.0'
-    implementation 'com.google.android.exoplayer:exoplayer:2.17.0'
-    implementation 'com.google.android.gms:play-services-ads:23.0.0'
+    implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk7:2.0.0'
+    implementation 'com.google.firebase:firebase-messaging:24.0.0'
+    implementation 'androidx.annotation:annotation:1.8.0'
+    implementation 'com.google.android.exoplayer:exoplayer:2.19.1'
+    implementation 'com.google.android.gms:play-services-ads:23.2.0'
+    ksp 'com.google.devtools.ksp:symbol-processing-api:2.0.0-1.0.22'
+    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.0.4'
 }
-
 
 // Comment out the modules you don't need, to save size.
 imglyConfig {
@@ -127,7 +131,6 @@ imglyConfig {
 
         // This module is big, remove the serializer if you don't need that feature.
         include 'backend:serializer'
-
 
         // Remove the asset packs you don't need, these are also big in size.
         include 'assets:font-basic'

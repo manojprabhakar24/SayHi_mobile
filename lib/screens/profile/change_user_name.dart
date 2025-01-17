@@ -29,7 +29,6 @@ class _ChangeUserNameState extends State<ChangeUserName> {
             height: 50,
           ),
           profileScreensNavigationBar(
-
               title: changeUserNameString.tr,
               rightBtnTitle: doneString.tr,
               completion: () {

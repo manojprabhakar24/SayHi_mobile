@@ -11,9 +11,9 @@ class DeepLinkManager {
   static init() {
     final appLinks = AppLinks();
 
-// Subscribe to all events when app is started.
-// (Use allStringLinkStream to get it as [String])
-    appLinks.allUriLinkStream.listen((uri) {
+    // Subscribe to all events when app is started.
+    // (Use allStringLinkStream to get it as [String])
+    appLinks.uriLinkStream.listen((uri) {
       handleLink(uri);
     });
   }
@@ -40,6 +40,8 @@ class DeepLinkManager {
               }
             });
       }
+    } else if (urlString.contains('event')) {
+      String? eventId = uri.queryParameters['id'];
     } else {
       String? postUniqueId = uri.queryParameters['pid'];
 

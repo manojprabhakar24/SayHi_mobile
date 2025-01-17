@@ -1,10 +1,11 @@
 import 'package:foap/helper/imports/common_import.dart';
 import 'package:foap/helper/imports/login_signup_imports.dart';
-import 'package:lottie/lottie.dart';
 import '../../main.dart';
 
 class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
+  final bool? showCloseBtn;
+
+  const LoginScreen({super.key, this.showCloseBtn = false});
 
   @override
   LoginScreenState createState() => LoginScreenState();
@@ -35,18 +36,15 @@ class LoginScreenState extends State<LoginScreen> {
           },
           child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
-              // mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 SizedBox(
                   height: Get.height * 0.1,
                 ),
-                // const Align(
-                //   alignment: Alignment.centerLeft,
-                //   child: AppThemeBackButton(),
-                // ),
-                // SizedBox(
-                //   height: Get.height * 0.05,
-                // ),
+                if (widget.showCloseBtn == true)
+                  const Align(
+                    alignment: Alignment.centerRight,
+                    child: AppThemeCloseButton(),
+                  ),
                 SizedBox(
                     height: Get.height * 0.12,
                     child: Stack(
@@ -55,13 +53,6 @@ class LoginScreenState extends State<LoginScreen> {
                         Heading3Text(signInMessageString.tr,
                                 weight: TextWeight.bold)
                             .rp(100),
-                        Positioned(
-                            right: 0,
-                            top: 0,
-                            bottom: 0,
-                            child: Lottie.asset(
-                              'assets/lottie/syahi.json',
-                            ))
                       ],
                     )),
                 SizedBox(
